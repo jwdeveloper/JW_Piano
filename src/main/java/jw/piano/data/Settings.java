@@ -1,23 +1,17 @@
 package jw.piano.data;
+import jw.spigot_fluent_api.data.annotation.files.YmlFile;
+import jw.spigot_fluent_api.dependency_injection.SpigotBean;
+import lombok.Data;
 
-import jw.data.repositories.Saveable;
-import jw.dependency_injection.Injectable;
 
-@Injectable
-public class Settings implements Saveable
+@SpigotBean
+@YmlFile
+@Data
+public class Settings
 {
-    public float maxDistanceFromPiano = 3;
-    public String texturepackURL = "https://drive.google.com/file/d/1HClLdDwtPe7EaZjIL8vtGhoHvvipWjDj/view?usp=sharing";
-    public float maxDistanceFromKeys = 2;
-    public boolean midiPlayer = false;
-
-    @Override
-    public boolean load() {
-        return false;
-    }
-
-    @Override
-    public boolean save() {
-        return false;
-    }
+    private float maxDistanceFromPiano = 3;
+    private String texturesURL = "https://drive.google.com/file/d/1HClLdDwtPe7EaZjIL8vtGhoHvvipWjDj/view?usp=sharing";
+    private float maxDistanceFromKeys = 2;
+    private boolean midiPlayer = false;
+    private int webSocketPort = 2022;
 }

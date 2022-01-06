@@ -1,9 +1,11 @@
 package jw.piano.model;
 
-import jw.colistions.HitBox;
 import jw.piano.data.PianoData;
+import jw.piano.data.PianoDataObserver;
 import jw.piano.utility.ArmorStandFactory;
 import jw.piano.utility.PianoTypes;
+import jw.spigot_fluent_api.utilites.math.collistions.HitBox;
+import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -11,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
+@Getter
 public class PianoModel
 {
     private PianoData pianoData;
@@ -18,20 +21,23 @@ public class PianoModel
     private PianoPedal[] pianoPedals = new PianoPedal[3];
     private ArmorStand pianoModelSkin;
     private final int MIDI_KEY_OFFSET = 21;
-    public HitBox openViewHitBox;
+    private HitBox openViewHitBox;
+    private PianoDataObserver pianoDataObserver;
 
     public PianoModel(PianoData pianoData)
     {
         this.pianoData = pianoData;
-        this.pianoData.pianoTypeBind.onChange(this::setPianoType);
-        this.pianoData.isEnableBind.onChange(value ->
+        pianoDataObserver = new PianoDataObserver();
+        pianoDataObserver.observePianoData(pianoData);
+        pianoDataObserver.getPianoTypeBind().onChange(this::setPianoType);
+        pianoDataObserver.getEnableBind().onChange(value ->
         {
             if(value)
                 create();
             else
                 destroy();
         });
-        this.pianoData.locationBind.onChange(value ->
+        pianoDataObserver.getLocationBind().onChange(value ->
         {
            this.destroy();
            this.create();
@@ -79,7 +85,7 @@ public class PianoModel
 
     public void create()
     {
-        Location location =pianoData.location.clone();
+        Location location =pianoData.getLocation().clone();
         location.setYaw(0);
         location.setPitch(0);
         this.pianoModelSkin = ArmorStandFactory.createInvisibleArmorStand(location.clone());
@@ -165,6 +171,6 @@ public class PianoModel
     }
     public Location getLocation()
     {
-        return this.pianoData.location;
+        return this.pianoData.getLocation();
     }
 }

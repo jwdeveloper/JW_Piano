@@ -1,14 +1,9 @@
 package jw.piano.model;
 
-import jw.colistions.HitBox;
-import jw.piano.utility.ArmorStandFactory;
 import jw.piano.utility.PianoKeysConst;
-import jw.utilites.MathHelper;
+import jw.spigot_fluent_api.utilites.math.MathUtility;
+import jw.spigot_fluent_api.utilites.math.collistions.HitBox;
 import org.bukkit.*;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class PianoKey extends Pressable implements Comparable {
     private boolean isBlack;
@@ -33,7 +28,7 @@ public class PianoKey extends Pressable implements Comparable {
         else
             setCustomModelData(2);
 
-        Color color = Color.fromRGB(MathHelper.getRandom(0,255), MathHelper.getRandom(0,255), MathHelper.getRandom(0,255));
+        Color color = Color.fromRGB(MathUtility.getRandom(0,255), MathUtility.getRandom(0,255), MathUtility.getRandom(0,255));
         particles = new Particle.DustOptions(color,  0.3F);
         particleLocation =  location.clone().add(0,1.8f,0);
         world = particleLocation.getWorld();

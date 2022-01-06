@@ -1,20 +1,15 @@
 package jw.piano.websocket.packets;
 
-import jw.InitializerAPI;
-import jw.dependency_injection.Injectable;
+
 import jw.piano.management.PianoManager;
 import jw.piano.model.PianoModel;
-import jw.task.TaskTimer;
-import jw.web_socket.WebSocketPacket;
-import jw.web_socket.packet.PacketProperty;
-import org.bukkit.Bukkit;
+import jw.spigot_fluent_api.dependency_injection.SpigotBean;
+import jw.spigot_fluent_api.web_socket.WebSocketPacket;
+import jw.spigot_fluent_api.web_socket.annotations.PacketProperty;
 import org.java_websocket.WebSocket;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.function.Consumer;
 
-@Injectable
+@SpigotBean
 public class OnPianoKeyPacket extends WebSocketPacket
 {
     private PianoModel pianoModel;

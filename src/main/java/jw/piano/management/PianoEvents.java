@@ -1,14 +1,14 @@
 package jw.piano.management;
 
-import jw.dependency_injection.Injectable;
-import jw.dependency_injection.InjectionManager;
-import jw.events.EventBase;
 import jw.piano.autoplayer.Chord;
 import jw.piano.autoplayer.ChordFactory;
 import jw.piano.autoplayer.Sound;
 import jw.piano.data.Settings;
 import jw.piano.gui.MenuGUI;
 import jw.piano.model.PianoModel;
+import jw.spigot_fluent_api.dependency_injection.InjectionManager;
+import jw.spigot_fluent_api.dependency_injection.SpigotBean;
+import jw.spigot_fluent_api.fluent_events.EventBase;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,12 +23,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Injectable(autoInit = true)
-public class PianoEvents extends EventBase {
-
+@SpigotBean(lazyLoad = false)
+public class PianoEvents extends EventBase
+{
     private final PianoManager pianoManager;
     private final Settings settings;
     private final List<PianoPlayingEvent> pianoPlayingEventList;
+    PianoMelodyPlayer pianoMelodyPlayer;
+
 
     public PianoEvents(PianoManager pianoManager, Settings settings)
     {
@@ -59,7 +61,7 @@ public class PianoEvents extends EventBase {
         }
     }
 
-    PianoMelodyPlayer pianoMelodyPlayer;
+
     @EventHandler
     public void onChangeHandSlotEvent(PlayerItemHeldEvent event)
     {
@@ -101,14 +103,11 @@ public class PianoEvents extends EventBase {
                                                  .equals(event.getPlayer()))
                                                  .findAny();
 
-
-
-
             if(pianoPlayingEvent.isPresent())
             {
-                if(pianoPlayingEvent.get().getPianoModel().openViewHitBox.isCollider(player.getEyeLocation(),5))
+                if(pianoPlayingEvent.get().getPianoModel().getOpenViewHitBox().isCollider(player.getEyeLocation(),5))
                 {
-                    MenuGUI gui = InjectionManager.getObjectByPlayer(MenuGUI.class,player.getUniqueId());
+                    MenuGUI gui = InjectionManager.getObjectPlayer(MenuGUI.class,player.getUniqueId());
                     gui.openPianoView(player,pianoPlayingEvent.get().getPianoModel().getPianoData());
                 }
 
@@ -136,7 +135,7 @@ public class PianoEvents extends EventBase {
     public PianoModel getClosestPiano(Location playerLocation)
     {
         final float minDistance  = Float.MAX_VALUE;
-        final float minRange = settings.maxDistanceFromPiano;
+        final float minRange = settings.getMaxDistanceFromPiano();
         PianoModel result  = null;
 
         for(PianoModel pianoModel:this.pianoManager.getPianos())

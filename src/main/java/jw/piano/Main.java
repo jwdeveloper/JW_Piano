@@ -1,26 +1,28 @@
 package jw.piano;
 
-import jw.InitializerAPI;
-import org.bukkit.plugin.java.JavaPlugin;
 
-public final class Main extends JavaPlugin {
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
+import jw.spigot_fluent_api.fluent_plugin.configuration.PluginConfiguration;
+
+
+public final class Main extends FluentPlugin {
 
     @Override
-    public void onEnable()
-    {
-        InitializerAPI.attachePlugin(this);
-        InitializerAPI.useDependencyInjection();
-        InitializerAPI.getDataManager().load();
+    protected void OnConfiguration(PluginConfiguration configuration) {
+        configuration
+                .useDependencyInjection()
+                .useDataContext()
+                .useInfoMessage()
+                .useDebugMode();
     }
 
     @Override
-    public void onDisable()
-    {
-        InitializerAPI.getDataManager().save();
+    protected void OnFluentPluginEnable() {
+
     }
 
-    public static Main getInstance()
-    {
-        return Main.getPlugin(Main.class);
+    @Override
+    protected void OnFluentPluginDisable() {
+
     }
 }

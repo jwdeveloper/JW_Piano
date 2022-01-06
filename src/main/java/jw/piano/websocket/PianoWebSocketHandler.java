@@ -1,9 +1,9 @@
 package jw.piano.websocket;
 
-import jw.InitializerAPI;
-import jw.dependency_injection.Injectable;
-import jw.dependency_injection.InjectionManager;
-import jw.events.EventBase;
+import jw.spigot_fluent_api.dependency_injection.InjectionManager;
+import jw.spigot_fluent_api.dependency_injection.SpigotBean;
+import jw.spigot_fluent_api.fluent_events.EventBase;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.server.PluginDisableEvent;
@@ -11,35 +11,33 @@ import org.bukkit.event.server.PluginEnableEvent;
 
 import java.io.IOException;
 
-@Injectable(autoInit = true)
+@SpigotBean(lazyLoad = false)
 public class PianoWebSocketHandler extends EventBase {
 
-    private PianoWebSocket testWebSocket;
+    private PianoWebSocket webSocket;
 
-    public PianoWebSocketHandler()
-    {
-
+    public PianoWebSocketHandler(PianoWebSocket webSocket) {
+        this.webSocket = webSocket;
     }
 
+
     @Override
-    public void onPluginStart(PluginEnableEvent event)
-    {
-        Bukkit.getPluginManager().registerEvents(this, InitializerAPI.getPlugin());
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN+" Try run Piano socket");
-        testWebSocket = new PianoWebSocket();
-        testWebSocket.start();
+    public void onPluginStart(PluginEnableEvent event) {
+        webSocket.start();
+        FluentPlugin.logSuccess("Web socket server");
     }
 
     @Override
     public void onPluginStop(PluginDisableEvent event) {
-            try
-            {
-                testWebSocket.stop();
-            }
-            catch (IOException | InterruptedException e)
-            {
-                Bukkit.getConsoleSender().sendMessage(ChatColor.RED+e.getMessage());
-            }
+
+        try {
+            FluentPlugin.logSuccess("Close web socket server");
+            webSocket.stop();
+        } catch (IOException | InterruptedException e) {
+            FluentPlugin.logException("Socket exception", e);
+        }
+
     }
 
 }
+

@@ -1,33 +1,30 @@
 package jw.piano.management;
 
-import jw.dependency_injection.InjectionManager;
+
 import jw.piano.data.Settings;
 import jw.piano.model.PianoKey;
 import jw.piano.model.PianoModel;
 import jw.piano.model.PianoPedal;
 import jw.piano.utility.ArmorStandFactory;
-import jw.piano.utility.PedalType;
-import jw.task.TaskTimer;
-import jw.utilites.MathHelper;
-import org.bukkit.Bukkit;
+import jw.spigot_fluent_api.dependency_injection.InjectionManager;
+import jw.spigot_fluent_api.fluent_tasks.FluentTaskTimer;
+import jw.spigot_fluent_api.utilites.math.MathUtility;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
+
 
 public class PianoPlayingEvent {
-
 
     private final Player player;
     private final PianoModel pianoModel;
     private final Consumer<PianoPlayingEvent> pianoPlayingEventConsumer;
-    private final TaskTimer taskTimer;
+    private final FluentTaskTimer taskTimer;
     private final int TICKS = 5;
     private final Location keyLocation;
     private final Settings settings;
@@ -51,7 +48,7 @@ public class PianoPlayingEvent {
                 return Boolean.compare(o1.isWhite(), o2.isWhite());
             }
         });
-        this.taskTimer = new TaskTimer(3, (time, taskTimer1) ->
+        this.taskTimer = new FluentTaskTimer(3, (time, taskTimer1) ->
         {
             for(PianoKey pianoKey:sortedKeys)
             {
@@ -122,14 +119,14 @@ public class PianoPlayingEvent {
     public void HitKey(PianoKey pianoKey) {
 
         float size = 0.3F;
-        Color color = Color.fromRGB(MathHelper.getRandom(0,255), MathHelper.getRandom(0,255), MathHelper.getRandom(0,255));
+                Color color = Color.fromRGB(MathUtility.getRandom(0,255), MathUtility.getRandom(0,255), MathUtility.getRandom(0,255));
         Particle.DustOptions options = new Particle.DustOptions(color, size);
        pianoKey.getLocation().getWorld().spawnParticle(Particle.REDSTONE,  pianoKey.getLocation().clone().add(0,2,0), 1,options);
-        new TaskTimer(TICKS, (time, taskTimer1) ->
+        new FluentTaskTimer(TICKS, (time, taskTimer1) ->
         {
             pianoKey.setPedalPressed(sustainPedal.isPressed());
             pianoKey.press(pianoKey.getIndex(), 100, 1);
-        }).stopAfter(1).onStop(taskTimer1 ->
+        }).stopAfterIterations(1).onStop(taskTimer1 ->
         {
             pianoKey.release(pianoKey.getIndex(), 0, 1);
             if(pianoKey == highlightedKey)
@@ -159,17 +156,17 @@ public class PianoPlayingEvent {
     }
 
     public boolean isPlayerInPianoRange(Location eyeLocation) {
-        return eyeLocation.distance(keyLocation) < settings.maxDistanceFromPiano;
+        return eyeLocation.distance(keyLocation) < settings.getMaxDistanceFromPiano();
     }
 
     public PianoKey getClosestKey(Location eyeLocation,boolean a)
     {
         PianoKey[] keys = pianoModel.getPianoKeys();
-        double rotation = MathHelper.yawToRotation(eyeLocation.getYaw());
-        double headRotation = MathHelper.yawToRotation(eyeLocation.getPitch());
+        double rotation = MathUtility.yawToRotation(eyeLocation.getYaw());
+        double headRotation = MathUtility.yawToRotation(eyeLocation.getPitch());
 
-        double persent = MathHelper.getPersent(160,rotation);
-        double yRotation = MathHelper.getPersent(16,headRotation-308);
+        double persent = MathUtility.getPersent(160,rotation);
+        double yRotation = MathUtility.getPersent(16,headRotation-308);
 
         int index = (int)Math.round((keys.length-1)*persent);
 

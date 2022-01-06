@@ -1,64 +1,78 @@
 package jw.piano.gui;
 
-import jw.dependency_injection.Injectable;
-import jw.dependency_injection.InjectionType;
-import jw.gui.examples.ChestGUI;
-import jw.gui.examples.chestgui.bindingstrategies.examples.SelectEnumStrategy;
 import jw.piano.data.PianoData;
-import jw.piano.utility.PianoTypes;
+import jw.piano.data.PianoDataObserver;
+import jw.spigot_fluent_api.dependency_injection.SpigotBean;
+import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
+import jw.spigot_fluent_api.fluent_gui.implementation.chest_ui.ChestUI;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
-@Injectable(injectionType = InjectionType.TRANSIENT)
-public class PianoViewGUI extends ChestGUI<PianoData>
+@SpigotBean
+public class PianoViewGUI extends ChestUI
 {
-    public PianoViewGUI() {
+    private PianoDataObserver pianoDataObserver;
+
+    public PianoViewGUI()
+    {
         super("Piano", 5);
+        pianoDataObserver = new PianoDataObserver();
+    }
+
+    public void open(Player player, PianoData pianoModel)
+    {
+        pianoDataObserver.observePianoData(pianoModel);
+        open(player);
     }
 
     @Override
-    public void onInitialize() {
+    public void onInitialize()
+    {
         this.setTitle("Piano");
-        this.drawBorder(Material.YELLOW_STAINED_GLASS_PANE);
-        this.addBackArrow();
-
-        this.buildButton()
-                .setBoldName("Teleport to piano")
-                .setPosition(2,2)
-                .setOnClick((player1, button) ->
+        this.setBorderMaterial(Material.YELLOW_STAINED_GLASS_PANE);
+        ButtonUI.builder()
+                .setTitle("Teleport to piano")
+                .setLocation(2,2)
+                .setOnClick((player, button) ->
                 {
-                       player1.teleport(this.detail.location);
+                    player.teleport(pianoDataObserver.getLocationBind().get());
                 })
-                .buildAndAdd();
+                .buildAndAdd(this);
 
-        this.buildButton()
+        ButtonUI.builder()
                 .setMaterial(Material.STONE_PICKAXE)
-                .setBoldName("Set active")
-                .setPosition(2,4)
-                .bindField(this.detail.isEnableBind)
-                .buildAndAdd();
+                .setTitle("Set active")
+                .setLocation(2,4)
+                .setOnClick((player, button) ->
+                {
+                 //  pianoModel.getEnableBind();
+                })
+                .buildAndAdd(this);
 
-        this.buildButton()
+        ButtonUI.builder()
                 .setMaterial(Material.STONE_PICKAXE)
-                .setBoldName("Set type")
-                .setPosition(2,6)
-                .bindField(new SelectEnumStrategy(this.detail.pianoTypeBind, PianoTypes.class))
-                .buildAndAdd();
+                .setTitle("Set type")
+                .setLocation(2,6)
+                .setOnClick((player, button) ->
+                {
+                   //this.detail.pianoTypeBind
+                })
+                .buildAndAdd(this);
 
-
-        this.buildButton()
+        ButtonUI.builder()
                 .setMaterial(Material.STONE_PICKAXE)
-                .setBoldName("Play MIDI file")
-                .setPosition(1,4)
-                .setOnClick((player1, button) ->
+                .setTitle("Play MIDI file")
+                .setLocation(1,4)
+                .setOnClick((player, button) ->
                 {
                     TextComponent message = new TextComponent(ChatColor.GREEN+""+ChatColor.BOLD+"[! Click to open MIDI panel page !]");
                     message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.youtube.com/"));
                     player.spigot().sendMessage(message);
                     this.close();
                 })
-                .buildAndAdd();
+                .buildAndAdd(this);
     }
 }

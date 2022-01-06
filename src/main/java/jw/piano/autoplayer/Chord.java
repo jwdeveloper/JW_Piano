@@ -2,8 +2,8 @@ package jw.piano.autoplayer;
 
 public class Chord
 {
-    private String name;
-    private Note[] notes;
+    private final Note[] notes;
+    private final String name;
 
     public Chord(String name, Note...notes)
     {

@@ -1,54 +1,70 @@
 package jw.piano.gui;
 
-import jw.data.repositories.RepositoryGUI;
-import jw.dependency_injection.Injectable;
-import jw.dependency_injection.InjectionType;
-import jw.gui.examples.chestgui.BuilderListGUI;
 import jw.piano.data.PianoData;
 import jw.piano.data.PianoDataRepository;
 import jw.piano.utility.PianoTypes;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import jw.spigot_fluent_api.dependency_injection.InjectionType;
+import jw.spigot_fluent_api.dependency_injection.SpigotBean;
+import jw.spigot_fluent_api.fluent_gui.implementation.crud_list_ui.CrudListUI;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-@Injectable(injectionType = InjectionType.TRANSIENT)
-public class MenuGUI extends RepositoryGUI<PianoData>
+@SpigotBean(injectionType = InjectionType.TRANSIENT)
+public class MenuGUI extends CrudListUI<PianoData>
 {
     private final PianoViewGUI pianoViewGUI;
     private final PianoDataRepository pianoDataRepository;
 
     public MenuGUI(PianoViewGUI pianoViewGUI, PianoDataRepository pianoDataRepository)
     {
-        super(null, "Menu", pianoDataRepository);
-
+        super("Menu",6);
         this.pianoDataRepository = pianoDataRepository;
         this.pianoViewGUI = pianoViewGUI;
+          this.setEnableLogs(true);
+        FluentPlugin.logSuccess(pianoDataRepository.toString());
     }
 
     @Override
     public void onInitialize() {
-        super.onInitialize();
         this.setTitle("Menu");
-        this.getCopyButton().setActive(false);
         this.pianoViewGUI.setParent(this);
-        this.onInsert = value ->
+        this.setContentButtons(pianoDataRepository.getMany(),(data, button) ->
         {
-            Location location = this.player.getLocation();
-            location.setDirection(new Vector(0, 0, 1));
+            button.setTitle(data.name);
+            button.setDescription(data.description);
+            button.setMaterial(data.icon);
+            button.setDataContext(data);
+        });
+        this.onInsert((player, button) ->
+        {
+            var location = player.getLocation().setDirection(new Vector(0, 0, 1));
+            var pianoData = new PianoData();
+            pianoData.name = "NEW PIANO";
+            pianoData.setLocation(location);
+            pianoData.setEnable(true);
+            pianoData.setPianoType(PianoTypes.Grand_Piano);
+            var result = pianoDataRepository.insertOne(pianoData);
+            if(!result)
+            {
+                setTitle("Unable to create new piano");
+            }
+            this.refreshContent();
+        });
+        this.onDelete((player, button) ->
+        {
+            var result = pianoDataRepository.deleteOne(button.getDataContext());
+            if(!result)
+            {
+                setTitle("Unable to remove piano");
+            }
+            this.refreshContent();
+        });
+        this.onGet((player, button) ->
+        {
+            openPianoView(player, button.getDataContext());
+        });
 
-            PianoData pianoData = new PianoData();
-            pianoData.name = value;
-            pianoData.location = location;
-            pianoData.isEnable = true;
-            pianoData.pianoType = PianoTypes.Grand_Piano;
-            this.getRepository().insertOne(pianoData);
-            this.open(player);
-        };
-        this.onClickContent = (player, button) ->
-        {
-            openPianoView(player, button.getHoldingObject());
-        };
     }
     public void openPianoView(Player player,PianoData pianoData)
     {

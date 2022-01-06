@@ -1,11 +1,21 @@
 package jw.piano.websocket;
 
-import jw.web_socket.WebSocketBase;
 
+import jw.piano.data.Settings;
+import jw.spigot_fluent_api.dependency_injection.InjectionManager;
+import jw.spigot_fluent_api.dependency_injection.SpigotBean;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
+import jw.spigot_fluent_api.web_socket.WebSocketBase;
+import jw.spigot_fluent_api.web_socket.WebSocketPacket;
+
+@SpigotBean
 public class PianoWebSocket extends WebSocketBase
 {
-    public PianoWebSocket()
+    public PianoWebSocket(Settings settings)
     {
-        super(6969);
+
+        super(settings.getWebSocketPort());
+        FluentPlugin.logSuccess("Web socket trying to run on port "+settings.getWebSocketPort()+"");
+        this.registerPackets(InjectionManager.getObjectsByParentType(WebSocketPacket.class));
     }
 }

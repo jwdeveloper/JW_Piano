@@ -1,6 +1,5 @@
 package jw.piano.utility;
 
-import java.util.HashMap;
 
 public enum PianoTypes
 {

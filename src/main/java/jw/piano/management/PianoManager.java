@@ -1,18 +1,19 @@
 package jw.piano.management;
 
-import jw.dependency_injection.Injectable;
 import jw.piano.data.PianoData;
 import jw.piano.data.PianoDataRepository;
 import jw.piano.model.PianoModel;
+import jw.spigot_fluent_api.dependency_injection.SpigotBean;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.UUID;
 
-@Injectable(autoInit = true)
+@SpigotBean(lazyLoad = false)
 public class PianoManager
 {
     private final PianoDataRepository pianoDataRepository;
-    private final HashMap<String, PianoModel> pianoModelHashMap = new HashMap<>();
+    private final HashMap<UUID, PianoModel> pianoModelHashMap = new HashMap<>();
 
     public PianoManager(PianoDataRepository pianoDataRepository)
     {
@@ -48,20 +49,20 @@ public class PianoManager
     }
     public void registerPiano(PianoData pianoData)
     {
-        if(!pianoModelHashMap.containsKey(pianoData.id))
+        if(!pianoModelHashMap.containsKey(pianoData.uuid))
         {
             PianoModel pianoModel = new PianoModel(pianoData);
-            pianoModelHashMap.put(pianoData.id,pianoModel);
+            pianoModelHashMap.put(pianoData.uuid,pianoModel);
             pianoModel.create();
         }
     }
     public void unregisterPiano(PianoData pianoData)
     {
-        if(pianoModelHashMap.containsKey(pianoData.id))
+        if(pianoModelHashMap.containsKey(pianoData.uuid))
         {
-            PianoModel pianoModel = pianoModelHashMap.get(pianoData.id);
+            PianoModel pianoModel = pianoModelHashMap.get(pianoData.uuid);
             pianoModel.destroy();
-            pianoModelHashMap.remove(pianoData.id);
+            pianoModelHashMap.remove(pianoData.uuid);
         }
     }
 }

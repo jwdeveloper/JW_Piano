@@ -1,15 +1,14 @@
 package jw.piano.websocket.packets;
 
-import jw.InitializerAPI;
-import jw.dependency_injection.Injectable;
+
 import jw.piano.management.PianoManager;
 import jw.piano.model.PianoModel;
-import jw.web_socket.WebSocketPacket;
-import jw.web_socket.packet.PacketProperty;
-import org.bukkit.Bukkit;
+import jw.spigot_fluent_api.dependency_injection.SpigotBean;
+import jw.spigot_fluent_api.web_socket.WebSocketPacket;
+import jw.spigot_fluent_api.web_socket.annotations.PacketProperty;
 import org.java_websocket.WebSocket;
 
-@Injectable
+@SpigotBean
 public class OnPedalPacket extends WebSocketPacket
 {
     PianoModel pianoModel;
