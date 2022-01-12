@@ -4,11 +4,11 @@ import jw.piano.data.Settings;
 import jw.piano.gui.MenuGUI;
 import jw.spigot_fluent_api.dependency_injection.InjectionManager;
 import jw.spigot_fluent_api.dependency_injection.SpigotBean;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.simple_commands.SimpleCommand;
 
 @SpigotBean(lazyLoad = false)
-public class CommandProvider
-{
+public class CommandProvider {
 
     private final Settings settings;
 

@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class Settings
 {
+    private float minDistanceToPiano = 3;
     private float maxDistanceFromPiano = 3;
     private String texturesURL = "https://drive.google.com/file/d/1HClLdDwtPe7EaZjIL8vtGhoHvvipWjDj/view?usp=sharing";
     private float maxDistanceFromKeys = 2;

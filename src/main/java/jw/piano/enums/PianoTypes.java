@@ -1,9 +1,9 @@
-package jw.piano.utility;
+package jw.piano.enums;
 
 
 public enum PianoTypes
 {
-    None(0),Upright_Piano(8),Grand_Piano(9),Electric_Piano(10),Organs(11);
+    NONE(0), UPRIGHT_PIANO(8), GRAND_PIANO(9), ELECTRIC_PIANO(10), ORGANS(11);
     private final int id;
     PianoTypes(int id) {
       this.id = id;

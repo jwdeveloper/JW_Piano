@@ -1,12 +1,10 @@
-package jw.piano.model;
+package jw.piano.game_objects.models;
 
 import org.bukkit.Location;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.inventory.ItemStack;
 
-public class PianoPedal extends Pressable
+public class PianoPedalModel extends CustomModel
 {
-    public PianoPedal(Location location)
+    public PianoPedalModel(Location location)
     {
         super(location);
         setCustomModelData(6);

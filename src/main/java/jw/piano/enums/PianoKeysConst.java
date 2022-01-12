@@ -1,14 +1,13 @@
-package jw.piano.utility;
+package jw.piano.enums;
 
 public enum PianoKeysConst
 {
-
-     White_Key_Selected(0),
-     Black_Key_Selected(1),
-     White_Key(2),
-     Black_Key(4),
-     White_Key_Pressed(3),
-     Black_Key_Pressed(5);
+     WHITE_KEY_SELECTED(0),
+     BLACK_KEY_SELECTED(1),
+     WHITE_KEY(2),
+     BLACK_KEY(4),
+     WHITE_KEY_PRESSED(3),
+     BLACK_KEY_PRESSED(5);
 
     private final int id;
     PianoKeysConst(int id) {

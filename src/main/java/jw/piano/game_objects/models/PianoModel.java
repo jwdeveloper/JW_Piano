@@ -1,9 +1,9 @@
-package jw.piano.model;
+package jw.piano.game_objects.models;
 
-import jw.piano.data.PianoData;
-import jw.piano.data.PianoDataObserver;
+import jw.piano.game_objects.PianoDataObserver;
 import jw.piano.utility.ArmorStandFactory;
-import jw.piano.utility.PianoTypes;
+import jw.piano.enums.PianoTypes;
+import jw.spigot_fluent_api.fluent_game_object.GameObject;
 import jw.spigot_fluent_api.utilites.math.collistions.HitBox;
 import lombok.Getter;
 import org.bukkit.Location;
@@ -13,39 +13,36 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
-@Getter
-public class PianoModel
-{
-    private PianoData pianoData;
-    private PianoKey[] pianoKeys = new PianoKey[88];
-    private PianoPedal[] pianoPedals = new PianoPedal[3];
-    private ArmorStand pianoModelSkin;
-    private final int MIDI_KEY_OFFSET = 21;
-    private HitBox openViewHitBox;
-    private PianoDataObserver pianoDataObserver;
+import java.util.Arrays;
+import java.util.Comparator;
 
-    public PianoModel(PianoData pianoData)
+@Getter
+public class PianoModel extends GameObject
+{
+    private PianoKeyModel[] pianoKeys = new PianoKeyModel[88];
+    private PianoPedalModel[] pianoPedals = new PianoPedalModel[3];
+    private final int MIDI_KEY_OFFSET = 21;
+    private final int PRESS_PEDAL =  1;
+    private HitBox openViewHitBox;
+    private ArmorStand pianoModelSkin;
+    private PianoDataObserver observer;
+
+    public PianoModel(PianoDataObserver observer)
     {
-        this.pianoData = pianoData;
-        pianoDataObserver = new PianoDataObserver();
-        pianoDataObserver.observePianoData(pianoData);
-        pianoDataObserver.getPianoTypeBind().onChange(this::setPianoType);
-        pianoDataObserver.getEnableBind().onChange(value ->
+        this.observer = observer;
+        observer.getPianoTypeBind().onChange(this::setPianoType);
+        observer.getEnableBind().onChange(value ->
         {
             if(value)
                 create();
             else
                 destroy();
         });
-        pianoDataObserver.getLocationBind().onChange(value ->
+        observer.getLocationBind().onChange(value ->
         {
            this.destroy();
            this.create();
         });
-    }
-
-    public PianoData getPianoData() {
-        return pianoData;
     }
 
     public void invokeNote(int pressed, int index, int velocity) {
@@ -55,13 +52,13 @@ public class PianoModel
             pianoKeys[index - MIDI_KEY_OFFSET].release(index, velocity, 0);
     }
 
-    public PianoPedal[] getPianoPedals()
+    public PianoPedalModel[] getPianoPedals()
     {
         return pianoPedals;
     }
     public void invokePedal(int pressed, int index, int velocity) {
 
-        PianoPedal pedal = null;
+        PianoPedalModel pedal = null;
         switch (index) {
             case 64:
                 pedal = pianoPedals[2];
@@ -70,14 +67,13 @@ public class PianoModel
                 pedal = pianoPedals[1];
                 break;
             case 67:
-                pedal = pianoPedals[1];
+                pedal = pianoPedals[0];
                 break;
         }
-
         if (pedal == null)
             return;
 
-        if (pressed != 0)
+        if (pressed == PRESS_PEDAL)
             pedal.press(index, velocity, 1);
         else
             pedal.release(index, velocity, 1);
@@ -85,18 +81,18 @@ public class PianoModel
 
     public void create()
     {
-        Location location =pianoData.getLocation().clone();
+        Location location = observer.getLocationBind().get();
         location.setYaw(0);
         location.setPitch(0);
         this.pianoModelSkin = ArmorStandFactory.createInvisibleArmorStand(location.clone());
         this.openViewHitBox = new HitBox(location.clone().add(1,4,0),location.clone().add(0,3,-1));
         this.openViewHitBox.showHitBox();
-        setPianoType(PianoTypes.None);
+        setPianoType(PianoTypes.NONE);
 
         //Creating pedals
         for(int i=0;i<3;i++)
         {
-            pianoPedals[i] = new PianoPedal(location.clone().add(-0.40+(i*0.20),-0.1,0.1f));
+            pianoPedals[i] = new PianoPedalModel(location.clone().add(-0.40+(i*0.20),-0.1,0.1f));
         }
         //Creating keys
         Location startKeysLocation =location.clone().add(-1.5,-0.4,0.3f);
@@ -117,46 +113,57 @@ public class PianoModel
 
             if(key == 1 || key == 3 || key == 6 || key == 8 || key ==10)
             {
-                pianoKeys[i-1] =  (new PianoKey(startKeysLocation.clone().add(0.025f,0.02f ,-0.05f),true,i+MIDI_KEY_OFFSET));
+                pianoKeys[i-1] =  (new PianoKeyModel(startKeysLocation.clone().add(0.025f,0.02f ,-0.05f),true,i+MIDI_KEY_OFFSET));
             }
             else
             {
-                pianoKeys[i-1] = (new PianoKey(startKeysLocation.clone().add(0.05f,0,0),false,i+MIDI_KEY_OFFSET));
+                pianoKeys[i-1] = (new PianoKeyModel(startKeysLocation.clone().add(0.05f,0,0),false,i+MIDI_KEY_OFFSET));
                 startKeysLocation = startKeysLocation.clone().add(0.05f,0,0);
             }
         }
-    }
-
-    public Location getPianoKeysCenterLocation()
-    {
-       return pianoKeys[pianoKeys.length/2].getLocation();
     }
 
     public void destroy()
     {
         this.openViewHitBox = null;
 
-        for (PianoKey key : pianoKeys)
+        for (PianoKeyModel key : pianoKeys)
         {
             key.getArmorStand().remove();
         }
-        for (PianoPedal pedal : pianoPedals)
+        for (PianoPedalModel pedal : pianoPedals)
         {
             pedal.getArmorStand().remove();
         }
         pianoModelSkin.remove();
     }
 
-    public PianoKey[] getPianoKeys()
+    public PianoKeyModel[] getPianoKeys()
     {
         return pianoKeys;
     }
 
+    public PianoKeyModel[] getSortedKeys()
+    {
+        var keys = getPianoKeys().clone();
+        Arrays.sort(keys, new Comparator<PianoKeyModel>() {
+            @Override
+            public int compare(PianoKeyModel o1, PianoKeyModel o2)
+            {
+                return Boolean.compare(o1.isWhite(), o2.isWhite());
+            }
+        });
+        return keys;
+    }
 
+    public PianoPedalModel getSustainPedal()
+    {
+        return pianoPedals[2];
+    }
 
     private void setPianoType(PianoTypes pianoType)
     {
-        if (pianoType == PianoTypes.None)
+        if (pianoType == PianoTypes.NONE)
         {
             if (pianoModelSkin != null)
                 pianoModelSkin.setHelmet(null);
@@ -169,8 +176,13 @@ public class PianoModel
             pianoModelSkin.setHelmet(itemStack);
         }
     }
+
+    public Location getPianoKeysCenterLocation()
+    {
+        return pianoKeys[pianoKeys.length/2].getLocation();
+    }
     public Location getLocation()
     {
-        return this.pianoData.getLocation();
+        return observer.getLocationBind().get();
     }
 }

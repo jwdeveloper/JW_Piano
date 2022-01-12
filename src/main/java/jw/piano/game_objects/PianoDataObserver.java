@@ -1,14 +1,18 @@
-package jw.piano.data;
+package jw.piano.game_objects;
 
-import jw.piano.model.PianoModel;
-import jw.piano.utility.PianoTypes;
+import jw.piano.data.PianoData;
+import jw.piano.enums.PianoTypes;
 import jw.spigot_fluent_api.utilites.binding.Observable;
 import lombok.Getter;
 import org.bukkit.Location;
 
+import java.util.Optional;
+
 @Getter
 public class PianoDataObserver
 {
+    private PianoData pianoData;
+
     private Observable<Location> locationBind = new Observable();
 
     private Observable<PianoTypes> pianoTypeBind = new Observable();
@@ -22,8 +26,14 @@ public class PianoDataObserver
         enableBind.bind(PianoData.class,"enable");
     }
 
-    public void observePianoData(PianoData pianoModel)
+    public Optional<PianoData> getObservedPianoData()
     {
-        locationBind.setObject(pianoModel);
+       return Optional.of(pianoData);
+    }
+
+    public void observePianoData(PianoData pianoData)
+    {
+        this.pianoData = pianoData;
+        locationBind.setObject(pianoData);
     }
 }

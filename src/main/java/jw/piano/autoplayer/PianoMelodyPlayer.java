@@ -1,7 +1,6 @@
-package jw.piano.management;
+package jw.piano.autoplayer;
 
-import jw.piano.autoplayer.Chord;
-import jw.piano.model.PianoModel;
+import jw.piano.game_objects.models.PianoModel;
 import jw.spigot_fluent_api.fluent_tasks.FluentTaskTimer;
 
 public class PianoMelodyPlayer {

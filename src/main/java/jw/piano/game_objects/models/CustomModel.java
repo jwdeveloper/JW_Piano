@@ -1,14 +1,14 @@
-package jw.piano.model;
+package jw.piano.game_objects.models;
 
 import jw.piano.utility.ArmorStandFactory;
+import jw.spigot_fluent_api.fluent_game_object.GameObject;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.util.Vector;
 
-public abstract class Pressable
+public abstract class CustomModel extends GameObject
 {
 
      private ArmorStand armorStand;
@@ -17,7 +17,7 @@ public abstract class Pressable
 
      protected boolean isPressed;
 
-     public Pressable(Location location)
+     public CustomModel(Location location)
      {
           this.armorStand = ArmorStandFactory.createInvisibleArmorStand(location);
           this.getArmorStand().setSmall(true);

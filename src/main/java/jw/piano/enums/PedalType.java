@@ -1,4 +1,4 @@
-package jw.piano.utility;
+package jw.piano.enums;
 
 public enum PedalType
 {

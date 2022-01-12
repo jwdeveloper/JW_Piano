@@ -1,7 +1,7 @@
 package jw.piano.gui;
 
-import jw.piano.data.PianoData;
-import jw.piano.data.PianoDataObserver;
+import jw.piano.game_objects.Piano;
+import jw.piano.game_objects.PianoDataObserver;
 import jw.spigot_fluent_api.dependency_injection.SpigotBean;
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
 import jw.spigot_fluent_api.fluent_gui.implementation.chest_ui.ChestUI;
@@ -22,9 +22,10 @@ public class PianoViewGUI extends ChestUI
         pianoDataObserver = new PianoDataObserver();
     }
 
-    public void open(Player player, PianoData pianoModel)
+    public void open(Player player, Piano piano)
     {
-        pianoDataObserver.observePianoData(pianoModel);
+        var pianoModel = piano.getPianoModel();
+        pianoDataObserver.observePianoData(pianoModel.getObserver().getPianoData());
         open(player);
     }
 
@@ -33,6 +34,17 @@ public class PianoViewGUI extends ChestUI
     {
         this.setTitle("Piano");
         this.setBorderMaterial(Material.YELLOW_STAINED_GLASS_PANE);
+
+        ButtonUI.builder()
+                .setTitle("error button")
+                .setLocation(1,1)
+                .setOnClick((player, button) ->
+                {
+                    var n = 123/0;
+                    setTitle(n+" Name");
+                })
+                .buildAndAdd(this);
+
         ButtonUI.builder()
                 .setTitle("Teleport to piano")
                 .setLocation(2,2)
