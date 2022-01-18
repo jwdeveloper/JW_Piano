@@ -2,7 +2,7 @@ package jw.piano.game_objects;
 
 import jw.piano.data.PianoData;
 import jw.piano.enums.PianoTypes;
-import jw.spigot_fluent_api.utilites.binding.Observable;
+import jw.spigot_fluent_api.desing_patterns.observer.fields.Observable;
 import lombok.Getter;
 import org.bukkit.Location;
 

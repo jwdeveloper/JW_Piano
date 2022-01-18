@@ -1,6 +1,7 @@
 package jw.piano.managers;
 import jw.piano.websocket.PianoWebSocket;
 import jw.spigot_fluent_api.dependency_injection.InjectionManager;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_plugin.configuration.pipeline.PluginPipeline;
 

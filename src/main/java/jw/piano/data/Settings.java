@@ -1,10 +1,11 @@
 package jw.piano.data;
 import jw.spigot_fluent_api.data.annotation.files.YmlFile;
 import jw.spigot_fluent_api.dependency_injection.SpigotBean;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
 import lombok.Data;
 
 
-@SpigotBean
+@Injection
 @YmlFile
 @Data
 public class Settings

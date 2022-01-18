@@ -3,21 +3,18 @@ package jw.piano.websocket.packets;
 
 import jw.piano.service.PianoService;
 import jw.spigot_fluent_api.dependency_injection.SpigotBean;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
 import jw.spigot_fluent_api.web_socket.WebSocketPacket;
 import jw.spigot_fluent_api.web_socket.annotations.PacketProperty;
 import org.java_websocket.WebSocket;
 
 import java.util.UUID;
 
-@SpigotBean
-public class PianoActionPacket extends WebSocketPacket
-{
-    private final PianoService pianoModelService;
-
-    public PianoActionPacket(PianoService pianoModelService)
-    {
-        this.pianoModelService = pianoModelService;
-    }
+@Injection
+public class PianoActionPacket extends WebSocketPacket {
+    @Inject
+    private PianoService pianoModelService;
 
     //id of the packet
     @PacketProperty
@@ -45,22 +42,20 @@ public class PianoActionPacket extends WebSocketPacket
     }
 
     @Override
-    public void onPacketTriggered(WebSocket webSocket)
-    {
+    public void onPacketTriggered(WebSocket webSocket) {
         int vel = velocity;
         int note = nodeId;
         int type = packetType;
         this.addSpigotTask(webSocket1 ->
         {
             var piano = pianoModelService.get(uuid);
-            if(piano.isEmpty())
+            if (piano.isEmpty())
                 return;
 
             var pianoModel = piano.get().getPianoModel();
-            switch (type)
-            {
-                case 0 -> pianoModel.invokeNote(vel,note,vel);
-                case 1 -> pianoModel.invokePedal(vel,note,vel);
+            switch (type) {
+                case 0 -> pianoModel.invokeNote(vel, note, vel);
+                case 1 -> pianoModel.invokePedal(vel, note, vel);
             }
         });
     }

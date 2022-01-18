@@ -3,13 +3,14 @@ package jw.piano.service;
 import jw.piano.data.PianoData;
 import jw.piano.game_objects.Piano;
 import jw.spigot_fluent_api.dependency_injection.SpigotBean;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
 import org.bukkit.Location;
 
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
-@SpigotBean
+@Injection
 public class PianoService {
     private final HashMap<UUID, Piano> pianos;
 

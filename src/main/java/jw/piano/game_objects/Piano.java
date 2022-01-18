@@ -5,6 +5,7 @@ import jw.piano.data.Settings;
 import jw.piano.gui.MenuGUI;
 import jw.piano.game_objects.models.PianoModel;
 import jw.spigot_fluent_api.dependency_injection.InjectionManager;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.spigot_fluent_api.fluent_game_object.GameObject;
 import lombok.Getter;
 import org.bukkit.Location;
@@ -25,7 +26,7 @@ public class Piano
         pianoDataObserver = new PianoDataObserver();
         pianoDataObserver.observePianoData(pianoData);
         pianoModel = new PianoModel(pianoDataObserver);
-        settings = InjectionManager.getObject(Settings.class);
+        settings = FluentInjection.getInjection(Settings.class);
     }
 
 

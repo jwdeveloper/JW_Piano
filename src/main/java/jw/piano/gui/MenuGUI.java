@@ -6,11 +6,12 @@ import jw.piano.enums.PianoTypes;
 import jw.piano.service.PianoDataService;
 import jw.piano.service.PianoService;
 import jw.spigot_fluent_api.dependency_injection.SpigotBean;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
 import jw.spigot_fluent_api.fluent_gui.implementation.crud_list_ui.CrudListUI;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-@SpigotBean
+@Injection
 public class MenuGUI extends CrudListUI<PianoData> {
     private final PianoViewGUI pianoViewGUI;
     private final PianoDataService pianoDataService;

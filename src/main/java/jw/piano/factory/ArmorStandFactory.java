@@ -1,7 +1,6 @@
-package jw.piano.utility;
+package jw.piano.factory;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.EquipmentSlot;
 

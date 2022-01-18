@@ -5,7 +5,7 @@ import jw.piano.data.Settings;
 import jw.piano.game_objects.models.PianoKeyModel;
 import jw.piano.game_objects.models.PianoModel;
 import jw.piano.game_objects.models.PianoPedalModel;
-import jw.piano.utility.ArmorStandFactory;
+import jw.piano.factory.ArmorStandFactory;
 import jw.spigot_fluent_api.dependency_injection.InjectionManager;
 import jw.spigot_fluent_api.fluent_tasks.FluentTaskTimer;
 import jw.spigot_fluent_api.utilites.math.MathUtility;

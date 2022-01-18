@@ -3,22 +3,20 @@ package jw.piano.service;
 import jw.piano.data.PianoData;
 import jw.piano.data.PianoDataRepository;
 import jw.spigot_fluent_api.dependency_injection.SpigotBean;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
 import jw.spigot_fluent_api.utilites.disposing.Disposable;
 
 import java.util.List;
 import java.util.UUID;
 
-@SpigotBean
+@Injection
 public class PianoDataService
 {
-    private final PianoService pianoService;
-    private final PianoDataRepository pianoDataRepository;
-
-    public PianoDataService(PianoService pianoService, PianoDataRepository pianoDataRepository)
-    {
-        this.pianoService = pianoService;
-        this.pianoDataRepository = pianoDataRepository;
-    }
+    @Inject
+    private  PianoService pianoService;
+    @Inject
+    private  PianoDataRepository pianoDataRepository;
 
     public List<PianoData> get()
     {

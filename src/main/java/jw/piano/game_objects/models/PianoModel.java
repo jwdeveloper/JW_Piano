@@ -1,7 +1,7 @@
 package jw.piano.game_objects.models;
 
 import jw.piano.game_objects.PianoDataObserver;
-import jw.piano.utility.ArmorStandFactory;
+import jw.piano.factory.ArmorStandFactory;
 import jw.piano.enums.PianoTypes;
 import jw.spigot_fluent_api.fluent_game_object.GameObject;
 import jw.spigot_fluent_api.utilites.math.collistions.HitBox;
