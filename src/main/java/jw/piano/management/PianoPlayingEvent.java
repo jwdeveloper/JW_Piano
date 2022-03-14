@@ -1,40 +1,37 @@
 package jw.piano.management;
 
-import jw.dependency_injection.InjectionManager;
+
+
 import jw.piano.data.Settings;
-import jw.piano.model.PianoKey;
-import jw.piano.model.PianoModel;
-import jw.piano.model.PianoPedal;
-import jw.piano.utility.ArmorStandFactory;
-import jw.piano.utility.PedalType;
-import jw.task.TaskTimer;
-import jw.utilites.MathHelper;
-import org.bukkit.Bukkit;
+import jw.piano.factory.ArmorStandFactory;
+import jw.piano.game_objects.models.PianoKeyModel;
+import jw.piano.game_objects.models.PianoModel;
+import jw.piano.game_objects.models.PianoPedalModel;
+import jw.spigot_fluent_api.fluent_tasks.FluentTaskTimer;
+import jw.spigot_fluent_api.utilites.math.MathUtility;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
+
 
 public class PianoPlayingEvent {
-
 
     private final Player player;
     private final PianoModel pianoModel;
     private final Consumer<PianoPlayingEvent> pianoPlayingEventConsumer;
-    private final TaskTimer taskTimer;
+    private final FluentTaskTimer taskTimer;
     private final int TICKS = 5;
     private final Location keyLocation;
-    private final Settings settings;
-    private final PianoPedal sustainPedal;
-    private PianoKey highlightedKey;
+    private  Settings settings;
+    private final PianoPedalModel sustainPedal;
+    private PianoKeyModel highlightedKey;
     private LivingEntity pig;
-    private PianoKey[] sortedKeys;
+    private PianoKeyModel[] sortedKeys;
 
     public PianoPlayingEvent(Player player, PianoModel pianoModel, Consumer<PianoPlayingEvent> pianoPlayingEventConsumer) {
         this.player = player;
@@ -42,18 +39,18 @@ public class PianoPlayingEvent {
         this.pianoPlayingEventConsumer = pianoPlayingEventConsumer;
         this.keyLocation = pianoModel.getPianoKeysCenterLocation();
         this.sustainPedal = pianoModel.getPianoPedals()[2];
-        this.settings = InjectionManager.getObject(Settings.class);
+      //  this.settings = InjectionManager.getObject(Settings.class);
         this.sortedKeys = pianoModel.getPianoKeys().clone();
-        Arrays.sort(this.sortedKeys, new Comparator<PianoKey>() {
+        Arrays.sort(this.sortedKeys, new Comparator<PianoKeyModel>() {
             @Override
-            public int compare(PianoKey o1, PianoKey o2)
+            public int compare(PianoKeyModel o1, PianoKeyModel o2)
             {
                 return Boolean.compare(o1.isWhite(), o2.isWhite());
             }
         });
-        this.taskTimer = new TaskTimer(3, (time, taskTimer1) ->
+        this.taskTimer = new FluentTaskTimer(3, (time, taskTimer1) ->
         {
-            for(PianoKey pianoKey:sortedKeys)
+            for(PianoKeyModel pianoKey:sortedKeys)
             {
                 if(pianoKey.getHitBox().isCollider(player.getEyeLocation(),10))
                 {
@@ -94,13 +91,13 @@ public class PianoPlayingEvent {
 
     public void onStartPlaying()
     {
-        Location location = this.pianoModel.getLocation().clone().add(0,1,1);
+        /*Location location = this.pianoModel.getLocation().clone().add(0,1,1);
     //    pig = (LivingEntity)location.getWorld().spawnEntity(location, EntityType.CHICKEN);
         pig = ArmorStandFactory.createInvisibleArmorStand(location);
         pig.setInvisible(true);
         pig.setInvisible(true);
         pig.setAI(false);
-        pig.setPassenger(player);
+        pig.setPassenger(player);*/
     }
 
     public Player getPlayer() {
@@ -109,7 +106,7 @@ public class PianoPlayingEvent {
 
     public void onPlayerClick(Location location)
     {
-        for(PianoKey pianoKey:sortedKeys)
+        for(PianoKeyModel pianoKey:sortedKeys)
         {
             if(pianoKey.getHitBox().isCollider(location,10))
             {
@@ -119,17 +116,17 @@ public class PianoPlayingEvent {
         }
 
     }
-    public void HitKey(PianoKey pianoKey) {
+    public void HitKey(PianoKeyModel pianoKey) {
 
         float size = 0.3F;
-        Color color = Color.fromRGB(MathHelper.getRandom(0,255), MathHelper.getRandom(0,255), MathHelper.getRandom(0,255));
+                Color color = Color.fromRGB(MathUtility.getRandom(0,255), MathUtility.getRandom(0,255), MathUtility.getRandom(0,255));
         Particle.DustOptions options = new Particle.DustOptions(color, size);
        pianoKey.getLocation().getWorld().spawnParticle(Particle.REDSTONE,  pianoKey.getLocation().clone().add(0,2,0), 1,options);
-        new TaskTimer(TICKS, (time, taskTimer1) ->
+        new FluentTaskTimer(TICKS, (time, taskTimer1) ->
         {
             pianoKey.setPedalPressed(sustainPedal.isPressed());
             pianoKey.press(pianoKey.getIndex(), 100, 1);
-        }).stopAfter(1).onStop(taskTimer1 ->
+        }).stopAfterIterations(1).onStop(taskTimer1 ->
         {
             pianoKey.release(pianoKey.getIndex(), 0, 1);
             if(pianoKey == highlightedKey)
@@ -159,21 +156,21 @@ public class PianoPlayingEvent {
     }
 
     public boolean isPlayerInPianoRange(Location eyeLocation) {
-        return eyeLocation.distance(keyLocation) < settings.maxDistanceFromPiano;
+        return eyeLocation.distance(keyLocation) < settings.getMaxDistanceFromPiano();
     }
 
-    public PianoKey getClosestKey(Location eyeLocation,boolean a)
+    public PianoKeyModel getClosestKey(Location eyeLocation, boolean a)
     {
-        PianoKey[] keys = pianoModel.getPianoKeys();
-        double rotation = MathHelper.yawToRotation(eyeLocation.getYaw());
-        double headRotation = MathHelper.yawToRotation(eyeLocation.getPitch());
+        PianoKeyModel[] keys = pianoModel.getPianoKeys();
+        double rotation = MathUtility.yawToRotation(eyeLocation.getYaw());
+        double headRotation = MathUtility.yawToRotation(eyeLocation.getPitch());
 
-        double persent = MathHelper.getPersent(160,rotation);
-        double yRotation = MathHelper.getPersent(16,headRotation-308);
+        double persent = MathUtility.getPersent(160,rotation);
+        double yRotation = MathUtility.getPersent(16,headRotation-308);
 
         int index = (int)Math.round((keys.length-1)*persent);
 
-        PianoKey pianoKey = keys[index%keys.length];
+        PianoKeyModel pianoKey = keys[index%keys.length];
 
         if(!pianoKey.isBlack() && yRotation < 0.5f)
         {
@@ -184,9 +181,9 @@ public class PianoPlayingEvent {
     }
 
 
-    public PianoKey getClosestKey(Location location)
+    public PianoKeyModel getClosestKey(Location location)
     {
-        PianoKey[] keys = pianoModel.getPianoKeys();
+        PianoKeyModel[] keys = pianoModel.getPianoKeys();
         int keyIndex = keys.length / 2;
         double distance = getDistanceToKey(location, keys[keyIndex]);
         double distance2 = getDistanceToKey(location, keys[keyIndex+1]);
@@ -212,7 +209,7 @@ public class PianoPlayingEvent {
         return keys[keyIndex];
     }
 
-    private double getDistanceToKey(Location location,PianoKey pianoKey)
+    private double getDistanceToKey(Location location, PianoKeyModel pianoKey)
     {
         return Math.abs(location.getX() - pianoKey.getLocation().getX());
     }

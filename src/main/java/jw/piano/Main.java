@@ -1,26 +1,33 @@
 package jw.piano;
 
-import jw.InitializerAPI;
-import org.bukkit.plugin.java.JavaPlugin;
+import jw.piano.managers.PianoManager;
+import jw.piano.managers.PianoWebSocketManager;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
+import jw.spigot_fluent_api.fluent_plugin.configuration.PluginConfiguration;
+import jw.spigot_fluent_api.fluent_plugin.configuration.config.ConfigFile;
 
-public final class Main extends JavaPlugin {
 
+public final class Main extends FluentPlugin {
     @Override
-    public void onEnable()
-    {
-        InitializerAPI.attachePlugin(this);
-        InitializerAPI.useDependencyInjection();
-        InitializerAPI.getDataManager().load();
+    protected void OnConfiguration(PluginConfiguration configuration, ConfigFile configFile) {
+
+        int metricsId = configFile.get("metric");
+        configuration
+                .useDataContext()
+                .useInfoMessage()
+                .useMetrics(metricsId)
+                .useCustomAction(new PianoManager())
+                .useCustomAction(new PianoWebSocketManager())
+                .useDebugMode();
     }
 
     @Override
-    public void onDisable()
-    {
-        InitializerAPI.getDataManager().save();
+    protected void OnFluentPluginEnable() {
+
     }
 
-    public static Main getInstance()
-    {
-        return Main.getPlugin(Main.class);
+    @Override
+    protected void OnFluentPluginDisable() {
+
     }
 }
