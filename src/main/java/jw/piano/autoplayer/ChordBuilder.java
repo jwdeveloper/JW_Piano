@@ -5,8 +5,8 @@ import java.util.List;
 
 public class ChordBuilder
 {
-    private String name = "chord";
-    private final List<Sound> notes = new ArrayList<>();
+    String name = "chord";
+    List<Sound> notes = new ArrayList<>();
 
     public ChordBuilder setName(String name)
     {

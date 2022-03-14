@@ -1,32 +1,26 @@
 package jw.piano;
 
+import jw.InitializerAPI;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import jw.piano.managers.PianoManager;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_plugin.configuration.PluginConfiguration;
-import jw.spigot_fluent_api.fluent_plugin.configuration.config.ConfigFile;
-import jw.spigot_fluent_api.fluent_message.MessageBuilder;
-import org.bukkit.ChatColor;
+public final class Main extends JavaPlugin {
 
-
-public final class Main extends FluentPlugin {
     @Override
-    protected void OnConfiguration(PluginConfiguration configuration, ConfigFile configFile) {
-        configuration
-                .useDataContext()
-                .useInfoMessage()
-                .useCustomAction(new PianoManager())
-                //.useCustomAction(new PianoWebSocketManager())
-                .useDebugMode();
+    public void onEnable()
+    {
+        InitializerAPI.attachePlugin(this);
+        InitializerAPI.useDependencyInjection();
+        InitializerAPI.getDataManager().load();
     }
 
     @Override
-    protected void OnFluentPluginEnable() {
-
+    public void onDisable()
+    {
+        InitializerAPI.getDataManager().save();
     }
 
-    @Override
-    protected void OnFluentPluginDisable() {
-
+    public static Main getInstance()
+    {
+        return Main.getPlugin(Main.class);
     }
 }

@@ -1,16 +1,18 @@
 package jw.piano.data;
 
-import jw.piano.enums.PianoTypes;
-import jw.spigot_fluent_api.data.models.DataModel;
-import lombok.Data;
-
+import jw.data.models.Entity;
+import jw.piano.utility.PianoTypes;
+import jw.utilites.binding.BindingField;
 import org.bukkit.Location;
 
-@Data
-public class PianoData extends DataModel
+public class PianoData extends Entity
 {
-    private PianoTypes pianoType;
-    private Location location;
-    private int volume;
-    private Boolean enable;
+    public PianoTypes pianoType;
+    public Location location;
+    public int volume;
+    public Boolean isEnable;
+
+    public BindingField<Location> locationBind = new BindingField<>("location",this);
+    public BindingField<PianoTypes> pianoTypeBind = new BindingField<>("pianoType",this);
+    public BindingField<Boolean> isEnableBind = new BindingField<>("isEnable",this);
 }
