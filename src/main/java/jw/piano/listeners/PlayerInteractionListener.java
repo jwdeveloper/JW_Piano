@@ -1,6 +1,7 @@
 package jw.piano.listeners;
 
 import jw.piano.game_objects.Piano;
+import jw.piano.management.PianoPlayingEvent;
 import jw.piano.service.PianoService;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
@@ -12,6 +13,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 
@@ -20,14 +22,14 @@ import java.util.*;
 @Injection(lazyLoad = false)
 public class PlayerInteractionListener extends EventBase {
 
-    private final PianoService service;
-    private final HashMap<Player, Piano> pianoPlayers;
+    private final PianoService pianoService;
+    private final HashMap<Player, Piano> pianoUsers;
     private final FluentTaskTimer checkPlayerToPianoDistanceTask;
 
     @Inject
     public PlayerInteractionListener(PianoService service) {
-        this.service = service;
-        this.pianoPlayers = new HashMap<>();
+        this.pianoService = service;
+        this.pianoUsers = new HashMap<>();
         this.checkPlayerToPianoDistanceTask = checkDistanceTask();
     }
 
@@ -37,17 +39,17 @@ public class PlayerInteractionListener extends EventBase {
             return;
 
         final var player = event.getPlayer();
-        final var isPlayerUsingPiano = pianoPlayers.containsKey(player);
+        final var isPlayerUsingPiano = pianoUsers.containsKey(player);
         if (!isPlayerUsingPiano) {
-            var pianoOptional = service.getNearestPiano(player.getLocation());
+            var pianoOptional = pianoService.getNearestPiano(player.getLocation());
             if(pianoOptional.isEmpty())
             {
                 //there is no piano is player the nearest location;
                 return;
             }
-            pianoPlayers.put(player, pianoOptional.get());
+            pianoUsers.put(player, pianoOptional.get());
         }
-        var piano = pianoPlayers.get(player);
+        var piano = pianoUsers.get(player);
         piano.handlePlayerInteraction(player);
         event.setCancelled(true);
     }
@@ -57,25 +59,36 @@ public class PlayerInteractionListener extends EventBase {
         return new FluentTaskTimer(5,(iteration, task) ->
         {
             var playersToRemove = new ArrayList<>();
-            for(var pianoPlayer : pianoPlayers.entrySet())
+            for(var pianoPlayer : pianoUsers.entrySet())
             {
                 if(!pianoPlayer.getValue().isLocationInPianoRage(pianoPlayer.getKey().getLocation()))
                 {
                    playersToRemove.add(pianoPlayer.getKey());
                 }
             }
-
             for(var toRemove:playersToRemove)
             {
-              pianoPlayers.remove(toRemove);
+              pianoUsers.remove(toRemove);
             }
         });
     }
 
     @EventHandler
+    public void onChangeSlotEvent(PlayerSwapHandItemsEvent event) {
+
+        final var piano = pianoUsers.get(event.getPlayer());
+        if(piano == null)
+            return;
+
+        piano.handlePlayerPedalPress();
+        event.setCancelled(true);
+    }
+
+
+    @EventHandler
     public void playerQuitEvent(PlayerQuitEvent event)
     {
-        pianoPlayers.remove(event.getPlayer());
+        pianoUsers.remove(event.getPlayer());
     }
 
     @Override
@@ -88,22 +101,9 @@ public class PlayerInteractionListener extends EventBase {
         checkPlayerToPianoDistanceTask.stop();
     }
 
-    //to do
-   /* private PianoMelodyPlayer pianoMelodyPlayer;
-    //  @EventHandler
-    public void onChangeSlotEvent(PlayerSwapHandItemsEvent event) {
-        final Optional<PianoPlayingEvent> pianoPlayingEvent = pianoPlayingEventList.stream()
-                .filter(e -> e.getPlayer()
-                        .equals(event.getPlayer()))
-                .findAny();
 
 
-        if (pianoPlayingEvent.isPresent()) {
-            pianoPlayingEvent.get().onPressPedal();
-            event.setCancelled(true);
-        }
-    }
-
+   /*
     //@EventHandler
     public void onChangeHandSlotEvent(PlayerItemHeldEvent event) {
         final Optional<PianoPlayingEvent> pianoPlayingEvent = pianoPlayingEventList.stream()

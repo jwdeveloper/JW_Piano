@@ -18,23 +18,17 @@ import org.bukkit.entity.Player;
 @Injection
 public class PianoViewGUI extends ChestUI {
 
-
-    private final PianoDataObserver pianoDataObserver;
+    private PianoDataObserver pianoDataObserver;
     private final Settings settings;
 
     @Inject
     public PianoViewGUI(Settings settings) {
         super("Piano", 5);
         this.settings = settings;
-        pianoDataObserver = new PianoDataObserver();
     }
 
     public void open(Player player, Piano piano) {
-        pianoDataObserver.observePianoData(piano.getPianoData());
-        pianoDataObserver.getLocationBind().onChange(location ->
-        {
-            FluentMessage.message().text("Location has been changed").text(location).send();
-        });
+        pianoDataObserver = piano.getPianoDataObserver();
         open(player);
     }
 

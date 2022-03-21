@@ -15,9 +15,11 @@ public class PianoActionPacket extends WebSocketPacket {
     @Inject
     private PianoService pianoModelService;
 
-    //id of the packet
     @PacketProperty
-    public int packetId;
+    public long a;
+
+    @PacketProperty
+    public long b;
 
     //Note or pedal
     @PacketProperty
@@ -31,10 +33,6 @@ public class PianoActionPacket extends WebSocketPacket {
     @PacketProperty
     public byte velocity;
 
-    //ID of the piano that need to played
-    @PacketProperty
-    public UUID uuid;
-
     @Override
     public int getPacketId() {
         return 0;
@@ -42,9 +40,11 @@ public class PianoActionPacket extends WebSocketPacket {
 
     @Override
     public void onPacketTriggered(WebSocket webSocket) {
-        int vel = velocity;
-        int note = nodeId;
-        int type = packetType;
+
+        final UUID uuid = new UUID(a,b );
+        final int vel = velocity;
+        final int note = nodeId;
+        final int type = packetType;
         this.addSpigotTask(webSocket1 ->
         {
             var piano = pianoModelService.get(uuid);
@@ -66,7 +66,7 @@ public class PianoActionPacket extends WebSocketPacket {
                 ", packetType=" + packetType +
                 ", nodeId=" + nodeId +
                 ", velocity=" + velocity +
-                ", uuid=" + uuid +
+                ", uuid=" + a+
                 '}';
     }
 }

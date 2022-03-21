@@ -4,6 +4,7 @@ import jw.piano.game_objects.models.PianoKeyModel;
 import jw.piano.game_objects.models.PianoModel;
 import jw.piano.game_objects.models.PianoPedalModel;
 import jw.spigot_fluent_api.fluent_tasks.FluentTaskTimer;
+import jw.spigot_fluent_api.fluent_tasks.FluentTasks;
 import jw.spigot_fluent_api.utilites.math.MathUtility;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -31,7 +32,7 @@ public class PianoInteractionHandler {
 
     private void onHitKey(PianoKeyModel pianoKey) {
         final var particle = new Particle.DustOptions(PARTICLE_COLOR, PARTICLE_SIZE);
-        new FluentTaskTimer(TICKS, (time, task) ->
+        FluentTasks.taskTimer(TICKS,(iteration, task) ->
         {
             pianoKey.setPedalPressed(pianoModel.getSustainPedal().isPressed());
             pianoKey.press();

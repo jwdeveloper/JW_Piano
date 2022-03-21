@@ -12,11 +12,7 @@ import java.util.UUID;
 @Injection
 public class PianoService {
 
-    private final HashMap<UUID, Piano> pianos;
-
-    public PianoService() {
-        this.pianos = new HashMap<>();
-    }
+    private final HashMap<UUID, Piano> pianos = new HashMap<>();
 
     public Optional<Piano> get(UUID pianoID) {
         if (!pianos.containsKey(pianoID)) {

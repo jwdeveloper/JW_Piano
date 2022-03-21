@@ -14,7 +14,7 @@ public class PianoKeyModel extends CustomModel implements Comparable {
     private int index;
     private boolean isPressed;
     private HitBox hitBox;
-    private Particle.DustOptions particles;
+    private Particle.DustOptions options;
     private Location particleLocation;
     private World world;
     private boolean isPedalPressed;
@@ -33,8 +33,8 @@ public class PianoKeyModel extends CustomModel implements Comparable {
         else
             setCustomModelData(2);
 
-        var color = Color.fromRGB(MathUtility.getRandom(0, 255), MathUtility.getRandom(0, 255), MathUtility.getRandom(0, 255));
-        particles = new Particle.DustOptions(color, 0.3F);
+        var color = Color.fromRGB(MathUtility.getRandom(155, 255), MathUtility.getRandom(155, 255), MathUtility.getRandom(155, 255));
+        options = new Particle.DustOptions(color, 0.3F);
         particleLocation = location.clone().add(0, 1.8f, 0);
         world = location.getWorld();
     }
@@ -60,7 +60,7 @@ public class PianoKeyModel extends CustomModel implements Comparable {
                                 (velocity / 50.0f),
                                 1);
 
-        world.spawnParticle(Particle.REDSTONE, particleLocation, 1, particles);
+        world.spawnParticle(Particle.REDSTONE, particleLocation, 1, options);
 
         if (this.isBlack)
             setCustomModelData(PianoKeysConst.BLACK_KEY_PRESSED.getId());
@@ -71,7 +71,7 @@ public class PianoKeyModel extends CustomModel implements Comparable {
     }
 
     public void press() {
-        this.release(index,100,1);
+        this.press(index,100,1);
     }
 
     @Override

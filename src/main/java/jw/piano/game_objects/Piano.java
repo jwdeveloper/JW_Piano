@@ -5,6 +5,7 @@ import jw.piano.data.Settings;
 import jw.piano.gui.MenuGUI;
 import jw.piano.game_objects.models.PianoModel;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -57,11 +58,28 @@ public class Piano {
         if (!isCreated)
             return;
 
-        if (!pianoModel.getOpenViewHitBox().isCollider(player.getEyeLocation(), 5)) {
+        if (pianoModel.getOpenViewHitBox().isCollider(player.getEyeLocation(), 5)) {
             openGUIPanel(player);
             return;
         }
         pianoInteractionHandler.onPlayerClick(player.getEyeLocation());
+    }
+
+    public void handlePlayerPedalPress()
+    {
+        if (!isCreated)
+            return;
+
+        var sustain = pianoModel.getSustainPedal();
+        if(sustain.isPressed())
+        {
+            sustain.release(0,0,0);
+        }
+        else
+        {
+            sustain.press(0,0,0);
+        }
+
     }
 
     public boolean isLocationInPianoRage(Location location) {
@@ -86,6 +104,7 @@ public class Piano {
         });
         observer.getEnableBind().onChange(value ->
         {
+            FluentPlugin.logSuccess("Changed "+value);
             if (value)
                 create();
             else

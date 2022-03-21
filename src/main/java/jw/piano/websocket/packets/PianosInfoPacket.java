@@ -1,8 +1,12 @@
 package jw.piano.websocket.packets;
 
+import jw.piano.request_handlers.piano_details.PianoDetailsHandler;
+import jw.piano.request_handlers.piano_details.PianoDetailsResponse;
 import jw.piano.service.PianoService;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
+import jw.spigot_fluent_api.desing_patterns.mediator.implementation.FluentMediator;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.ActionResult;
 import jw.spigot_fluent_api.web_socket.WebSocketPacket;
 import jw.spigot_fluent_api.web_socket.annotations.PacketProperty;
@@ -13,22 +17,18 @@ import java.util.UUID;
 @Injection
 public class PianosInfoPacket extends WebSocketPacket {
 
-    @Inject
-    private PianoService pianoService;
-
     @PacketProperty
-    public UUID pianoId;
+    public long a;
+    @PacketProperty
+    public long b;
 
     @Override
-    public void onPacketTriggered(WebSocket webSocket) {
-        final UUID uuid = pianoId;
-        var pianoOptional = pianoService.get(uuid);
-
-        if (pianoOptional.isEmpty()) {
-            sendJson(webSocket, new ActionResult<>(null, false));
-        } else {
-            sendJson(webSocket, new ActionResult<>(pianoOptional, true));
-        }
+    public void onPacketTriggered(final WebSocket webSocket)
+    {
+        final UUID uuid = new UUID(a,b);
+        final var data = FluentMediator.resolve(uuid,PianoDetailsResponse.class);
+        final var response = new ActionResult<PianoDetailsResponse>(data,data != null);
+        sendJson(webSocket, response);
     }
 
     @Override

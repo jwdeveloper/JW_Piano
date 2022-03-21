@@ -23,15 +23,20 @@ for (var i = 1; i <= 88; i++) {
         keyModel.className = "white "+mappedName;
        
     }
-    const a = i;
-    const index = a+20;
+  
+    const dupa = copy(i)
+   
+    var b = { index:copy(i)+20}
+    console.log(b)
     keyModel.catch = keyModel.style.background;
-    keysElement.index = a+20;
-    keysElement.onclick = (e) =>{ onMouseClick( keysElement.index)};
+    keysElement.index = b.index;
+    keysElement.onclick = (e) =>{ onMouseClick(b.index)};
     keysElement.append(keyModel);
-    keys[index] =keyModel;
+    keys[b.index] =keyModel;
 }
-
+function copy(x) {
+    return JSON.parse( JSON.stringify(x) );
+}
 function pressKey(index)
 {
     var model = keys[index];
@@ -40,6 +45,7 @@ function pressKey(index)
     {
         return;
     }
+    sendNoteRequest(0,index,100);
     model.style.background = "green";
 }
 function releseKey(index)
@@ -50,11 +56,13 @@ function releseKey(index)
     {
         return;
     }
+    sendNoteRequest(0,index,0);
     model.style.background =  model.catch;
 }
 
 function onMouseClick(index)
 {
+    var number = 0
     console.log(index);
     pressKey(index);
     setTimeout(function() { releseKey(index); }, 100);
