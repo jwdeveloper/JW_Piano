@@ -1,4 +1,4 @@
-var socket = new WebSocket("wss://s982111.csrv.pl:2022");
+var socket = new WebSocket("wss://54.38.56.29:2022");
 
 socket.onopen = function(e) {
   console.log("[open] Connection established");
