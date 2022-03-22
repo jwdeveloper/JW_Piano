@@ -11,10 +11,10 @@ public class Settings
 {
     private float minDistanceToPiano = 3;
     private float maxDistanceFromPiano = 3;
-    private boolean runPianoPlayerServer = true;
-    private String texturesURL = "https://drive.google.com/file/d/1HClLdDwtPe7EaZjIL8vtGhoHvvipWjDj/view?usp=sharing";
-    private String pianoPlayerURL = "https://google.com";
     private float maxDistanceFromKeys = 2;
     private boolean midiPlayer = false;
+    private boolean runPianoPlayerServer = true;
+    private String texturesURL = "https://drive.google.com/file/d/1HClLdDwtPe7EaZjIL8vtGhoHvvipWjDj/view?usp=sharing";
+    private String webClientURL = "D:\\Git\\JW_Piano\\pianojs-main\\src\\index.html";
     private int webSocketPort = 2022;
 }

@@ -70,7 +70,7 @@ public class PianoViewGUI extends ChestUI {
 
         ButtonUI.builder()
                 .setMaterial(Material.MUSIC_DISC_CAT)
-                .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Play MIDI file"))
+                .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Open web piano client"))
                 .setDescription("By open this website you can connect",
                         "minecraft piano with the real one",
                         "or just play MIDI file")
@@ -78,7 +78,21 @@ public class PianoViewGUI extends ChestUI {
                 .setOnClick((player, button) ->
                 {
                     TextComponent message = new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + "[! Click to open MIDI panel page !]");
-                    message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, settings.getPianoPlayerURL()));
+                    message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, settings.getWebClientURL()));
+                    player.spigot().sendMessage(message);
+                    this.close();
+                })
+                .buildAndAdd(this);
+
+
+        ButtonUI.builder()
+                .setMaterial(Material.MUSIC_DISC_CAT)
+                .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Get texture pack"))
+                .setLocation(1, 5)
+                .setOnClick((player, button) ->
+                {
+                    TextComponent message = new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + "[! Click to open MIDI panel page !]");
+                    message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, settings.getTexturesURL()));
                     player.spigot().sendMessage(message);
                     this.close();
                 })

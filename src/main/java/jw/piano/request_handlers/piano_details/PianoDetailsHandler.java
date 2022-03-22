@@ -5,7 +5,6 @@ import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inje
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
 import jw.spigot_fluent_api.desing_patterns.mediator.interfaces.MediatorHandler;
 import jw.spigot_fluent_api.fluent_mapper.implementation.FluentMapper;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.ActionResult;
 
 import java.util.UUID;
@@ -23,6 +22,7 @@ public class PianoDetailsHandler implements MediatorHandler<UUID, PianoDetailsRe
         if (pianoOptional.isEmpty())
             return null;
 
+        FluentMapper.map(pianoId,  new ActionResult<String>().getClass());
         final var response = FluentMapper.map(pianoOptional.get(), PianoDetailsResponse.class);
         return response;
     }

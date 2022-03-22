@@ -19,6 +19,7 @@ public final class Main extends FluentPlugin {
                 .useDebugMode();
     }
 
+
     @Override
     protected void OnFluentPluginEnable() {
 

@@ -11,6 +11,7 @@ import jw.spigot_fluent_api.fluent_mapper.implementation.SimpleMapper;
 import jw.spigot_fluent_api.fluent_mapper.interfaces.Mapper;
 import jw.spigot_fluent_api.fluent_mapper.interfaces.MapperProfile;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
+import jw.spigot_fluent_api.utilites.ActionResult;
 import jw.spigot_fluent_api.utilites.files.json.JsonUtility;
 import org.junit.Test;
 
@@ -25,5 +26,13 @@ public class WebSocketTest {
         Mapper mapper = new SimpleMapper();
         mapper.registerMappingProfile(PianoDetailsMapper.class);
         mapper.map(new Piano(null), PianoDetailsResponse.class);
+    }
+
+
+    @Test
+    public void ShoudlGetType() {
+       var type = ActionResult.<String>type();
+       var a = new ActionResult<String>().getClass();
+       var i =0;
     }
 }
