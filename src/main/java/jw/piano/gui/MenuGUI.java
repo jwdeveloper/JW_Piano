@@ -74,11 +74,10 @@ public class MenuGUI extends CrudListUI<PianoData> {
                 setTitle("Unable to find piano");
             }
             var uuid = pianoData.getUuid();
-            FluentPlugin.logSuccess(uuid.toString()+" POPRAWNE");
-            FluentPlugin.logSuccess(uuid.getMostSignificantBits()+"  "+uuid.getLeastSignificantBits());
-
-            var id = new UUID(uuid.getMostSignificantBits(),uuid.getLeastSignificantBits());
-            FluentPlugin.logSuccess(id+" Nowe");
+           // FluentPlugin.logSuccess(uuid.toString()+" POPRAWNE");
+          //  FluentPlugin.logSuccess(uuid.getMostSignificantBits()+"  "+uuid.getLeastSignificantBits());
+          //  var id = new UUID(uuid.getMostSignificantBits(),uuid.getLeastSignificantBits());
+         //   FluentPlugin.logSuccess(id+" Nowe");
             openPianoView(player, result.get());
         });
     }
