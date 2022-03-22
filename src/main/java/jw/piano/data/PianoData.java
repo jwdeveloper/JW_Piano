@@ -12,6 +12,6 @@ public class PianoData extends DataModel
 {
     private PianoType pianoType = PianoType.NONE;
     private Location location;
-    private int volume = 100;
+    private Integer volume = 100;
     private Boolean enable = false;
 }

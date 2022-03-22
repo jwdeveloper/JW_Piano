@@ -1,9 +1,9 @@
-var socket = new WebSocket("ws://localhost:2028");
+var socket = new WebSocket("ws://s982111.csrv.pl:2022");
 
 socket.onopen = function(e) {
   console.log("[open] Connection established");
   console.log("Sending to server");
-  sendNoteRequest(0,56,100);
+  sendDetailsRequest()
   };
   
   socket.onmessage = function(event) {
@@ -30,8 +30,8 @@ socket.onopen = function(e) {
       var buffer = new ArrayBuffer(20);
       var view = new DataView(buffer, 0);
       view.setInt32(0, 1);
-      view.setBigUint64(4,"3181754075528580833")
-      view.setBigUint64(12,"-8177708938448787214")
+      view.setBigUint64(4,"-599037420688030684")
+      view.setBigUint64(12,"-4688173080563069226")
       socket.send(buffer);
   }
 
@@ -41,8 +41,8 @@ socket.onopen = function(e) {
       var buffer = new ArrayBuffer(23);
       var view = new DataView(buffer, 0);
       view.setInt32(0, 0);
-      view.setBigUint64(4,"3181754075528580833")
-      view.setBigUint64(12,"-8177708938448787214")
+      view.setBigUint64(4,"-599037420688030684")
+      view.setBigUint64(12,"-4688173080563069226")
       view.setInt8(20, midiEvent);
       view.setInt8(21, noteNumber);
       view.setInt8(22, velocity);

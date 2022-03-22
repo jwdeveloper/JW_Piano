@@ -38,7 +38,8 @@ public class PianoViewGUI extends ChestUI {
         this.setBorderMaterial(Material.BLUE_STAINED_GLASS_PANE);
 
         ButtonUI.builder()
-                .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Teleport to piano"))
+                .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Teleport"))
+                .setMaterial(Material.ENDER_EYE)
                 .setLocation(2, 2)
                 .setOnClick((player, button) ->
                 {
@@ -48,21 +49,28 @@ public class PianoViewGUI extends ChestUI {
 
         ButtonObserverUI.factory()
                 .boolObserver(pianoDataObserver.getEnableBind())
-                .setMaterial(Material.STONE_PICKAXE)
+                .setMaterial(Material.REDSTONE_TORCH)
                 .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Is active"))
                 .setLocation(2, 4)
                 .buildAndAdd(this);
 
         ButtonObserverUI.factory()
                 .enumSelectorObserver(pianoDataObserver.getPianoTypeBind())
-                .setMaterial(Material.STONE_PICKAXE)
-                .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Piano design"))
+                .setMaterial(Material.CRAFTING_TABLE)
+                .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Appearance"))
+                .setLocation(3, 4)
+                .buildAndAdd(this);
+
+        ButtonObserverUI.factory()
+                .intSelectObserver(pianoDataObserver.getVolumeBind(),0,100,5)
+                .setMaterial(Material.BELL)
+                .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Volume"))
                 .setLocation(2, 6)
                 .buildAndAdd(this);
 
         ButtonUI.builder()
-                .setMaterial(Material.STONE_PICKAXE)
-                .setTitle("Play MIDI file")
+                .setMaterial(Material.MUSIC_DISC_CAT)
+                .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Play MIDI file"))
                 .setDescription("By open this website you can connect",
                         "minecraft piano with the real one",
                         "or just play MIDI file")

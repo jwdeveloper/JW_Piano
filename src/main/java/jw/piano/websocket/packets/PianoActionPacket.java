@@ -4,6 +4,7 @@ package jw.piano.websocket.packets;
 import jw.piano.service.PianoService;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.web_socket.WebSocketPacket;
 import jw.spigot_fluent_api.web_socket.annotations.PacketProperty;
 import org.java_websocket.WebSocket;
@@ -41,7 +42,7 @@ public class PianoActionPacket extends WebSocketPacket {
     @Override
     public void onPacketTriggered(WebSocket webSocket) {
 
-        final UUID uuid = new UUID(a,b );
+        final UUID uuid = new UUID(a,b);
         final int vel = velocity;
         final int note = nodeId;
         final int type = packetType;

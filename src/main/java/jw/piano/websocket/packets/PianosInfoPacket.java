@@ -27,7 +27,7 @@ public class PianosInfoPacket extends WebSocketPacket {
     {
         final UUID uuid = new UUID(a,b);
         final var data = FluentMediator.resolve(uuid,PianoDetailsResponse.class);
-        final var response = new ActionResult<PianoDetailsResponse>(data,data != null);
+        final var response = new ActionResult(data,data != null);
         sendJson(webSocket, response);
     }
 

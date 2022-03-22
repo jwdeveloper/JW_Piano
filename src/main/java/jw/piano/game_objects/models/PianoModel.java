@@ -27,9 +27,7 @@ public class PianoModel extends GameObject {
     private HitBox openViewHitBox;
     private ArmorStand pianoModelSkin;
 
-    public PianoModel() {
-
-    }
+    public PianoModel() { }
 
     public void invokeNote(int pressed, int index, int velocity) {
         if(index < MIDI_KEY_OFFSET)

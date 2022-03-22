@@ -2,7 +2,7 @@ const keys = {};
 const keysElement = document.getElementById("keys");
 var key = 1;
 var octave = 0;
-for (var i = 1; i <= 88; i++) {
+for (let i = 1; i <= 88; i++) {
     if (i > 3 && i < 88) {
         key = (i - 4) % 12;
         octave = 1 + (i - 4) / 12;
@@ -24,23 +24,16 @@ for (var i = 1; i <= 88; i++) {
        
     }
   
-    const dupa = copy(i)
-   
-    var b = { index:copy(i)+20}
-    console.log(b)
+    let b = i + 20
     keyModel.catch = keyModel.style.background;
-    keysElement.index = b.index;
-    keysElement.onclick = (e) =>{ onMouseClick(b.index)};
+    keyModel.index =b;
+    keyModel.onclick = (e) =>{ onMouseClick(b)};
     keysElement.append(keyModel);
-    keys[b.index] =keyModel;
-}
-function copy(x) {
-    return JSON.parse( JSON.stringify(x) );
+    keys[b] =keyModel;
 }
 function pressKey(index)
 {
     var model = keys[index];
-    console.log(index,model);
     if(model == undefined)
     {
         return;
@@ -51,7 +44,6 @@ function pressKey(index)
 function releseKey(index)
 {
     var model = keys[index];
-    console.log(index,model);
     if(model == undefined)
     {
         return;
@@ -62,8 +54,6 @@ function releseKey(index)
 
 function onMouseClick(index)
 {
-    var number = 0
-    console.log(index);
     pressKey(index);
     setTimeout(function() { releseKey(index); }, 100);
 }

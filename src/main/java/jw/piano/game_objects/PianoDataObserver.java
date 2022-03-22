@@ -19,11 +19,14 @@ public class PianoDataObserver
 
     private Observer<Boolean> enableBind  = new Observer();
 
+    private Observer<Integer> volumeBind  = new Observer();
+
     public PianoDataObserver()
     {
         locationBind.bind(PianoData.class,"location");
         pianoTypeBind.bind(PianoData.class,"pianoType");
         enableBind.bind(PianoData.class,"enable");
+        volumeBind.bind(PianoData.class,"volume");
     }
 
     public Optional<PianoData> getObservedPianoData()
@@ -37,5 +40,6 @@ public class PianoDataObserver
         locationBind.setObject(pianoData);
         pianoTypeBind.setObject(pianoData);
         enableBind.setObject(pianoData);
+        volumeBind.setObject(pianoData);
     }
 }
