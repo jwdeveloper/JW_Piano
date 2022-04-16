@@ -8,9 +8,12 @@ import lombok.Data;
 @AllArgsConstructor
 public class WebClientLinkDto
 {
+    private String serverIP;
+
     private int port;
 
-    private long a;
+    private String a;
 
-    private long b;
+    private String b;
+    //JavaScript is too stupid to properly translate Long from Json so I was forced to changed 'a' and 'b' to String
 }

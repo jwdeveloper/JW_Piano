@@ -2,7 +2,8 @@ package jw.piano;
 
 
 import jw.piano.managers.PianoManager;
-import jw.piano.managers.PianoWebSocketManager;
+import jw.piano.managers.WebClientManager;
+import jw.spigot_fluent_api.database.json_db.JsonDbContext;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_plugin.configuration.PluginConfiguration;
 import jw.spigot_fluent_api.fluent_plugin.configuration.config.ConfigFile;
@@ -11,12 +12,13 @@ import jw.spigot_fluent_api.fluent_plugin.configuration.config.ConfigFile;
 public final class Main extends FluentPlugin {
     @Override
     protected void OnConfiguration(PluginConfiguration configuration, ConfigFile configFile) {
-        configuration
-                .useDataContext()
-                .useInfoMessage()
-                .useCustomAction(new PianoManager())
-                .useCustomAction(new PianoWebSocketManager())
-                .useDebugMode();
+         configFile.get("DataBase");
+         configuration
+        .useFilesHandler()
+        .useInfoMessage()
+        .useCustomAction(new PianoManager())
+        .useCustomAction(new WebClientManager())
+        .useDebugMode();
     }
 
 

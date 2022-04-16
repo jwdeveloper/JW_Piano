@@ -15,6 +15,7 @@ public class Settings
     private boolean midiPlayer = false;
     private boolean runPianoPlayerServer = true;
     private String texturesURL = "https://drive.google.com/file/d/1HClLdDwtPe7EaZjIL8vtGhoHvvipWjDj/view?usp=sharing";
-    private String webClientURL = "D:\\Git\\JW_Piano\\pianojs-main\\src\\index.html";
+    private String serverURL = "localhost";
+    private int webClientPort =2021;
     private int webSocketPort = 2022;
 }

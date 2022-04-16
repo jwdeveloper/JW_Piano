@@ -38,8 +38,9 @@ function pressKey(index)
     {
         return;
     }
-    sendNoteRequest(0,index,100);
     model.style.background = "green";
+    sendNoteRequest(0,index,100);
+    
 }
 function releseKey(index)
 {

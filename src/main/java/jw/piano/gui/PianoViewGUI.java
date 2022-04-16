@@ -6,7 +6,7 @@ import jw.piano.game_objects.PianoDataObserver;
 import jw.piano.request_handlers.web_clinet.WebClientLinkRequest;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
-import jw.spigot_fluent_api.desing_patterns.mediator.implementation.FluentMediator;
+import jw.spigot_fluent_api.desing_patterns.mediator.FluentMediator;
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
 import jw.spigot_fluent_api.fluent_gui.button.button_observer.ButtonObserverUI;
 import jw.spigot_fluent_api.fluent_gui.implementation.chest_ui.ChestUI;
@@ -80,11 +80,6 @@ public class PianoViewGUI extends ChestUI {
                 .setLocation(1, 4)
                 .setOnClick((player, button) ->
                 {
-                    for(var i =0;i<255;i++)
-                    {
-                        char c = (char)i;
-                        Bukkit.getConsoleSender().sendMessage("number -> "+i+" char -> "+c);
-                    }
                     final var linkRequest = new WebClientLinkRequest(player,pianoDataObserver.getPianoData());
                     final var url = FluentMediator.resolve(linkRequest,String.class);
 

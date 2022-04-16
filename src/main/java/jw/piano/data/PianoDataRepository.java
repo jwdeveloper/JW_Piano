@@ -1,6 +1,6 @@
 package jw.piano.data;
 
-import jw.spigot_fluent_api.data.implementation.repositories.RepositoryBase;
+import jw.spigot_fluent_api.data.implementation.RepositoryBase;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
 
 @Injection

@@ -2,7 +2,7 @@ package jw.piano.data;
 
 
 import jw.piano.enums.PianoType;
-import jw.spigot_fluent_api.data.implementation.models.DataModel;
+import jw.spigot_fluent_api.data.implementation.DataModel;
 import lombok.Data;
 
 import org.bukkit.Location;
