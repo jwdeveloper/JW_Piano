@@ -13,7 +13,7 @@ public class PianoManager implements PluginPipeline {
         var repository = FluentInjection.getInjection(PianoDataRepository.class);
         var service = FluentInjection.getInjection(PianoService.class);
 
-        for (var pianoData : repository.getMany()) {
+        for (var pianoData : repository.findAll()) {
             service.create(pianoData);
         }
     }
@@ -23,7 +23,7 @@ public class PianoManager implements PluginPipeline {
         var repository = FluentInjection.getInjection(PianoDataRepository.class);
         var service = FluentInjection.getInjection(PianoService.class);
 
-        for (var pianoData : repository.getMany()) {
+        for (var pianoData : repository.findAll()) {
             service.delete(pianoData.getUuid());
         }
     }
