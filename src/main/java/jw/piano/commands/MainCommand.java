@@ -4,10 +4,9 @@ package jw.piano.commands;
 import jw.piano.gui.MenuGUI;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
-import jw.spigot_fluent_api.fluent_commands.SimpleCommand;
-import jw.spigot_fluent_api.fluent_commands.builders.FluentCommand;
-import jw.spigot_fluent_api.fluent_commands.builders.SimpleCommandBuilder;
-import jw.spigot_fluent_api.fluent_commands.interfaces.SimpleCommandConfig;
+import jw.spigot_fluent_api.fluent_commands.implementation.SimpleCommand;
+import jw.spigot_fluent_api.fluent_commands.FluentCommand;
+import jw.spigot_fluent_api.fluent_commands.old.interfaces.SimpleCommandConfig;
 
 @Injection(lazyLoad = false)
 public class MainCommand implements SimpleCommandConfig
@@ -21,7 +20,7 @@ public class MainCommand implements SimpleCommandConfig
     @Override
     public SimpleCommand configureCommand()
     {
-        var cmd = FluentCommand.create("piano_model")
+        var cmd = FluentCommand.create_OLDWAY("piano_model")
                 .nextStep()
                 .nextStep()
                 .onPlayerExecute(event ->
