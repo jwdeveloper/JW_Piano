@@ -11,7 +11,6 @@ import jw.spigot_fluent_api.fluent_commands.old.interfaces.SimpleCommandConfig;
 @Injection(lazyLoad = false)
 public class MainCommand implements SimpleCommandConfig
 {
-
     public MainCommand()
     {
         configureCommand();
