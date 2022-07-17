@@ -1,0 +1,113 @@
+.alerts-box 
+{
+  z-index: 4;
+  position: absolute;
+  width: 100%;
+  padding-left: 80%;
+  pointer-events: none;
+}
+.alert
+{
+  animation-name: example;
+  animation-duration: 0.75s;
+}
+@keyframes example {
+  0%  { left:200px; top:0px;}
+  70%   {left:-10px; top:0px;}
+  100%   {left:0px; top:0px;}
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: black;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+  pointer-events: all;
+}
+.to-remove {
+  background-color: red;
+  transition: opacity 1s;
+}
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: rgba(212, 152, 125, 0.2) ;
+}
+#app {
+  min-width: 1700px;
+  max-width: 1800px;
+}
+
+.keys {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.no-radious {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+ul {
+  display: flex;
+  justify-content: space-around;
+
+}
+
+body {
+  border: 1px solid #160801;
+  border-radius: 1em;
+  background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)), url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/187/vwood.png);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5) inset, 0 1px rgba(212, 152, 125, 0.2) inset, 0 5px 15px rgba(0, 0, 0, 0.5)
+}
+
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+  float: left
+}
+
+
+
+.white {
+  height: 25em;
+  width: 2.4em;
+  z-index: 1;
+  border-left: 1px solid #bbb;
+  border-bottom: 1px solid #bbb;
+  border-radius: 0 0 5px 5px;
+  box-shadow: -1px 0 0 rgba(255, 255, 255, 0.8) inset, 0 0 5px #ccc inset, 0 0 3px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to bottom, #eee 0%, #fff 100%)
+}
+
+
+
+.black {
+  height: 13.0em;
+  width: 1.8em;
+  z-index: 2;
+  transform: translate(-50%, 0);
+  position: relative;
+  border: 1px solid #000;
+  border-radius: 0 0 3px 3px;
+  box-shadow: -1px -1px 2px rgba(255, 255, 255, 0.2) inset, 0 -5px 2px 3px rgba(0, 0, 0, 0.6) inset, 0 2px 4px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(45deg, #222 0%, #555 100%)
+}
+
+.note-on {
+  background: #19be71 ;
+}
+
+.e,
+.h,
+.d,
+.g,
+.h,
+.a {
+  margin: 0 0 0 -2em
+}
