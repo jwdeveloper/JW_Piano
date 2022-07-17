@@ -7,35 +7,32 @@ Vue.component('midi-devices-component', {
     {
        return {
            devices:[],
-           current_device:
-           {
-             id:-1,
-             name:"Select Midi output",
-             handler:null
-           },
            on_midi:null,
        }
    },
     methods: {
       set_device(id)
       {
-        if(this.current_device.handler != null)
+        device = this.devices.find(e => e.id === id)
+        device.active = !device.active
+        if(device.active == true){
+          this.current_device.handler.onmidimessage = this.on_midi
+        }
+        else
         {
           this.current_device.handler.onmidimessage = (e) =>{}
         }
-
-        this.current_device = this.devices.find(e => e.id === id)
-        this.current_device.handler.onmidimessage = this.on_midi
       },
    },
     template: `
     <div>
-      <div class="dropdown" style = "margin-top:1em; margin-left:0em;">
-        <button class="btn btn-success btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{current_device.name}}
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-           <a class="dropdown-item"  v-for="device in devices" v-on:click="set_device(device.id)">{{ device.name }}</a>
+      <div class="dropdown" style = "margin-top:1em; " >
+        <button class="btn btn-success btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Midi output</button>
+        <div class="dropdown-menu"  aria-labelledby="dropdownMenuButton" >
+          <div class ="dropmenu-div "  v-for="device in devices" >
+             <a  style ="color:black;">{{ device.name }}</a>
+             <input class="form-check-input " style ="float:right;" type="checkbox" v-on:click="set_device(device.id)"  v-model="device.active">
+          </div>
         </div>
       </div>
     </div>
@@ -61,7 +58,8 @@ Vue.component('midi-devices-component', {
             {
                 id: device.id,
                 name: device.name,
-                handler : device
+                handler : device,
+                active:true,
             })
             context.on_midi = on_midi_message;
        

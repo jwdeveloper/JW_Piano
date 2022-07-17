@@ -1,3 +1,10 @@
+
+html *
+{
+   font-size: 1em !important;
+   font-family: 'Minecraft', sans-serif;
+}
+
 .alerts-box 
 {
   z-index: 4;
@@ -11,12 +18,36 @@
   animation-name: example;
   animation-duration: 0.75s;
 }
+
 @keyframes example {
   0%  { left:200px; top:0px;}
   70%   {left:-10px; top:0px;}
   100%   {left:0px; top:0px;}
 }
 
+.dropmenu-div
+{
+  display:flex;
+  margin:0.5em;
+  width:200px; 
+  justify-content:space-between; 
+}
+.dropmenu-div:hover
+{
+  background-color: rgb(228, 228, 228);
+}
+*.unselectable {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+
+  /*
+    Introduced in Internet Explorer 10.
+    See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+  */
+  -ms-user-select: none;
+  user-select: none;
+}
 .closebtn {
   margin-left: 15px;
   color: black;
@@ -37,7 +68,7 @@
   color: rgba(212, 152, 125, 0.2) ;
 }
 #app {
-  min-width: 1700px;
+  min-width: 1800px;
   max-width: 1800px;
 }
 

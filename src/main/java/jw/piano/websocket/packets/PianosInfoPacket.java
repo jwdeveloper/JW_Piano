@@ -1,5 +1,6 @@
 package jw.piano.websocket.packets;
 import jw.piano.handlers.piano_details.PianoDetailsResponse;
+import jw.piano.websocket.dto.PianoInfoDto;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
 import jw.spigot_fluent_api.desing_patterns.mediator.FluentMediator;
 import jw.spigot_fluent_api.utilites.ActionResult;
