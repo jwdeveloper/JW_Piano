@@ -3,7 +3,7 @@ package jw.piano.gui;
 import jw.piano.data.Settings;
 import jw.piano.game_objects.Piano;
 import jw.piano.game_objects.PianoDataObserver;
-import jw.piano.request_handlers.web_clinet.WebClientLinkRequest;
+import jw.piano.handlers.web_clinet.WebClientLinkRequest;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
 import jw.spigot_fluent_api.desing_patterns.mediator.FluentMediator;
@@ -14,7 +14,6 @@ import jw.spigot_fluent_api.fluent_message.FluentMessage;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -73,36 +72,24 @@ public class PianoViewGUI extends ChestUI {
 
         ButtonUI.builder()
                 .setMaterial(Material.MUSIC_DISC_CAT)
-                .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Open web piano client"))
-                .setDescription("By open this website you can connect",
-                        "minecraft piano with the real one",
-                        "or just play MIDI file")
+                .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("click to copy token"))
+                .setDescription("do you want connect your real piano?",
+                        "No problem just past token ",
+                        "to  JW-PianoClient application")
                 .setLocation(1, 4)
                 .setOnClick((player, button) ->
                 {
                     final var linkRequest = new WebClientLinkRequest(player,pianoDataObserver.getPianoData());
                     final var url = FluentMediator.resolve(linkRequest,String.class);
 
-                    final var message = new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + "[! Click to open MIDI panel page !]");
-                    message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
+                    final var message = new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + "[click to copy token]");
+                    message.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, url));
                     player.spigot().sendMessage(message);
+                    player.sendMessage("Tutorial -> www.piano.com");
                     close();
                 })
                 .buildAndAdd(this);
 
-
-        ButtonUI.builder()
-                .setMaterial(Material.MUSIC_DISC_CAT)
-                .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Get texture pack"))
-                .setLocation(1, 5)
-                .setOnClick((player, button) ->
-                {
-                    var message = new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + "[! Click to get texture pack !]");
-                    message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, settings.getTexturesURL()));
-                    player.spigot().sendMessage(message);
-                    this.close();
-                })
-                .buildAndAdd(this);
 
         ButtonUI.factory()
                 .goBackButton(this, getParent())

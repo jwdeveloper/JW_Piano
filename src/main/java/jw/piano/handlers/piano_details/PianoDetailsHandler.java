@@ -1,4 +1,4 @@
-package jw.piano.request_handlers.piano_details;
+package jw.piano.handlers.piano_details;
 
 import jw.piano.service.PianoService;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;

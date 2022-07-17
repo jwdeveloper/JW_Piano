@@ -1,7 +1,7 @@
 
 import jw.piano.game_objects.Piano;
-import jw.piano.request_handlers.piano_details.PianoDetailsMapper;
-import jw.piano.request_handlers.piano_details.PianoDetailsResponse;
+import jw.piano.handlers.piano_details.PianoDetailsMapper;
+import jw.piano.handlers.piano_details.PianoDetailsResponse;
 import jw.spigot_fluent_api.fluent_mapper.implementation.SimpleMapper;
 import jw.spigot_fluent_api.fluent_mapper.api.Mapper;
 import jw.spigot_fluent_api.utilites.ActionResult;

@@ -32,7 +32,7 @@ public class WebClientManager implements PluginPipeline {
 
         webSocket = FluentInjection.getInjection(PianoWebSocket.class);
         webHttpServer = FluentInjection.getInjection(WebHttpServer.class);
-        webSocket.setWebSocketFactory(getSSL());
+       // webSocket.setWebSocketFactory(getSS2L());
         webSocket.start();
         webHttpServer.start();
     }
@@ -45,6 +45,13 @@ public class WebClientManager implements PluginPipeline {
         webHttpServer.stop();
         FluentPlugin.logSuccess("Closing web website");
     }
+
+    @SneakyThrows
+    public SSLParametersWebSocketServerFactory getSS2L()
+    {
+      return null;
+    }
+
 //keytool -genkey -alias server-alias -keyalg RSA -keypass test1234 -storepass testasd -keystore keystore.jks
     @SneakyThrows
     public SSLParametersWebSocketServerFactory getSSL()

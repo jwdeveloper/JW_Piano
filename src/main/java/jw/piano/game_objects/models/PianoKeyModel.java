@@ -1,6 +1,8 @@
 package jw.piano.game_objects.models;
 
 import jw.piano.enums.PianoKeysConst;
+import jw.piano.game_objects.utils.MappedSounds;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.utilites.math.MathUtility;
 import jw.spigot_fluent_api.utilites.math.collistions.HitBox;
 import lombok.Getter;
@@ -13,16 +15,19 @@ public class PianoKeyModel extends CustomModel implements Comparable {
     private boolean isBlack;
     private int index;
     private boolean isPressed;
+    private int volume;
     private HitBox hitBox;
     private Particle.DustOptions options;
     private Location particleLocation;
     private World world;
     private boolean isPedalPressed;
+    private PianoPedalModel pedalModel;
 
-    public PianoKeyModel(Location location, boolean isBlack, int index) {
+    public PianoKeyModel(PianoPedalModel pedalModel, Location location, boolean isBlack, int index) {
         super(location);
         this.isBlack = isBlack;
         this.index = index;
+        this.pedalModel = pedalModel;
 
         this.hitBox = new HitBox(location.clone().add(isBlack ? -0.015 : -0.03, isBlack ? 1.61 : 1.6, -0.08),
                 location.clone().add(isBlack ? 0.015 : 0.03, isBlack ? 1.7 : 1.65, isBlack ? 0.075 : 0.08)
@@ -33,7 +38,7 @@ public class PianoKeyModel extends CustomModel implements Comparable {
         else
             setCustomModelData(2);
 
-        var color = Color.fromRGB(MathUtility.getRandom(155, 255), MathUtility.getRandom(155, 255), MathUtility.getRandom(155, 255));
+        var color = Color.fromRGB(MathUtility.getRandom(200, 255), MathUtility.getRandom(200, 255), MathUtility.getRandom(200, 255));
         options = new Particle.DustOptions(color, 0.3F);
         particleLocation = location.clone().add(0, 1.8f, 0);
         world = location.getWorld();
@@ -51,18 +56,15 @@ public class PianoKeyModel extends CustomModel implements Comparable {
 
     @Override
     public void press(int id, int velocity, int channel) {
-        this.getArmorStand()
-                .getWorld()
-                .playSound
-                        (this.getArmorStand().getLocation(),
-                                getSound(id),
+        final var sounds =    volume/100.0f * (velocity) / 50.0f;
+        world.playSound(particleLocation,
+                                MappedSounds.getSound(id,pedalModel.isPressed()),
                                 SoundCategory.VOICE,
-                                (velocity / 50.0f),
+                                sounds,
                                 1);
-
         world.spawnParticle(Particle.REDSTONE, particleLocation, 1, options);
 
-        if (this.isBlack)
+        if (isBlack)
             setCustomModelData(PianoKeysConst.BLACK_KEY_PRESSED.getId());
         else
             setCustomModelData(PianoKeysConst.WHITE_KEY_PRESSED.getId());
@@ -76,7 +78,7 @@ public class PianoKeyModel extends CustomModel implements Comparable {
 
     @Override
     public void release(int id, int velocity, int channel) {
-        if (this.isBlack)
+        if (isBlack)
             setCustomModelData(PianoKeysConst.BLACK_KEY.getId());
         else
             setCustomModelData(PianoKeysConst.WHITE_KEY.getId());
@@ -93,13 +95,6 @@ public class PianoKeyModel extends CustomModel implements Comparable {
         getArmorStand().remove();
     }
 
-    public void setPedalPressed(boolean pedalPressed) {
-        isPedalPressed = pedalPressed;
-    }
-
-    public String getSound(int id) {
-        return isPedalPressed ? "minecraft:1c." + id : "minecraft:1." + id;
-    }
 
     public boolean isBlack() {
         return isBlack;

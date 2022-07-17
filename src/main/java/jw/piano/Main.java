@@ -18,7 +18,6 @@ public final class Main extends FluentPlugin {
                 .useInfoMessage()
                 .useCustomAction(new PianoManager())
                 .useCustomAction(new WebClientManager())
-                .useCustomAction(new MySqlDbExtention(DbContext.class, null))
                 .useDebugMode();
     }
 

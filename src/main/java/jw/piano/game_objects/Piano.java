@@ -41,6 +41,7 @@ public class Piano {
 
     public void create() {
         pianoModel.create(pianoDataObserver.getLocationBind().get());
+        pianoModel.setVolume(pianoDataObserver.getVolumeBind().get());
         pianoInteractionHandler = new PianoInteractionHandler(pianoModel);
         isCreated = true;
     }
@@ -104,11 +105,14 @@ public class Piano {
         });
         observer.getEnableBind().onChange(value ->
         {
-            FluentPlugin.logSuccess("Changed "+value);
             if (value)
                 create();
             else
                 destroy();
+        });
+        observer.getVolumeBind().onChange(value ->
+        {
+            pianoModel.setVolume(value);
         });
         return observer;
     }

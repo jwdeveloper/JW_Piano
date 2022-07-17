@@ -1,4 +1,4 @@
-package jw.piano.request_handlers.web_clinet;
+package jw.piano.handlers.web_clinet;
 
 import jw.piano.data.Settings;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
@@ -6,7 +6,6 @@ import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inje
 import jw.spigot_fluent_api.desing_patterns.mediator.interfaces.MediatorHandler;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.files.json.JsonUtility;
-import org.bukkit.Bukkit;
 
 import java.util.Base64;
 
@@ -42,14 +41,13 @@ public class WebClientLinkHandler implements MediatorHandler<WebClientLinkReques
     }
 
     private String getClientUrl(String payload) {
-        return new StringBuilder()
-                .append("http://")
-                .append(settings.getServerURL())
-                .append(":")
-                .append(settings.getWebClientPort())
-                .append("/piano-client")
+        return payload;
+        /*return new StringBuilder()
+                .append("piano-player://")
+                .append("connect")
+                .append("/")
                 .append("?payload=")
                 .append(payload)
-                .toString();
+                .toString();*/
     }
 }

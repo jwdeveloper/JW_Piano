@@ -1,4 +1,0 @@
-name: JW_Piano
-version: ${project.version}
-main: jw.piano.Main
-api-version: 1.17

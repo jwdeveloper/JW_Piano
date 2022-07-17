@@ -5,8 +5,11 @@ import jw.piano.service.PianoService;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
+import jw.spigot_fluent_api.utilites.benchmark.Benchmarker;
 import jw.spigot_fluent_api.web_socket.WebSocketPacket;
 import jw.spigot_fluent_api.web_socket.annotations.PacketProperty;
+import org.bukkit.Bukkit;
+import org.bukkit.SoundCategory;
 import org.java_websocket.WebSocket;
 
 import java.util.UUID;
@@ -48,11 +51,10 @@ public class PianoActionPacket extends WebSocketPacket {
         final int type = packetType;
         this.addSpigotTask(webSocket1 ->
         {
-            var piano = pianoModelService.get(uuid);
+            final var piano = pianoModelService.get(uuid);
             if (piano.isEmpty())
                 return;
-
-            var pianoModel = piano.get().getPianoModel();
+            final var pianoModel = piano.get().getPianoModel();
             switch (type) {
                 case 0 -> pianoModel.invokeNote(vel, note, vel);
                 case 1 -> pianoModel.invokePedal(vel, note, vel);

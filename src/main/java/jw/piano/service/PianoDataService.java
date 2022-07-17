@@ -15,8 +15,8 @@ public class PianoDataService
     private  PianoService pianoService;
     @Inject
     private  PianoDataRepository pianoDataRepository;
-    @Inject
-    private SqlUserRepository sqlUserRepository;
+   // @Inject
+   // private SqlUserRepository sqlUserRepository;
 
     public List<PianoData> get()
     {

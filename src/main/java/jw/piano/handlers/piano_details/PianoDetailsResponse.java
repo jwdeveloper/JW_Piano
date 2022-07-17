@@ -1,4 +1,4 @@
-package jw.piano.request_handlers.piano_details;
+package jw.piano.handlers.piano_details;
 
 import lombok.Data;
 
