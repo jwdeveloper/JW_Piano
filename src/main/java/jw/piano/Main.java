@@ -12,7 +12,6 @@ public final class Main extends FluentPlugin {
     @Override
     protected void OnConfiguration(PluginConfiguration configuration, ConfigFile configFile) {
         configuration.useFilesHandler()
-                .useInfoMessage()
                 .useCustomAction(new PianoManager())
                 .useCustomAction(new WebSocketManager())
                 .useDebugMode();

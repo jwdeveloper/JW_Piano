@@ -1,6 +1,6 @@
 package jw.piano.game_objects.models;
 
-import jw.piano.factory.ArmorStandFactory;
+import jw.piano.game_objects.factories.ArmorStandFactory;
 import jw.spigot_fluent_api.fluent_game_object.GameObject;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,7 +38,7 @@ public abstract class CustomModel extends GameObject
           return  armorStand;
      }
 
-     protected void setCustomModelData(int id)
+     public void setCustomModelData(int id)
      {
           ItemMeta meta = itemStack.getItemMeta();
           meta.setCustomModelData(id);

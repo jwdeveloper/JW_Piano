@@ -1,4 +1,4 @@
-package jw.piano.handlers.web_clinet;
+package jw.piano.handlers.web_client;
 
 
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package jw.piano.handlers.web_clinet;
+package jw.piano.handlers.web_client;
 
 import jw.piano.data.Settings;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
@@ -30,23 +30,6 @@ public class WebClientLinkHandler implements MediatorHandler<WebClientLinkReques
     }
 
     private WebClientLinkDto getWebClientLinkDto(final WebClientLinkRequest request) {
-
-
-        if(settings.getServerURL().equals("localhost"))
-        {
-            URL url = null;
-            try {
-                url = new URL("http://checkip.amazonaws.com/");
-                BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-                settings.setServerURL(br.readLine());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-
         final var pianoId = request.getPianoData().getUuid();
         return new WebClientLinkDto(
                 settings.getServerURL(),
@@ -58,18 +41,11 @@ public class WebClientLinkHandler implements MediatorHandler<WebClientLinkReques
     private String encodePayLoad(final WebClientLinkDto webClientLinkDto) {
         final var gson = JsonUtility.getGson();
         final var json = gson.toJson(webClientLinkDto);
-        FluentPlugin.logSuccess(json);
+       // FluentPlugin.logSuccess(json);
         return Base64.getUrlEncoder().encodeToString(json.getBytes());
     }
 
     private String getClientUrl(String payload) {
         return payload;
-        /*return new StringBuilder()
-                .append("piano-player://")
-                .append("connect")
-                .append("/")
-                .append("?payload=")
-                .append(payload)
-                .toString();*/
     }
 }

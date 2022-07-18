@@ -17,7 +17,7 @@ public class PianoWebSocket extends WebSocketBase
     public PianoWebSocket(Settings settings)
     {
         super(settings.getWebSocketPort());
-        FluentPlugin.logInfo("Trying to run Piano website on port "+settings.getWebSocketPort()+"");
+        FluentPlugin.logInfo("Piano server is running on port "+settings.getWebSocketPort());
         var packets = FluentInjection.getInjectionContainer().getAllByParentType(WebSocketPacket.class);
         this.registerPackets(packets);
     }

@@ -1,4 +1,4 @@
-package jw.piano.factory;
+package jw.piano.game_objects.factories;
 
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;

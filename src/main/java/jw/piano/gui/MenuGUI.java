@@ -1,5 +1,6 @@
 package jw.piano.gui;
 
+import jw.piano.data.Constants;
 import jw.piano.data.PianoData;
 import jw.piano.data.Settings;
 import jw.piano.enums.PianoType;
@@ -10,19 +11,13 @@ import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inje
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
 import jw.spigot_fluent_api.fluent_gui.implementation.crud_list_ui.CrudListUI;
-import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_message.FluentMessage;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-
-import java.util.UUID;
-
 @Injection
 public class MenuGUI extends CrudListUI<PianoData> {
 
@@ -36,49 +31,73 @@ public class MenuGUI extends CrudListUI<PianoData> {
                    PianoDataService pianoDataService,
                    Settings settings,
                    PianoService pianoService) {
-        super("Menu", 6);
+        super("Pianos", 6);
         this.pianoService = pianoService;
         this.settings = settings;
         this.pianoDataService = pianoDataService;
         this.pianoViewGUI = pianoViewGUI;
-        this.setEnableLogs(true);
     }
 
     @Override
     public void onInitialize() {
-        setTitle("Menu");
+
         pianoViewGUI.setParent(this);
 
+        getButtonEdit().setActive(false);
+
+        getButtonInsert().setDescription("Creates brand a new piano");
+        getButtonInsert().setPermissions(Constants.PERMISSION_MANAGER);
+        getButtonDelete().setDescription("Removes a piano");
+        getButtonDelete().setPermissions(Constants.PERMISSION_MANAGER);
+        ButtonUI.factory().backgroundButton(0,6,Material.GRAY_STAINED_GLASS_PANE)
+                        .buildAndAdd(this);
         ButtonUI.builder()
-                .setMaterial(Material.MUSIC_DISC_CAT)
+                .setMaterial(Material.CAMPFIRE)
+                .setHighlighted()
                 .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Get texture pack"))
-                .setLocation(0, 4)
+                .setDescription("If you don't 3D piano models",
+                               "better click up here")
+                .setLocation(0, 2)
                 .setOnClick((player, button) ->
                 {
-                    var message = new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + "[! Click to get texture pack !]");
-                    message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, settings.getTexturesURL()));
-                    player.spigot().sendMessage(message);
-                    this.close();
-                })
-                .buildAndAdd(this); ButtonUI.builder()
-                .setMaterial(Material.MUSIC_DISC_CAT)
-                .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Get texture pack"))
-                .setLocation(1, 5)
-                .setOnClick((player, button) ->
-                {
-                    var message = new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + "[! Click to get texture pack !]");
-                    message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, settings.getTexturesURL()));
-                    player.spigot().sendMessage(message);
-                    this.close();
+                    player.setTexturePack(settings.getTexturesURL());
                 })
                 .buildAndAdd(this);
 
+
+        ButtonUI.builder()
+                .setMaterial(Material.SOUL_CAMPFIRE)
+                .setHighlighted()
+
+                .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Get client app"))
+                .setDescription("Download Piano client app to",
+                        "connect your real piano ",
+                        "or just playing midi files")
+                .setLocation(0, 3)
+                .setOnClick((player, button) ->
+                {
+                    final var message = new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + "[click here to download]");
+                    message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, settings.getClientAppURL()));
+                    player.spigot().sendMessage(message);
+                    close();
+                })
+                .buildAndAdd(this);
+
+
+
         setContentButtons(pianoDataService.get(), (data, button) ->
         {
-            FluentLogger.success(data.getPianoType().getId()+"");
-            button.setTitle(data.getName());
-            button.setDescription(data.getDescription());
-            button.setCustomMaterial(Material.WOODEN_HOE,data.getPianoType().getId());
+            button.setTitlePrimary(data.getName());
+            button.setDescription(data.getDescriptionLines());
+            if(data.getPianoType() == PianoType.NONE)
+            {
+                button.setMaterial(Material.JUKEBOX);
+            }
+            else
+            {
+                button.setCustomMaterial(Material.WOODEN_HOE,data.getPianoType().getId());
+            }
+
             button.setDataContext(data);
         });
 
@@ -86,7 +105,7 @@ public class MenuGUI extends CrudListUI<PianoData> {
         {
             var location = player.getLocation().setDirection(new Vector(0, 0, 1));
             var pianoData = new PianoData();
-            pianoData.setName("NEW PIANO");
+            pianoData.setName(player.getName()+" piano");
             pianoData.setLocation(location);
             pianoData.setEnable(true);
             pianoData.setPianoType(PianoType.GRAND_PIANO);
@@ -94,7 +113,7 @@ public class MenuGUI extends CrudListUI<PianoData> {
             if (!result) {
                 setTitle("Unable to create new piano");
             }
-            refreshContent();
+            close();
         });
         onDelete((player, button) ->
         {

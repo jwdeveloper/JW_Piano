@@ -2,7 +2,6 @@ package jw.piano.service;
 
 import jw.piano.data.PianoData;
 import jw.piano.data.PianoDataRepository;
-import jw.piano.database.SqlUserRepository;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
 import java.util.List;
@@ -15,8 +14,6 @@ public class PianoDataService
     private  PianoService pianoService;
     @Inject
     private  PianoDataRepository pianoDataRepository;
-   // @Inject
-   // private SqlUserRepository sqlUserRepository;
 
     public List<PianoData> get()
     {

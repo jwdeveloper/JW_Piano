@@ -14,42 +14,30 @@ public class PianoInteractionHandler {
 
     private final PianoModel pianoModel;
     private final int TICKS = 10;
-    private final float PARTICLE_SIZE = 0.3f;
-    private final Color PARTICLE_COLOR = Color.fromRGB(MathUtility.getRandom(0, 255), MathUtility.getRandom(0, 255), MathUtility.getRandom(0, 255));
 
     public PianoInteractionHandler(PianoModel pianoModel) {
         this.pianoModel = pianoModel;
     }
 
     public void onPlayerClick(Location location) {
-        for (PianoKeyModel pianoKey : pianoModel.getSortedKeys()) {
-            if (pianoKey.getHitBox().isCollider(location, 10)) {
-                onHitKey(pianoKey);
+        for (final var piano : pianoModel.getSortedKeys())
+        {
+            if (piano.getHitBox().isCollider(location, piano.getRadious())) {
+                onHitKey(piano);
                 break;
             }
         }
     }
 
     private void onHitKey(PianoKeyModel pianoKey) {
-        final var particle = new Particle.DustOptions(PARTICLE_COLOR, PARTICLE_SIZE);
-        FluentTasks.taskTimer(TICKS,(iteration, task) ->
-        {
-            pianoKey.setPedalPressed(pianoModel.getSustainPedal().isPressed());
-            pianoKey.press();
-            pianoKey.getLocation()
-                    .getWorld()
-                    .spawnParticle(Particle.REDSTONE,
-                            pianoKey.getLocation().clone().add(0, 2, 0),
-                            1,
-                            particle);
-        }).stopAfterIterations(1)
+        FluentTasks.taskTimer(TICKS, (iteration, task) ->
+                {
+                    pianoKey.setPedalPressed(pianoModel.getSustainPedal().isPressed());
+                    pianoKey.press();
+                }).stopAfterIterations(1)
                 .onStop(task ->
                 {
                     pianoKey.release();
-            /*if(pianoKey == highlightedKey)
-            {
-                highlightedKey.setHighlighted(true);
-            }*/
                 }).run();
     }
 }

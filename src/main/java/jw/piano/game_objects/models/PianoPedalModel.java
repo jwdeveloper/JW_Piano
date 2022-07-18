@@ -11,6 +11,16 @@ public class PianoPedalModel extends CustomModel
     }
 
 
+    public void press()
+    {
+        press(0,0,0);
+    }
+
+    public void release()
+    {
+        release(0,0,0);
+    }
+
     @Override
     public void press(int id, int velocity, int channel) {
         setCustomModelData(7);

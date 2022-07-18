@@ -1,7 +1,8 @@
 package jw.piano.game_objects.models;
 
-import jw.piano.factory.ArmorStandFactory;
+import jw.piano.game_objects.factories.ArmorStandFactory;
 import jw.piano.enums.PianoType;
+import jw.piano.game_objects.factories.PianoFactory;
 import jw.piano.game_objects.utils.Consts;
 import jw.spigot_fluent_api.fluent_game_object.GameObject;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
@@ -19,7 +20,7 @@ import java.util.Comparator;
 @Getter
 public class PianoModel extends GameObject {
 
-    private final PianoKeyModel[] pianoKeys = new PianoKeyModel[88];
+    private PianoKeyModel[] pianoKeys = new PianoKeyModel[88];
     private final PianoPedalModel[] pianoPedals = new PianoPedalModel[3];
     private HitBox openViewHitBox;
     private ArmorStand pianoModelSkin;
@@ -84,14 +85,14 @@ public class PianoModel extends GameObject {
                     pianoKeys[i - 1] = new PianoKeyModel(pianoPedals[2],
                             startKeysLocation.clone().add(0.025f, 0.02f, -0.05f),
                             true,
-                            i + Consts.MIDI_KEY_OFFSET);
+                            i + Consts.MIDI_KEY_OFFSET-1);
                     break;
                 default:
-                    pianoKeys[i - 1] = new PianoKeyModel(
+                    pianoKeys[i - 1] =  new PianoKeyModel(
                             pianoPedals[2],
                             startKeysLocation.clone().add(0.05f, 0, 0),
                             false,
-                            i + Consts.MIDI_KEY_OFFSET);
+                            i + Consts.MIDI_KEY_OFFSET-1);
                     startKeysLocation = startKeysLocation.clone().add(0.05f, 0, 0);
                     break;
             }
@@ -121,7 +122,7 @@ public class PianoModel extends GameObject {
     }
 
     public void setPianoType(PianoType pianoType) {
-        FluentPlugin.logSuccess("Type changed to "+pianoType.name());
+       // FluentPlugin.logSuccess("Type changed to "+pianoType.name());
         if (pianoType == PianoType.NONE) {
             if (pianoModelSkin != null)
                 pianoModelSkin.setHelmet(null);
@@ -157,6 +158,4 @@ public class PianoModel extends GameObject {
     public Location getPianoKeysCenterLocation() {
         return pianoKeys[pianoKeys.length / 2].getLocation();
     }
-
-
 }

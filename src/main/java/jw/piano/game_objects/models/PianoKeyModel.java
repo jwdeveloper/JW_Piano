@@ -22,13 +22,42 @@ public class PianoKeyModel extends CustomModel implements Comparable {
     private World world;
     private boolean isPedalPressed;
     private PianoPedalModel pedalModel;
+    private int radious;
+
+    public PianoKeyModel(Location location, boolean isBlack,int index) {
+        super(location);
+        world = location.getWorld();
+        this.index = index;
+        this.isBlack = isBlack;
+        if (isBlack)
+            setCustomModelData(4);
+        else
+           setCustomModelData(2);
+        setupParticle();
+        setupHitbox(location);
+    }
+
+    private void setupHitbox(Location location)
+    {
+        hitBox = new HitBox(location.clone().add(isBlack ? -0.015 : -0.03, isBlack ? 1.61 : 1.6, -0.08),
+                location.clone().add(isBlack ? 0.015 : 0.03, isBlack ? 1.7 : 1.65, isBlack ? 0.075 : 0.08)
+        );
+        hitBox.setOrigin(location);
+    }
+
+    private void setupParticle()
+    {
+        var color = Color.fromRGB(MathUtility.getRandom(200, 255), MathUtility.getRandom(200, 255), MathUtility.getRandom(200, 255));
+        options = new Particle.DustOptions(color, 0.3F);
+        particleLocation = getLocation().clone().add(0, 1.8f, 0);
+    }
 
     public PianoKeyModel(PianoPedalModel pedalModel, Location location, boolean isBlack, int index) {
         super(location);
         this.isBlack = isBlack;
         this.index = index;
         this.pedalModel = pedalModel;
-
+        this.radious = 10;
         this.hitBox = new HitBox(location.clone().add(isBlack ? -0.015 : -0.03, isBlack ? 1.61 : 1.6, -0.08),
                 location.clone().add(isBlack ? 0.015 : 0.03, isBlack ? 1.7 : 1.65, isBlack ? 0.075 : 0.08)
         );
@@ -45,30 +74,26 @@ public class PianoKeyModel extends CustomModel implements Comparable {
     }
 
     public void setHighlighted(boolean isHighlight) {
-        int id;
         if (isHighlight) {
-            id = isBlack ? PianoKeysConst.BLACK_KEY_SELECTED.getId() : PianoKeysConst.WHITE_KEY_SELECTED.getId();
-        } else {
-            id = isBlack ? PianoKeysConst.BLACK_KEY.getId() : PianoKeysConst.WHITE_KEY.getId();
+            setCustomModelData(isBlack ? PianoKeysConst.BLACK_KEY_SELECTED.getId() : PianoKeysConst.WHITE_KEY_SELECTED.getId());
+            return;
         }
-        setCustomModelData(id);
+        setCustomModelData(isBlack ? PianoKeysConst.BLACK_KEY.getId() : PianoKeysConst.WHITE_KEY.getId());
     }
 
     @Override
     public void press(int id, int velocity, int channel) {
-        final var sounds =    volume/100.0f * (velocity) / 50.0f;
+        final var soundLevel = volume/100.0f * (velocity) / 50.0f;
         world.playSound(particleLocation,
                                 MappedSounds.getSound(id,pedalModel.isPressed()),
                                 SoundCategory.VOICE,
-                                sounds,
+                                soundLevel,
                                 1);
         world.spawnParticle(Particle.REDSTONE, particleLocation, 1, options);
-
         if (isBlack)
             setCustomModelData(PianoKeysConst.BLACK_KEY_PRESSED.getId());
         else
             setCustomModelData(PianoKeysConst.WHITE_KEY_PRESSED.getId());
-
         isPressed = true;
     }
 
@@ -94,7 +119,6 @@ public class PianoKeyModel extends CustomModel implements Comparable {
     {
         getArmorStand().remove();
     }
-
 
     public boolean isBlack() {
         return isBlack;

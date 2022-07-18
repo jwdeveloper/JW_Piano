@@ -28,7 +28,7 @@ public class WebHttpServer {
     }
 
     public void start() {
-        try {
+       /* try {
             server = HttpServer.create(new InetSocketAddress(settings.getWebClientPort()), 0);
             server.createContext("/", new FileFinder(serverResources));
             server.createContext("/piano-client", new FileHandler(serverResources));
@@ -38,7 +38,7 @@ public class WebHttpServer {
             FluentPlugin.logSuccess("Website run on "+ Bukkit.getServer().getIp()+":" + settings.getWebClientPort() + "/piano-client");
         } catch (IOException e) {
             FluentLogger.error("Http server error", e);
-        }
+        }*/
     }
 
     public void stop() {

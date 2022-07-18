@@ -44,7 +44,7 @@ public class PlayerInteractionListener extends EventBase {
             var pianoOptional = pianoService.getNearestPiano(player.getLocation());
             if(pianoOptional.isEmpty())
             {
-                //there is no piano is player the nearest location;
+                //there is no piano in player the nearest location;
                 return;
             }
             pianoUsers.put(player, pianoOptional.get());
@@ -56,9 +56,10 @@ public class PlayerInteractionListener extends EventBase {
 
     private FluentTaskTimer checkDistanceTask()
     {
+        var playersToRemove = new ArrayList<>();
         return new FluentTaskTimer(5,(iteration, task) ->
         {
-            var playersToRemove = new ArrayList<>();
+            playersToRemove.clear();
             for(var pianoPlayer : pianoUsers.entrySet())
             {
                 if(!pianoPlayer.getValue().isLocationInPianoRage(pianoPlayer.getKey().getLocation()))

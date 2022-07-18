@@ -74,11 +74,11 @@ public class Piano {
         var sustain = pianoModel.getSustainPedal();
         if(sustain.isPressed())
         {
-            sustain.release(0,0,0);
+            sustain.release();
         }
         else
         {
-            sustain.press(0,0,0);
+            sustain.press();
         }
 
     }
@@ -86,6 +86,11 @@ public class Piano {
     public boolean isLocationInPianoRage(Location location) {
         if (!isCreated)
             return false;
+
+        if(location.getWorld() != location.getWorld())
+        {
+            return false;
+        }
 
         final var minDistance = settings.getMinDistanceToPiano();
         final var distance = location.distance(getLocation());

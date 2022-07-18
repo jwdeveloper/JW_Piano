@@ -1,9 +1,10 @@
 package jw.piano.gui;
 
+import jw.piano.data.Constants;
 import jw.piano.data.Settings;
 import jw.piano.game_objects.Piano;
 import jw.piano.game_objects.PianoDataObserver;
-import jw.piano.handlers.web_clinet.WebClientLinkRequest;
+import jw.piano.handlers.web_client.WebClientLinkRequest;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
 import jw.spigot_fluent_api.desing_patterns.mediator.FluentMediator;
@@ -31,17 +32,20 @@ public class PianoViewGUI extends ChestUI {
 
     public void open(Player player, Piano piano) {
         pianoDataObserver = piano.getPianoDataObserver();
+        setTitle(piano.getPianoData().getName());
         open(player);
     }
 
+
+
     @Override
     public void onInitialize() {
-        this.setTitle("Piano");
-        this.setBorderMaterial(Material.BLUE_STAINED_GLASS_PANE);
+
+        setBorderMaterial(Material.LIME_STAINED_GLASS_PANE);
 
         ButtonUI.builder()
                 .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Teleport"))
-                .setMaterial(Material.ENDER_EYE)
+                .setMaterial(Material.ENDER_PEARL)
                 .setLocation(2, 2)
                 .setOnClick((player, button) ->
                 {
@@ -52,6 +56,7 @@ public class PianoViewGUI extends ChestUI {
         ButtonObserverUI.factory()
                 .boolObserver(pianoDataObserver.getEnableBind())
                 .setMaterial(Material.REDSTONE_TORCH)
+                .setPermissions(Constants.PERMISSION_MANAGER)
                 .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Is active"))
                 .setLocation(2, 4)
                 .buildAndAdd(this);
@@ -59,6 +64,7 @@ public class PianoViewGUI extends ChestUI {
         ButtonObserverUI.factory()
                 .enumSelectorObserver(pianoDataObserver.getPianoTypeBind())
                 .setMaterial(Material.CRAFTING_TABLE)
+                .setPermissions(Constants.PERMISSION_MANAGER)
                 .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Appearance"))
                 .setLocation(3, 4)
                 .buildAndAdd(this);
@@ -66,30 +72,31 @@ public class PianoViewGUI extends ChestUI {
         ButtonObserverUI.factory()
                 .intSelectObserver(pianoDataObserver.getVolumeBind(),0,100,5)
                 .setMaterial(Material.BELL)
+                .setPermissions(Constants.PERMISSION_MANAGER)
                 .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Volume"))
                 .setLocation(2, 6)
                 .buildAndAdd(this);
 
         ButtonUI.builder()
-                .setMaterial(Material.MUSIC_DISC_CAT)
+                .setMaterial(Material.DIAMOND)
+                .setHighlighted()
                 .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("click to copy token"))
                 .setDescription("do you want connect your real piano?",
                         "No problem just past token ",
-                        "to  JW-PianoClient application")
+                        "to JW-PianoClient application")
                 .setLocation(1, 4)
                 .setOnClick((player, button) ->
                 {
+                    player.sendMessage("Open JW Piano Client app and past token to input section");
+                    player.sendMessage("token will be copied after one click");
                     final var linkRequest = new WebClientLinkRequest(player,pianoDataObserver.getPianoData());
                     final var url = FluentMediator.resolve(linkRequest,String.class);
-
-                    final var message = new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + "[click to copy token]");
+                    final var message = new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + "[click here]");
                     message.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, url));
                     player.spigot().sendMessage(message);
-                    player.sendMessage("Tutorial -> www.piano.com");
                     close();
                 })
                 .buildAndAdd(this);
-
 
         ButtonUI.factory()
                 .goBackButton(this, getParent())

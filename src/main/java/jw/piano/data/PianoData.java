@@ -3,6 +3,7 @@ package jw.piano.data;
 
 import jw.piano.enums.PianoType;
 import jw.spigot_fluent_api.data.implementation.DataModel;
+import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import lombok.Data;
 
 import org.bukkit.Location;
@@ -14,4 +15,14 @@ public class PianoData extends DataModel
     private Location location;
     private Integer volume = 100;
     private Boolean enable = false;
+
+
+    public String[] getDescriptionLines() {
+        return new MessageBuilder()
+                .field("Active",enable.toString())
+                .newLine()
+                .field("Volume", volume)
+                .toArray();
+
+    }
 }
