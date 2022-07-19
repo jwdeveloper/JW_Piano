@@ -1,6 +1,6 @@
 package jw.piano.gui;
 
-import jw.piano.data.Constants;
+import jw.piano.data.Permissions;
 import jw.piano.data.Settings;
 import jw.piano.game_objects.Piano;
 import jw.piano.game_objects.PianoDataObserver;
@@ -12,9 +12,12 @@ import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
 import jw.spigot_fluent_api.fluent_gui.button.button_observer.ButtonObserverUI;
 import jw.spigot_fluent_api.fluent_gui.implementation.chest_ui.ChestUI;
 import jw.spigot_fluent_api.fluent_message.FluentMessage;
+import jw.spigot_fluent_api.utilites.messages.Emoticons;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -36,8 +39,6 @@ public class PianoViewGUI extends ChestUI {
         open(player);
     }
 
-
-
     @Override
     public void onInitialize() {
 
@@ -56,7 +57,7 @@ public class PianoViewGUI extends ChestUI {
         ButtonObserverUI.factory()
                 .boolObserver(pianoDataObserver.getEnableBind())
                 .setMaterial(Material.REDSTONE_TORCH)
-                .setPermissions(Constants.PERMISSION_MANAGER)
+                .setPermissions(Permissions.PIANO,Permissions.ACTIVE)
                 .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Is active"))
                 .setLocation(2, 4)
                 .buildAndAdd(this);
@@ -64,7 +65,7 @@ public class PianoViewGUI extends ChestUI {
         ButtonObserverUI.factory()
                 .enumSelectorObserver(pianoDataObserver.getPianoTypeBind())
                 .setMaterial(Material.CRAFTING_TABLE)
-                .setPermissions(Constants.PERMISSION_MANAGER)
+                .setPermissions(Permissions.PIANO, Permissions.APPEARANCE)
                 .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Appearance"))
                 .setLocation(3, 4)
                 .buildAndAdd(this);
@@ -72,7 +73,7 @@ public class PianoViewGUI extends ChestUI {
         ButtonObserverUI.factory()
                 .intSelectObserver(pianoDataObserver.getVolumeBind(),0,100,5)
                 .setMaterial(Material.BELL)
-                .setPermissions(Constants.PERMISSION_MANAGER)
+                .setPermissions(Permissions.PIANO, Permissions.VOLUME)
                 .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Volume"))
                 .setLocation(2, 6)
                 .buildAndAdd(this);
@@ -87,13 +88,26 @@ public class PianoViewGUI extends ChestUI {
                 .setLocation(1, 4)
                 .setOnClick((player, button) ->
                 {
-                    player.sendMessage("Open JW Piano Client app and past token to input section");
-                    player.sendMessage("token will be copied after one click");
+                    FluentMessage.message().color(org.bukkit.ChatColor.AQUA).bold().inBrackets("Info").space().
+                    reset().
+                     text("Copy and paste token to Piano client app").send(player);
+                    player.sendMessage(" ");
+                    final var msg = new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + Emoticons.arrowRight+" [Download client app]");
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, settings.getClientAppURL()));
+                    player.spigot().sendMessage(msg);
+
+
+                    player.sendMessage(" ");
                     final var linkRequest = new WebClientLinkRequest(player,pianoDataObserver.getPianoData());
                     final var url = FluentMediator.resolve(linkRequest,String.class);
-                    final var message = new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + "[click here]");
+                    final var message = new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + Emoticons.arrowRight+" [Click to copy token]");
                     message.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, url));
+
+                    final var hover = new Text(ChatColor.GRAY + "value will be copied after click");
+                    message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hover));
                     player.spigot().sendMessage(message);
+                    player.sendMessage(" ");
+
                     close();
                 })
                 .buildAndAdd(this);

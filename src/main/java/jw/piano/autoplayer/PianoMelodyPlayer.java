@@ -32,12 +32,12 @@ public class PianoMelodyPlayer {
             new FluentTaskTimer(speed, (time1, taskTimer1) ->
             {
                 pianoKey.setPedalPressed(pianoModel.getPianoPedals()[2].isPressed());
-                pianoKey.press(pianoKey.getIndex(), 50, 1);
+                pianoKey.press(pianoKey.getIndex(), 50);
             })
                     .stopAfterIterations(1)
                     .onStop(taskTimer1 ->
                     {
-                        pianoKey.release(pianoKey.getIndex(), 0, 1);
+                        pianoKey.release(pianoKey.getIndex(), 0);
                     }).run();
         });
         taskTimer.run();

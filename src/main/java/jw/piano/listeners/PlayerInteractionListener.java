@@ -1,7 +1,6 @@
 package jw.piano.listeners;
 
 import jw.piano.game_objects.Piano;
-import jw.piano.management.PianoPlayingEvent;
 import jw.piano.service.PianoService;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;

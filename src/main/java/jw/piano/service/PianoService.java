@@ -48,6 +48,8 @@ public class PianoService {
 
         var piano = model.get();
         piano.destroy();
+
+        pianos.remove(pianoID);
         return true;
     }
 }

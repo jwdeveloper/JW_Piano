@@ -1,11 +1,10 @@
-package jw.piano.managers;
+package jw.piano.awake_actions;
 
 import jw.piano.data.PianoDataRepository;
 import jw.piano.service.PianoService;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_plugin.configuration.pipeline.PluginPipeline;
-import org.bukkit.Material;
 
 public class PianoManager implements PluginPipeline {
 

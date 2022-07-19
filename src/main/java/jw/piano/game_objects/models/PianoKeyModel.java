@@ -2,6 +2,9 @@ package jw.piano.game_objects.models;
 
 import jw.piano.enums.PianoKeysConst;
 import jw.piano.game_objects.utils.MappedSounds;
+import jw.piano.game_objects.utils.PlaySound;
+import jw.piano.sounds.SoundPlayerFactory;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.utilites.math.MathUtility;
 import jw.spigot_fluent_api.utilites.math.collistions.HitBox;
@@ -15,7 +18,7 @@ public class PianoKeyModel extends CustomModel implements Comparable {
     private boolean isBlack;
     private int index;
     private boolean isPressed;
-    private int volume;
+    private float volume;
     private HitBox hitBox;
     private Particle.DustOptions options;
     private Location particleLocation;
@@ -23,6 +26,7 @@ public class PianoKeyModel extends CustomModel implements Comparable {
     private boolean isPedalPressed;
     private PianoPedalModel pedalModel;
     private int radious;
+    private SoundPlayerFactory soundPlayerFactory;
 
     public PianoKeyModel(Location location, boolean isBlack,int index) {
         super(location);
@@ -35,6 +39,7 @@ public class PianoKeyModel extends CustomModel implements Comparable {
            setCustomModelData(2);
         setupParticle();
         setupHitbox(location);
+        soundPlayerFactory = FluentInjection.getInjection(SoundPlayerFactory.class);
     }
 
     private void setupHitbox(Location location)
@@ -71,25 +76,20 @@ public class PianoKeyModel extends CustomModel implements Comparable {
         options = new Particle.DustOptions(color, 0.3F);
         particleLocation = location.clone().add(0, 1.8f, 0);
         world = location.getWorld();
+        soundPlayerFactory = FluentInjection.getInjection(SoundPlayerFactory.class);
     }
 
-    public void setHighlighted(boolean isHighlight) {
-        if (isHighlight) {
-            setCustomModelData(isBlack ? PianoKeysConst.BLACK_KEY_SELECTED.getId() : PianoKeysConst.WHITE_KEY_SELECTED.getId());
-            return;
-        }
-        setCustomModelData(isBlack ? PianoKeysConst.BLACK_KEY.getId() : PianoKeysConst.WHITE_KEY.getId());
+    public void setVolume(int volume)
+    {
+        this.volume = volume/100.0f;
     }
 
     @Override
-    public void press(int id, int velocity, int channel) {
-        final var soundLevel = volume/100.0f * (velocity) / 50.0f;
-        world.playSound(particleLocation,
-                                MappedSounds.getSound(id,pedalModel.isPressed()),
-                                SoundCategory.VOICE,
-                                soundLevel,
-                                1);
+    public void press(int id, int velocity) {
+        final var soundLevel = volume * (velocity) / 50.0f;
+        soundPlayerFactory.play(pedalModel.getLocation(),id,soundLevel,pedalModel.isPressed());
         world.spawnParticle(Particle.REDSTONE, particleLocation, 1, options);
+
         if (isBlack)
             setCustomModelData(PianoKeysConst.BLACK_KEY_PRESSED.getId());
         else
@@ -98,11 +98,11 @@ public class PianoKeyModel extends CustomModel implements Comparable {
     }
 
     public void press() {
-        this.press(index,100,1);
+        this.press(index,100);
     }
 
     @Override
-    public void release(int id, int velocity, int channel) {
+    public void release(int id, int velocity) {
         if (isBlack)
             setCustomModelData(PianoKeysConst.BLACK_KEY.getId());
         else
@@ -112,7 +112,7 @@ public class PianoKeyModel extends CustomModel implements Comparable {
     }
 
     public void release() {
-       this.release(1,10,10);
+       this.release(1,10);
     }
 
     public void destroy()

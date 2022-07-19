@@ -34,9 +34,9 @@ public class PianoModel extends GameObject {
             return;
 
         if (pressed != 0)
-            pianoKeys[index - Consts.MIDI_KEY_OFFSET].press(index, velocity, 0);
+            pianoKeys[index - Consts.MIDI_KEY_OFFSET].press(index, velocity);
         else
-            pianoKeys[index - Consts.MIDI_KEY_OFFSET].release(index, velocity, 0);
+            pianoKeys[index - Consts.MIDI_KEY_OFFSET].release(index, velocity);
     }
 
 
@@ -50,9 +50,9 @@ public class PianoModel extends GameObject {
         if (pedal == null)
             return;
         if (isPressed == Consts.PRESSED_CODE)
-            pedal.press(index, velocity, 1);
+            pedal.press(index, velocity);
         else
-            pedal.release(index, velocity, 1);
+            pedal.release(index, velocity);
     }
 
     public void create(Location location) {
