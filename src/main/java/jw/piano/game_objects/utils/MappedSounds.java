@@ -5,8 +5,6 @@ import java.util.Map;
 
 public class MappedSounds
 {
-
-
     private static Map<Integer, String> withPedal;
     private static Map<Integer, String> withoutPedal;
     static

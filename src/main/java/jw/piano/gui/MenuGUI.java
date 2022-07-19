@@ -1,14 +1,17 @@
 package jw.piano.gui;
 
-import jw.piano.data.Constants;
+import jw.piano.data.Permissions;
 import jw.piano.data.PianoData;
 import jw.piano.data.Settings;
 import jw.piano.enums.PianoType;
 import jw.piano.game_objects.Piano;
+import jw.piano.handlers.create_piano.CreatePianoRequest;
+import jw.piano.handlers.create_piano.CreatePianoResponse;
 import jw.piano.service.PianoDataService;
 import jw.piano.service.PianoService;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
+import jw.spigot_fluent_api.desing_patterns.mediator.FluentMediator;
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
 import jw.spigot_fluent_api.fluent_gui.implementation.crud_list_ui.CrudListUI;
 import jw.spigot_fluent_api.fluent_message.FluentMessage;
@@ -17,7 +20,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
+
 @Injection
 public class MenuGUI extends CrudListUI<PianoData> {
 
@@ -46,9 +49,11 @@ public class MenuGUI extends CrudListUI<PianoData> {
         getButtonEdit().setActive(false);
 
         getButtonInsert().setDescription("Creates brand a new piano");
-        getButtonInsert().setPermissions(Constants.PERMISSION_MANAGER);
+        getButtonInsert().setPermissions(Permissions.PIANO);
+        getButtonInsert().setPermissions(Permissions.CREATE);
         getButtonDelete().setDescription("Removes a piano");
-        getButtonDelete().setPermissions(Constants.PERMISSION_MANAGER);
+        getButtonDelete().setPermissions(Permissions.PIANO);
+        getButtonInsert().setPermissions(Permissions.REMOVE);
         ButtonUI.factory().backgroundButton(0,6,Material.GRAY_STAINED_GLASS_PANE)
                         .buildAndAdd(this);
         ButtonUI.builder()
@@ -76,14 +81,12 @@ public class MenuGUI extends CrudListUI<PianoData> {
                 .setLocation(0, 3)
                 .setOnClick((player, button) ->
                 {
-                    final var message = new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + "[click here to download]");
+                    final var message = new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + "[click here to download]");
                     message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, settings.getClientAppURL()));
                     player.spigot().sendMessage(message);
                     close();
                 })
                 .buildAndAdd(this);
-
-
 
         setContentButtons(pianoDataService.get(), (data, button) ->
         {
@@ -103,15 +106,9 @@ public class MenuGUI extends CrudListUI<PianoData> {
 
         onInsert((player, button) ->
         {
-            var location = player.getLocation().setDirection(new Vector(0, 0, 1));
-            var pianoData = new PianoData();
-            pianoData.setName(player.getName()+" piano");
-            pianoData.setLocation(location);
-            pianoData.setEnable(true);
-            pianoData.setPianoType(PianoType.GRAND_PIANO);
-            var result = pianoDataService.insert(pianoData);
-            if (!result) {
-                setTitle("Unable to create new piano");
+            final var response = FluentMediator.resolve(new CreatePianoRequest(player), CreatePianoResponse.class);
+            if (!response.created()) {
+                setTitle(response.message());
             }
             close();
         });

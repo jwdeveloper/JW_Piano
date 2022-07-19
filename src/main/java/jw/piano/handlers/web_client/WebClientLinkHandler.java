@@ -4,14 +4,8 @@ import jw.piano.data.Settings;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
 import jw.spigot_fluent_api.desing_patterns.mediator.interfaces.MediatorHandler;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.files.json.JsonUtility;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Base64;
 
 @Injection
@@ -32,7 +26,7 @@ public class WebClientLinkHandler implements MediatorHandler<WebClientLinkReques
     private WebClientLinkDto getWebClientLinkDto(final WebClientLinkRequest request) {
         final var pianoId = request.getPianoData().getUuid();
         return new WebClientLinkDto(
-                settings.getServerURL(),
+                settings.getServerIp(),
                 settings.getWebSocketPort(),
                 Long.toString(pianoId.getMostSignificantBits()),
                 Long.toString(pianoId.getLeastSignificantBits()));
@@ -41,7 +35,6 @@ public class WebClientLinkHandler implements MediatorHandler<WebClientLinkReques
     private String encodePayLoad(final WebClientLinkDto webClientLinkDto) {
         final var gson = JsonUtility.getGson();
         final var json = gson.toJson(webClientLinkDto);
-       // FluentPlugin.logSuccess(json);
         return Base64.getUrlEncoder().encodeToString(json.getBytes());
     }
 

@@ -29,9 +29,9 @@ public abstract class CustomModel extends GameObject
           return isPressed;
      }
 
-     public abstract void  press(int id, int velocity, int channel);
+     public abstract void  press(int id, int velocity);
 
-     public abstract void release(int id, int velocity, int channel);
+     public abstract void release(int id, int velocity);
 
      public ArmorStand getArmorStand()
      {
