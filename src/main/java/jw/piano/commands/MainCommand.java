@@ -22,7 +22,6 @@ public class MainCommand implements SimpleCommandConfig {
     public MainCommand(Settings settings) {
         this.settings = settings;
         configureCommand();
-        protocl();
     }
 
     @Override
@@ -38,53 +37,4 @@ public class MainCommand implements SimpleCommandConfig {
                 }).build();
         return cmd;
     }
-
-
-    public SimpleCommand protocl()
-    {
-
-
-
-        var cmd = FluentCommand.create("test")
-                .subCommandsConfig(subCommandConfig ->
-                {
-                    subCommandConfig.addSubCommand(FluentCommand.create("reflex")
-                            .eventsConfig(eventConfig ->
-                            {
-                                eventConfig.onPlayerExecute(event ->
-                                {
-                                    var loc = event.getPlayerSender().getLocation();
-                                    var sound =  MappedSounds.getSound(30,false);
-                                    Benchmarker.run(unused ->
-                                    {
-                                            for(int i=0;i<100;i++)
-                                            {
-                                                PlaySound.PlaySound(event.getPlayerSender(),
-                                                        loc,
-                                                        30,1);
-                                            }
-                                    });
-                                });
-                            }));
-
-                    subCommandConfig.addSubCommand(FluentCommand.create("normal")
-                            .eventsConfig(eventConfig ->
-                            {
-                                eventConfig.onPlayerExecute(event ->
-                                {
-                                    var loc = event.getPlayerSender().getLocation();
-                                    var sound =  MappedSounds.getSound(30,false);
-                                    Benchmarker.run(unused ->
-                                    {
-                                        for(int i=0;i<100;i++) {
-                                            loc.getWorld().playSound(loc, sound, 0, 0);
-                                        }
-                                    });
-                                });
-                            }));
-                }).build();
-        return cmd;
-    }
-
-
 }
