@@ -23,7 +23,7 @@ public class Settings
     @YmlIgnore
     private String texturesURL = "https://download.mc-packs.net/pack/f4bfbb9e82edaa8317aa95d4d3dfafbd51157ef2.zip";
     @YmlIgnore
-    private String clientAppURL = "https://github.com/jwdeveloper/JW_Piano_Client/releases/download/V1.1/JWPiano_Client.exe";
+    private String clientAppURL = "https://github.com/jwdeveloper/JW_Piano_Desktop/releases/download/1.0.0/JW_Piano_Desktop.jar";
     @YmlIgnore
     private String serverIp = "";
 
