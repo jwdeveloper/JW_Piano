@@ -1,4 +1,5 @@
-!This is Alpha version it could still constains bugs!
+More informations 
+https://www.spigotmc.org/resources/piano.103490/
 
 JW Piano is a one in own kind plugin that give you opportunity to play piano with your firends! But this is only top on the iceberg.
 If you want to play MIDI file or send notes from real piano, download JW Piano client app and connect to your server!
