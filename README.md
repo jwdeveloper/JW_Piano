@@ -22,6 +22,7 @@ permissions:
   - piano.appearance
   - piano.active
   - piano.effects
+  - piano.update
 ```
 
 
