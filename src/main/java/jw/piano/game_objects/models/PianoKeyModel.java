@@ -1,6 +1,8 @@
 package jw.piano.game_objects.models;
 
 import jw.piano.enums.PianoKeysConst;
+import jw.piano.game_objects.models.effects.EffectManager;
+import jw.piano.game_objects.utils.Consts;
 import jw.piano.game_objects.utils.MappedSounds;
 import jw.piano.game_objects.utils.PlaySound;
 import jw.piano.sounds.SoundPlayerFactory;
@@ -27,6 +29,7 @@ public class PianoKeyModel extends CustomModel implements Comparable {
     private PianoPedalModel pedalModel;
     private int radious;
     private SoundPlayerFactory soundPlayerFactory;
+    private EffectManager effectManager;
 
     public PianoKeyModel(Location location, boolean isBlack,int index) {
         super(location);
@@ -72,10 +75,7 @@ public class PianoKeyModel extends CustomModel implements Comparable {
         else
             setCustomModelData(2);
 
-        var color = Color.fromRGB(MathUtility.getRandom(200, 255), MathUtility.getRandom(200, 255), MathUtility.getRandom(200, 255));
-        options = new Particle.DustOptions(color, 0.3F);
-        particleLocation = location.clone().add(0, 1.8f, 0);
-        world = location.getWorld();
+
         soundPlayerFactory = FluentInjection.getInjection(SoundPlayerFactory.class);
     }
 
@@ -84,16 +84,22 @@ public class PianoKeyModel extends CustomModel implements Comparable {
         this.volume = volume/100.0f;
     }
 
+    public void setEffectManager(EffectManager manager)
+    {
+        effectManager = manager;
+    }
+
     @Override
     public void press(int id, int velocity) {
         final var soundLevel = volume * (velocity) / 50.0f;
         soundPlayerFactory.play(pedalModel.getLocation(),id,soundLevel,pedalModel.isPressed());
-        world.spawnParticle(Particle.REDSTONE, particleLocation, 1, options);
-
+        effectManager.invoke(getLocation(), index,velocity);
         if (isBlack)
             setCustomModelData(PianoKeysConst.BLACK_KEY_PRESSED.getId());
         else
             setCustomModelData(PianoKeysConst.WHITE_KEY_PRESSED.getId());
+
+
         isPressed = true;
     }
 

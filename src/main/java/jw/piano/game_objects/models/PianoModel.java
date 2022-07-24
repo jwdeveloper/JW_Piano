@@ -1,11 +1,11 @@
 package jw.piano.game_objects.models;
 
+import jw.piano.enums.PianoEffect;
 import jw.piano.game_objects.factories.ArmorStandFactory;
 import jw.piano.enums.PianoType;
-import jw.piano.game_objects.factories.PianoFactory;
+import jw.piano.game_objects.models.effects.EffectManager;
 import jw.piano.game_objects.utils.Consts;
 import jw.spigot_fluent_api.fluent_game_object.GameObject;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.math.collistions.HitBox;
 import lombok.Getter;
 import org.bukkit.Location;
@@ -24,8 +24,11 @@ public class PianoModel extends GameObject {
     private final PianoPedalModel[] pianoPedals = new PianoPedalModel[3];
     private HitBox openViewHitBox;
     private ArmorStand pianoModelSkin;
-
-    public PianoModel() { }
+    private EffectManager effectManager;
+    public PianoModel()
+    {
+        effectManager  = new EffectManager();
+    }
 
     public void invokeNote(int pressed, int index, int velocity) {
         if(index < Consts.MIDI_KEY_OFFSET)
@@ -34,7 +37,10 @@ public class PianoModel extends GameObject {
             return;
 
         if (pressed != 0)
+        {
             pianoKeys[index - Consts.MIDI_KEY_OFFSET].press(index, velocity);
+
+        }
         else
             pianoKeys[index - Consts.MIDI_KEY_OFFSET].release(index, velocity);
     }
@@ -56,11 +62,11 @@ public class PianoModel extends GameObject {
     }
 
     public void create(Location location) {
-
+        effectManager.create();
         location.setYaw(0);
         location.setPitch(0);
         pianoModelSkin = ArmorStandFactory.createInvisibleArmorStand(location.clone());
-        openViewHitBox = new HitBox(location.clone().add(-1, 1, 0), location.clone().add(0, 2, -1));
+        openViewHitBox = new HitBox(location.clone().add(-0.7, 1.7, -0.1), location.clone().add(0.3, 2, 0.1));
         openViewHitBox.showHitBox();
         setPianoType(PianoType.GRAND_PIANO);
 
@@ -86,6 +92,7 @@ public class PianoModel extends GameObject {
                             startKeysLocation.clone().add(0.025f, 0.02f, -0.05f),
                             true,
                             i + Consts.MIDI_KEY_OFFSET-1);
+
                     break;
                 default:
                     pianoKeys[i - 1] =  new PianoKeyModel(
@@ -96,6 +103,14 @@ public class PianoModel extends GameObject {
                     startKeysLocation = startKeysLocation.clone().add(0.05f, 0, 0);
                     break;
             }
+            pianoKeys[i - 1].setEffectManager(effectManager);
+        }
+    }
+
+    public void refreshKeys()
+    {
+        for (PianoKeyModel key : pianoKeys) {
+            key.release();
         }
     }
 
@@ -107,6 +122,7 @@ public class PianoModel extends GameObject {
         for (PianoPedalModel pedal : pianoPedals) {
             pedal.destroy();
         }
+        effectManager.destory();
         pianoModelSkin.remove();
     }
 
@@ -133,6 +149,10 @@ public class PianoModel extends GameObject {
             itemStack.setItemMeta(meta);
             pianoModelSkin.setHelmet(itemStack);
         }
+    }
+    public final void setEffect(PianoEffect pianoEffect)
+    {
+      effectManager.setEffect(pianoEffect);
     }
 
     public void setVolume(int volume)

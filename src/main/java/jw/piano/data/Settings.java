@@ -1,12 +1,12 @@
 package jw.piano.data;
-import jw.spigot_fluent_api.data.implementation.annotation.files.YmlFile;
+import jw.spigot_fluent_api.utilites.files.yml.api.annotations.YmlFile;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
-import jw.spigot_fluent_api.utilites.files.yml.annotations.YmlIgnore;
+import jw.spigot_fluent_api.utilites.files.yml.api.annotations.YmlIgnore;
 import lombok.Data;
 
 
 @Injection
-@YmlFile
+@YmlFile(globalPath = "Settings")
 @Data
 public class Settings
 {
@@ -25,8 +25,9 @@ public class Settings
     @YmlIgnore
     private String clientAppURL = "https://github.com/jwdeveloper/JW_Piano_Desktop/releases/latest/download/JW_Piano_Desktop.jar";
     @YmlIgnore
+    private String pluginAppURL = "https://github.com/jwdeveloper/JW_Piano";
+    @YmlIgnore
     private String serverIp = "";
-
     @YmlIgnore
     private Integer metrictsId = 15825;
 
