@@ -5,6 +5,7 @@ import jw.piano.data.Settings;
 import jw.piano.gui.MenuGUI;
 import jw.piano.game_objects.models.PianoModel;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import lombok.Getter;
 import org.bukkit.Location;
@@ -42,6 +43,8 @@ public class Piano {
     public void create() {
         pianoModel.create(pianoDataObserver.getLocationBind().get());
         pianoModel.setVolume(pianoDataObserver.getVolumeBind().get());
+        pianoModel.setPianoType(pianoDataObserver.getPianoTypeBind().get());
+        pianoModel.setEffect(pianoDataObserver.getEffectBind().get());
         pianoInteractionHandler = new PianoInteractionHandler(pianoModel);
         isCreated = true;
     }
@@ -58,8 +61,7 @@ public class Piano {
     public void handlePlayerInteraction(Player player) {
         if (!isCreated)
             return;
-
-        if (pianoModel.getOpenViewHitBox().isCollider(player.getEyeLocation(), 5)) {
+        if (pianoModel.getOpenViewHitBox().isCollider(player.getEyeLocation(), 3)) {
             openGUIPanel(player);
             return;
         }
@@ -118,6 +120,10 @@ public class Piano {
         observer.getVolumeBind().onChange(value ->
         {
             pianoModel.setVolume(value);
+        });
+        observer.getEffectBind().onChange(value ->
+        {
+            pianoModel.setEffect(value);
         });
         return observer;
     }

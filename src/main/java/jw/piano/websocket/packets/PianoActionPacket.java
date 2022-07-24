@@ -24,7 +24,7 @@ public class PianoActionPacket extends WebSocketPacket {
     @PacketProperty
     public long b;
 
-    //Note or pedal
+    //0 node 1 pedal 2 refresh keys
     @PacketProperty
     public byte packetType;
 
@@ -59,6 +59,7 @@ public class PianoActionPacket extends WebSocketPacket {
                 switch (task.type()) {
                     case 0 -> task.model().invokeNote(task.vel(), task.note(), task.vel());
                     case 1 -> task.model().invokePedal(task.vel(), task.note(), task.vel());
+                    case 2 -> task.model().refreshKeys();
                 }
             }
             tasks.clear();

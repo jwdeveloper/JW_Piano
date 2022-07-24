@@ -2,3 +2,39 @@ name: JW_Piano
 version: ${project.version}
 main: jw.piano.Main
 api-version: 1.17
+permissions:
+  piano:
+    description: general piano permissions
+    children:
+      - piano.remove
+      - piano.create
+      - piano.volume
+      - piano.rename
+      - piano.appearance
+      - piano.active
+      - piano.effects
+      - piano.update
+
+  piano.remove:
+    description: removes piano
+
+  piano.create:
+    description: creates piano
+
+  piano.volume:
+    description: sets piano's volume
+
+  piano.rename:
+    description: sets piano's name
+
+  piano.appearance:
+    description: sets piano's appearance
+
+  piano.active:
+    description: sets piano's active or inactive
+
+  piano.effects:
+    description: sets piano's effects
+
+  piano.update:
+    description: download latest version of plugin

@@ -1,6 +1,6 @@
 package jw.piano.gui;
 
-import jw.piano.data.Permissions;
+import jw.piano.data.PianoPermission;
 import jw.piano.data.PianoData;
 import jw.piano.data.Settings;
 import jw.piano.enums.PianoType;
@@ -11,6 +11,7 @@ import jw.piano.service.PianoDataService;
 import jw.piano.service.PianoService;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.enums.LifeTime;
 import jw.spigot_fluent_api.desing_patterns.mediator.FluentMediator;
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
 import jw.spigot_fluent_api.fluent_gui.implementation.crud_list_ui.CrudListUI;
@@ -21,7 +22,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-@Injection
+@Injection(lifeTime = LifeTime.TRANSIENT)
 public class MenuGUI extends CrudListUI<PianoData> {
 
     private final PianoViewGUI pianoViewGUI;
@@ -49,11 +50,11 @@ public class MenuGUI extends CrudListUI<PianoData> {
         getButtonEdit().setActive(false);
 
         getButtonInsert().setDescription("Creates brand a new piano");
-        getButtonInsert().setPermissions(Permissions.PIANO);
-        getButtonInsert().setPermissions(Permissions.CREATE);
+        getButtonInsert().setPermissions(PianoPermission.PIANO);
+        getButtonInsert().setPermissions(PianoPermission.CREATE);
         getButtonDelete().setDescription("Removes a piano");
-        getButtonDelete().setPermissions(Permissions.PIANO);
-        getButtonInsert().setPermissions(Permissions.REMOVE);
+        getButtonDelete().setPermissions(PianoPermission.PIANO);
+        getButtonDelete().setPermissions(PianoPermission.REMOVE);
         ButtonUI.factory().backgroundButton(0,6,Material.GRAY_STAINED_GLASS_PANE)
                         .buildAndAdd(this);
         ButtonUI.builder()
@@ -108,13 +109,15 @@ public class MenuGUI extends CrudListUI<PianoData> {
         {
             final var response = FluentMediator.resolve(new CreatePianoRequest(player), CreatePianoResponse.class);
             if (!response.created()) {
-                setTitle(response.message());
+                setTitle(FluentMessage.message().color(org.bukkit.ChatColor.DARK_RED).inBrackets(response.message()));
+                return;
             }
             close();
         });
         onDelete((player, button) ->
         {
             var piano = button.<PianoData>getDataContext();
+
             var result = pianoDataService.delete(piano.getUuid());
             if (!result) {
                 setTitle("Unable to remove piano");
@@ -127,6 +130,8 @@ public class MenuGUI extends CrudListUI<PianoData> {
             var result = pianoService.get(pianoData.getUuid());
             if (result.isEmpty()) {
                 setTitle("Unable to find piano");
+                refreshContent();
+                return;
             }
             openPianoView(player, result.get());
         });

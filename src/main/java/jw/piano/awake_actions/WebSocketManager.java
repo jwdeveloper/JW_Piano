@@ -2,6 +2,7 @@ package jw.piano.awake_actions;
 import jw.piano.data.Settings;
 import jw.piano.websocket.PianoWebSocket;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_plugin.configuration.pipeline.PluginPipeline;
 
@@ -19,7 +20,7 @@ public class WebSocketManager implements PluginPipeline {
         settings =  FluentInjection.getInjection(Settings.class);
         if(!settings.isRunPianoPlayerServer())
         {
-            FluentPlugin.logInfo("Piano server is disabled to changed that jump to  plugin/JW_Piano/settings.json");
+            FluentLogger.info("Piano server is disabled to changed that jump to  plugin/JW_Piano/settings.json");
         }
         if(settings.getCustomServerIp().equals(""))
         {
