@@ -5,11 +5,16 @@ JW Piano is a one in own kind plugin that give you opportunity to play piano wit
 If you want to play MIDI file or send notes from real piano, download JW Piano client app and connect to your server!
 
 
-#Commands
+Commands
+```
 /piano
   - open gui where you can create/remove/modify pianos
 
-#Permissions
+/piano update
+  - updates plugin only players with 'piano' or 'piano.update' can use it
+```
+
+Permissions
 permissions:
 ```yaml
 permissions:
