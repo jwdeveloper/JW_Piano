@@ -1,36 +1,36 @@
 package jw.piano.game_objects;
 
 import jw.piano.data.PianoData;
-import jw.piano.data.Settings;
+import jw.piano.data.PianoConfig;
 import jw.piano.gui.MenuGUI;
 import jw.piano.game_objects.models.PianoModel;
+import jw.piano.service.PianoSkinService;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
-import jw.spigot_fluent_api.fluent_logger.FluentLogger;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 
 
 @Getter
 public class Piano {
     private final PianoModel pianoModel;
     private final PianoDataObserver pianoDataObserver;
-    private final Settings settings;
-    private PianoInteractionHandler pianoInteractionHandler;
+    private final PianoConfig settings;
+    private PianoSkinService pianoSkinService;
 
     private boolean isCreated;
 
     public Piano(PianoData pianoData) {
 
         pianoModel = new PianoModel();
-        pianoDataObserver = configurePianoObserver(pianoData,pianoModel);
+        pianoDataObserver = configurePianoObserver(pianoData, pianoModel);
 
-        settings = FluentInjection.getInjection(Settings.class);
+        settings = FluentInjection.getInjection(PianoConfig.class);
+        pianoSkinService = FluentInjection.getInjection(PianoSkinService.class);
     }
 
-    public PianoData getPianoData()
-    {
+    public PianoData getPianoData() {
         return pianoDataObserver.getPianoData();
     }
 
@@ -43,9 +43,9 @@ public class Piano {
     public void create() {
         pianoModel.create(pianoDataObserver.getLocationBind().get());
         pianoModel.setVolume(pianoDataObserver.getVolumeBind().get());
-        pianoModel.setPianoType(pianoDataObserver.getPianoTypeBind().get());
+        pianoDataObserver.getSkinIdBind().set(pianoDataObserver.getSkinIdBind().get());
         pianoModel.setEffect(pianoDataObserver.getEffectBind().get());
-        pianoInteractionHandler = new PianoInteractionHandler(pianoModel);
+        pianoModel.getPianoBench().setState(pianoDataObserver.getBenchActiveBind().get());
         isCreated = true;
     }
 
@@ -58,28 +58,28 @@ public class Piano {
         return pianoDataObserver.getLocationBind().get();
     }
 
-    public void handlePlayerInteraction(Player player) {
+    public void handlePlayerInteraction(Player player, Action action) {
         if (!isCreated)
             return;
         if (pianoModel.getOpenViewHitBox().isCollider(player.getEyeLocation(), 3)) {
             openGUIPanel(player);
             return;
         }
-        pianoInteractionHandler.onPlayerClick(player.getEyeLocation());
+        pianoModel.handlePlayerClick(player,action);
     }
 
-    public void handlePlayerPedalPress()
-    {
+    public void handlePlayerPedalPress() {
         if (!isCreated)
             return;
 
-        var sustain = pianoModel.getSustainPedal();
-        if(sustain.isPressed())
-        {
-            sustain.release();
+        if (!pianoDataObserver.getInteractivePedalBind().get()) {
+            return;
         }
-        else
-        {
+
+        var sustain = pianoModel.getSustainPedal();
+        if (sustain.isPressed()) {
+            sustain.release();
+        } else {
             sustain.press();
         }
 
@@ -89,8 +89,7 @@ public class Piano {
         if (!isCreated)
             return false;
 
-        if(location.getWorld() != location.getWorld())
-        {
+        if (location.getWorld() != getLocation().getWorld()) {
             return false;
         }
 
@@ -100,15 +99,25 @@ public class Piano {
     }
 
 
-    private PianoDataObserver configurePianoObserver(PianoData pianoData, PianoModel pianoModel)
-    {
+    private PianoDataObserver configurePianoObserver(PianoData pianoData, PianoModel pianoModel) {
         var observer = new PianoDataObserver();
         observer.observePianoData(pianoData);
-        observer.getPianoTypeBind().onChange(pianoModel::setPianoType);
+        observer.getSkinIdBind().onChange(value ->
+        {
+            var skin = pianoSkinService.getSkinById(value);
+            if (skin.isEmpty()) {
+                return;
+            }
+            pianoModel.setPianoSkin(skin.get());
+        });
         observer.getLocationBind().onChange(value ->
         {
             destroy();
             create();
+        });
+        observer.getBenchActiveBind().onChange(value ->
+        {
+            pianoModel.getPianoBench().setState(value);
         });
         observer.getEnableBind().onChange(value ->
         {

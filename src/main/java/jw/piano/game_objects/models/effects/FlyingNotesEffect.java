@@ -1,5 +1,7 @@
 package jw.piano.game_objects.models.effects;
 
+import jw.piano.data.PianoConfig;
+import jw.piano.enums.PianoKeysConst;
 import jw.piano.game_objects.factories.ArmorStandFactory;
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_tasks.FluentTaskTimer;
@@ -100,12 +102,12 @@ public class FlyingNotesEffect implements PianoEffectInvoker {
             this.location = location;
             this.lastLoc = location;
             pianoY = location.getY();
-            armorStand = ArmorStandFactory.createInvisibleArmorStand(location);
+            armorStand = ArmorStandFactory.create(location);
             armorStand.setSmall(true);
-            itemStack = new ItemStack(Material.WOODEN_HOE, 1);
+            itemStack = new ItemStack(PianoConfig.SKINS_MATERIAL, 1);
             air = new ItemStack(Material.AIR, 1);
             var meta = itemStack.getItemMeta();
-            meta.setCustomModelData(5);
+            meta.setCustomModelData(PianoKeysConst.FLYING_NOTE.getId());
             itemStack.setItemMeta(meta);
             locks = maxLocks;
             if(instance == null)

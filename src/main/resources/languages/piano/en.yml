@@ -1,0 +1,47 @@
+gui:
+  base:
+    insert:
+      desc: Create new piano
+    delete:
+      desc: Remove a piano
+      error: Unable to remove piano
+
+
+  piano-menu:
+    title: Piano menu
+    resourcepack:
+      title: Get resourcepack
+      desc: Click here to get current version of resourcepack
+    client-app:
+      title: Get client app
+      desc: Click here to get current version of client app
+      message: Click here to download
+    click:
+      error: Unable to find piano
+  piano:
+    volume:
+      title: Volume
+    teleport:
+      title: Teleport
+    effect:
+      title: Effect
+    skin:
+      title: Skin
+    rename:
+      title: Rename
+      desc: Set custom piano's name
+    token:
+      title: Click to copy token
+      desc: Connect your real piano or play MIDI files with client app
+    piano-active:
+      title: Piano active
+    pedal-active:
+      title: Active pedal on 'f' press
+    bench-active:
+      title: Bench active
+
+skins:
+  none: none
+  grand-piano: grand piano
+  upright-piano: upright piano
+  electric-piano: electric piano

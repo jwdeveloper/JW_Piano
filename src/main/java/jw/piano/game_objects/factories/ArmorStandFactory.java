@@ -1,8 +1,7 @@
 package jw.piano.game_objects.factories;
 
-import jw.piano.data.Consts;
+import jw.piano.data.PianoConfig;
 import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataType;
@@ -10,7 +9,7 @@ import org.bukkit.persistence.PersistentDataType;
 public class ArmorStandFactory
 {
 
-    public static ArmorStand createInvisibleArmorStand(Location location)
+    public static ArmorStand create(Location location)
     {
         ArmorStand armorStand;
         armorStand = location.getWorld().spawn(location, ArmorStand.class);
@@ -27,7 +26,7 @@ public class ArmorStandFactory
         armorStand.setRotation(0, 0);
 
         var metadata= armorStand.getPersistentDataContainer();
-        metadata.set(Consts.PIANO_NAMESPACE, PersistentDataType.STRING,"");
+        metadata.set(PianoConfig.PIANO_NAMESPACE, PersistentDataType.STRING,"");
         return armorStand;
     }
 

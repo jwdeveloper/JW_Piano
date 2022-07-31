@@ -16,21 +16,27 @@ public class PianoDataObserver
 
     private Observer<Location> locationBind = new Observer();
 
-    private Observer<PianoType> pianoTypeBind = new Observer();
-
     private Observer<PianoEffect> effectBind = new Observer();
+
+    private Observer<Boolean> interactivePedalBind  = new Observer();
+
+    private Observer<Boolean> benchActiveBind  = new Observer();
 
     private Observer<Boolean> enableBind  = new Observer();
 
     private Observer<Integer> volumeBind  = new Observer();
 
+    private Observer<Integer> skinIdBind  = new Observer();
+
     public PianoDataObserver()
     {
+        skinIdBind.bind(PianoData.class,"skinId");
+        interactivePedalBind.bind(PianoData.class,"interactivePedal");
         locationBind.bind(PianoData.class,"location");
-        pianoTypeBind.bind(PianoData.class,"pianoType");
         enableBind.bind(PianoData.class,"enable");
         volumeBind.bind(PianoData.class,"volume");
         effectBind.bind(PianoData.class,"effect");
+        benchActiveBind.bind(PianoData.class,"benchActive");
     }
 
     public Optional<PianoData> getObservedPianoData()
@@ -41,11 +47,13 @@ public class PianoDataObserver
     public void observePianoData(PianoData pianoData)
     {
         this.pianoData = pianoData;
+        skinIdBind.setObject(pianoData);
+        interactivePedalBind.setObject(pianoData);
         locationBind.setObject(pianoData);
-        pianoTypeBind.setObject(pianoData);
         enableBind.setObject(pianoData);
         volumeBind.setObject(pianoData);
         effectBind.setObject(pianoData);
+        benchActiveBind.setObject(pianoData);
     }
 
     @Override
@@ -53,7 +61,6 @@ public class PianoDataObserver
         return "PianoDataObserver{" +
                 "pianoData=" + pianoData +
                 ", locationBind=" + locationBind +
-                ", pianoTypeBind=" + pianoTypeBind +
                 ", effectBind=" + effectBind +
                 ", enableBind=" + enableBind +
                 ", volumeBind=" + volumeBind +

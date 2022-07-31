@@ -1,6 +1,6 @@
 package jw.piano.listeners;
 
-import jw.piano.data.Settings;
+import jw.piano.data.PianoConfig;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
 import jw.spigot_fluent_api.fluent_events.EventBase;
@@ -10,10 +10,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 @Injection(lazyLoad = false)
 public class PlayerJoinListener extends EventBase
 {
-    private final Settings settings;
+    private final PianoConfig settings;
 
     @Inject
-    public PlayerJoinListener(Settings settings)
+    public PlayerJoinListener(PianoConfig settings)
     {
         this.settings = settings;
     }
@@ -25,6 +25,6 @@ public class PlayerJoinListener extends EventBase
         {
             return;
         }
-        event.getPlayer().setTexturePack(settings.getTexturesURL());
+      //  event.getPlayer().setTexturePack(settings.getTexturesURL());
     }
 }

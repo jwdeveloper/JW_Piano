@@ -1,5 +1,6 @@
 package jw.piano.game_objects.models;
 
+import jw.piano.enums.PianoKeysConst;
 import org.bukkit.Location;
 
 public class PianoPedalModel extends CustomModel
@@ -7,7 +8,7 @@ public class PianoPedalModel extends CustomModel
     public PianoPedalModel(Location location)
     {
         super(location);
-        setCustomModelData(6);
+        setCustomModelData(PianoKeysConst.PEDAL.getId());
     }
 
 
@@ -23,13 +24,13 @@ public class PianoPedalModel extends CustomModel
 
     @Override
     public void press(int id, int velocity) {
-        setCustomModelData(7);
+        setCustomModelData(PianoKeysConst.PEDAL_DOWN.getId());
         isPressed=true;
     }
 
     @Override
     public void release(int id, int velocity) {
-        setCustomModelData(6);
+        setCustomModelData(PianoKeysConst.PEDAL.getId());
         isPressed =false;
     }
 

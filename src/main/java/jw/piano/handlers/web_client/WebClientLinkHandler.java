@@ -1,6 +1,6 @@
 package jw.piano.handlers.web_client;
 
-import jw.piano.data.Settings;
+import jw.piano.data.PianoConfig;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
 import jw.spigot_fluent_api.desing_patterns.mediator.interfaces.MediatorHandler;
@@ -11,7 +11,7 @@ import java.util.Base64;
 @Injection
 public class WebClientLinkHandler implements MediatorHandler<WebClientLinkRequest, String> {
     @Inject
-    private Settings settings;
+    private PianoConfig settings;
 
     @Override
     public String handle(final WebClientLinkRequest request) {
@@ -26,7 +26,7 @@ public class WebClientLinkHandler implements MediatorHandler<WebClientLinkReques
     private WebClientLinkDto getWebClientLinkDto(final WebClientLinkRequest request) {
         final var pianoId = request.getPianoData().getUuid();
         return new WebClientLinkDto(
-                settings.getServerIp(),
+                settings.SERVER_IP,
                 settings.getWebSocketPort(),
                 Long.toString(pianoId.getMostSignificantBits()),
                 Long.toString(pianoId.getLeastSignificantBits()));

@@ -1,10 +1,11 @@
 package jw.piano.awake_actions;
-import jw.piano.data.Settings;
+import jw.piano.data.PianoConfig;
 import jw.piano.websocket.PianoWebSocket;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_plugin.configuration.pipeline.PluginPipeline;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.PluginPipeline;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.PipelineOptions;
 
 import java.io.*;
 import java.net.URL;
@@ -12,24 +13,23 @@ import java.net.URL;
 public class WebSocketManager implements PluginPipeline {
 
     private PianoWebSocket webSocket;
-    private Settings settings;
+    private PianoConfig settings;
 
     @Override
-    public void pluginEnable(FluentPlugin fluentPlugin) throws Exception {
+    public void pluginEnable(PipelineOptions options) throws Exception {
 
-        settings =  FluentInjection.getInjection(Settings.class);
+        settings =  FluentInjection.getInjection(PianoConfig.class);
         if(!settings.isRunPianoPlayerServer())
         {
             FluentLogger.info("Piano server is disabled to changed that jump to  plugin/JW_Piano/settings.json");
         }
         if(settings.getCustomServerIp().equals(""))
         {
-            var ip = getServerPublicIP();
-            settings.setServerIp(ip);
+            settings.SERVER_IP = getServerPublicIP();
         }
         else
         {
-            settings.setServerIp(settings.getCustomServerIp());
+            settings.SERVER_IP = settings.getCustomServerIp();
         }
 
         webSocket = FluentInjection.getInjection(PianoWebSocket.class);
