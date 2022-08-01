@@ -4,12 +4,19 @@ https://www.spigotmc.org/resources/piano.103490/
 JW Piano is a one in own kind plugin that give you opportunity to play piano with your firends! But this is only top on the iceberg.
 If you want to play MIDI file or send notes from real piano, download JW Piano client app and connect to your server!
 
+Plugin showcase
+https://www.youtube.com/watch?v=F4iKXAMIioo&t=0s&ab_channel=JW
 
-#Commands
+Commands
+```
 /piano
   - open gui where you can create/remove/modify pianos
 
-#Permissions
+/piano update
+  - updates plugin only players with 'piano' or 'piano.update' can use it
+```
+
+Permissions
 permissions:
 ```yaml
 permissions:
@@ -22,6 +29,7 @@ permissions:
   - piano.appearance
   - piano.active
   - piano.effects
+  - piano.update
 ```
 
 
