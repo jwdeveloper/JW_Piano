@@ -41,6 +41,9 @@ permissions:
   piano.update:
     description: download latest version of plugin
 
+  piano.pedal:
+    description: set if pedal pressing is active
+
   piano.teleport:
     description: allows player to teleport to piano
 
