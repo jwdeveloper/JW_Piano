@@ -1,7 +1,7 @@
 package jw.piano.handlers.create_piano;
 
 import jw.piano.data.PianoData;
-import jw.piano.data.PianoConfig;
+import jw.piano.data.PluginConfig;
 import jw.piano.service.PianoDataService;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
@@ -15,7 +15,7 @@ public class CreatePianoHandler implements MediatorHandler<CreatePianoRequest, C
     private PianoDataService pianoDataService;
 
     @Inject
-    private PianoConfig settings;
+    private PluginConfig settings;
 
     @Override
     public CreatePianoResponse handle(CreatePianoRequest request)

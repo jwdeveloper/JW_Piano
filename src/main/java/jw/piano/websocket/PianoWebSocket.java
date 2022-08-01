@@ -1,7 +1,7 @@
 package jw.piano.websocket;
 
 
-import jw.piano.data.PianoConfig;
+import jw.piano.data.PluginConfig;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
@@ -13,10 +13,10 @@ import jw.spigot_fluent_api.web_socket.WebSocketPacket;
 public class PianoWebSocket extends WebSocketBase
 {
     @Inject
-    public PianoWebSocket(PianoConfig settings)
+    public PianoWebSocket(PluginConfig settings)
     {
-        super(settings.getWebSocketPort());
-        FluentLogger.info("Piano server is running on port "+settings.getWebSocketPort());
+        super(settings.getPort());
+        FluentLogger.info("Piano server is running on "+settings.SERVER_IP+":"+settings.getPort());
         var packets = FluentInjection.getInjectionContainer().getAllByParentType(WebSocketPacket.class);
         this.registerPackets(packets);
     }

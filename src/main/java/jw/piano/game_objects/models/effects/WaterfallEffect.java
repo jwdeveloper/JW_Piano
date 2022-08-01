@@ -1,6 +1,6 @@
 package jw.piano.game_objects.models.effects;
 
-import jw.piano.data.PianoConfig;
+import jw.piano.data.PluginConfig;
 import jw.spigot_fluent_api.fluent_tasks.FluentTaskTimer;
 import jw.spigot_fluent_api.fluent_tasks.FluentTasks;
 import org.bukkit.Location;
@@ -21,7 +21,7 @@ public class WaterfallEffect implements PianoEffectInvoker {
     private final double particleSpeedZ = 0.005;
     public WaterfallEffect() {
         particles = new ArrayList<>(100);
-        var color = PianoConfig.PARTICLE_COLOR;
+        var color = PluginConfig.PARTICLE_COLOR;
         dustOptions = new Particle.DustOptions(color, 0.15F);
     }
 

@@ -2,7 +2,7 @@ package jw.piano.gui;
 
 import jw.piano.data.PianoPermission;
 import jw.piano.data.PianoData;
-import jw.piano.data.PianoConfig;
+import jw.piano.data.PluginConfig;
 import jw.piano.game_objects.Piano;
 import jw.piano.handlers.create_piano.CreatePianoRequest;
 import jw.piano.handlers.create_piano.CreatePianoResponse;
@@ -28,12 +28,12 @@ public class MenuGUI extends CrudListUI<PianoData> {
     private final PianoViewGUI pianoViewGUI;
     private final PianoDataService pianoDataService;
     private final PianoService pianoService;
-    private final PianoConfig settings;
+    private final PluginConfig settings;
 
     @Inject
     public MenuGUI(PianoViewGUI pianoViewGUI,
                    PianoDataService pianoDataService,
-                   PianoConfig settings,
+                   PluginConfig settings,
                    PianoService pianoService) {
         super(Lang.get("gui.piano-menu.title"), 6);
         this.pianoService = pianoService;
@@ -48,7 +48,6 @@ public class MenuGUI extends CrudListUI<PianoData> {
         pianoViewGUI.setParent(this);
 
         getButtonEdit().setActive(false);
-
         getButtonInsert().setDescription(Lang.get("gui.base.insert.desc"));
         getButtonInsert().setPermissions(PianoPermission.PIANO);
         getButtonInsert().setPermissions(PianoPermission.CREATE);
@@ -99,7 +98,7 @@ public class MenuGUI extends CrudListUI<PianoData> {
             }
             else
             {
-                button.setCustomMaterial(PianoConfig.SKINS_MATERIAL,data.getSkinId());
+                button.setCustomMaterial(PluginConfig.SKINS_MATERIAL,data.getSkinId());
             }
 
             button.setDataContext(data);

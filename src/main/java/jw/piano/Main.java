@@ -1,9 +1,10 @@
 package jw.piano;
 
 
-import jw.piano.data.PianoConfig;
-import jw.piano.awake_actions.PianoManager;
-import jw.piano.awake_actions.WebSocketManager;
+import jw.piano.awake_actions.FileVersionAction;
+import jw.piano.data.PluginConfig;
+import jw.piano.awake_actions.PianoSetupAction;
+import jw.piano.awake_actions.WebSocketAction;
 import jw.piano.gui.MenuGUI;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
@@ -31,13 +32,14 @@ public final class Main extends FluentPlugin {
                 })
                 .useMetrics(() ->
                 {
-                    return PianoConfig.METRICTS_ID;
+                    return PluginConfig.METRICTS_ID;
                 }).useUpdates((a) ->
                 {
-                    a.setGithub(PianoConfig.PLUGIN_UPDATE_URL);
+                    a.setGithub(PluginConfig.PLUGIN_UPDATE_URL);
                 })
-                .useCustomAction(new PianoManager())
-                .useCustomAction(new WebSocketManager());
+                .useCustomAction(new FileVersionAction())
+                .useCustomAction(new PianoSetupAction())
+                .useCustomAction(new WebSocketAction());
     }
 
 

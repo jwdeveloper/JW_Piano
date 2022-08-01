@@ -20,6 +20,8 @@ public class PianoData extends DataModel
     private PianoEffect effect = PianoEffect.FLYING_NOTE;
     private Boolean interactivePedal = true;
     private Boolean benchActive =true;
+    private Boolean desktopClientAllowed = true;
+    private Boolean detectKeyPress = true;
     private Integer skinId = 109;
 
     public String[] getDescriptionLines() {

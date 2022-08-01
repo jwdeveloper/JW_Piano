@@ -1,6 +1,6 @@
 package jw.piano.game_objects.models;
 
-import jw.piano.data.PianoConfig;
+import jw.piano.data.PluginConfig;
 import jw.piano.game_objects.factories.ArmorStandFactory;
 import jw.spigot_fluent_api.fluent_game_object.GameObject;
 import org.bukkit.Location;
@@ -20,7 +20,7 @@ public abstract class CustomModel extends GameObject
      {
           this.armorStand = ArmorStandFactory.create(location);
           this.getArmorStand().setSmall(true);
-          this.itemStack  = new ItemStack(PianoConfig.SKINS_MATERIAL,1);
+          this.itemStack  = new ItemStack(PluginConfig.SKINS_MATERIAL,1);
           this.location = location;
      }
 

@@ -1,6 +1,6 @@
 package jw.piano.game_objects.factories;
 
-import jw.piano.data.PianoConfig;
+import jw.piano.data.PluginConfig;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.EquipmentSlot;
@@ -26,7 +26,7 @@ public class ArmorStandFactory
         armorStand.setRotation(0, 0);
 
         var metadata= armorStand.getPersistentDataContainer();
-        metadata.set(PianoConfig.PIANO_NAMESPACE, PersistentDataType.STRING,"");
+        metadata.set(PluginConfig.PIANO_NAMESPACE, PersistentDataType.STRING,"");
         return armorStand;
     }
 

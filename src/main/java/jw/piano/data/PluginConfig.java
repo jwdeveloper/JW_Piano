@@ -19,7 +19,7 @@ import java.util.List;
 @Injection
 @YmlFile
 @Data
-public class PianoConfig implements FluentConfigSection {
+public class PluginConfig implements FluentConfigSection {
 
 
     @YmlProperty(path = "piano-config",
@@ -37,7 +37,7 @@ public class PianoConfig implements FluentConfigSection {
             path = "plugin",
             name = "auto-download-resourcepack",
             description = "automatically download texture pack when player joins to server")
-    private boolean autoDownloadTexturepack = true;
+    private boolean downloadResourcePack = true;
 
     @YmlProperty(
             path = "piano-server",
@@ -60,11 +60,12 @@ public class PianoConfig implements FluentConfigSection {
             path = "piano-server",
             name = "port",
             description = "Make sure port is open on your hosting")
-    private int webSocketPort = 2022;
+    private int port = 2022;
 
 
-    @YmlProperty(name = "custom-skins", description = "you can attache your own skin here!" +
-            " just make new resourcepack and create model for `stick` with custom model ID")
+   // @YmlProperty(name = "custom-skins", description = "you can attache your own skin here!" +
+   //         " just make new resourcepack and create model for `stick` with custom model ID")
+    @YmlIgnore
     private List<PianoSkin> skins = new ArrayList<>();
 
 

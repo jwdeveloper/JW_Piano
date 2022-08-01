@@ -40,3 +40,12 @@ permissions:
 
   piano.update:
     description: download latest version of plugin
+
+  piano.teleport:
+    description: allows player to teleport to piano
+
+  piano.detect-key:
+    description: set if players can press keys of certain piano
+
+  piano.desktop-client:
+    description: set if players can use dektop app

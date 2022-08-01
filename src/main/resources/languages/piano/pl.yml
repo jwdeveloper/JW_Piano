@@ -40,6 +40,12 @@ gui:
     bench-active:
       title: ława aktywna
 
+    desktop-client-active:
+      title: korzystanie z Desktop app aktywne
+      disabled: Desktop app jest wyłączona dla tego pianina
+    detect-key-active:
+      title: wykrywanie kliknięć klawiszy aktywne
+
 skins:
   none: niewidzialny
   grand-piano: fortepian

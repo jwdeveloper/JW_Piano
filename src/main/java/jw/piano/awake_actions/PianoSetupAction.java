@@ -2,7 +2,7 @@ package jw.piano.awake_actions;
 
 import jw.piano.data.PianoData;
 import jw.piano.data.PianoDataRepository;
-import jw.piano.data.PianoConfig;
+import jw.piano.data.PluginConfig;
 import jw.piano.enums.PianoEffect;
 import jw.piano.service.PianoService;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
@@ -11,7 +11,7 @@ import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.PluginPipeline
 import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.PipelineOptions;
 import org.bukkit.persistence.PersistentDataType;
 
-public class PianoManager implements PluginPipeline {
+public class PianoSetupAction implements PluginPipeline {
 
     @Override
     public void pluginEnable(PipelineOptions options) throws Exception {
@@ -30,7 +30,7 @@ public class PianoManager implements PluginPipeline {
         var loc = pianoData.getLocation();
         var entities = loc.getWorld().getNearbyEntities(loc, 4, 6, 4);
         for (var e : entities) {
-            if (e.getPersistentDataContainer().has(PianoConfig.PIANO_NAMESPACE, PersistentDataType.STRING)) {
+            if (e.getPersistentDataContainer().has(PluginConfig.PIANO_NAMESPACE, PersistentDataType.STRING)) {
                 e.remove();
             }
         }

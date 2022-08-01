@@ -1,6 +1,6 @@
 package jw.piano.game_objects.models.effects;
 
-import jw.piano.data.PianoConfig;
+import jw.piano.data.PluginConfig;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -13,7 +13,7 @@ public class SimpleParticleEffect implements PianoEffectInvoker {
 
     public SimpleParticleEffect()
     {
-        var color  = PianoConfig.PARTICLE_COLOR;
+        var color  = PluginConfig.PARTICLE_COLOR;
         dustOptions = new Particle.DustOptions(color, 0.3F);
     }
 

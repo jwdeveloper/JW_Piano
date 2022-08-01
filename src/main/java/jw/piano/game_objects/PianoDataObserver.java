@@ -20,6 +20,10 @@ public class PianoDataObserver
 
     private Observer<Boolean> interactivePedalBind  = new Observer();
 
+    private Observer<Boolean> desktopClientAllowedBind  = new Observer();
+
+    private Observer<Boolean> detectPressInMinecraftBind  = new Observer();
+
     private Observer<Boolean> benchActiveBind  = new Observer();
 
     private Observer<Boolean> enableBind  = new Observer();
@@ -30,6 +34,8 @@ public class PianoDataObserver
 
     public PianoDataObserver()
     {
+        desktopClientAllowedBind.bind(PianoData.class,"desktopClientAllowed");
+        detectPressInMinecraftBind.bind(PianoData.class,"detectKeyPress");
         skinIdBind.bind(PianoData.class,"skinId");
         interactivePedalBind.bind(PianoData.class,"interactivePedal");
         locationBind.bind(PianoData.class,"location");
@@ -54,6 +60,8 @@ public class PianoDataObserver
         volumeBind.setObject(pianoData);
         effectBind.setObject(pianoData);
         benchActiveBind.setObject(pianoData);
+        desktopClientAllowedBind.setObject(pianoData);
+        detectPressInMinecraftBind.setObject(pianoData);
     }
 
     @Override

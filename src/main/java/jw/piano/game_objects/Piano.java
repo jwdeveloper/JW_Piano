@@ -1,7 +1,7 @@
 package jw.piano.game_objects;
 
 import jw.piano.data.PianoData;
-import jw.piano.data.PianoConfig;
+import jw.piano.data.PluginConfig;
 import jw.piano.gui.MenuGUI;
 import jw.piano.game_objects.models.PianoModel;
 import jw.piano.service.PianoSkinService;
@@ -16,7 +16,7 @@ import org.bukkit.event.block.Action;
 public class Piano {
     private final PianoModel pianoModel;
     private final PianoDataObserver pianoDataObserver;
-    private final PianoConfig settings;
+    private final PluginConfig settings;
     private PianoSkinService pianoSkinService;
 
     private boolean isCreated;
@@ -26,7 +26,7 @@ public class Piano {
         pianoModel = new PianoModel();
         pianoDataObserver = configurePianoObserver(pianoData, pianoModel);
 
-        settings = FluentInjection.getInjection(PianoConfig.class);
+        settings = FluentInjection.getInjection(PluginConfig.class);
         pianoSkinService = FluentInjection.getInjection(PianoSkinService.class);
     }
 
@@ -44,6 +44,8 @@ public class Piano {
         pianoModel.create(pianoDataObserver.getLocationBind().get());
         pianoModel.setVolume(pianoDataObserver.getVolumeBind().get());
         pianoDataObserver.getSkinIdBind().set(pianoDataObserver.getSkinIdBind().get());
+        pianoDataObserver.getDesktopClientAllowedBind().set(pianoDataObserver.getDesktopClientAllowedBind().get());
+        pianoDataObserver.getDetectPressInMinecraftBind().set(pianoDataObserver.getDetectPressInMinecraftBind().get());
         pianoModel.setEffect(pianoDataObserver.getEffectBind().get());
         pianoModel.getPianoBench().setState(pianoDataObserver.getBenchActiveBind().get());
         isCreated = true;
@@ -61,8 +63,13 @@ public class Piano {
     public void handlePlayerInteraction(Player player, Action action) {
         if (!isCreated)
             return;
+
         if (pianoModel.getOpenViewHitBox().isCollider(player.getEyeLocation(), 3)) {
             openGUIPanel(player);
+            return;
+        }
+        if(!pianoDataObserver.getDetectPressInMinecraftBind().get())
+        {
             return;
         }
         pianoModel.handlePlayerClick(player,action);

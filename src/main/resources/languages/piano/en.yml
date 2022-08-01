@@ -6,7 +6,6 @@ gui:
       desc: Remove a piano
       error: Unable to remove piano
 
-
   piano-menu:
     title: Piano menu
     resourcepack:
@@ -15,7 +14,7 @@ gui:
     client-app:
       title: Get client app
       desc: Click here to get current version of client app
-      message: Click here to download
+      message: Click here to download desktop app
     click:
       error: Unable to find piano
   piano:
@@ -33,12 +32,22 @@ gui:
     token:
       title: Click to copy token
       desc: Connect your real piano or play MIDI files with client app
+      message-1: Copy and paste token to Piano client app
+      message-2: Value will be copied after click
+      click-to-copy: Click to copy token
     piano-active:
       title: Piano active
     pedal-active:
       title: Active pedal on 'f' press
     bench-active:
       title: Bench active
+
+    desktop-client-active:
+      title: Desktop app access active
+      disabled: Desktop app is disabled for this piano
+
+    detect-key-active:
+      title: Pressing piano keys active
 
 skins:
   none: none

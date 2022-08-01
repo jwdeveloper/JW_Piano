@@ -1,7 +1,7 @@
 package jw.piano.service;
 
 import jw.piano.data.PianoSkin;
-import jw.piano.data.PianoConfig;
+import jw.piano.data.PluginConfig;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
 import jw.spigot_fluent_api.fluent_plugin.languages.Lang;
@@ -17,7 +17,7 @@ public class PianoSkinService
     private final List<PianoSkin> skinList;
 
     @Inject
-    public PianoSkinService(PianoConfig settings)
+    public PianoSkinService(PluginConfig settings)
     {
         skinList = new ArrayList<>();
         skinList.addAll(defaultSkins());

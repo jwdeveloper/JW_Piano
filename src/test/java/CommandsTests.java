@@ -1,4 +1,4 @@
-import jw.piano.data.PianoConfig;
+import jw.piano.data.PluginConfig;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.Container;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.enums.LifeTime;
@@ -12,7 +12,7 @@ public class CommandsTests
     public void ShouldLoadFile() throws InterruptedException, IOException {
 
         Container container = new Container();
-        container.register(PianoConfig.class, LifeTime.SINGLETON);
+        container.register(PluginConfig.class, LifeTime.SINGLETON);
         FluentInjection.setInjectionContainer(container);
     }
 
