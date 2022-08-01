@@ -70,7 +70,7 @@ public class PluginConfig implements FluentConfigSection {
 
 
     @YmlIgnore
-    public final static String TEXTURES_URL = "https://download.mc-packs.net/pack/f4bfbb9e82edaa8317aa95d4d3dfafbd51157ef2.zip";
+    public final static String TEXTURES_URL = "https://download.mc-packs.net/pack/6fd6764e874d973fecd2d6debce416671399782b.zip";
     @YmlIgnore
     public final static String CLIENT_APP_URL = "https://github.com/jwdeveloper/JW_Piano_Desktop/releases/latest/download/JW_Piano_Desktop.jar";
     @YmlIgnore

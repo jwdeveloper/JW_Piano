@@ -25,6 +25,6 @@ public class PlayerJoinListener extends EventBase
         {
             return;
         }
-      //  event.getPlayer().setTexturePack(settings.getTexturesURL());
+        event.getPlayer().setTexturePack(settings.TEXTURES_URL);
     }
 }
