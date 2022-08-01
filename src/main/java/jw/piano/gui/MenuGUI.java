@@ -2,8 +2,7 @@ package jw.piano.gui;
 
 import jw.piano.data.PianoPermission;
 import jw.piano.data.PianoData;
-import jw.piano.data.Settings;
-import jw.piano.enums.PianoType;
+import jw.piano.data.PluginConfig;
 import jw.piano.game_objects.Piano;
 import jw.piano.handlers.create_piano.CreatePianoRequest;
 import jw.piano.handlers.create_piano.CreatePianoResponse;
@@ -16,6 +15,7 @@ import jw.spigot_fluent_api.desing_patterns.mediator.FluentMediator;
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
 import jw.spigot_fluent_api.fluent_gui.implementation.crud_list_ui.CrudListUI;
 import jw.spigot_fluent_api.fluent_message.FluentMessage;
+import jw.spigot_fluent_api.fluent_plugin.languages.Lang;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -28,14 +28,14 @@ public class MenuGUI extends CrudListUI<PianoData> {
     private final PianoViewGUI pianoViewGUI;
     private final PianoDataService pianoDataService;
     private final PianoService pianoService;
-    private final Settings settings;
+    private final PluginConfig settings;
 
     @Inject
     public MenuGUI(PianoViewGUI pianoViewGUI,
                    PianoDataService pianoDataService,
-                   Settings settings,
+                   PluginConfig settings,
                    PianoService pianoService) {
-        super("Pianos", 6);
+        super(Lang.get("gui.piano-menu.title"), 6);
         this.pianoService = pianoService;
         this.settings = settings;
         this.pianoDataService = pianoDataService;
@@ -48,11 +48,10 @@ public class MenuGUI extends CrudListUI<PianoData> {
         pianoViewGUI.setParent(this);
 
         getButtonEdit().setActive(false);
-
-        getButtonInsert().setDescription("Creates brand a new piano");
+        getButtonInsert().setDescription(Lang.get("gui.base.insert.desc"));
         getButtonInsert().setPermissions(PianoPermission.PIANO);
         getButtonInsert().setPermissions(PianoPermission.CREATE);
-        getButtonDelete().setDescription("Removes a piano");
+        getButtonDelete().setDescription(Lang.get("gui.base.delete.desc"));
         getButtonDelete().setPermissions(PianoPermission.PIANO);
         getButtonDelete().setPermissions(PianoPermission.REMOVE);
         ButtonUI.factory().backgroundButton(0,6,Material.GRAY_STAINED_GLASS_PANE)
@@ -60,13 +59,14 @@ public class MenuGUI extends CrudListUI<PianoData> {
         ButtonUI.builder()
                 .setMaterial(Material.CAMPFIRE)
                 .setHighlighted()
-                .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Get texture pack"))
-                .setDescription("If you don't 3D piano models",
-                               "better click up here")
+                .setTitle(FluentMessage.message()
+                .color(org.bukkit.ChatColor.AQUA)
+                .inBrackets(Lang.get("gui.piano-menu.resourcepack.title")))
+                .setDescription(Lang.get("gui.piano-menu.resourcepack.desc"))
                 .setLocation(0, 2)
                 .setOnClick((player, button) ->
                 {
-                    player.setTexturePack(settings.getTexturesURL());
+                    player.setTexturePack(settings.TEXTURES_URL);
                 })
                 .buildAndAdd(this);
 
@@ -74,16 +74,15 @@ public class MenuGUI extends CrudListUI<PianoData> {
         ButtonUI.builder()
                 .setMaterial(Material.SOUL_CAMPFIRE)
                 .setHighlighted()
-
-                .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets("Get client app"))
-                .setDescription("Download Piano client app to",
-                        "connect your real piano ",
-                        "or just playing midi files")
+                .setTitle(FluentMessage.message()
+                        .color(org.bukkit.ChatColor.AQUA)
+                        .inBrackets(Lang.get("gui.piano-menu.client-app.title")))
+                .setDescription(Lang.get("gui.piano-menu.client-app.desc"))
                 .setLocation(0, 3)
                 .setOnClick((player, button) ->
                 {
-                    final var message = new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + "[click here to download]");
-                    message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, settings.getClientAppURL()));
+                    final var message = new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + "["+ Lang.get("gui.piano-menu.client-app.message")+"]");
+                    message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, settings.CLIENT_APP_URL));
                     player.spigot().sendMessage(message);
                     close();
                 })
@@ -93,13 +92,13 @@ public class MenuGUI extends CrudListUI<PianoData> {
         {
             button.setTitlePrimary(data.getName());
             button.setDescription(data.getDescriptionLines());
-            if(data.getPianoType() == PianoType.NONE)
+            if(data.getSkinId() == 0)
             {
                 button.setMaterial(Material.JUKEBOX);
             }
             else
             {
-                button.setCustomMaterial(Material.WOODEN_HOE,data.getPianoType().getId());
+                button.setCustomMaterial(PluginConfig.SKINS_MATERIAL,data.getSkinId());
             }
 
             button.setDataContext(data);
@@ -117,10 +116,9 @@ public class MenuGUI extends CrudListUI<PianoData> {
         onDelete((player, button) ->
         {
             var piano = button.<PianoData>getDataContext();
-
             var result = pianoDataService.delete(piano.getUuid());
             if (!result) {
-                setTitle("Unable to remove piano");
+                setTitle(Lang.get("gui.base.delete.error"));
             }
             refreshContent();
         });
@@ -129,7 +127,7 @@ public class MenuGUI extends CrudListUI<PianoData> {
             var pianoData = button.<PianoData>getDataContext();
             var result = pianoService.get(pianoData.getUuid());
             if (result.isEmpty()) {
-                setTitle("Unable to find piano");
+                setTitle(Lang.get("gui.piano-menu.click.error"));
                 refreshContent();
                 return;
             }

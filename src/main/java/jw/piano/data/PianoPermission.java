@@ -21,13 +21,23 @@ public class PianoPermission
 
     public final static String RENAME = PIANO +".rename";
 
-    public final static String APPEARANCE = PIANO +".appearance";
+    public final static String SKIN = PIANO +".skin";
 
     public final static String ACTIVE = PIANO +".active";
 
     public final static String EFFECTS = PIANO +".effects";
 
-    public final static String UPDATE = PIANO +".update";
+    public final static String PEDAl = PIANO +".pedal";
+
+
+    public final static String BENCH = PIANO +".bench";
+
+    public final static String TELEPORT = PIANO +".teleport";
+
+    public final static String DETECT_KEY = PIANO +".detect-key";
+
+    public final static String DESKTOP_CLIENT = PIANO +".desktop-client";
+
     public static void register() {
 
         try

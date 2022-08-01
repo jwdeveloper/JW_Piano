@@ -34,22 +34,25 @@ public class PlayerInteractionListener extends EventBase {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteractEvent(PlayerInteractEvent event) {
-        if (event.getAction() != Action.LEFT_CLICK_AIR && event.getAction() != Action.LEFT_CLICK_BLOCK)
+        if(isPluginDisabled())
+        {
             return;
+        }
+
 
         final var player = event.getPlayer();
         final var isPlayerUsingPiano = pianoUsers.containsKey(player);
         if (!isPlayerUsingPiano) {
             var pianoOptional = pianoService.getNearestPiano(player.getLocation());
-            if(pianoOptional.isEmpty())
+            if(pianoOptional.isEmpty())  //there is no piano in player the nearest location;
             {
-                //there is no piano in player the nearest location;
                 return;
             }
             pianoUsers.put(player, pianoOptional.get());
         }
-        var piano = pianoUsers.get(player);
-        piano.handlePlayerInteraction(player);
+
+
+        pianoUsers.get(player).handlePlayerInteraction(player, event.getAction());
         event.setCancelled(true);
     }
 
@@ -75,7 +78,10 @@ public class PlayerInteractionListener extends EventBase {
 
     @EventHandler
     public void onChangeSlotEvent(PlayerSwapHandItemsEvent event) {
-
+        if(isPluginDisabled())
+        {
+            return;
+        }
         final var piano = pianoUsers.get(event.getPlayer());
         if(piano == null)
             return;
@@ -88,6 +94,10 @@ public class PlayerInteractionListener extends EventBase {
     @EventHandler
     public void playerQuitEvent(PlayerQuitEvent event)
     {
+        if(isPluginDisabled())
+        {
+            return;
+        }
         pianoUsers.remove(event.getPlayer());
     }
 
