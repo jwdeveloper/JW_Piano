@@ -79,6 +79,11 @@ public class PianoActionPacket extends WebSocketPacket {
         {
             return;
         }
+        if(!piano.get().getPianoData().getDesktopClientAllowed())
+        {
+            return;
+        }
+
         final var pianoModel = piano.get().getPianoModel();
         tasks.add(new PianoAction(pianoModel,velocity,nodeId,packetType));
     }

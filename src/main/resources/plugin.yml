@@ -10,10 +10,12 @@ permissions:
       - piano.create
       - piano.volume
       - piano.rename
-      - piano.appearance
+      - piano.skin
       - piano.active
       - piano.effects
       - piano.update
+      - piano.pedal
+      - piano.teleport
 
   piano.remove:
     description: removes piano
@@ -27,8 +29,8 @@ permissions:
   piano.rename:
     description: sets piano's name
 
-  piano.appearance:
-    description: sets piano's appearance
+  piano.skin:
+    description: sets piano's skin
 
   piano.active:
     description: sets piano's active or inactive
@@ -38,3 +40,15 @@ permissions:
 
   piano.update:
     description: download latest version of plugin
+
+  piano.pedal:
+    description: set if pedal pressing is active
+
+  piano.teleport:
+    description: allows player to teleport to piano
+
+  piano.detect-key:
+    description: set if players can press keys of certain piano
+
+  piano.desktop-client:
+    description: set if players can use dektop app

@@ -1,0 +1,53 @@
+gui:
+  base:
+    insert:
+      desc: Stworz pianino
+    delete:
+      desc: Usuń pianino
+      error: Błąd, nie można usunąć pianina
+
+
+  piano-menu:
+    title: Menu główne
+    resourcepack:
+      title: Pobierz Resourcepack
+      desc: Kliknij aby probrać najnowszą wersje
+    client-app:
+      title: Pobierz client app
+      desc: Kliknij aby probrać client app
+      message: Kliknij tutaj
+    click:
+      error: Nie udało się znaleźć pianina
+  piano:
+    volume:
+      title: Głośność
+    teleport:
+      title: Teleportacja
+    effect:
+      title: Effekty
+    skin:
+      title: Skin
+    rename:
+      title: Zmień nazwe
+      desc: Ustaw własną nazwe pianina
+    token:
+      title: Kliknij aby skopiować token
+      desc: Graj na swoim keyboardzie lub odtwarzaj pliki MIDI
+    piano-active:
+      title: Pianino aktywne
+    pedal-active:
+      title: Aktywuj pedał pod 'f'
+    bench-active:
+      title: ława aktywna
+
+    desktop-client-active:
+      title: korzystanie z Desktop app aktywne
+      disabled: Desktop app jest wyłączona dla tego pianina
+    detect-key-active:
+      title: wykrywanie kliknięć klawiszy aktywne
+
+skins:
+  none: niewidzialny
+  grand-piano: fortepian
+  upright-piano: pianino
+  electric-piano: pianino elektryczne

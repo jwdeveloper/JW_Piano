@@ -10,7 +10,6 @@ public class PianoDetailsMapper implements MapperProfile<Piano,PianoDetailsRespo
         var result = new PianoDetailsResponse();
         var data = piano.getPianoData();
         result.setName(data.getName());
-        result.setType(data.getPianoType().name());
         result.setVolume(data.getVolume());
         result.setLocation(data.getLocation().toString());
         return result;

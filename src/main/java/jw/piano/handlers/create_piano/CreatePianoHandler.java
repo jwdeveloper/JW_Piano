@@ -1,8 +1,7 @@
 package jw.piano.handlers.create_piano;
 
 import jw.piano.data.PianoData;
-import jw.piano.data.Settings;
-import jw.piano.enums.PianoType;
+import jw.piano.data.PluginConfig;
 import jw.piano.service.PianoDataService;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
@@ -16,7 +15,7 @@ public class CreatePianoHandler implements MediatorHandler<CreatePianoRequest, C
     private PianoDataService pianoDataService;
 
     @Inject
-    private Settings settings;
+    private PluginConfig settings;
 
     @Override
     public CreatePianoResponse handle(CreatePianoRequest request)
@@ -33,7 +32,7 @@ public class CreatePianoHandler implements MediatorHandler<CreatePianoRequest, C
         pianoData.setName(player.getName()+" piano");
         pianoData.setLocation(location);
         pianoData.setEnable(true);
-        pianoData.setPianoType(PianoType.GRAND_PIANO);
+        pianoData.setSkinId(109);
         final  var result = pianoDataService.insert(pianoData);
         if(!result)
         {

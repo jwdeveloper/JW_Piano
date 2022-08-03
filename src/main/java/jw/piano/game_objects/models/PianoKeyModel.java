@@ -37,9 +37,9 @@ public class PianoKeyModel extends CustomModel implements Comparable {
         this.index = index;
         this.isBlack = isBlack;
         if (isBlack)
-            setCustomModelData(4);
+            setCustomModelData(PianoKeysConst.BLACK_KEY.getId());
         else
-           setCustomModelData(2);
+           setCustomModelData(PianoKeysConst.WHITE_KEY.getId());
         setupParticle();
         setupHitbox(location);
         soundPlayerFactory = FluentInjection.getInjection(SoundPlayerFactory.class);
@@ -71,9 +71,9 @@ public class PianoKeyModel extends CustomModel implements Comparable {
         );
         this.hitBox.setOrigin(location);
         if (isBlack)
-            setCustomModelData(4);
+            setCustomModelData(PianoKeysConst.BLACK_KEY.getId());
         else
-            setCustomModelData(2);
+            setCustomModelData(PianoKeysConst.WHITE_KEY.getId());
 
 
         soundPlayerFactory = FluentInjection.getInjection(SoundPlayerFactory.class);

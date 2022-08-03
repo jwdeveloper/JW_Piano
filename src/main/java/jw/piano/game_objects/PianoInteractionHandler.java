@@ -19,14 +19,15 @@ public class PianoInteractionHandler {
         this.pianoModel = pianoModel;
     }
 
-    public void onPlayerClick(Location location) {
+    public boolean handleClick(Location location) {
         for (final var piano : pianoModel.getSortedKeys())
         {
             if (piano.getHitBox().isCollider(location, piano.getRadious())) {
-                onHitKey(piano);
-                break;
+               onHitKey(piano);
+               return true;
             }
         }
+        return false;
     }
 
     private void onHitKey(PianoKeyModel pianoKey) {
