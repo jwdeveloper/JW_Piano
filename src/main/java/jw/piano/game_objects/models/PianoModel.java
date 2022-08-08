@@ -6,14 +6,10 @@ import jw.piano.game_objects.PianoInteractionHandler;
 import jw.piano.game_objects.factories.ArmorStandFactory;
 import jw.piano.game_objects.models.effects.EffectManager;
 import jw.piano.game_objects.utils.Consts;
-import jw.spigot_fluent_api.fluent_game_object.GameObject;
+import jw.spigot_fluent_api.fluent_gameobjects.api.GameObject;
 import jw.spigot_fluent_api.utilites.math.collistions.HitBox;
 import lombok.Getter;
-import org.bukkit.Instrument;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Note;
-import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
@@ -134,15 +130,15 @@ public class PianoModel extends GameObject {
         }
     }
 
-    public void destroy() {
+    public void onDestroy() {
         openViewHitBox.hide();
         for (PianoKeyModel key : pianoKeys) {
-            key.destroy();
+            key.onDestroy();
         }
         for (PianoPedalModel pedal : pianoPedals) {
-            pedal.destroy();
+            pedal.onDestroy();
         }
-        pianoBench.destroy();
+        pianoBench.onDestroy();
         effectManager.destory();
         pianoArmorStand.remove();
     }

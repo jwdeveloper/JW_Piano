@@ -52,7 +52,7 @@ public class Piano {
     }
 
     public void destroy() {
-        pianoModel.destroy();
+        pianoModel.onDestroy();
         isCreated = false;
     }
 

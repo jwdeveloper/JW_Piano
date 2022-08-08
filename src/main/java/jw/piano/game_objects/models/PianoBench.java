@@ -3,15 +3,11 @@ package jw.piano.game_objects.models;
 import jw.piano.data.PianoSkin;
 import jw.piano.enums.PianoKeysConst;
 import jw.piano.game_objects.factories.ArmorStandFactory;
-import jw.spigot_fluent_api.fluent_game_object.GameObject;
-import jw.spigot_fluent_api.fluent_gui.scroll_selector.ScrollSelector;
-import jw.spigot_fluent_api.fluent_logger.FluentLogger;
+import jw.spigot_fluent_api.fluent_gameobjects.api.GameObject;
 import jw.spigot_fluent_api.utilites.math.collistions.HitBox;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public class PianoBench extends GameObject {
 
@@ -63,13 +59,13 @@ public class PianoBench extends GameObject {
         }
         else
         {
-            destroy();
+            onDestroy();
         }
 
     }
 
     @Override
-    public void destroy() {
+    public void onDestroy() {
         active = false;
         armorStand.remove();
     }

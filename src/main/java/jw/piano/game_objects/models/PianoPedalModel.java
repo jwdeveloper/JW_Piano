@@ -34,7 +34,7 @@ public class PianoPedalModel extends CustomModel
         isPressed =false;
     }
 
-    public void destroy()
+    public void onDestroy()
     {
         getArmorStand().remove();
     }

@@ -6,10 +6,13 @@ import jw.piano.data.PluginConfig;
 import jw.piano.awake_actions.PianoSetupAction;
 import jw.piano.awake_actions.WebSocketAction;
 import jw.piano.gui.MenuGUI;
+import jw.piano.test.PianoGameObject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
+import jw.spigot_fluent_api.fluent_gameobjects.implementation.GameObjectManager;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_plugin.starup_actions.PluginConfiguration;
 import jw.spigot_fluent_api.fluent_plugin.config.ConfigFile;
+import org.bukkit.Bukkit;
 
 
 public final class Main extends FluentPlugin {
@@ -25,10 +28,13 @@ public final class Main extends FluentPlugin {
                     {
                         eventConfig.onPlayerExecute(event ->
                         {
-                            var gui = FluentInjection.getPlayerInjection(MenuGUI.class, event.getPlayerSender());
-                            gui.open(event.getPlayerSender());
+                            var gui = FluentInjection.getPlayerInjection(MenuGUI.class, event.getPlayer());
+                            gui.open(event.getPlayer());
                         });
+
+
                     });
+
                 })
                 .useMetrics(() ->
                 {
@@ -46,7 +52,12 @@ public final class Main extends FluentPlugin {
     @Override
     protected void OnFluentPluginEnable() {
 
-
+        for (var player : Bukkit.getOnlinePlayers()) {
+            var loc = player.getLocation();
+            loc.setPitch(0);
+            loc.setYaw(0);
+            GameObjectManager.register(new PianoGameObject(), loc);
+        }
     }
 
     @Override

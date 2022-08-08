@@ -50,7 +50,6 @@ public class PianoKeyModel extends CustomModel implements Comparable {
         hitBox = new HitBox(location.clone().add(isBlack ? -0.015 : -0.03, isBlack ? 1.61 : 1.6, -0.08),
                 location.clone().add(isBlack ? 0.015 : 0.03, isBlack ? 1.7 : 1.65, isBlack ? 0.075 : 0.08)
         );
-        hitBox.setOrigin(location);
     }
 
     private void setupParticle()
@@ -69,7 +68,6 @@ public class PianoKeyModel extends CustomModel implements Comparable {
         this.hitBox = new HitBox(location.clone().add(isBlack ? -0.015 : -0.03, isBlack ? 1.61 : 1.6, -0.08),
                 location.clone().add(isBlack ? 0.015 : 0.03, isBlack ? 1.7 : 1.65, isBlack ? 0.075 : 0.08)
         );
-        this.hitBox.setOrigin(location);
         if (isBlack)
             setCustomModelData(PianoKeysConst.BLACK_KEY.getId());
         else
@@ -121,7 +119,7 @@ public class PianoKeyModel extends CustomModel implements Comparable {
        this.release(1,10);
     }
 
-    public void destroy()
+    public void onDestroy()
     {
         getArmorStand().remove();
     }
