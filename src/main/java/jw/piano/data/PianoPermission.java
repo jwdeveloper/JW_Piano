@@ -1,13 +1,11 @@
 package jw.piano.data;
 
-import jw.spigot_fluent_api.fluent_logger.FluentLogger;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
+import jw.fluent_api.minecraft.logger.FluentLogger;
+import jw.fluent_plugin.FluentPlugin;
 import org.bukkit.permissions.Permission;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class PianoPermission
 {

@@ -5,7 +5,7 @@ import jw.piano.data.PluginConfig;
 import jw.piano.gui.MenuGUI;
 import jw.piano.game_objects.models.PianoModel;
 import jw.piano.service.PianoSkinService;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
+import jw.fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

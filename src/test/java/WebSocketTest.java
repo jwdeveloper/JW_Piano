@@ -2,9 +2,9 @@
 import jw.piano.game_objects.Piano;
 import jw.piano.handlers.piano_details.PianoDetailsMapper;
 import jw.piano.handlers.piano_details.PianoDetailsResponse;
-import jw.spigot_fluent_api.fluent_mapper.implementation.SimpleMapper;
-import jw.spigot_fluent_api.fluent_mapper.api.Mapper;
-import jw.spigot_fluent_api.utilites.ActionResult;
+import jw.fluent_api.mapper.implementation.SimpleMapper;
+import jw.fluent_api.mapper.api.Mapper;
+import jw.fluent_api.utilites.ActionResult;
 import org.junit.Test;
 
 import java.io.IOException;

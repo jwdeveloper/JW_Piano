@@ -1,8 +1,8 @@
 package jw.piano.sounds;
 
 import jw.piano.sounds.v1_18_R1.SoundPlayer_1_18_R1;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.spigot_fluent_api.fluent_logger.FluentLogger;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import jw.fluent_api.minecraft.logger.FluentLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 

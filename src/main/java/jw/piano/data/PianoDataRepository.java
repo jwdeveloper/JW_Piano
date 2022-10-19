@@ -1,7 +1,7 @@
 package jw.piano.data;
 
-import jw.spigot_fluent_api.data.implementation.RepositoryBase;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import jw.fluent_api.desing_patterns.unit_of_work.implementation.RepositoryBase;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
 
 @Injection
 public class PianoDataRepository extends RepositoryBase<PianoData>

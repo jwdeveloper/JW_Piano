@@ -1,10 +1,10 @@
 package jw.piano.test;
 
 import jw.piano.service.PianoSkinService;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
-import jw.spigot_fluent_api.fluent_gameobjects.api.GameObject;
-import jw.spigot_fluent_api.fluent_gameobjects.api.ModelRenderer;
-import jw.spigot_fluent_api.fluent_tasks.FluentTasks;
+import jw.fluent_api.desing_patterns.dependecy_injection.FluentInjection;
+import jw.fluent_api.minecraft.gameobjects.api.GameObject;
+import jw.fluent_api.minecraft.gameobjects.api.ModelRenderer;
+import jw.fluent_api.minecraft.tasks.FluentTasks;
 import org.bukkit.Particle;
 
 public class PianoGameObject extends GameObject {

@@ -5,10 +5,10 @@ import jw.piano.data.PianoDataRepository;
 import jw.piano.data.PluginConfig;
 import jw.piano.enums.PianoEffect;
 import jw.piano.service.PianoService;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_plugin.starup_actions.api.PluginPipeline;
-import jw.spigot_fluent_api.fluent_plugin.starup_actions.data.PipelineOptions;
+import jw.fluent_api.desing_patterns.dependecy_injection.FluentInjection;
+import jw.fluent_plugin.FluentPlugin;
+import jw.fluent_plugin.starup_actions.api.PluginPipeline;
+import jw.fluent_plugin.starup_actions.data.PipelineOptions;
 import org.bukkit.persistence.PersistentDataType;
 
 public class PianoSetupAction implements PluginPipeline {

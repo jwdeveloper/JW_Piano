@@ -2,7 +2,7 @@ package jw.piano.sounds.v1_18_R1;
 
 import jw.piano.game_objects.utils.MappedSounds;
 import jw.piano.sounds.NmsSoundPlayer;
-import jw.spigot_fluent_api.fluent_logger.FluentLogger;
+import jw.fluent_api.minecraft.logger.FluentLogger;
 import net.minecraft.network.protocol.game.PacketPlayOutCustomSoundEffect;
 import net.minecraft.resources.MinecraftKey;
 import net.minecraft.server.level.EntityPlayer;

@@ -2,13 +2,8 @@ package jw.piano.game_objects;
 
 import jw.piano.game_objects.models.PianoKeyModel;
 import jw.piano.game_objects.models.PianoModel;
-import jw.piano.game_objects.models.PianoPedalModel;
-import jw.spigot_fluent_api.fluent_tasks.FluentTaskTimer;
-import jw.spigot_fluent_api.fluent_tasks.FluentTasks;
-import jw.spigot_fluent_api.utilites.math.MathUtility;
-import org.bukkit.Color;
+import jw.fluent_api.minecraft.tasks.FluentTasks;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 
 public class PianoInteractionHandler {
 

@@ -1,14 +1,14 @@
 package jw.piano.awake_actions;
 
 import jw.piano.data.PluginConfig;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
-import jw.spigot_fluent_api.fluent_logger.FluentLogger;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_plugin.config.ConfigFile;
-import jw.spigot_fluent_api.fluent_plugin.starup_actions.api.PluginPipeline;
-import jw.spigot_fluent_api.fluent_plugin.starup_actions.data.PipelineOptions;
-import jw.spigot_fluent_api.utilites.files.FileUtility;
-import jw.spigot_fluent_api.utilites.files.yml.implementation.YmlConfigurationImpl;
+import jw.fluent_api.desing_patterns.dependecy_injection.FluentInjection;
+import jw.fluent_api.minecraft.logger.FluentLogger;
+import jw.fluent_plugin.FluentPlugin;
+import jw.fluent_plugin.config.ConfigFile;
+import jw.fluent_plugin.starup_actions.api.PluginPipeline;
+import jw.fluent_plugin.starup_actions.data.PipelineOptions;
+import jw.fluent_api.utilites.files.FileUtility;
+import jw.fluent_api.utilites.files.yml.implementation.YmlConfigurationImpl;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
