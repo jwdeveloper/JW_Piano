@@ -26,8 +26,8 @@ public class Piano {
         pianoModel = new PianoModel();
         pianoDataObserver = configurePianoObserver(pianoData, pianoModel);
 
-        settings = FluentInjection.getInjection(PluginConfig.class);
-        pianoSkinService = FluentInjection.getInjection(PianoSkinService.class);
+        settings = FluentInjection.findInjection(PluginConfig.class);
+        pianoSkinService = FluentInjection.findInjection(PianoSkinService.class);
     }
 
     public PianoData getPianoData() {
@@ -36,7 +36,7 @@ public class Piano {
 
 
     public void openGUIPanel(Player player) {
-        final var gui = FluentInjection.getPlayerInjection(MenuGUI.class, player.getUniqueId());
+        final var gui = FluentInjection.findPlayerInjection(MenuGUI.class, player.getUniqueId());
         gui.openPianoView(player, this);
     }
 

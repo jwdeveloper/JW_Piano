@@ -15,7 +15,7 @@ public class PianoGameObject extends GameObject {
     int x = -360;
     @Override
     public void onCreated() {
-        service = FluentInjection.getInjection(PianoSkinService.class);
+        service = FluentInjection.findInjection(PianoSkinService.class);
         modelRenderer = addGameComponent(new ModelRenderer());
         modelRenderer.setCustomModel(service.grandPiano().getItemStack());
         benchGameObject = addGameComponent(new BenchGameObject());

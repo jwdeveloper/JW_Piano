@@ -10,7 +10,7 @@ import jw.piano.test.PianoGameObject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.spigot_fluent_api.fluent_gameobjects.implementation.GameObjectManager;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_plugin.starup_actions.PluginConfiguration;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.api.PluginConfiguration;
 import jw.spigot_fluent_api.fluent_plugin.config.ConfigFile;
 import org.bukkit.Bukkit;
 
@@ -21,27 +21,23 @@ public final class Main extends FluentPlugin {
         configuration
                 .useDebugMode()
                 .useFilesHandler()
-                .userDefaultPermission("piano")
+                .configurePlugin(pluginOptions ->
+                {
+                    pluginOptions.useDefaultNamespace("piano");
+                    pluginOptions.useMetrics(PluginConfig.METRICTS_ID);
+                    pluginOptions.useUpdate(PluginConfig.PLUGIN_UPDATE_URL);
+                })
                 .useDefaultCommand("piano", builder ->
                 {
                     builder.eventsConfig(eventConfig ->
                     {
                         eventConfig.onPlayerExecute(event ->
                         {
-                            var gui = FluentInjection.getPlayerInjection(MenuGUI.class, event.getPlayer());
+                            var gui = FluentInjection.findPlayerInjection(MenuGUI.class, event.getPlayer());
                             gui.open(event.getPlayer());
                         });
-
-
                     });
 
-                })
-                .useMetrics(() ->
-                {
-                    return PluginConfig.METRICTS_ID;
-                }).useUpdates((a) ->
-                {
-                    a.setGithub(PluginConfig.PLUGIN_UPDATE_URL);
                 })
                 .useCustomAction(new FileVersionAction())
                 .useCustomAction(new PianoSetupAction())

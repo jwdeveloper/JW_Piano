@@ -2,9 +2,9 @@ package jw.piano.service;
 
 import jw.piano.data.PianoSkin;
 import jw.piano.data.PluginConfig;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
-import jw.spigot_fluent_api.fluent_plugin.languages.Lang;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.annotations.Inject;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import jw.spigot_fluent_api.fluent_plugin.default_actions.implementation.languages.Lang;
 
 import java.util.ArrayList;
 import java.util.List;

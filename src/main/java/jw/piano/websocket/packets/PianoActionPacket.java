@@ -2,8 +2,8 @@ package jw.piano.websocket.packets;
 
 import jw.piano.service.PianoService;
 import jw.piano.websocket.models.PianoAction;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.annotations.Inject;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import jw.spigot_fluent_api.fluent_tasks.FluentTaskTimer;
 import jw.spigot_fluent_api.web_socket.WebSocketPacket;
 import jw.spigot_fluent_api.web_socket.annotations.PacketProperty;

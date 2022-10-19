@@ -4,8 +4,8 @@ import jw.piano.websocket.PianoWebSocket;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.PluginPipeline;
-import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.PipelineOptions;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.api.PluginPipeline;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.data.PipelineOptions;
 
 import java.io.*;
 import java.net.URL;
@@ -18,7 +18,7 @@ public class WebSocketAction implements PluginPipeline {
     @Override
     public void pluginEnable(PipelineOptions options) throws Exception {
 
-        settings =  FluentInjection.getInjection(PluginConfig.class);
+        settings =  FluentInjection.findInjection(PluginConfig.class);
         if(!settings.isRunPianoPlayerServer())
         {
             FluentLogger.info("Piano server is disabled to changed that jump to  plugin/JW_Piano/settings.json");
@@ -32,7 +32,7 @@ public class WebSocketAction implements PluginPipeline {
             settings.SERVER_IP = settings.getCustomServerIp();
         }
 
-        webSocket = FluentInjection.getInjection(PianoWebSocket.class);
+        webSocket = FluentInjection.findInjection(PianoWebSocket.class);
         webSocket.start();
     }
 

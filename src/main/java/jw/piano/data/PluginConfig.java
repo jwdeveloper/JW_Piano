@@ -1,8 +1,7 @@
 package jw.piano.data;
 
-import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.config.config_sections.FluentConfigSection;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import jw.spigot_fluent_api.utilites.files.yml.api.annotations.YmlFile;
 import jw.spigot_fluent_api.utilites.files.yml.api.annotations.YmlIgnore;
 import jw.spigot_fluent_api.utilites.files.yml.api.annotations.YmlProperty;

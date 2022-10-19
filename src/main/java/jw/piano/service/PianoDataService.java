@@ -2,8 +2,8 @@ package jw.piano.service;
 
 import jw.piano.data.PianoData;
 import jw.piano.data.PianoDataRepository;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.annotations.Inject;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import java.util.List;
 import java.util.UUID;
 

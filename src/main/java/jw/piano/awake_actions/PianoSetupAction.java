@@ -7,16 +7,16 @@ import jw.piano.enums.PianoEffect;
 import jw.piano.service.PianoService;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.PluginPipeline;
-import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.PipelineOptions;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.api.PluginPipeline;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.data.PipelineOptions;
 import org.bukkit.persistence.PersistentDataType;
 
 public class PianoSetupAction implements PluginPipeline {
 
     @Override
     public void pluginEnable(PipelineOptions options) throws Exception {
-        var repository = FluentInjection.getInjection(PianoDataRepository.class);
-        var service = FluentInjection.getInjection(PianoService.class);
+        var repository = FluentInjection.findInjection(PianoDataRepository.class);
+        var service = FluentInjection.findInjection(PianoService.class);
         for (var pianoData : repository.findAll()) {
             if (pianoData.getEffect() == null) {
                 pianoData.setEffect(PianoEffect.SIMPLE_PARTICLE);
@@ -40,8 +40,8 @@ public class PianoSetupAction implements PluginPipeline {
     @Override
     public void pluginDisable(FluentPlugin fluentPlugin) throws Exception {
 
-        var repository = FluentInjection.getInjection(PianoDataRepository.class);
-        var service = FluentInjection.getInjection(PianoService.class);
+        var repository = FluentInjection.findInjection(PianoDataRepository.class);
+        var service = FluentInjection.findInjection(PianoService.class);
         for (var pianoData : repository.findAll()) {
             service.delete(pianoData.getUuid());
         }

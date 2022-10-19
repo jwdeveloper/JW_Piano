@@ -2,12 +2,8 @@ package jw.piano.game_objects.models;
 
 import jw.piano.enums.PianoKeysConst;
 import jw.piano.game_objects.models.effects.EffectManager;
-import jw.piano.game_objects.utils.Consts;
-import jw.piano.game_objects.utils.MappedSounds;
-import jw.piano.game_objects.utils.PlaySound;
 import jw.piano.sounds.SoundPlayerFactory;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
-import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.utilites.math.MathUtility;
 import jw.spigot_fluent_api.utilites.math.collistions.HitBox;
 import lombok.Getter;
@@ -42,7 +38,7 @@ public class PianoKeyModel extends CustomModel implements Comparable {
            setCustomModelData(PianoKeysConst.WHITE_KEY.getId());
         setupParticle();
         setupHitbox(location);
-        soundPlayerFactory = FluentInjection.getInjection(SoundPlayerFactory.class);
+        soundPlayerFactory = FluentInjection.findInjection(SoundPlayerFactory.class);
     }
 
     private void setupHitbox(Location location)
@@ -74,7 +70,7 @@ public class PianoKeyModel extends CustomModel implements Comparable {
             setCustomModelData(PianoKeysConst.WHITE_KEY.getId());
 
 
-        soundPlayerFactory = FluentInjection.getInjection(SoundPlayerFactory.class);
+        soundPlayerFactory = FluentInjection.findInjection(SoundPlayerFactory.class);
     }
 
     public void setVolume(int volume)
