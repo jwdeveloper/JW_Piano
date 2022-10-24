@@ -1,7 +1,6 @@
 package jw.piano;
 
-
-import jw.fluent_api.desing_patterns.mediator.FluentMediator;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent_plugin.implementation.FluentAPI;
 import jw.piano.awake_actions.FileVersionAction;
 import jw.piano.data.PluginConfig;
@@ -9,13 +8,11 @@ import jw.piano.awake_actions.PianoSetupAction;
 import jw.piano.awake_actions.WebSocketAction;
 import jw.piano.gui.MenuGUI;
 import jw.piano.test.PianoGameObject;
-import jw.fluent_api.desing_patterns.dependecy_injection.FluentInjection;
-import jw.fluent_api.minecraft.gameobjects.implementation.GameObjectManager;
-import jw.fluent_plugin.FluentPlugin;
-import jw.fluent_plugin.starup_actions.api.PluginConfiguration;
-import jw.fluent_plugin.config.ConfigFile;
+import jw.fluent_api.spigot.gameobjects.implementation.GameObjectManager;
+import jw.fluent_plugin.implementation.FluentPlugin;
+import jw.fluent_plugin.api.PluginConfiguration;
+import jw.fluent_plugin.implementation.config.ConfigFile;
 import org.bukkit.Bukkit;
-
 
 public final class Main extends FluentPlugin {
     @Override
@@ -23,6 +20,13 @@ public final class Main extends FluentPlugin {
         configuration
                 .useDebugMode()
                 .useFilesHandler()
+                .configureDependencyInjection(containerBuilder ->
+                {
+                    containerBuilder.register(Main.class, LifeTime.SINGLETON,(c)->
+                    {
+                        return this;
+                    });
+                })
                 .configurePlugin(pluginOptions ->
                 {
                     pluginOptions.useDefaultNamespace("piano");
@@ -35,11 +39,10 @@ public final class Main extends FluentPlugin {
                     {
                         eventConfig.onPlayerExecute(event ->
                         {
-                            var gui = FluentInjection.findPlayerInjection(MenuGUI.class, event.getPlayer());
+                            var gui = FluentAPI.spigot().playerContext().find(MenuGUI.class, event.getPlayer());
                             gui.open(event.getPlayer());
                         });
                     });
-
                 })
                 .useCustomAction(new FileVersionAction())
                 .useCustomAction(new PianoSetupAction())
@@ -50,6 +53,7 @@ public final class Main extends FluentPlugin {
     @Override
     protected void OnFluentPluginEnable()
     {
+
         for (var player : Bukkit.getOnlinePlayers()) {
             var loc = player.getLocation();
             loc.setPitch(0);

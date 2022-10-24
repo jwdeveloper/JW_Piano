@@ -1,8 +1,8 @@
 package jw.piano.sounds;
 
+import jw.fluent_api.logger.OldLogger;
 import jw.piano.sounds.v1_18_R1.SoundPlayer_1_18_R1;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent_api.minecraft.logger.FluentLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -33,7 +33,7 @@ public class SoundPlayerFactory
         }
         catch (Exception e)
         {
-            FluentLogger.info("Default note player in use");
+            OldLogger.info("Default note player in use");
         }
         return new DefaultPlayer();
     }

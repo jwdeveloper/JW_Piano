@@ -1,11 +1,11 @@
 package jw.piano.game_objects.models.effects;
 
+import jw.fluent_api.logger.OldLogger;
 import jw.piano.data.PluginConfig;
 import jw.piano.enums.PianoKeysConst;
 import jw.piano.game_objects.factories.ArmorStandFactory;
-import jw.fluent_api.minecraft.logger.FluentLogger;
-import jw.fluent_api.minecraft.tasks.FluentTaskTimer;
-import jw.fluent_api.minecraft.tasks.FluentTasks;
+import jw.fluent_api.spigot.tasks.FluentTaskTimer;
+import jw.fluent_api.spigot.tasks.FluentTasks;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -120,7 +120,7 @@ public class FlyingNotesEffect implements PianoEffectInvoker {
         {
             if(instance == this)
             {
-                FluentLogger.log(log);
+                OldLogger.log(log);
             }
         }
 

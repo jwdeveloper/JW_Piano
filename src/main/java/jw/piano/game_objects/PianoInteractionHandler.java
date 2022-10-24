@@ -2,7 +2,7 @@ package jw.piano.game_objects;
 
 import jw.piano.game_objects.models.PianoKeyModel;
 import jw.piano.game_objects.models.PianoModel;
-import jw.fluent_api.minecraft.tasks.FluentTasks;
+import jw.fluent_api.spigot.tasks.FluentTasks;
 import org.bukkit.Location;
 
 public class PianoInteractionHandler {

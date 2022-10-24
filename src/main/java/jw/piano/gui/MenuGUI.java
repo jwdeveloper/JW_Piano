@@ -1,5 +1,8 @@
 package jw.piano.gui;
 
+import jw.fluent_plugin.implementation.FluentAPI;
+import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
+import jw.fluent_plugin.implementation.modules.translator.FluentTranslator;
 import jw.piano.data.PianoPermission;
 import jw.piano.data.PianoData;
 import jw.piano.data.PluginConfig;
@@ -11,11 +14,9 @@ import jw.piano.service.PianoService;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.fluent_api.desing_patterns.mediator.FluentMediator;
-import jw.fluent_api.minecraft.gui.button.ButtonUI;
-import jw.fluent_api.minecraft.gui.implementation.crud_list_ui.CrudListUI;
-import jw.fluent_api.minecraft.messages.FluentMessage;
-import jw.fluent_plugin.default_actions.implementation.languages.Lang;
+import jw.fluent_api.spigot.gui.button.ButtonUI;
+import jw.fluent_api.spigot.gui.implementation.crud_list_ui.CrudListUI;
+import jw.fluent_api.spigot.messages.FluentMessage;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -29,13 +30,17 @@ public class MenuGUI extends CrudListUI<PianoData> {
     private final PianoDataService pianoDataService;
     private final PianoService pianoService;
     private final PluginConfig settings;
+    private final FluentTranslator lang;
 
     @Inject
     public MenuGUI(PianoViewGUI pianoViewGUI,
                    PianoDataService pianoDataService,
                    PluginConfig settings,
-                   PianoService pianoService) {
-        super(Lang.get("gui.piano-menu.title"), 6);
+                   PianoService pianoService,
+                   FluentTranslator lang)
+    {
+        super(lang.get("gui.piano-menu.title"), 6);
+        this.lang =lang;
         this.pianoService = pianoService;
         this.settings = settings;
         this.pianoDataService = pianoDataService;
@@ -48,10 +53,10 @@ public class MenuGUI extends CrudListUI<PianoData> {
         pianoViewGUI.setParent(this);
 
         getButtonEdit().setActive(false);
-        getButtonInsert().setDescription(Lang.get("gui.base.insert.desc"));
+        getButtonInsert().setDescription(lang.get("gui.base.insert.desc"));
         getButtonInsert().setPermissions(PianoPermission.PIANO);
         getButtonInsert().setPermissions(PianoPermission.CREATE);
-        getButtonDelete().setDescription(Lang.get("gui.base.delete.desc"));
+        getButtonDelete().setDescription(lang.get("gui.base.delete.desc"));
         getButtonDelete().setPermissions(PianoPermission.PIANO);
         getButtonDelete().setPermissions(PianoPermission.REMOVE);
         ButtonUI.factory().backgroundButton(0,6,Material.GRAY_STAINED_GLASS_PANE)
@@ -61,8 +66,8 @@ public class MenuGUI extends CrudListUI<PianoData> {
                 .setHighlighted()
                 .setTitle(FluentMessage.message()
                 .color(org.bukkit.ChatColor.AQUA)
-                .inBrackets(Lang.get("gui.piano-menu.resourcepack.title")))
-                .setDescription(Lang.get("gui.piano-menu.resourcepack.desc"))
+                .inBrackets(lang.get("gui.piano-menu.resourcepack.title")))
+                .setDescription(lang.get("gui.piano-menu.resourcepack.desc"))
                 .setLocation(0, 2)
                 .setOnClick((player, button) ->
                 {
@@ -76,12 +81,12 @@ public class MenuGUI extends CrudListUI<PianoData> {
                 .setHighlighted()
                 .setTitle(FluentMessage.message()
                         .color(org.bukkit.ChatColor.AQUA)
-                        .inBrackets(Lang.get("gui.piano-menu.client-app.title")))
-                .setDescription(Lang.get("gui.piano-menu.client-app.desc"))
+                        .inBrackets(lang.get("gui.piano-menu.client-app.title")))
+                .setDescription(lang.get("gui.piano-menu.client-app.desc"))
                 .setLocation(0, 3)
                 .setOnClick((player, button) ->
                 {
-                    final var message = new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + "["+ Lang.get("gui.piano-menu.client-app.message")+"]");
+                    final var message = new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + "["+ lang.get("gui.piano-menu.client-app.message")+"]");
                     message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, settings.CLIENT_APP_URL));
                     player.spigot().sendMessage(message);
                     close();
@@ -106,7 +111,7 @@ public class MenuGUI extends CrudListUI<PianoData> {
 
         onInsert((player, button) ->
         {
-            final var response = FluentMediator.resolve(new CreatePianoRequest(player), CreatePianoResponse.class);
+            final var response = FluentAPI.mediator().resolve(new CreatePianoRequest(player), CreatePianoResponse.class);
             if (!response.created()) {
                 setTitle(FluentMessage.message().color(org.bukkit.ChatColor.DARK_RED).inBrackets(response.message()));
                 return;
@@ -118,7 +123,7 @@ public class MenuGUI extends CrudListUI<PianoData> {
             var piano = button.<PianoData>getDataContext();
             var result = pianoDataService.delete(piano.getUuid());
             if (!result) {
-                setTitle(Lang.get("gui.base.delete.error"));
+                setTitle(FluentAPI.lang().get("gui.base.delete.error"));
             }
             refreshContent();
         });
@@ -127,7 +132,7 @@ public class MenuGUI extends CrudListUI<PianoData> {
             var pianoData = button.<PianoData>getDataContext();
             var result = pianoService.get(pianoData.getUuid());
             if (result.isEmpty()) {
-                setTitle(Lang.get("gui.piano-menu.click.error"));
+                setTitle(FluentAPI.lang().get("gui.piano-menu.click.error"));
                 refreshContent();
                 return;
             }

@@ -1,6 +1,6 @@
 package jw.piano.data;
 
-import jw.fluent_api.desing_patterns.unit_of_work.implementation.RepositoryBase;
+import jw.fluent_api.files.implementation.RepositoryBase;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
 
 @Injection

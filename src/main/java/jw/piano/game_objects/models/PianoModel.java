@@ -6,7 +6,7 @@ import jw.piano.game_objects.PianoInteractionHandler;
 import jw.piano.game_objects.factories.ArmorStandFactory;
 import jw.piano.game_objects.models.effects.EffectManager;
 import jw.piano.game_objects.utils.Consts;
-import jw.fluent_api.minecraft.gameobjects.api.GameObject;
+import jw.fluent_api.spigot.gameobjects.api.GameObject;
 import jw.fluent_api.utilites.math.collistions.HitBox;
 import lombok.Getter;
 import org.bukkit.Location;

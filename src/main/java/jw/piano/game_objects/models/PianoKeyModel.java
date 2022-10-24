@@ -3,7 +3,6 @@ package jw.piano.game_objects.models;
 import jw.piano.enums.PianoKeysConst;
 import jw.piano.game_objects.models.effects.EffectManager;
 import jw.piano.sounds.SoundPlayerFactory;
-import jw.fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.fluent_api.utilites.math.MathUtility;
 import jw.fluent_api.utilites.math.collistions.HitBox;
 import lombok.Getter;

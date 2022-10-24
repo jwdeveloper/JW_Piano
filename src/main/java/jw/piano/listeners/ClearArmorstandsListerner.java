@@ -1,10 +1,10 @@
 package jw.piano.listeners;
 
+import jw.fluent_api.logger.OldLogger;
 import jw.piano.service.PianoDataService;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent_api.minecraft.events.EventBase;
-import jw.fluent_api.minecraft.logger.FluentLogger;
+import jw.fluent_api.spigot.events.EventBase;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.world.ChunkLoadEvent;
 
@@ -18,7 +18,7 @@ public class ClearArmorstandsListerner extends EventBase
     public ClearArmorstandsListerner(PianoDataService service)
     {
         this.dataService = service;
-        FluentLogger.log("Siema 2222");
+        OldLogger.log("Siema 2222");
     }
 
     @EventHandler
@@ -30,7 +30,7 @@ public class ClearArmorstandsListerner extends EventBase
             if(a.getLocation().getChunk().equals(chunkLoadEvent.getChunk()))
             {
                 var e = chunkLoadEvent.getChunk().getEntities();
-                FluentLogger.log("Siema "+e.length);
+                OldLogger.log("Siema "+e.length);
             }
         }
     }

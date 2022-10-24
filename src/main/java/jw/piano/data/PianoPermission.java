@@ -1,7 +1,7 @@
 package jw.piano.data;
 
-import jw.fluent_api.minecraft.logger.FluentLogger;
-import jw.fluent_plugin.FluentPlugin;
+import jw.fluent_api.logger.OldLogger;
+import jw.fluent_plugin.implementation.FluentPlugin;
 import org.bukkit.permissions.Permission;
 
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public class PianoPermission
         }
         catch (Exception e)
         {
-            FluentLogger.error("unable to load permissions ",e);
+            OldLogger.error("unable to load permissions ",e);
         }
 
     }

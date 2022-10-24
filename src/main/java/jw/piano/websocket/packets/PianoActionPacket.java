@@ -4,7 +4,7 @@ import jw.piano.service.PianoService;
 import jw.piano.websocket.models.PianoAction;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent_api.minecraft.tasks.FluentTaskTimer;
+import jw.fluent_api.spigot.tasks.FluentTaskTimer;
 import jw.fluent_api.web_socket.WebSocketPacket;
 import jw.fluent_api.web_socket.annotations.PacketProperty;
 import org.java_websocket.WebSocket;

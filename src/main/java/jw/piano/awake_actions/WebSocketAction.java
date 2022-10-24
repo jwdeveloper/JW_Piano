@@ -1,16 +1,15 @@
 package jw.piano.awake_actions;
+import jw.fluent_api.logger.OldLogger;
 import jw.piano.data.PluginConfig;
 import jw.piano.websocket.PianoWebSocket;
-import jw.fluent_api.desing_patterns.dependecy_injection.FluentInjection;
-import jw.fluent_api.minecraft.logger.FluentLogger;
-import jw.fluent_plugin.FluentPlugin;
-import jw.fluent_plugin.starup_actions.api.PluginPipeline;
-import jw.fluent_plugin.starup_actions.data.PipelineOptions;
+import jw.fluent_plugin.implementation.FluentPlugin;
+import jw.fluent_plugin.api.PluginAction;
+import jw.fluent_plugin.api.options.PipelineOptions;
 
 import java.io.*;
 import java.net.URL;
 
-public class WebSocketAction implements PluginPipeline {
+public class WebSocketAction implements PluginAction {
 
     private PianoWebSocket webSocket;
     private PluginConfig settings;
@@ -21,7 +20,7 @@ public class WebSocketAction implements PluginPipeline {
         settings =  FluentInjection.findInjection(PluginConfig.class);
         if(!settings.isRunPianoPlayerServer())
         {
-            FluentLogger.info("Piano server is disabled to changed that jump to  plugin/JW_Piano/settings.json");
+            OldLogger.info("Piano server is disabled to changed that jump to  plugin/JW_Piano/settings.json");
         }
         if(settings.getCustomServerIp().equals(""))
         {

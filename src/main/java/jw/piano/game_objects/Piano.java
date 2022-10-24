@@ -1,11 +1,12 @@
 package jw.piano.game_objects;
 
+import jw.fluent_plugin.implementation.FluentAPI;
+import jw.fluent_plugin.implementation.modules.dependecy_injection.FluentInjection;
 import jw.piano.data.PianoData;
 import jw.piano.data.PluginConfig;
 import jw.piano.gui.MenuGUI;
 import jw.piano.game_objects.models.PianoModel;
 import jw.piano.service.PianoSkinService;
-import jw.fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -19,15 +20,18 @@ public class Piano {
     private final PluginConfig settings;
     private PianoSkinService pianoSkinService;
 
+    private FluentInjection injection;
+
     private boolean isCreated;
 
-    public Piano(PianoData pianoData) {
-
+    public Piano(PianoData pianoData)
+    {
         pianoModel = new PianoModel();
         pianoDataObserver = configurePianoObserver(pianoData, pianoModel);
 
-        settings = FluentInjection.findInjection(PluginConfig.class);
-        pianoSkinService = FluentInjection.findInjection(PianoSkinService.class);
+        injection = FluentAPI.injection();
+        settings = injection.findInjection(PluginConfig.class);
+        pianoSkinService = injection.findInjection(PianoSkinService.class);
     }
 
     public PianoData getPianoData() {
@@ -36,7 +40,7 @@ public class Piano {
 
 
     public void openGUIPanel(Player player) {
-        final var gui = FluentInjection.findPlayerInjection(MenuGUI.class, player.getUniqueId());
+        final var gui = FluentAPI.spigot().playerContext().find(MenuGUI.class, player.getUniqueId());
         gui.openPianoView(player, this);
     }
 

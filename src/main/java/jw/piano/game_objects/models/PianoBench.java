@@ -3,7 +3,7 @@ package jw.piano.game_objects.models;
 import jw.piano.data.PianoSkin;
 import jw.piano.enums.PianoKeysConst;
 import jw.piano.game_objects.factories.ArmorStandFactory;
-import jw.fluent_api.minecraft.gameobjects.api.GameObject;
+import jw.fluent_api.spigot.gameobjects.api.GameObject;
 import jw.fluent_api.utilites.math.collistions.HitBox;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;

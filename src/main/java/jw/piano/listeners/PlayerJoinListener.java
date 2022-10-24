@@ -3,7 +3,7 @@ package jw.piano.listeners;
 import jw.piano.data.PluginConfig;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent_api.minecraft.events.EventBase;
+import jw.fluent_api.spigot.events.EventBase;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 

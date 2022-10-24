@@ -2,8 +2,8 @@ package jw.piano.test;
 
 import jw.piano.data.PianoSkin;
 import jw.piano.enums.PianoKeysConst;
-import jw.fluent_api.minecraft.gameobjects.api.GameObject;
-import jw.fluent_api.minecraft.gameobjects.api.ModelRenderer;
+import jw.fluent_api.spigot.gameobjects.api.GameObject;
+import jw.fluent_api.spigot.gameobjects.api.ModelRenderer;
 
 public class BenchGameObject extends GameObject
 {

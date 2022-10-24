@@ -1,6 +1,6 @@
 package jw.piano.data;
 
-import jw.fluent_plugin.config.config_sections.FluentConfigSection;
+import jw.fluent_plugin.implementation.config.config_sections.FluentConfigSection;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import jw.fluent_api.utilites.files.yml.api.annotations.YmlFile;
 import jw.fluent_api.utilites.files.yml.api.annotations.YmlIgnore;

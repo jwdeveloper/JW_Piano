@@ -1,17 +1,16 @@
 package jw.piano.awake_actions;
 
+import jw.fluent_plugin.api.PluginAction;
 import jw.piano.data.PianoData;
 import jw.piano.data.PianoDataRepository;
 import jw.piano.data.PluginConfig;
 import jw.piano.enums.PianoEffect;
 import jw.piano.service.PianoService;
-import jw.fluent_api.desing_patterns.dependecy_injection.FluentInjection;
-import jw.fluent_plugin.FluentPlugin;
-import jw.fluent_plugin.starup_actions.api.PluginPipeline;
-import jw.fluent_plugin.starup_actions.data.PipelineOptions;
+import jw.fluent_plugin.implementation.FluentPlugin;
+import jw.fluent_plugin.api.options.PipelineOptions;
 import org.bukkit.persistence.PersistentDataType;
 
-public class PianoSetupAction implements PluginPipeline {
+public class PianoSetupAction implements PluginAction {
 
     @Override
     public void pluginEnable(PipelineOptions options) throws Exception {
