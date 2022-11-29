@@ -1,5 +1,6 @@
 package jw.piano.test;
 
+import jw.fluent_plugin.implementation.FluentApi;
 import jw.piano.service.PianoSkinService;
 import jw.fluent_api.spigot.gameobjects.api.GameObject;
 import jw.fluent_api.spigot.gameobjects.api.ModelRenderer;
@@ -14,7 +15,7 @@ public class PianoGameObject extends GameObject {
     int x = -360;
     @Override
     public void onCreated() {
-        service = FluentInjection.findInjection(PianoSkinService.class);
+        service = FluentApi.injection().findInjection(PianoSkinService.class);
         modelRenderer = addGameComponent(new ModelRenderer());
         modelRenderer.setCustomModel(service.grandPiano().getItemStack());
         benchGameObject = addGameComponent(new BenchGameObject());

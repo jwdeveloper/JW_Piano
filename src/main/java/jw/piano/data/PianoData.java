@@ -1,6 +1,7 @@
 package jw.piano.data;
 
 
+import jw.fluent_plugin.implementation.FluentApi;
 import jw.piano.enums.PianoEffect;
 import jw.fluent_api.files.api.models.DataModel;
 import jw.fluent_api.spigot.messages.message.MessageBuilder;
@@ -22,12 +23,14 @@ public class PianoData extends DataModel
     private Integer skinId = 109;
 
     public String[] getDescriptionLines() {
+
+        var lang = FluentApi.translator();
         return new MessageBuilder()
-                .field(Lang.get("gui.piano.piano-active.title"),enable.toString())
+                .field(lang.get("gui.piano.piano-active.title"),enable.toString())
                 .newLine()
-                .field(Lang.get("gui.piano.volume.title"), volume)
+                .field(lang.get("gui.piano.volume.title"), volume)
                 .newLine()
-                .field(Lang.get("gui.piano.effect.title"), effect.toString())
+                .field(lang.get("gui.piano.effect.title"), effect.toString())
                 .toArray();
 
     }

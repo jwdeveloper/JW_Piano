@@ -14,7 +14,7 @@ public class WebSocketTest {
 
     @Test
     public void ShouldLoadFile() throws InterruptedException, IOException {
-        Mapper mapper = new SimpleMapper();
+        Mapper mapper = new SimpleMapper(null);
         mapper.registerMappingProfile(PianoDetailsMapper.class);
         mapper.map(new Piano(null), PianoDetailsResponse.class);
     }

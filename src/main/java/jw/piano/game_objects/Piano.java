@@ -1,6 +1,6 @@
 package jw.piano.game_objects;
 
-import jw.fluent_plugin.implementation.FluentAPI;
+import jw.fluent_plugin.implementation.FluentApi;
 import jw.fluent_plugin.implementation.modules.dependecy_injection.FluentInjection;
 import jw.piano.data.PianoData;
 import jw.piano.data.PluginConfig;
@@ -29,7 +29,7 @@ public class Piano {
         pianoModel = new PianoModel();
         pianoDataObserver = configurePianoObserver(pianoData, pianoModel);
 
-        injection = FluentAPI.injection();
+        injection = FluentApi.injection();
         settings = injection.findInjection(PluginConfig.class);
         pianoSkinService = injection.findInjection(PianoSkinService.class);
     }
@@ -40,7 +40,7 @@ public class Piano {
 
 
     public void openGUIPanel(Player player) {
-        final var gui = FluentAPI.spigot().playerContext().find(MenuGUI.class, player.getUniqueId());
+        final var gui = FluentApi.spigot().playerContext().find(MenuGUI.class, player.getUniqueId());
         gui.openPianoView(player, this);
     }
 

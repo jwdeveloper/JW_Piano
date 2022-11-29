@@ -1,4 +1,5 @@
 package jw.piano.websocket.packets;
+import jw.fluent_plugin.implementation.FluentApi;
 import jw.piano.handlers.piano_details.PianoDetailsResponse;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import jw.fluent_api.utilites.ActionResult;
@@ -20,7 +21,7 @@ public class PianosInfoPacket extends WebSocketPacket {
     public void onPacketTriggered(final WebSocket webSocket)
     {
         final UUID uuid = new UUID(a,b);
-        final var data = FluentMediator.resolve(uuid,PianoDetailsResponse.class);
+        final var data = FluentApi.mediator().resolve(uuid,PianoDetailsResponse.class);
         final var response = new ActionResult(data,data != null);
         sendJson(webSocket, response);
     }

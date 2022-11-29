@@ -1,6 +1,5 @@
 package jw.piano.listeners;
 
-import jw.fluent_api.logger.OldLogger;
 import jw.piano.service.PianoDataService;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
@@ -18,7 +17,6 @@ public class ClearArmorstandsListerner extends EventBase
     public ClearArmorstandsListerner(PianoDataService service)
     {
         this.dataService = service;
-        OldLogger.log("Siema 2222");
     }
 
     @EventHandler
@@ -30,7 +28,6 @@ public class ClearArmorstandsListerner extends EventBase
             if(a.getLocation().getChunk().equals(chunkLoadEvent.getChunk()))
             {
                 var e = chunkLoadEvent.getChunk().getEntities();
-                OldLogger.log("Siema "+e.length);
             }
         }
     }

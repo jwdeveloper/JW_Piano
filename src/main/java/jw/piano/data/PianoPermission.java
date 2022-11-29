@@ -1,7 +1,5 @@
 package jw.piano.data;
 
-import jw.fluent_api.logger.OldLogger;
-import jw.fluent_plugin.implementation.FluentPlugin;
 import org.bukkit.permissions.Permission;
 
 import java.util.ArrayList;
@@ -35,44 +33,5 @@ public class PianoPermission
     public final static String DETECT_KEY = PIANO +".detect-key";
 
     public final static String DESKTOP_CLIENT = PIANO +".desktop-client";
-
-    public static void register() {
-
-        try
-        {
-            var fields = PianoPermission.class.getDeclaredFields();
-            var names = new ArrayList<String>();
-            for(var field : fields)
-            {
-                names.add(field.get(null).toString());
-            }
-
-            var pianoPermissions = new ArrayList<Permission>();
-            for(var name  : names)
-            {
-                if(name.equals(PIANO))
-                {
-                   var subPermissions = new HashMap<String,Boolean>();
-                   for(var name2 : names)
-                   {
-                       if(name.equals(PIANO))
-                       {
-                           continue;
-                       }
-                       subPermissions.put(name2,true);
-                   }
-                    pianoPermissions.add(new Permission(name,subPermissions));
-                    continue;
-                }
-                pianoPermissions.add(new Permission(name));
-            }
-            FluentPlugin.addPermissions(pianoPermissions);
-        }
-        catch (Exception e)
-        {
-            OldLogger.error("unable to load permissions ",e);
-        }
-
-    }
 
 }

@@ -1,27 +1,40 @@
 package jw.piano.awake_actions;
 
-import jw.fluent_plugin.api.PluginAction;
+import jw.fluent_plugin.api.FluentApiBuilder;
+import jw.fluent_plugin.api.FluentApiExtention;
+import jw.fluent_plugin.implementation.FluentApi;
 import jw.piano.data.PianoData;
 import jw.piano.data.PianoDataRepository;
 import jw.piano.data.PluginConfig;
 import jw.piano.enums.PianoEffect;
 import jw.piano.service.PianoService;
-import jw.fluent_plugin.implementation.FluentPlugin;
-import jw.fluent_plugin.api.options.PipelineOptions;
 import org.bukkit.persistence.PersistentDataType;
 
-public class PianoSetupAction implements PluginAction {
+public class PianoSetupAction implements FluentApiExtention {
+    @Override
+    public void onConfiguration(FluentApiBuilder builder) {
+
+    }
 
     @Override
-    public void pluginEnable(PipelineOptions options) throws Exception {
-        var repository = FluentInjection.findInjection(PianoDataRepository.class);
-        var service = FluentInjection.findInjection(PianoService.class);
+    public void onFluentApiEnable(FluentApi fluentAPI) throws Exception {
+        var repository = FluentApi.injection().findInjection(PianoDataRepository.class);
+        var service = FluentApi.injection().findInjection(PianoService.class);
         for (var pianoData : repository.findAll()) {
             if (pianoData.getEffect() == null) {
                 pianoData.setEffect(PianoEffect.SIMPLE_PARTICLE);
             }
             clearOldModel(pianoData);
             service.create(pianoData);
+        }
+    }
+
+    @Override
+    public void onFluentApiDisabled(FluentApi fluentAPI) throws Exception {
+        var repository = FluentApi.injection().findInjection(PianoDataRepository.class);
+        var service =  FluentApi.injection().findInjection(PianoService.class);
+        for (var pianoData : repository.findAll()) {
+            service.delete(pianoData.getUuid());
         }
     }
 
@@ -36,13 +49,7 @@ public class PianoSetupAction implements PluginAction {
 
     }
 
-    @Override
-    public void pluginDisable(FluentPlugin fluentPlugin) throws Exception {
 
-        var repository = FluentInjection.findInjection(PianoDataRepository.class);
-        var service = FluentInjection.findInjection(PianoService.class);
-        for (var pianoData : repository.findAll()) {
-            service.delete(pianoData.getUuid());
-        }
-    }
+
+
 }

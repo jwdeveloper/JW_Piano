@@ -1,5 +1,7 @@
 package jw.piano.gui;
 
+import jw.fluent_plugin.implementation.FluentApi;
+import jw.fluent_plugin.implementation.modules.translator.FluentTranslator;
 import jw.piano.data.PianoPermission;
 import jw.piano.data.PianoSkin;
 import jw.piano.data.PluginConfig;
@@ -35,11 +37,14 @@ public class PianoViewGUI extends ChestUI {
     private final PluginConfig settings;
     private PianoSkinService pianoSkinService;
 
+    private FluentTranslator lang;
+
     @Inject
-    public PianoViewGUI(PluginConfig settings, PianoSkinService pianoSkinService) {
+    public PianoViewGUI(PluginConfig settings, PianoSkinService pianoSkinService, FluentTranslator lang) {
         super("Piano", 5);
         this.settings = settings;
         this.pianoSkinService = pianoSkinService;
+       this.lang = lang;
     }
 
     public void open(Player player, Piano piano) {
@@ -68,7 +73,7 @@ public class PianoViewGUI extends ChestUI {
                 .boolObserver(pianoDataObserver.getEnableBind())
                 .setMaterial(Material.REDSTONE_TORCH)
                 .setPermissions(PianoPermission.PIANO, PianoPermission.ACTIVE)
-                .setTitlePrimary(Lang.get("gui.piano.piano-active.title"))
+                .setTitlePrimary(lang.get("gui.piano.piano-active.title"))
                 .setLocation(0, 1)
                 .buildAndAdd(this);
 
@@ -77,7 +82,7 @@ public class PianoViewGUI extends ChestUI {
                 .boolObserver(pianoDataObserver.getInteractivePedalBind())
                 .setMaterial(Material.REDSTONE_TORCH)
                 .setPermissions(PianoPermission.PIANO, PianoPermission.PEDAl)
-                .setTitlePrimary(Lang.get("gui.piano.pedal-active.title"))
+                .setTitlePrimary(lang.get("gui.piano.pedal-active.title"))
                 .setLocation(0, 2)
                 .buildAndAdd(this);
 
@@ -85,7 +90,7 @@ public class PianoViewGUI extends ChestUI {
                 .boolObserver(pianoDataObserver.getBenchActiveBind())
                 .setMaterial(Material.REDSTONE_TORCH)
                 .setPermissions(PianoPermission.PIANO, PianoPermission.BENCH)
-                .setTitlePrimary(Lang.get("gui.piano.bench-active.title"))
+                .setTitlePrimary(lang.get("gui.piano.bench-active.title"))
                 .setLocation(0, 3)
                 .buildAndAdd(this);
 
@@ -95,7 +100,7 @@ public class PianoViewGUI extends ChestUI {
                 .boolObserver(pianoDataObserver.getDetectPressInMinecraftBind())
                 .setMaterial(Material.REDSTONE_TORCH)
                 .setPermissions(PianoPermission.PIANO, PianoPermission.DETECT_KEY)
-                .setTitlePrimary(Lang.get("gui.piano.detect-key-active.title"))
+                .setTitlePrimary(lang.get("gui.piano.detect-key-active.title"))
                 .setLocation(0, 4)
                 .buildAndAdd(this);
 
@@ -103,12 +108,12 @@ public class PianoViewGUI extends ChestUI {
                 .boolObserver(pianoDataObserver.getDesktopClientAllowedBind())
                 .setMaterial(Material.REDSTONE_TORCH)
                 .setPermissions(PianoPermission.PIANO, PianoPermission.DESKTOP_CLIENT)
-                .setTitlePrimary(Lang.get("gui.piano.desktop-client-active.title"))
+                .setTitlePrimary(lang.get("gui.piano.desktop-client-active.title"))
                 .setLocation(0, 5)
                 .buildAndAdd(this);
 
         ButtonUI.builder()
-                .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets(Lang.get("gui.piano.teleport.title")))
+                .setTitle(FluentMessage.message().color(org.bukkit.ChatColor.AQUA).inBrackets(lang.get("gui.piano.teleport.title")))
                 .setMaterial(Material.ENDER_PEARL)
                 .setPermissions(PianoPermission.PIANO, PianoPermission.TELEPORT)
                 .setLocation(2, 2)
@@ -125,7 +130,7 @@ public class PianoViewGUI extends ChestUI {
 
         ButtonObserverUI.builder()
                 .addObserver(pianoDataObserver.getSkinIdBind(), new SkinModelNotifier(pianoSkinService.skins()))
-                .setTitlePrimary(Lang.get("gui.piano.skin.title"))
+                .setTitlePrimary(lang.get("gui.piano.skin.title"))
                 .setPermissions(PianoPermission.PIANO, PianoPermission.SKIN)
                 .setLocation(3, 4)
                 .buildAndAdd(this);
@@ -135,7 +140,7 @@ public class PianoViewGUI extends ChestUI {
                 .enumSelectorObserver(pianoDataObserver.getEffectBind())
                 .setMaterial(Material.FIREWORK_ROCKET)
                 .setPermissions(PianoPermission.PIANO, PianoPermission.EFFECTS)
-                .setTitlePrimary(Lang.get("gui.piano.effect.title"))
+                .setTitlePrimary(lang.get("gui.piano.effect.title"))
                 .setLocation(3, 2)
                 .buildAndAdd(this);
 
@@ -143,16 +148,16 @@ public class PianoViewGUI extends ChestUI {
                 .intSelectObserver(pianoDataObserver.getVolumeBind(), 0, 100, 5)
                 .setMaterial(Material.BELL)
                 .setPermissions(PianoPermission.PIANO, PianoPermission.VOLUME)
-                .setTitlePrimary(Lang.get("gui.piano.volume.title"))
+                .setTitlePrimary(lang.get("gui.piano.volume.title"))
                 .setLocation(2, 6)
                 .buildAndAdd(this);
 
         ButtonUI.builder()
                 .setMaterial(Material.PAPER)
                 .setPermissions(PianoPermission.PIANO, PianoPermission.RENAME)
-                .setTitlePrimary(Lang.get("gui.piano.rename.title"))
+                .setTitlePrimary(lang.get("gui.piano.rename.title"))
                 .setLocation(3, 6)
-                .setDescription(Lang.get("gui.piano.rename.desc"))
+                .setDescription(lang.get("gui.piano.rename.desc"))
                 .setOnClick((player, button) ->
                 {
                     this.close();
@@ -175,8 +180,8 @@ public class PianoViewGUI extends ChestUI {
         ButtonUI.builder()
                 .setMaterial(Material.DIAMOND)
                 .setHighlighted()
-                .setTitlePrimary(Lang.get("gui.piano.token.title"))
-                .setDescription(Lang.get("gui.piano.token.desc"))
+                .setTitlePrimary(lang.get("gui.piano.token.title"))
+                .setDescription(lang.get("gui.piano.token.desc"))
                 .setLocation(1, 4)
                 .setOnClick((player, button) ->
                 {
@@ -184,25 +189,25 @@ public class PianoViewGUI extends ChestUI {
                     {
                         FluentMessage.message().color(org.bukkit.ChatColor.AQUA).bold().inBrackets("Piano info").space().
                                 reset().
-                                text(Lang.get("gui.piano.desktop-client-active.disabled")).send(player);
+                                text(lang.get("gui.piano.desktop-client-active.disabled")).send(player);
                     }
 
                     FluentMessage.message().color(org.bukkit.ChatColor.AQUA).bold().inBrackets("Piano info").space().
                             reset().
-                            text(Lang.get("gui.piano.token.message-1")).send(player);
+                            text(lang.get("gui.piano.token.message-1")).send(player);
                     player.sendMessage(" ");
-                    final var msg = new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + Emoticons.arrowRight + Lang.get("gui.piano-menu.client-app.message"));
+                    final var msg = new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + Emoticons.arrowRight + lang.get("gui.piano-menu.client-app.message"));
                     msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, settings.CLIENT_APP_URL));
                     player.spigot().sendMessage(msg);
 
 
                     player.sendMessage(" ");
                     final var linkRequest = new WebClientLinkRequest(player, pianoDataObserver.getPianoData());
-                    final var url = FluentMediator.resolve(linkRequest, String.class);
-                    final var message = new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + Emoticons.arrowRight +Lang.get("gui.piano.token.click-to-copy"));
+                    final var url = FluentApi.mediator().resolve(linkRequest, String.class);
+                    final var message = new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + Emoticons.arrowRight +lang.get("gui.piano.token.click-to-copy"));
                     message.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, url));
 
-                    final var hover = new Text(ChatColor.GRAY +Lang.get("gui.piano.token.message-2"));
+                    final var hover = new Text(ChatColor.GRAY +lang.get("gui.piano.token.message-2"));
                     message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hover));
                     player.spigot().sendMessage(message);
                     player.sendMessage(" ");

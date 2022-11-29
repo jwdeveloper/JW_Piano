@@ -1,6 +1,6 @@
 package jw.piano.sounds.v1_19;
 
-import jw.fluent_api.logger.OldLogger;
+import jw.fluent_plugin.implementation.FluentApi;
 import jw.piano.game_objects.utils.MappedSounds;
 import jw.piano.sounds.NmsSoundPlayer;
 import lombok.SneakyThrows;
@@ -30,7 +30,7 @@ public class SoundPlayer_1_19 implements NmsSoundPlayer {
                     var connection = getConnection(player);
                     playerConnections.put(player, connection);
                 } catch (Exception e) {
-                    OldLogger.error("Player " + e);
+                    FluentApi.logger().error("Player " + e);
                     return;
                 }
             }
@@ -66,7 +66,7 @@ public class SoundPlayer_1_19 implements NmsSoundPlayer {
 
         for(var c : PacketPlayOutCustomSoundEffect.class.getConstructors())
         {
-            OldLogger.success(c.getParameterCount()+" Params ");
+            FluentApi.logger().success(c.getParameterCount()+" Params ");
         }
 
        return (PacketPlayOutCustomSoundEffect) PacketPlayOutCustomSoundEffect.class.getConstructors()[0].newInstance( sound,

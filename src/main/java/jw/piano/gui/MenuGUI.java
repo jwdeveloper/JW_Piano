@@ -1,7 +1,6 @@
 package jw.piano.gui;
 
-import jw.fluent_plugin.implementation.FluentAPI;
-import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
+import jw.fluent_plugin.implementation.FluentApi;
 import jw.fluent_plugin.implementation.modules.translator.FluentTranslator;
 import jw.piano.data.PianoPermission;
 import jw.piano.data.PianoData;
@@ -111,7 +110,7 @@ public class MenuGUI extends CrudListUI<PianoData> {
 
         onInsert((player, button) ->
         {
-            final var response = FluentAPI.mediator().resolve(new CreatePianoRequest(player), CreatePianoResponse.class);
+            final var response = FluentApi.mediator().resolve(new CreatePianoRequest(player), CreatePianoResponse.class);
             if (!response.created()) {
                 setTitle(FluentMessage.message().color(org.bukkit.ChatColor.DARK_RED).inBrackets(response.message()));
                 return;
@@ -123,7 +122,7 @@ public class MenuGUI extends CrudListUI<PianoData> {
             var piano = button.<PianoData>getDataContext();
             var result = pianoDataService.delete(piano.getUuid());
             if (!result) {
-                setTitle(FluentAPI.lang().get("gui.base.delete.error"));
+                setTitle(FluentApi.translator().get("gui.base.delete.error"));
             }
             refreshContent();
         });
@@ -132,7 +131,7 @@ public class MenuGUI extends CrudListUI<PianoData> {
             var pianoData = button.<PianoData>getDataContext();
             var result = pianoService.get(pianoData.getUuid());
             if (result.isEmpty()) {
-                setTitle(FluentAPI.lang().get("gui.piano-menu.click.error"));
+                setTitle(FluentApi.translator().get("gui.piano-menu.click.error"));
                 refreshContent();
                 return;
             }

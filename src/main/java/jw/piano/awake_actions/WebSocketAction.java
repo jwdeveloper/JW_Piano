@@ -1,26 +1,29 @@
 package jw.piano.awake_actions;
-import jw.fluent_api.logger.OldLogger;
+import jw.fluent_plugin.api.FluentApiBuilder;
+import jw.fluent_plugin.api.FluentApiExtention;
+import jw.fluent_plugin.implementation.FluentApi;
 import jw.piano.data.PluginConfig;
 import jw.piano.websocket.PianoWebSocket;
-import jw.fluent_plugin.implementation.FluentPlugin;
-import jw.fluent_plugin.api.PluginAction;
-import jw.fluent_plugin.api.options.PipelineOptions;
 
 import java.io.*;
 import java.net.URL;
 
-public class WebSocketAction implements PluginAction {
+public class WebSocketAction implements FluentApiExtention {
 
     private PianoWebSocket webSocket;
     private PluginConfig settings;
 
     @Override
-    public void pluginEnable(PipelineOptions options) throws Exception {
+    public void onConfiguration(FluentApiBuilder builder) {
 
-        settings =  FluentInjection.findInjection(PluginConfig.class);
+    }
+
+    @Override
+    public void onFluentApiEnable(FluentApi fluentAPI) throws Exception {
+        settings =   FluentApi.injection().findInjection(PluginConfig.class);
         if(!settings.isRunPianoPlayerServer())
         {
-            OldLogger.info("Piano server is disabled to changed that jump to  plugin/JW_Piano/settings.json");
+            fluentAPI.getFluentLogger().info("Piano server is disabled to changed that jump to  plugin/JW_Piano/settings.json");
         }
         if(settings.getCustomServerIp().equals(""))
         {
@@ -31,16 +34,15 @@ public class WebSocketAction implements PluginAction {
             settings.SERVER_IP = settings.getCustomServerIp();
         }
 
-        webSocket = FluentInjection.findInjection(PianoWebSocket.class);
+        webSocket =  FluentApi.injection().findInjection(PianoWebSocket.class);
         webSocket.start();
     }
 
     @Override
-    public void pluginDisable(FluentPlugin fluentPlugin) throws Exception
-    {
+    public void onFluentApiDisabled(FluentApi fluentAPI) throws Exception {
         if(!settings.isRunPianoPlayerServer())
         {
-          return;
+            return;
         }
         webSocket.stop();
     }
@@ -50,5 +52,7 @@ public class WebSocketAction implements PluginAction {
         BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
         return br.readLine();
     }
+
+
 }
 

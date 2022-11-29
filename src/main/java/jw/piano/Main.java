@@ -1,7 +1,10 @@
 package jw.piano;
 
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.fluent_plugin.implementation.FluentAPI;
+import jw.fluent_plugin.api.FluentApiBuilder;
+import jw.fluent_plugin.implementation.FluentApi;
+import jw.fluent_plugin.implementation.FluentPlugin;
+import jw.fluent_plugin.implementation.config.FluentConfig;
 import jw.piano.awake_actions.FileVersionAction;
 import jw.piano.data.PluginConfig;
 import jw.piano.awake_actions.PianoSetupAction;
@@ -9,51 +12,35 @@ import jw.piano.awake_actions.WebSocketAction;
 import jw.piano.gui.MenuGUI;
 import jw.piano.test.PianoGameObject;
 import jw.fluent_api.spigot.gameobjects.implementation.GameObjectManager;
-import jw.fluent_plugin.implementation.FluentPlugin;
-import jw.fluent_plugin.api.PluginConfiguration;
-import jw.fluent_plugin.implementation.config.ConfigFile;
 import org.bukkit.Bukkit;
 
 public final class Main extends FluentPlugin {
+
     @Override
-    protected void OnConfiguration(PluginConfiguration configuration, ConfigFile configFile) {
-        configuration
-                .useDebugMode()
-                .useFilesHandler()
-                .configureDependencyInjection(containerBuilder ->
+    public void onConfiguration(FluentApiBuilder builder) {
+        builder.container()
+                .addMetrics(PluginConfig.METRICTS_ID)
+                .addUpdater(updaterOptions ->
                 {
-                    containerBuilder.register(Main.class, LifeTime.SINGLETON,(c)->
-                    {
-                        return this;
-                    });
-                })
-                .configurePlugin(pluginOptions ->
-                {
-                    pluginOptions.useDefaultNamespace("piano");
-                    pluginOptions.useMetrics(PluginConfig.METRICTS_ID);
-                    pluginOptions.useUpdate(PluginConfig.PLUGIN_UPDATE_URL);
-                })
-                .useDefaultCommand("piano", builder ->
-                {
-                    builder.eventsConfig(eventConfig ->
-                    {
-                        eventConfig.onPlayerExecute(event ->
-                        {
-                            var gui = FluentAPI.spigot().playerContext().find(MenuGUI.class, event.getPlayer());
-                            gui.open(event.getPlayer());
-                        });
-                    });
-                })
-                .useCustomAction(new FileVersionAction())
-                .useCustomAction(new PianoSetupAction())
-                .useCustomAction(new WebSocketAction());
+                    //  pluginOptions.useDefaultNamespace("piano");
+                    updaterOptions.setGithub(PluginConfig.PLUGIN_UPDATE_URL);
+                });
+
+        builder.command().eventsConfig(eventConfig ->
+        {
+            eventConfig.onPlayerExecute(event ->
+            {
+                var gui = FluentApi.spigot().playerContext().find(MenuGUI.class, event.getPlayer());
+                gui.open(event.getPlayer());
+            });
+        });
+        builder.useExtention(new FileVersionAction());
+        builder.useExtention(new PianoSetupAction());
+        builder.useExtention(new WebSocketAction());
     }
 
-
     @Override
-    protected void OnFluentPluginEnable()
-    {
-
+    public void onFluentApiEnable(FluentApi fluentAPI) {
         for (var player : Bukkit.getOnlinePlayers()) {
             var loc = player.getLocation();
             loc.setPitch(0);
@@ -63,7 +50,7 @@ public final class Main extends FluentPlugin {
     }
 
     @Override
-    protected void OnFluentPluginDisable() {
+    public void onFluentApiDisabled(FluentApi fluentAPI) {
 
     }
 }

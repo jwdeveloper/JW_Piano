@@ -1,5 +1,6 @@
 package jw.piano.game_objects.models;
 
+import jw.fluent_plugin.implementation.FluentApi;
 import jw.piano.enums.PianoKeysConst;
 import jw.piano.game_objects.models.effects.EffectManager;
 import jw.piano.sounds.SoundPlayerFactory;
@@ -37,7 +38,7 @@ public class PianoKeyModel extends CustomModel implements Comparable {
            setCustomModelData(PianoKeysConst.WHITE_KEY.getId());
         setupParticle();
         setupHitbox(location);
-        soundPlayerFactory = FluentInjection.findInjection(SoundPlayerFactory.class);
+        soundPlayerFactory = FluentApi.injection().findInjection(SoundPlayerFactory.class);
     }
 
     private void setupHitbox(Location location)
@@ -69,7 +70,7 @@ public class PianoKeyModel extends CustomModel implements Comparable {
             setCustomModelData(PianoKeysConst.WHITE_KEY.getId());
 
 
-        soundPlayerFactory = FluentInjection.findInjection(SoundPlayerFactory.class);
+        soundPlayerFactory =  FluentApi.injection().findInjection(SoundPlayerFactory.class);
     }
 
     public void setVolume(int volume)

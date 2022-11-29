@@ -1,6 +1,5 @@
 package jw.piano.game_objects.models.effects;
 
-import jw.fluent_api.logger.OldLogger;
 import jw.piano.data.PluginConfig;
 import jw.piano.enums.PianoKeysConst;
 import jw.piano.game_objects.factories.ArmorStandFactory;
@@ -116,13 +115,6 @@ public class FlyingNotesEffect implements PianoEffectInvoker {
             }
         }
 
-        public void log(String log)
-        {
-            if(instance == this)
-            {
-                OldLogger.log(log);
-            }
-        }
 
         public void enable(Location location)
         {

@@ -1,7 +1,7 @@
 package jw.piano.websocket;
 
 
-import jw.fluent_api.logger.OldLogger;
+import jw.fluent_plugin.implementation.FluentApi;
 import jw.piano.data.PluginConfig;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
@@ -15,8 +15,8 @@ public class PianoWebSocket extends WebSocketBase
     public PianoWebSocket(PluginConfig settings)
     {
         super(settings.getPort());
-        OldLogger.info("Piano server is running on "+settings.SERVER_IP+":"+settings.getPort());
-        var packets = FluentInjection.getContainer().findAllBySuperClass(WebSocketPacket.class);
+        FluentApi.logger().info("Piano server is running on "+settings.SERVER_IP+":"+settings.getPort());
+        var packets =  FluentApi.injection().findAllBySuperClass(WebSocketPacket.class);
         this.registerPackets(packets);
     }
 }
