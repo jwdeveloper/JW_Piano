@@ -12,12 +12,12 @@ import jw.piano.service.PianoSkinService;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.fluent_api.spigot.gui.EventsListenerInventoryUI;
-import jw.fluent_api.spigot.gui.button.ButtonUI;
-import jw.fluent_api.spigot.gui.button.button_observer.ButtonNotifier;
-import jw.fluent_api.spigot.gui.button.button_observer.ButtonObserverEvent;
-import jw.fluent_api.spigot.gui.button.button_observer.ButtonObserverUI;
-import jw.fluent_api.spigot.gui.implementation.chest_ui.ChestUI;
+import jw.fluent_api.spigot.inventory_gui.EventsListenerInventoryUI;
+import jw.fluent_api.spigot.inventory_gui.button.ButtonUI;
+import jw.fluent_api.spigot.inventory_gui.button.button_observer.ButtonNotifier;
+import jw.fluent_api.spigot.inventory_gui.button.button_observer.ButtonObserverEvent;
+import jw.fluent_api.spigot.inventory_gui.button.button_observer.ButtonObserverUI;
+import jw.fluent_api.spigot.inventory_gui.implementation.chest_ui.ChestUI;
 import jw.fluent_api.spigot.messages.FluentMessage;
 import jw.fluent_api.utilites.messages.Emoticons;
 import net.md_5.bungee.api.ChatColor;
@@ -145,7 +145,7 @@ public class PianoViewGUI extends ChestUI {
                 .buildAndAdd(this);
 
         ButtonObserverUI.factory()
-                .intSelectObserver(pianoDataObserver.getVolumeBind(), 0, 100, 5)
+                .intRangeObserver(pianoDataObserver.getVolumeBind(), 0, 100, 5)
                 .setMaterial(Material.BELL)
                 .setPermissions(PianoPermission.PIANO, PianoPermission.VOLUME)
                 .setTitlePrimary(lang.get("gui.piano.volume.title"))
