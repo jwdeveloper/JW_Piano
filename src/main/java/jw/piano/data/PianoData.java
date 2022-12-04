@@ -1,10 +1,10 @@
 package jw.piano.data;
 
 
-import jw.fluent_plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.FluentApi;
 import jw.piano.enums.PianoEffect;
-import jw.fluent_api.files.api.models.DataModel;
-import jw.fluent_api.spigot.messages.message.MessageBuilder;
+import jw.fluent.api.files.api.models.DataModel;
+import jw.fluent.api.spigot.messages.message.MessageBuilder;
 import lombok.Data;
 
 import org.bukkit.Location;

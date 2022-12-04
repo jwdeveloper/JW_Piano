@@ -1,8 +1,8 @@
 package jw.piano.awake_actions;
 
-import jw.fluent_plugin.api.FluentApiBuilder;
-import jw.fluent_plugin.api.FluentApiExtention;
-import jw.fluent_plugin.implementation.FluentApi;
+import jw.fluent.plugin.api.FluentApiBuilder;
+import jw.fluent.plugin.api.FluentApiExtention;
+import jw.fluent.plugin.implementation.FluentApi;
 import jw.piano.data.PianoData;
 import jw.piano.data.PianoDataRepository;
 import jw.piano.data.PluginConfig;

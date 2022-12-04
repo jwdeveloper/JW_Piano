@@ -1,12 +1,12 @@
 package jw.piano.websocket;
 
 
-import jw.fluent_plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.FluentApi;
 import jw.piano.data.PluginConfig;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent_api.web_socket.WebSocketBase;
-import jw.fluent_api.web_socket.WebSocketPacket;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import jw.fluent.api.web_socket.WebSocketBase;
+import jw.fluent.api.web_socket.WebSocketPacket;
 
 @Injection
 public class PianoWebSocket extends WebSocketBase

@@ -1,11 +1,11 @@
 package jw.piano.game_objects.models;
 
-import jw.fluent_plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.FluentApi;
 import jw.piano.enums.PianoKeysConst;
 import jw.piano.game_objects.models.effects.EffectManager;
 import jw.piano.sounds.SoundPlayerFactory;
-import jw.fluent_api.utilites.math.MathUtility;
-import jw.fluent_api.utilites.math.collistions.HitBox;
+import jw.fluent.api.utilites.math.MathUtility;
+import jw.fluent.api.utilites.math.collistions.HitBox;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.*;

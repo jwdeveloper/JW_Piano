@@ -1,6 +1,6 @@
 package jw.piano.sounds.v1_18_R1;
 
-import jw.fluent_plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.FluentApi;
 import jw.piano.game_objects.utils.MappedSounds;
 import jw.piano.sounds.NmsSoundPlayer;
 import net.minecraft.network.protocol.game.PacketPlayOutCustomSoundEffect;

@@ -1,10 +1,10 @@
 package jw.piano.handlers.web_client;
 
 import jw.piano.data.PluginConfig;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent_api.desing_patterns.mediator.api.MediatorHandler;
-import jw.fluent_api.utilites.files.json.JsonUtility;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import jw.fluent.api.desing_patterns.mediator.api.MediatorHandler;
+import jw.fluent.api.utilites.files.json.JsonUtility;
 
 import java.util.Base64;
 

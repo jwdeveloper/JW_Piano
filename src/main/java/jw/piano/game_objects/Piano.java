@@ -1,7 +1,7 @@
 package jw.piano.game_objects;
 
-import jw.fluent_plugin.implementation.FluentApi;
-import jw.fluent_plugin.implementation.modules.dependecy_injection.FluentInjection;
+import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.modules.dependecy_injection.FluentInjection;
 import jw.piano.data.PianoData;
 import jw.piano.data.PluginConfig;
 import jw.piano.gui.MenuGUI;

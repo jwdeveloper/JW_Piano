@@ -1,8 +1,8 @@
 package jw.piano.sounds;
 
-import jw.fluent_plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.FluentApi;
 import jw.piano.sounds.v1_18_R1.SoundPlayer_1_18_R1;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 

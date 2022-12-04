@@ -1,7 +1,7 @@
 package jw.piano.handlers.piano_details;
 
 import jw.piano.game_objects.Piano;
-import jw.fluent_api.mapper.api.MapperProfile;
+import jw.fluent.api.mapper.api.MapperProfile;
 
 public class PianoDetailsMapper implements MapperProfile<Piano,PianoDetailsResponse> {
     @Override

@@ -1,10 +1,10 @@
 package jw.piano.websocket.packets;
-import jw.fluent_plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.FluentApi;
 import jw.piano.handlers.piano_details.PianoDetailsResponse;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent_api.utilites.ActionResult;
-import jw.fluent_api.web_socket.WebSocketPacket;
-import jw.fluent_api.web_socket.annotations.PacketProperty;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import jw.fluent.api.utilites.ActionResult;
+import jw.fluent.api.web_socket.WebSocketPacket;
+import jw.fluent.api.web_socket.annotations.PacketProperty;
 import org.java_websocket.WebSocket;
 
 import java.util.UUID;

@@ -2,7 +2,7 @@ package jw.piano.service;
 
 import jw.piano.data.PianoData;
 import jw.piano.game_objects.Piano;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import org.bukkit.Location;
 
 import java.util.HashMap;

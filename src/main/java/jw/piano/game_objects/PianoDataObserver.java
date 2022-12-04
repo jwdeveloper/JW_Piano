@@ -2,7 +2,7 @@ package jw.piano.game_objects;
 
 import jw.piano.data.PianoData;
 import jw.piano.enums.PianoEffect;
-import jw.fluent_api.desing_patterns.observer.implementation.Observer;
+import jw.fluent.api.desing_patterns.observer.implementation.Observer;
 import lombok.Getter;
 import org.bukkit.Location;
 

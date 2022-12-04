@@ -2,7 +2,7 @@ package jw.piano.game_objects.models;
 
 import jw.piano.data.PluginConfig;
 import jw.piano.game_objects.factories.ArmorStandFactory;
-import jw.fluent_api.spigot.gameobjects.api.GameObject;
+import jw.fluent.api.spigot.gameobjects.api.GameObject;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.ItemStack;

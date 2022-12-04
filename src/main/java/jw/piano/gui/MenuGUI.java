@@ -1,7 +1,7 @@
 package jw.piano.gui;
 
-import jw.fluent_plugin.implementation.FluentApi;
-import jw.fluent_plugin.implementation.modules.translator.FluentTranslator;
+import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 import jw.piano.data.PianoPermission;
 import jw.piano.data.PianoData;
 import jw.piano.data.PluginConfig;
@@ -10,12 +10,12 @@ import jw.piano.handlers.create_piano.CreatePianoRequest;
 import jw.piano.handlers.create_piano.CreatePianoResponse;
 import jw.piano.service.PianoDataService;
 import jw.piano.service.PianoService;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.fluent_api.spigot.inventory_gui.button.ButtonUI;
-import jw.fluent_api.spigot.inventory_gui.implementation.crud_list_ui.CrudListUI;
-import jw.fluent_api.spigot.messages.FluentMessage;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
+import jw.fluent.api.spigot.inventory_gui.button.ButtonUI;
+import jw.fluent.api.spigot.inventory_gui.implementation.crud_list_ui.CrudListUI;
+import jw.fluent.api.spigot.messages.FluentMessage;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;

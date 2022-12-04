@@ -1,10 +1,10 @@
 package jw.piano.service;
 
-import jw.fluent_plugin.implementation.modules.translator.FluentTranslator;
+import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 import jw.piano.data.PianoSkin;
 import jw.piano.data.PluginConfig;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package jw.piano.sounds.v1_19;
 
-import jw.fluent_plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.FluentApi;
 import jw.piano.game_objects.utils.MappedSounds;
 import jw.piano.sounds.NmsSoundPlayer;
 import lombok.SneakyThrows;

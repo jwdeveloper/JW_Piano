@@ -1,8 +1,8 @@
 package jw.piano.game_objects.models.effects;
 
 import jw.piano.data.PluginConfig;
-import jw.fluent_api.spigot.tasks.FluentTaskTimer;
-import jw.fluent_api.spigot.tasks.FluentTasks;
+import jw.fluent.api.spigot.tasks.FluentTaskTimer;
+import jw.fluent.api.spigot.tasks.FluentTasks;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;

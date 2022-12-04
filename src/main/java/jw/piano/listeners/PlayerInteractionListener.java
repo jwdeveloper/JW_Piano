@@ -2,10 +2,10 @@ package jw.piano.listeners;
 
 import jw.piano.game_objects.Piano;
 import jw.piano.service.PianoService;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent_api.spigot.events.EventBase;
-import jw.fluent_api.spigot.tasks.FluentTaskTimer;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import jw.fluent.api.spigot.events.EventBase;
+import jw.fluent.api.spigot.tasks.FluentTaskTimer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

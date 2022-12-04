@@ -1,6 +1,6 @@
 package jw.piano.data;
 
-import jw.fluent_api.utilites.files.yml.api.YmlMapping;
+import jw.fluent.api.utilites.files.yml.api.YmlMapping;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.inventory.ItemStack;

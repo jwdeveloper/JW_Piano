@@ -1,17 +1,15 @@
 package jw.piano;
 
-import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.fluent_plugin.api.FluentApiBuilder;
-import jw.fluent_plugin.implementation.FluentApi;
-import jw.fluent_plugin.implementation.FluentPlugin;
-import jw.fluent_plugin.implementation.config.FluentConfig;
+import jw.fluent.plugin.api.FluentApiBuilder;
+import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.FluentPlugin;
 import jw.piano.awake_actions.FileVersionAction;
 import jw.piano.data.PluginConfig;
 import jw.piano.awake_actions.PianoSetupAction;
 import jw.piano.awake_actions.WebSocketAction;
 import jw.piano.gui.MenuGUI;
 import jw.piano.test.PianoGameObject;
-import jw.fluent_api.spigot.gameobjects.implementation.GameObjectManager;
+import jw.fluent.api.spigot.gameobjects.implementation.GameObjectManager;
 import org.bukkit.Bukkit;
 
 public final class Main extends FluentPlugin {

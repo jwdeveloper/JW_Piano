@@ -1,12 +1,12 @@
 package jw.piano.awake_actions;
 
-import jw.fluent_plugin.api.FluentApiBuilder;
-import jw.fluent_plugin.api.FluentApiExtention;
-import jw.fluent_plugin.implementation.FluentApi;
+import jw.fluent.plugin.api.FluentApiBuilder;
+import jw.fluent.plugin.api.FluentApiExtention;
+import jw.fluent.plugin.implementation.FluentApi;
 import jw.piano.data.PluginConfig;
-import jw.fluent_plugin.implementation.config.FluentConfig;
-import jw.fluent_api.utilites.files.FileUtility;
-import jw.fluent_api.utilites.files.yml.implementation.YmlConfigurationImpl;
+import jw.fluent.plugin.implementation.config.FluentConfig;
+import jw.fluent.api.utilites.files.FileUtility;
+import jw.fluent.api.utilites.files.yml.implementation.YmlConfigurationImpl;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
