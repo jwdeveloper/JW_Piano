@@ -1,13 +1,12 @@
 package jw.piano.websocket;
 
 
-import jw.piano.data.PluginConfig;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
-import jw.spigot_fluent_api.fluent_logger.FluentLogger;
-import jw.spigot_fluent_api.web_socket.WebSocketBase;
-import jw.spigot_fluent_api.web_socket.WebSocketPacket;
+import jw.fluent.plugin.implementation.FluentApi;
+import jw.piano.api.data.PluginConfig;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import jw.fluent.api.web_socket.WebSocketBase;
+import jw.fluent.api.web_socket.WebSocketPacket;
 
 @Injection
 public class PianoWebSocket extends WebSocketBase
@@ -16,8 +15,8 @@ public class PianoWebSocket extends WebSocketBase
     public PianoWebSocket(PluginConfig settings)
     {
         super(settings.getPort());
-        FluentLogger.info("Piano server is running on "+settings.SERVER_IP+":"+settings.getPort());
-        var packets = FluentInjection.getInjectionContainer().getAllByParentType(WebSocketPacket.class);
+        FluentApi.logger().info("Piano server is running on "+settings.SERVER_IP+":"+settings.getPort());
+        var packets =  FluentApi.injection().findAllBySuperClass(WebSocketPacket.class);
         this.registerPackets(packets);
     }
 }

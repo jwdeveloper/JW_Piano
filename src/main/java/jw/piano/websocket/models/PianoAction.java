@@ -1,8 +1,6 @@
 package jw.piano.websocket.models;
 
-import jw.piano.game_objects.models.PianoModel;
-
-import java.util.UUID;
+import jw.piano.gameobjects.models.PianoModel;
 
 public record PianoAction(PianoModel model,
                           int vel,

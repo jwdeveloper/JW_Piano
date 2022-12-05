@@ -1,11 +1,11 @@
 package jw.piano.handlers.piano_details;
 
+import jw.fluent.plugin.implementation.FluentApi;
 import jw.piano.service.PianoService;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
-import jw.spigot_fluent_api.desing_patterns.mediator.interfaces.MediatorHandler;
-import jw.spigot_fluent_api.fluent_mapper.FluentMapper;
-import jw.spigot_fluent_api.utilites.ActionResult;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import jw.fluent.api.desing_patterns.mediator.api.MediatorHandler;
+import jw.fluent.api.utilites.ActionResult;
 
 import java.util.UUID;
 
@@ -22,8 +22,8 @@ public class PianoDetailsHandler implements MediatorHandler<UUID, PianoDetailsRe
         if (pianoOptional.isEmpty())
             return null;
 
-        FluentMapper.map(pianoId,  new ActionResult<String>().getClass());
-        final var response = FluentMapper.map(pianoOptional.get(), PianoDetailsResponse.class);
+        FluentApi.mapper().map(pianoId,  new ActionResult<String>().getClass());
+        final var response = FluentApi.mapper().map(pianoOptional.get(), PianoDetailsResponse.class);
         return response;
     }
 }

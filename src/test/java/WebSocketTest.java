@@ -1,10 +1,10 @@
 
-import jw.piano.game_objects.Piano;
+import jw.piano.gameobjects.Piano;
 import jw.piano.handlers.piano_details.PianoDetailsMapper;
 import jw.piano.handlers.piano_details.PianoDetailsResponse;
-import jw.spigot_fluent_api.fluent_mapper.implementation.SimpleMapper;
-import jw.spigot_fluent_api.fluent_mapper.api.Mapper;
-import jw.spigot_fluent_api.utilites.ActionResult;
+import jw.fluent.api.mapper.implementation.SimpleMapper;
+import jw.fluent.api.mapper.api.Mapper;
+import jw.fluent.api.utilites.ActionResult;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ public class WebSocketTest {
 
     @Test
     public void ShouldLoadFile() throws InterruptedException, IOException {
-        Mapper mapper = new SimpleMapper();
+        Mapper mapper = new SimpleMapper(null);
         mapper.registerMappingProfile(PianoDetailsMapper.class);
         mapper.map(new Piano(null), PianoDetailsResponse.class);
     }

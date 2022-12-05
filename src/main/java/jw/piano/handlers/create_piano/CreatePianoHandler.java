@@ -1,11 +1,11 @@
 package jw.piano.handlers.create_piano;
 
-import jw.piano.data.PianoData;
-import jw.piano.data.PluginConfig;
+import jw.piano.api.data.PianoData;
+import jw.piano.api.data.PluginConfig;
 import jw.piano.service.PianoDataService;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Inject;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
-import jw.spigot_fluent_api.desing_patterns.mediator.interfaces.MediatorHandler;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import jw.fluent.api.desing_patterns.mediator.api.MediatorHandler;
 import org.bukkit.util.Vector;
 
 @Injection

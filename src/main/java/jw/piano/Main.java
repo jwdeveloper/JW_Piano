@@ -1,56 +1,66 @@
 package jw.piano;
 
-
-import jw.piano.awake_actions.FileVersionAction;
-import jw.piano.data.PluginConfig;
-import jw.piano.awake_actions.PianoSetupAction;
-import jw.piano.awake_actions.WebSocketAction;
-import jw.piano.gui.MenuGUI;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_plugin.starup_actions.PluginConfiguration;
-import jw.spigot_fluent_api.fluent_plugin.config.ConfigFile;
-
+import jw.fluent.plugin.api.FluentApiBuilder;
+import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.FluentPlugin;
+import jw.piano.api.data.PianoPermission;
+import jw.piano.extentions.FileVersionAction;
+import jw.piano.api.data.PluginConfig;
+import jw.piano.extentions.PianoSetupAction;
+import jw.piano.spigot.PluginDocumentation;
+import jw.piano.spigot.gui.MenuGUI;
+import jw.piano.spigot.temp.PianoGameObject;
+import jw.fluent.api.spigot.gameobjects.implementation.GameObjectManager;
+import org.bukkit.Bukkit;
 
 public final class Main extends FluentPlugin {
+
     @Override
-    protected void OnConfiguration(PluginConfiguration configuration, ConfigFile configFile) {
-        configuration
-                .useDebugMode()
-                .useFilesHandler()
-                .userDefaultPermission("piano")
-                .useDefaultCommand("piano", builder ->
+    public void onConfiguration(FluentApiBuilder builder) {
+        builder.container()
+                .addMetrics(PluginConfig.METRICTS_ID)
+                .addUpdater(updaterOptions ->
                 {
-                    builder.eventsConfig(eventConfig ->
-                    {
-                        eventConfig.onPlayerExecute(event ->
-                        {
-                            var gui = FluentInjection.getPlayerInjection(MenuGUI.class, event.getPlayerSender());
-                            gui.open(event.getPlayerSender());
-                        });
-                    });
-                })
-                .useMetrics(() ->
+                    //  pluginOptions.useDefaultNamespace("piano");
+                    updaterOptions.setGithub(PluginConfig.PLUGIN_UPDATE_URL);
+                }).addPlayerContext()
+                .addDocumentation(options ->
                 {
-                    return PluginConfig.METRICTS_ID;
-                }).useUpdates((a) ->
-                {
-                    a.setGithub(PluginConfig.PLUGIN_UPDATE_URL);
-                })
-                .useCustomAction(new FileVersionAction())
-                .useCustomAction(new PianoSetupAction())
-                .useCustomAction(new WebSocketAction());
+                    options.addDecorator(new PluginDocumentation());
+                    options.setUseSpigotDocumentation(true);
+                    options.setUseGithubDocumentation(true);
+                    options.setPermissionModel(PianoPermission.class);
+                });
+
+        builder.command().setName(PianoPermission.PIANO);
+        builder.command().eventsConfig(eventConfig ->
+        {
+            eventConfig.onPlayerExecute(event ->
+            {
+                var gui = FluentApi.spigot().playerContext().find(MenuGUI.class, event.getPlayer());
+                gui.open(event.getPlayer());
+            });
+        });
+
+        builder.permissions().setBasePermissionName(PianoPermission.PIANO);
+
+        builder.useExtention(new FileVersionAction());
+        builder.useExtention(new PianoSetupAction());
+        // builder.useExtention(new WebSocketAction());
     }
 
-
     @Override
-    protected void OnFluentPluginEnable() {
-
-
+    public void onFluentApiEnable(FluentApi fluentAPI) {
+        for (var player : Bukkit.getOnlinePlayers()) {
+            var loc = player.getLocation();
+            loc.setPitch(0);
+            loc.setYaw(0);
+            GameObjectManager.register(new PianoGameObject(), loc);
+        }
     }
 
     @Override
-    protected void OnFluentPluginDisable() {
+    public void onFluentApiDisabled(FluentApi fluentAPI) {
 
     }
 }

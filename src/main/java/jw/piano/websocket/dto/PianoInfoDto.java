@@ -1,6 +1,6 @@
 package jw.piano.websocket.dto;
 
-import jw.piano.enums.PianoType;
+import jw.piano.api.enums.PianoType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.Location;
