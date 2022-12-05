@@ -1,6 +1,6 @@
 package jw.piano.handlers.web_client;
 
-import jw.piano.data.PianoData;
+import jw.piano.api.data.PianoData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.entity.Player;

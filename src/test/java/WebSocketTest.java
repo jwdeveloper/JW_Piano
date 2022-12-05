@@ -1,5 +1,5 @@
 
-import jw.piano.game_objects.Piano;
+import jw.piano.gameobjects.Piano;
 import jw.piano.handlers.piano_details.PianoDetailsMapper;
 import jw.piano.handlers.piano_details.PianoDetailsResponse;
 import jw.fluent.api.mapper.implementation.SimpleMapper;

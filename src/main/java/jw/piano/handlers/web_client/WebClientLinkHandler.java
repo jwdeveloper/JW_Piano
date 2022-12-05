@@ -1,6 +1,6 @@
 package jw.piano.handlers.web_client;
 
-import jw.piano.data.PluginConfig;
+import jw.piano.api.data.PluginConfig;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import jw.fluent.api.desing_patterns.mediator.api.MediatorHandler;

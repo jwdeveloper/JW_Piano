@@ -1,6 +1,6 @@
 package jw.piano.handlers.piano_details;
 
-import jw.piano.game_objects.Piano;
+import jw.piano.gameobjects.Piano;
 import jw.fluent.api.mapper.api.MapperProfile;
 
 public class PianoDetailsMapper implements MapperProfile<Piano,PianoDetailsResponse> {

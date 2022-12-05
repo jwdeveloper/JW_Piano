@@ -3,12 +3,13 @@ package jw.piano;
 import jw.fluent.plugin.api.FluentApiBuilder;
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.FluentPlugin;
-import jw.piano.awake_actions.FileVersionAction;
-import jw.piano.data.PluginConfig;
-import jw.piano.awake_actions.PianoSetupAction;
-import jw.piano.awake_actions.WebSocketAction;
-import jw.piano.gui.MenuGUI;
-import jw.piano.test.PianoGameObject;
+import jw.piano.api.data.PianoPermission;
+import jw.piano.extentions.FileVersionAction;
+import jw.piano.api.data.PluginConfig;
+import jw.piano.extentions.PianoSetupAction;
+import jw.piano.spigot.PluginDocumentation;
+import jw.piano.spigot.gui.MenuGUI;
+import jw.piano.spigot.temp.PianoGameObject;
 import jw.fluent.api.spigot.gameobjects.implementation.GameObjectManager;
 import org.bukkit.Bukkit;
 
@@ -22,8 +23,16 @@ public final class Main extends FluentPlugin {
                 {
                     //  pluginOptions.useDefaultNamespace("piano");
                     updaterOptions.setGithub(PluginConfig.PLUGIN_UPDATE_URL);
+                }).addPlayerContext()
+                .addDocumentation(options ->
+                {
+                    options.addDecorator(new PluginDocumentation());
+                    options.setUseSpigotDocumentation(true);
+                    options.setUseGithubDocumentation(true);
+                    options.setPermissionModel(PianoPermission.class);
                 });
 
+        builder.command().setName(PianoPermission.PIANO);
         builder.command().eventsConfig(eventConfig ->
         {
             eventConfig.onPlayerExecute(event ->
@@ -32,9 +41,12 @@ public final class Main extends FluentPlugin {
                 gui.open(event.getPlayer());
             });
         });
+
+        builder.permissions().setBasePermissionName(PianoPermission.PIANO);
+
         builder.useExtention(new FileVersionAction());
         builder.useExtention(new PianoSetupAction());
-        builder.useExtention(new WebSocketAction());
+        // builder.useExtention(new WebSocketAction());
     }
 
     @Override

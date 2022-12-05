@@ -2,7 +2,7 @@ package jw.piano.websocket;
 
 
 import jw.fluent.plugin.implementation.FluentApi;
-import jw.piano.data.PluginConfig;
+import jw.piano.api.data.PluginConfig;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import jw.fluent.api.web_socket.WebSocketBase;

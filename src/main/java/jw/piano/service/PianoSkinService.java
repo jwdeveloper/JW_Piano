@@ -1,8 +1,8 @@
 package jw.piano.service;
 
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
-import jw.piano.data.PianoSkin;
-import jw.piano.data.PluginConfig;
+import jw.piano.api.data.PianoSkin;
+import jw.piano.api.data.PluginConfig;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 

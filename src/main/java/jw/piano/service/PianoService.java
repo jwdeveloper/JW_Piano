@@ -1,7 +1,7 @@
 package jw.piano.service;
 
-import jw.piano.data.PianoData;
-import jw.piano.game_objects.Piano;
+import jw.piano.api.data.PianoData;
+import jw.piano.gameobjects.Piano;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import org.bukkit.Location;
 
