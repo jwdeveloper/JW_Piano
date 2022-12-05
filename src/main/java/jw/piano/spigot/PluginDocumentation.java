@@ -30,13 +30,18 @@ public class PluginDocumentation extends DocumentationDecorator {
 
     private void createDescription(Documentation documentation) {
 
+        addText(documentation);
         addText("JW Piano is a one in own kind plugin that give you opportunity to play piano with your friends! But this is only top on the iceberg.",documentation);
         addText("If you want to play MIDI file or send notes from real piano, download desktop app and connect to your server!",documentation);
 
 
         addText("Common problems:", documentation, "bold");
         addListMember("When you've got error 'Can't connect to server' on desktop app open new Port at your hosting panel. Then go to plugins/jw_piano/config.yml and change value of port", documentation);
-        addListMember("When you have some problems with resourcepack download it directly: "+PluginConfig.TEXTURES_URL, documentation);
+        addListMember("When you have some problems with resourcepack download it directly", documentation);
+
+        addLink("Download Desktop App",PluginConfig.CLIENT_APP_URL,documentation);
+        addLink("Download Resourcepack",PluginConfig.RESOURCEPACK_URL,documentation);
+        addText(documentation);
     }
 
 

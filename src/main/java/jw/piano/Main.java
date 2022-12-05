@@ -32,15 +32,21 @@ public final class Main extends FluentPlugin {
                     options.setPermissionModel(PianoPermission.class);
                 });
 
-        builder.command().setName(PianoPermission.PIANO);
-        builder.command().eventsConfig(eventConfig ->
-        {
-            eventConfig.onPlayerExecute(event ->
-            {
-                var gui = FluentApi.spigot().playerContext().find(MenuGUI.class, event.getPlayer());
-                gui.open(event.getPlayer());
-            });
-        });
+        builder.command()
+                .setName(PianoPermission.PIANO)
+                .propertiesConfig(propertiesConfig ->
+                {
+                    propertiesConfig.setDescription("opens GUI where you can Create/Edit/Delete pianos");
+                    propertiesConfig.setUsageMessage("/piano");
+                })
+                .eventsConfig(eventConfig ->
+                {
+                    eventConfig.onPlayerExecute(event ->
+                    {
+                        var gui = FluentApi.spigot().playerContext().find(MenuGUI.class, event.getPlayer());
+                        gui.open(event.getPlayer());
+                    });
+                });
 
         builder.permissions().setBasePermissionName(PianoPermission.PIANO);
 
