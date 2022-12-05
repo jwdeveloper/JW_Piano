@@ -8,7 +8,14 @@ If you want to play MIDI file or send notes from real piano, download desktop ap
 
 ### Common problems:
  -  When you've got error 'Can't connect to server' on desktop app open new Port at your hosting panel. Then go to plugins/jw_piano/config.yml and change value of port
- -  When you have some problems with resourcepack download it directly: https://download.mc-packs.net/pack/6fd6764e874d973fecd2d6debce416671399782b.zip
+ -  When you have some problems with resourcepack download it directly
+
+[Download Desktop App](https://github.com/jwdeveloper/JW_Piano_Desktop/releases/latest/download/JW_Piano_Desktop.jar)
+
+
+[Download Resourcepack](https://github.com/jwdeveloper/JW_Instruments/releases/latest/download/instrumentpack.rar)
+
+
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/F4iKXAMIioo/0.jpg)](https://www.youtube.com/watch?v=F4iKXAMIioo&feature=emb_logo&ab_channel=JW)
 
