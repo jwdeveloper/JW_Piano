@@ -1,6 +1,7 @@
 package jw.piano.spigot.sounds;
 
 import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.FluentApiSpigot;
 import jw.piano.spigot.sounds.v1_18_R1.SoundPlayer_1_18_R1;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import org.bukkit.Bukkit;

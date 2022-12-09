@@ -1,10 +1,9 @@
 package jw.piano.websocket.packets;
 
-import jw.piano.service.PianoService;
+import jw.piano.services.PianoService;
 import jw.piano.websocket.models.PianoAction;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.spigot.tasks.FluentTaskTimer;
+import jw.fluent.api.spigot.tasks.SimpleTaskTimer;
 import jw.fluent.api.web_socket.WebSocketPacket;
 import jw.fluent.api.web_socket.annotations.PacketProperty;
 import org.java_websocket.WebSocket;
@@ -15,8 +14,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 @Injection
 public class PianoActionPacket extends WebSocketPacket {
-    @Inject
-    private PianoService pianoModelService;
 
     @PacketProperty
     public long a;
@@ -36,23 +33,48 @@ public class PianoActionPacket extends WebSocketPacket {
     @PacketProperty
     public byte velocity;
 
+
     @Override
     public int getPacketId() {
         return 0;
     }
 
+    private final PianoService pianoService;
+    private final Queue<PianoAction> tasks = new LinkedBlockingQueue<>();
 
-    public PianoActionPacket()
+    public PianoActionPacket(PianoService pianoService)
     {
+        this.pianoService = pianoService;
         consumeTasks();
     }
 
-    final Queue<PianoAction> tasks = new LinkedBlockingQueue<>();
+    @Override
+    public void onPacketTriggered(WebSocket webSocket) {
 
+        final var uuid = new UUID(a,b);
+        final var piano = pianoService.find(uuid);
+        if (piano.isEmpty())
+        {
+            return;
+        }
 
-    public void consumeTasks()
+        if(!piano.get().isCreated())
+        {
+            return;
+        }
+
+        if(!piano.get().getPianoData().getDesktopClientAllowed())
+        {
+            return;
+        }
+
+        final var pianoModel = piano.get().getPianoModel();
+        tasks.add(new PianoAction(pianoModel,velocity,nodeId,packetType));
+    }
+
+    private void consumeTasks()
     {
-        var taskTimer = new FluentTaskTimer(1, (currentTick, fluentTaskTimer) ->
+        var taskTimer = new SimpleTaskTimer(1, (currentTick, fluentTaskTimer) ->
         {
             for (final var task : tasks)
             {
@@ -69,29 +91,8 @@ public class PianoActionPacket extends WebSocketPacket {
     }
 
     @Override
-    public void onPacketTriggered(WebSocket webSocket) {
-
-        final UUID uuid = new UUID(a,b);
-        final var piano = pianoModelService.get(uuid);
-        if (piano.isEmpty())
-            return;
-        if(!piano.get().isCreated())
-        {
-            return;
-        }
-        if(!piano.get().getPianoData().getDesktopClientAllowed())
-        {
-            return;
-        }
-
-        final var pianoModel = piano.get().getPianoModel();
-        tasks.add(new PianoAction(pianoModel,velocity,nodeId,packetType));
-    }
-
-    @Override
     public String toString() {
         return "OnPianoPacket{" +
-                "pianoModelService=" + pianoModelService +
                 ", packetType=" + packetType +
                 ", nodeId=" + nodeId +
                 ", velocity=" + velocity +

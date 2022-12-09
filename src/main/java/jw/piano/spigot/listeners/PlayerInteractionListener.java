@@ -1,11 +1,11 @@
 package jw.piano.spigot.listeners;
 
-import jw.piano.gameobjects.Piano;
-import jw.piano.service.PianoService;
+import jw.piano.spigot.gameobjects.Piano;
+import jw.piano.services.PianoService;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import jw.fluent.api.spigot.events.EventBase;
-import jw.fluent.api.spigot.tasks.FluentTaskTimer;
+import jw.fluent.api.spigot.tasks.SimpleTaskTimer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,7 +22,7 @@ public class PlayerInteractionListener extends EventBase {
 
     private final PianoService pianoService;
     private final HashMap<Player, Piano> pianoUsers;
-    private final FluentTaskTimer checkPlayerToPianoDistanceTask;
+    private final SimpleTaskTimer checkPlayerToPianoDistanceTask;
 
     @Inject
     public PlayerInteractionListener(PianoService service) {
@@ -37,8 +37,6 @@ public class PlayerInteractionListener extends EventBase {
         {
             return;
         }
-
-
         final var player = event.getPlayer();
         final var isPlayerUsingPiano = pianoUsers.containsKey(player);
         if (!isPlayerUsingPiano) {
@@ -55,10 +53,10 @@ public class PlayerInteractionListener extends EventBase {
         event.setCancelled(true);
     }
 
-    private FluentTaskTimer checkDistanceTask()
+    private SimpleTaskTimer checkDistanceTask()
     {
         var playersToRemove = new ArrayList<>();
-        return new FluentTaskTimer(5,(iteration, task) ->
+        return new SimpleTaskTimer(5,(iteration, task) ->
         {
             playersToRemove.clear();
             for(var pianoPlayer : pianoUsers.entrySet())
@@ -109,34 +107,4 @@ public class PlayerInteractionListener extends EventBase {
     public void onPluginStop(PluginDisableEvent event) {
         checkPlayerToPianoDistanceTask.stop();
     }
-
-
-
-   /*
-    //@EventHandler
-    public void onChangeHandSlotEvent(PlayerItemHeldEvent event) {
-        final Optional<PianoPlayingEvent> pianoPlayingEvent = pianoPlayingEventList.stream()
-                .filter(e -> e.getPlayer()
-                        .equals(event.getPlayer()))
-                .findAny();
-
-        if (!pianoPlayingEvent.isPresent())
-            return;
-
-        List<Chord> melody = new ArrayList<>();
-        melody.add(ChordFactory.majnor(Sound.C));
-        melody.add(ChordFactory.majnor(Sound.D));
-        melody.add(ChordFactory.majnor(Sound.E));
-        melody.add(ChordFactory.majnor(Sound.F));
-        melody.add(ChordFactory.majnor(Sound.G));
-        melody.add(ChordFactory.majnor(Sound.A));
-        melody.add(ChordFactory.majnor(Sound.B));
-
-        if (pianoMelodyPlayer == null) {
-            pianoMelodyPlayer = new PianoMelodyPlayer(melody.get(event.getNewSlot()), pianoPlayingEvent.get().getPianoModel());
-            pianoMelodyPlayer.Play();
-        } else
-            pianoMelodyPlayer.setMelody(melody.get(event.getNewSlot()));
-
-    }*/
 }

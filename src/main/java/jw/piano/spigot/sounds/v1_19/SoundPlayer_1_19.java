@@ -1,7 +1,8 @@
 package jw.piano.spigot.sounds.v1_19;
 
 import jw.fluent.plugin.implementation.FluentApi;
-import jw.piano.gameobjects.utils.MappedSounds;
+import jw.fluent.plugin.implementation.FluentApiSpigot;
+import jw.piano.spigot.gameobjects.sounds.SoundsMapper;
 import jw.piano.spigot.sounds.NmsSoundPlayer;
 import lombok.SneakyThrows;
 import net.minecraft.network.protocol.game.PacketPlayOutCustomSoundEffect;
@@ -49,24 +50,18 @@ public class SoundPlayer_1_19 implements NmsSoundPlayer {
     private PacketPlayOutCustomSoundEffect getPacket(Location location, int note, float volume, boolean pressed) {
         if (pressed) {
             if (!soundsWithPedal.containsKey(note)) {
-                var s = MappedSounds.getSound(note, true);
+                var s = SoundsMapper.getSound(note, true);
                 var key = new MinecraftKey(s);
                 soundsWithPedal.put(note, key);
             }
             sound = soundsWithPedal.get(note);
         } else {
             if (!sounds.containsKey(note)) {
-                var s = MappedSounds.getSound(note, false);
+                var s = SoundsMapper.getSound(note, false);
                 var key = new MinecraftKey(s);
                 sounds.put(note, key);
             }
             sound = sounds.get(note);
-        }
-
-
-        for(var c : PacketPlayOutCustomSoundEffect.class.getConstructors())
-        {
-            FluentApi.logger().success(c.getParameterCount()+" Params ");
         }
 
        return (PacketPlayOutCustomSoundEffect) PacketPlayOutCustomSoundEffect.class.getConstructors()[0].newInstance( sound,

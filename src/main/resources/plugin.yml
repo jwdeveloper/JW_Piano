@@ -3,52 +3,84 @@ version: ${project.version}
 main: jw.piano.Main
 api-version: 1.17
 permissions:
+  # plugin
   piano:
-    description: general piano permissions
+    description: Default permission for plugin
     children:
-      - piano.remove
+      - commands
+      - gui
       - piano.create
+      - piano.remove
       - piano.volume
       - piano.rename
       - piano.skin
       - piano.active
       - piano.effects
-      - piano.update
       - piano.pedal
+      - piano.bench
       - piano.teleport
-
-  piano.remove:
-    description: removes piano
+      - piano.detect-key
+      - piano.desktop-client
+      - piano.show-gui-hitbox
 
   piano.create:
-    description: creates piano
+    description: player can create piano
+
+  piano.remove:
+    description: player can remove piano
 
   piano.volume:
-    description: sets piano's volume
+    description: player can edit piano volume in GUI
 
   piano.rename:
-    description: sets piano's name
+    description: player can rename piano in GUI
 
   piano.skin:
-    description: sets piano's skin
+    description: player change piano skin in GUI
 
   piano.active:
-    description: sets piano's active or inactive
+    description: player change piano state in GUI
 
   piano.effects:
-    description: sets piano's effects
-
-  piano.update:
-    description: download latest version of plugin
+    description: player set piano particles in GUI
 
   piano.pedal:
-    description: set if pedal pressing is active
+    description: player enable/disable piano pedal in GUI
+
+  piano.bench:
+    description: player enable/disable piano bench in GUI
 
   piano.teleport:
-    description: allows player to teleport to piano
+    description: player teleport to piano in GUI
 
   piano.detect-key:
-    description: set if players can press keys of certain piano
+    description: player is able to click at the piano keys
 
   piano.desktop-client:
-    description: set if players can use dektop app
+    description: player can use desktop-client
+
+  piano.show-gui-hitbox:
+    description: player can disable or enable gui hitbox
+
+  # commands
+  commands:
+    description: Default permission for commands
+    children:
+      - piano.commands.lang
+      - piano.commands.update
+      - piano.commands.piano
+
+  piano.commands.lang:
+    description: Allow player to change plugin language
+    default: op
+
+  piano.commands.update:
+    description: players with this permission can update plugin
+    default: op
+
+  piano.commands.piano:
+    description: player open gui to create/remove piano
+
+  # gui
+  gui:
+    description: Default permission for gui

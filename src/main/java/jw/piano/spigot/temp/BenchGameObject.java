@@ -1,6 +1,6 @@
 package jw.piano.spigot.temp;
 
-import jw.piano.api.data.PianoSkin;
+import jw.piano.api.data.models.PianoSkin;
 import jw.piano.api.enums.PianoKeysConst;
 import jw.fluent.api.spigot.gameobjects.api.GameObject;
 import jw.fluent.api.spigot.gameobjects.api.ModelRenderer;

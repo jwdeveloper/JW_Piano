@@ -49,6 +49,9 @@ gui:
     detect-key-active:
       title: Pressing piano keys active
 
+    show-gui-hitbox:
+      title: Show GUI hit box
+
 skins:
   none: none
   grand-piano: grand piano

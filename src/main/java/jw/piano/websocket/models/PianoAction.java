@@ -1,9 +1,6 @@
 package jw.piano.websocket.models;
 
-import jw.piano.gameobjects.models.PianoModel;
+import jw.piano.spigot.gameobjects.models.PianoGameObject;
 
-public record PianoAction(PianoModel model,
-                          int vel,
-                          int note,
-                          int type) {
+public record PianoAction(PianoGameObject model, int vel, int note, int type) {
 }

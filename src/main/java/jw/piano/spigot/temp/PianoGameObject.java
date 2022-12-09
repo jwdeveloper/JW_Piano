@@ -1,10 +1,10 @@
 package jw.piano.spigot.temp;
 
 import jw.fluent.plugin.implementation.FluentApi;
-import jw.piano.service.PianoSkinService;
+import jw.piano.services.PianoSkinService;
 import jw.fluent.api.spigot.gameobjects.api.GameObject;
 import jw.fluent.api.spigot.gameobjects.api.ModelRenderer;
-import jw.fluent.api.spigot.tasks.FluentTasks;
+import jw.fluent.plugin.implementation.modules.tasks.FluentTasks;
 import org.bukkit.Particle;
 
 public class PianoGameObject extends GameObject {
@@ -15,7 +15,7 @@ public class PianoGameObject extends GameObject {
     int x = -360;
     @Override
     public void onCreated() {
-        service = FluentApi.injection().findInjection(PianoSkinService.class);
+        service = FluentApi.container().findInjection(PianoSkinService.class);
         modelRenderer = addGameComponent(new ModelRenderer());
         modelRenderer.setCustomModel(service.grandPiano().getItemStack());
         benchGameObject = addGameComponent(new BenchGameObject());
@@ -26,7 +26,7 @@ public class PianoGameObject extends GameObject {
            rotate(x);
             x+=3;
             location.getWorld().spawnParticle(Particle.HEART,getLocation(),1);
-        }).startAfterIterations(50)
+        }).startAfterTicks(50)
            .run();
     }
 }
