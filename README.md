@@ -2,25 +2,48 @@
 ![alt text](https://raw.githubusercontent.com/jwdeveloper/JW_Piano/master/resources/images/banner.png)
 
 <p align="center">
-<a href="https://discord.gg/2hu6fPPeF7"><img src="https://raw.githubusercontent.com/jwdeveloper/SpigotFluentAPI/master/resources/social-media/discord.png"  /></a><a href="https://github.com/jwdeveloper/JW_Instruments"><img src="https://raw.githubusercontent.com/jwdeveloper/SpigotFluentAPI/master/resources/social-media/github.png"  /></a><a href="https://www.spigotmc.org/resources/piano.103490/"><img src="https://raw.githubusercontent.com/jwdeveloper/SpigotFluentAPI/master/resources/social-media/spigot.png"  /></a></p>
-JW Piano is a one in own kind plugin that give you opportunity to play piano with your friends! But this is only top on the iceberg.
-If you want to play MIDI file or send notes from real piano, download desktop app and connect to your server!
+<a href="https://discord.gg/2hu6fPPeF7"><img src="https://raw.githubusercontent.com/jwdeveloper/SpigotFluentAPI/master/resources/social-media/discord.png"  /></a><a href="https://github.com/jwdeveloper/JW_Piano"><img src="https://raw.githubusercontent.com/jwdeveloper/SpigotFluentAPI/master/resources/social-media/github.png"  /></a><a href="https://www.spigotmc.org/resources/piano.103490/"><img src="https://raw.githubusercontent.com/jwdeveloper/SpigotFluentAPI/master/resources/social-media/spigot.png"  /></a></p>
 
-### Common problems:
- -  When you've got error 'Can't connect to server' on desktop app open new Port at your hosting panel. Then go to plugins/jw_piano/config.yml and change value of port
- -  When you have some problems with resourcepack download it directly
+A Minecraft plugin that adds a playable piano to the game would allow players to interact with a piano in the game world.
+This piano would function just like a real-life piano, allowing players to play individual notes or full melodies using their real keyboard with Desktop app connection.
+The plugin would add a new level of creativity and musical expression to the game, allowing players to showcase their musical talents and compose their own tunes.
+Additionally, the piano could be used as a decorative item in the game world, adding a new element of realism and immersion to the game.
+Overall, this plugin would be a fun and unique addition to Minecraft, providing players with a new way to interact with the game world and express themselves.
+
 
 [Download Desktop App](https://github.com/jwdeveloper/JW_Piano_Desktop/releases/latest/download/JW_Piano_Desktop.jar)
 
 
-[Download Resourcepack](https://github.com/jwdeveloper/JW_Instruments/releases/latest/download/instrumentpack.rar)
+[Download Resourcepack](https://download.mc-packs.net/pack/6fd6764e874d973fecd2d6debce416671399782b.zip)
 
 
+<details>
+<summary>Common issues</summary>
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/F4iKXAMIioo/0.jpg)](https://www.youtube.com/watch?v=F4iKXAMIioo&feature=emb_logo&ab_channel=JW)
+
+### Resourcepack
+ -  When you have some problems with resourcepack download it directly
+
+### Desktop app configuration, `config.yml` > `plugin.websocket.custom-id`
+ -  Make sure port you are trying to use is open
+ -  When you've got problems with connection try to change `plugin.websocket.custom-id` or  `plugin.websocket.port`
+ -  Check if you need to create new port in the server hosting panel and then set in to `plugin.websocket.port`
+ -  When your server use proxy use Proxy IP to `plugin.websocket.custom-id`
+ -  When you server IP has port ignore port. Example: 
+
+Wrong: `craftplayer.com:22225`
+
+Correct: `craftplayer.com`
+
+ -  When you are running server locally set value to `localhost` to `plugin.websocket.custom-id`
+ -  When above solutions does not help set IP that you use in Minecraft server lists to `plugin.websocket.custom-id`
+</details>
 
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/AxljLMjh4Ac/0.jpg)](https://www.youtube.com/watch?v=AxljLMjh4Ac&feature=emb_logo&ab_channel=JW)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/F4iKXAMIioo/0.jpg)](https://www.youtube.com/watch?v=F4iKXAMIioo&t=2s&ab_channel=JW)
+
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/PSbwsbX7xc0/0.jpg)](https://www.youtube.com/watch?v=PSbwsbX7xc0&t=27s&ab_channel=JW)
 
 
 ![alt text](https://raw.githubusercontent.com/jwdeveloper/JW_Piano/master/resources/images/style.png)
@@ -33,49 +56,57 @@ If you want to play MIDI file or send notes from real piano, download desktop ap
 
 ``` yaml
 #
-# plugin.language
-# -> If you want add your language open `languages` folder copy `en.yml` call it as you want 
-# set `language` property to your path name and /reload server 
-#
-# plugin.saving-frequency
-# -> Determinate how frequent data is saved to files, value in minutes
-#
-#
 # piano-config.models-limit
 # -> Limit of pianos that could be spawn on the server
 #
-# plugin.auto-download-resourcepack
-# -> automatically download texture pack when player joins to server
+# plugin.resourcepack.url
+#    If you need to replace default resourcepack with your custom one
+#    set this to link of you resourcepack
+#    ! after plugin update make sure your custom resourcepack is compatible !
 #
-# piano-server.enable
-# -> runs piano server so players could join with desktop app
+# plugin.resourcepack.load-on-join
+#    Downloads resourcepack when player joins to server
 #
-# piano-server.customer-server-ip
-# -> When value is empty IP of your server will be detected automatically 
-#  Common issues: 
-#  - if you server IP has port ignore port WRONG -> craftplayer.com:22225  GOOD -> craftplayer.com
-#  - if you are running server locally set value to 'localhost'
-#  - if your server use proxy put here proxy IP
-#  - if above solutions does not help set IP that players are connecting to
+# plugin.websocket.run
+#    When false websocket will not run 
 #
-# piano-server.port
-# -> Make sure port is open on your hosting
+# plugin.saving-frequency
+#    Determinate how frequent data is saved to files, value in minutes
+#
+# plugin.language
+#    If you want add your language open `languages` folder copy `en.yml` call it as you want \n" +
+#  "set `language` property to your file name and /reload server 
+#
+# plugin.websocket.port
+#    Set port for websocket
+# ! Make sure that port is open
+# ! When you have server on hosting, generate new port on the hosting panel
+#
+#
+# plugin.websocket.custom-id
+#    Set own IP for websocket, by default plugin use IP of your server
+# ! When you are using proxy set here proxy IP
+# ! When you are running plugin locally on your PC, set 'localhost'
+# ! When default IP not works try use IP that you are using in minecraft server list
+#
 #
 
 plugin:
-  version: 1.1.3
-  language: en
+  version: 1.1.4
+  resourcepack:
+    url: https://download.mc-packs.net/pack/6fd6764e874d973fecd2d6debce416671399782b.zip
+    load-on-join: false
+  websocket:
+    run: true
+    port: 443
+    custom-id: ''
   saving-frequency: 5
-  auto-download-resourcepack: true
+  language: en
 piano-config:
   models-limit: 10
   minDistanceToPiano: 3.0
   maxDistanceFromPiano: 3.0
   maxDistanceFromKeys: 2.0
-piano-server:
-  enable: true
-  customer-server-ip: ''
-  port: 2022
 
 ```
 
@@ -88,10 +119,25 @@ commands:
 # /piano
   piano: 
     children: 
-      - lang
       - update
+      - resourcepack
+      - lang
+    permissions: 
+      - piano.commands.piano
     description: opens GUI where you can Create/Edit/Delete pianos
     usage: /piano
+# /piano update
+  update: 
+    permissions: 
+      - piano.commands.update
+    description: download plugin latest version, can be trigger both by player or console
+    usage: /piano update
+
+# /piano resourcepack
+  resourcepack: 
+    description: downloads plugin resourcepack
+    usage: /piano resourcepack
+
 # /piano lang <language>
   lang: 
     permissions: 
@@ -106,13 +152,6 @@ commands:
               - pl
     description: Changes plugin languages, changes will be applied after server reload. Change be use both be player or console
     usage: /piano lang <language>
-
-# /piano update
-  update: 
-    permissions: 
-      - piano.commands.update
-    description: download plugin latest version, can be trigger both by player or console
-    usage: /piano update
 
 
 
@@ -141,12 +180,13 @@ permissions:
       - piano.teleport
       - piano.detect-key
       - piano.desktop-client
+      - piano.show-gui-hitbox
 
   piano.create: 
-    description: player create piano
+    description: player can create piano
 
   piano.remove: 
-    description: player remove piano
+    description: player can remove piano
 
   piano.volume: 
     description: player can edit piano volume in GUI
@@ -178,12 +218,16 @@ permissions:
   piano.desktop-client: 
     description: player can use desktop-client
 
+  piano.show-gui-hitbox: 
+    description: player can disable or enable gui hitbox
+
 # commands
   commands: 
     description: Default permission for commands
     children: 
       - piano.commands.lang
       - piano.commands.update
+      - piano.commands.piano
 
   piano.commands.lang: 
     description: Allow player to change plugin language
@@ -192,6 +236,9 @@ permissions:
   piano.commands.update: 
     description: players with this permission can update plugin
     default: op
+
+  piano.commands.piano: 
+    description: player open gui to create/remove piano
 
 # gui
   gui: 
