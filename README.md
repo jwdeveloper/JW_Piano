@@ -40,10 +40,10 @@ Correct: `craftplayer.com`
 </details>
 
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/F4iKXAMIioo/0.jpg)](https://www.youtube.com/watch?v=F4iKXAMIioo&feature=emb_logo&ab_channel=JW)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/F4iKXAMIioo/0.jpg)](https://www.youtube.com/watch?v=F4iKXAMIioo&t=2s&ab_channel=JW)
 
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/AxljLMjh4Ac/0.jpg)](https://www.youtube.com/watch?v=AxljLMjh4Ac&feature=emb_logo&ab_channel=JW)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/PSbwsbX7xc0/0.jpg)](https://www.youtube.com/watch?v=PSbwsbX7xc0&t=27s&ab_channel=JW)
 
 
 ![alt text](https://raw.githubusercontent.com/jwdeveloper/JW_Piano/master/resources/images/style.png)
@@ -63,33 +63,33 @@ Correct: `craftplayer.com`
 #    If you need to replace default resourcepack with your custom one
 #    set this to link of you resourcepack
 #    ! after plugin update make sure your custom resourcepack is compatible !
-# 
+#
 # plugin.resourcepack.load-on-join
 #    Downloads resourcepack when player joins to server
-# 
+#
 # plugin.websocket.run
 #    When false websocket will not run 
-# 
+#
 # plugin.saving-frequency
 #    Determinate how frequent data is saved to files, value in minutes
-# 
+#
 # plugin.language
 #    If you want add your language open `languages` folder copy `en.yml` call it as you want \n" +
 #  "set `language` property to your file name and /reload server 
-# 
+#
 # plugin.websocket.port
 #    Set port for websocket
 # ! Make sure that port is open
 # ! When you have server on hosting, generate new port on the hosting panel
-# 
-# 
+#
+#
 # plugin.websocket.custom-id
 #    Set own IP for websocket, by default plugin use IP of your server
 # ! When you are using proxy set here proxy IP
 # ! When you are running plugin locally on your PC, set 'localhost'
 # ! When default IP not works try use IP that you are using in minecraft server list
-# 
-# 
+#
+#
 
 plugin:
   version: 1.1.4
@@ -120,8 +120,8 @@ commands:
   piano: 
     children: 
       - update
-      - lang
       - resourcepack
+      - lang
     permissions: 
       - piano.commands.piano
     description: opens GUI where you can Create/Edit/Delete pianos
@@ -132,6 +132,11 @@ commands:
       - piano.commands.update
     description: download plugin latest version, can be trigger both by player or console
     usage: /piano update
+
+# /piano resourcepack
+  resourcepack: 
+    description: downloads plugin resourcepack
+    usage: /piano resourcepack
 
 # /piano lang <language>
   lang: 
@@ -147,11 +152,6 @@ commands:
               - pl
     description: Changes plugin languages, changes will be applied after server reload. Change be use both be player or console
     usage: /piano lang <language>
-
-# /piano resourcepack
-  resourcepack: 
-    description: downloads plugin resourcepack
-    usage: /piano resourcepack
 
 
 
