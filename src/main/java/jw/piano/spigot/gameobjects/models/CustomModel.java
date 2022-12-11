@@ -1,8 +1,7 @@
 package jw.piano.spigot.gameobjects.models;
 
-import jw.piano.api.data.PluginConfig;
-import jw.piano.api.data.PluginConsts;
-import jw.piano.spigot.gameobjects.factories.ArmorStandFactory;
+import jw.piano.data.PluginConsts;
+import jw.piano.factory.ArmorStandFactory;
 import jw.fluent.api.spigot.gameobjects.api.GameObject;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
@@ -11,28 +10,20 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public abstract class CustomModel extends GameObject
 {
-     private ArmorStand armorStand;
-     private ItemStack itemStack;
-     private Location location;
+     private final ArmorStand armorStand;
+     private final ItemStack itemStack;
 
-     protected boolean isPressed;
+     protected final ArmorStandFactory armorStandFactory;
 
-     public CustomModel(Location location, String guid)
+     public CustomModel(Location location,ArmorStandFactory armorStandFactory, String guid)
      {
-          this.armorStand = ArmorStandFactory.create(location, guid);
+          this.armorStandFactory = armorStandFactory;
+          this.armorStand = armorStandFactory.create(location, guid);
           this.getArmorStand().setSmall(true);
           this.itemStack  = new ItemStack(PluginConsts.SKINS_MATERIAL,1);
           this.location = location;
      }
 
-     public boolean isPressed()
-     {
-          return isPressed;
-     }
-
-     public abstract void  press(int id, int velocity);
-
-     public abstract void release(int id, int velocity);
 
      public ArmorStand getArmorStand()
      {
@@ -46,7 +37,4 @@ public abstract class CustomModel extends GameObject
           itemStack.setItemMeta(meta);
           armorStand.setHelmet(itemStack);
      }
-
-     public Location getLocation(){return location;}
-
 }

@@ -1,18 +1,19 @@
 package jw.piano;
 
 import jw.fluent.plugin.api.FluentApiSpigotBuilder;
-import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.FluentApiSpigot;
 import jw.fluent.plugin.implementation.FluentPlugin;
-import jw.piano.api.data.PluginConsts;
-import jw.piano.api.data.PluginPermission;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import jw.piano.data.PluginConsts;
+import jw.piano.data.PluginPermission;
 import jw.piano.extentions.CommandsExtension;
 import jw.piano.extentions.FileVersionExtension;
-import jw.piano.spigot.PluginDocumentation;
-import jw.piano.spigot.gui.MenuGUI;
 
 public final class Main extends FluentPlugin {
 
+    //TODO Add permissions piano.* , piano.player.*
+    //TODO Make bench move in range, save bench location
+    //TODO Add translations for bench
     @Override
     public void onConfiguration(FluentApiSpigotBuilder builder) {
         builder.container()
@@ -27,7 +28,7 @@ public final class Main extends FluentPlugin {
                 })
                 .addDocumentation(options ->
                 {
-                    options.addDecorator(new PluginDocumentation());
+                    options.addSection(new PluginDocumentation());
                   //  options.setUseSpigotDocumentation(true);
                  //   options.setUseGithubDocumentation(true);
                     options.setPermissionModel(PluginPermission.class);
@@ -46,6 +47,8 @@ public final class Main extends FluentPlugin {
 
     @Override
     public void onFluentApiEnable(FluentApiSpigot fluentAPI) {
+
+
 
     }
 

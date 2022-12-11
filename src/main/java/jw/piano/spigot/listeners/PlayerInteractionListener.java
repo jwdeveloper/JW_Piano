@@ -26,8 +26,8 @@ public class PlayerInteractionListener extends EventBase {
 
     @Inject
     public PlayerInteractionListener(PianoService service) {
-        this.pianoService = service;
         this.pianoUsers = new HashMap<>();
+        this.pianoService = service;
         this.checkPlayerToPianoDistanceTask = checkDistanceTask();
     }
 
@@ -38,8 +38,7 @@ public class PlayerInteractionListener extends EventBase {
             return;
         }
         final var player = event.getPlayer();
-        final var isPlayerUsingPiano = pianoUsers.containsKey(player);
-        if (!isPlayerUsingPiano) {
+        if (!pianoUsers.containsKey(player)) {
             var pianoOptional = pianoService.getNearestPiano(player.getLocation());
             if(pianoOptional.isEmpty())  //there is no piano in player the nearest location;
             {
@@ -53,25 +52,6 @@ public class PlayerInteractionListener extends EventBase {
         event.setCancelled(true);
     }
 
-    private SimpleTaskTimer checkDistanceTask()
-    {
-        var playersToRemove = new ArrayList<>();
-        return new SimpleTaskTimer(5,(iteration, task) ->
-        {
-            playersToRemove.clear();
-            for(var pianoPlayer : pianoUsers.entrySet())
-            {
-                if(!pianoPlayer.getValue().isLocationInPianoRage(pianoPlayer.getKey().getLocation()))
-                {
-                   playersToRemove.add(pianoPlayer.getKey());
-                }
-            }
-            for(var toRemove:playersToRemove)
-            {
-              pianoUsers.remove(toRemove);
-            }
-        });
-    }
 
     @EventHandler
     public void onChangeSlotEvent(PlayerSwapHandItemsEvent event) {
@@ -107,4 +87,25 @@ public class PlayerInteractionListener extends EventBase {
     public void onPluginStop(PluginDisableEvent event) {
         checkPlayerToPianoDistanceTask.stop();
     }
+
+    private SimpleTaskTimer checkDistanceTask()
+    {
+        var playersToRemove = new ArrayList<>();
+        return new SimpleTaskTimer(5,(iteration, task) ->
+        {
+            playersToRemove.clear();
+            for(var pianoPlayer : pianoUsers.entrySet())
+            {
+                if(!pianoPlayer.getValue().isLocationInPianoRage(pianoPlayer.getKey().getLocation()))
+                {
+                    playersToRemove.add(pianoPlayer.getKey());
+                }
+            }
+            for(var toRemove:playersToRemove)
+            {
+                pianoUsers.remove(toRemove);
+            }
+        });
+    }
+
 }

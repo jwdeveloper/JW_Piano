@@ -3,8 +3,8 @@ package jw.piano.spigot.listeners;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import jw.fluent.api.spigot.events.EventBase;
 import jw.fluent.plugin.implementation.FluentApi;
-import jw.piano.api.data.PluginConsts;
-import jw.piano.services.PianoDataService;
+import jw.piano.data.PluginConsts;
+import jw.piano.repositories.PianoDataRepository;
 import jw.piano.services.PianoService;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -16,17 +16,17 @@ import org.bukkit.persistence.PersistentDataType;
 public class PianoInitializeListener extends EventBase {
 
     private final PianoService pianoService;
-    private final PianoDataService pianoDataService;
+    private final PianoDataRepository pianoDataRepository;
 
-    public PianoInitializeListener(PianoService pianoService, PianoDataService pianoDataService) {
+    public PianoInitializeListener(PianoService pianoService, PianoDataRepository pianoDataRepository) {
         this.pianoService = pianoService;
-        this.pianoDataService = pianoDataService;
+        this.pianoDataRepository = pianoDataRepository;
     }
 
 
     @EventHandler
     public void onServerLoad(ServerLoadEvent event) {
-        for (var pianoData : pianoDataService.findAll()) {
+        for (var pianoData : pianoDataRepository.findAll()) {
             pianoService.initialize(pianoData);
         }
 
@@ -51,12 +51,10 @@ public class PianoInitializeListener extends EventBase {
         for (var entity : entities) {
             var container = entity.getPersistentDataContainer();
             if (!container.has(PluginConsts.PIANO_NAMESPACE, PersistentDataType.STRING)) {
-                //   FluentLogger.LOGGER.info("Not has namespace");
                 continue;
             }
             var id = container.get(PluginConsts.PIANO_NAMESPACE, PersistentDataType.STRING);
             if (!guid.equals(id)) {
-                //  FluentLogger.LOGGER.info("Not has guid");
                 continue;
             }
             entity.remove();

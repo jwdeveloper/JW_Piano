@@ -1,8 +1,10 @@
 package jw.piano.spigot.gameobjects;
 
 import jw.fluent.plugin.implementation.FluentApi;
-import jw.piano.api.data.models.PianoData;
-import jw.piano.api.data.PluginConfig;
+import jw.piano.data.models.PianoData;
+import jw.piano.data.PluginConfig;
+import jw.piano.factory.ArmorStandFactory;
+import jw.piano.spigot.gameobjects.models.BenchGameObject;
 import jw.piano.spigot.gameobjects.models.PianoGameObject;
 import jw.piano.spigot.gui.MenuGUI;
 import jw.piano.services.PianoSkinService;
@@ -11,6 +13,8 @@ import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
+
+import java.util.Optional;
 
 
 @Getter
@@ -21,9 +25,9 @@ public class Piano {
     private final PianoSkinService pianoSkinService;
     private boolean isCreated;
 
-    public Piano(PianoData pianoData)
+    public Piano(PianoData pianoData, ArmorStandFactory armorStandFactory)
     {
-        pianoModel = new PianoGameObject(pianoData.getUuid().toString());
+        pianoModel = new PianoGameObject(pianoData.getUuid().toString(), armorStandFactory);
         pianoDataObserver = configurePianoObserver(pianoData, pianoModel);
         settings = FluentApi.container().findInjection(PluginConfig.class);
         pianoSkinService = FluentApi.container().findInjection(PianoSkinService.class);
@@ -31,11 +35,6 @@ public class Piano {
 
     public PianoData getPianoData() {
         return pianoDataObserver.getPianoData();
-    }
-
-    public void openGUIPanel(Player player) {
-        final var gui = FluentApi.playerContext().find(MenuGUI.class, player.getUniqueId());
-        gui.openPianoView(player, this);
     }
 
     public void create() {
@@ -60,7 +59,7 @@ public class Piano {
     }
 
     public void destroy() {
-        pianoModel.onDestroy();
+        pianoModel.destroy();
         isCreated = false;
     }
 
@@ -72,8 +71,9 @@ public class Piano {
         if (!isCreated)
             return;
 
-        if (pianoModel.getOpenViewHitBox().isCollider(player.getEyeLocation(), 3)) {
-            openGUIPanel(player);
+        if (pianoModel.isGuiHitBoxCollider(player)) {
+            final var gui = FluentApi.playerContext().find(MenuGUI.class, player.getUniqueId());
+            gui.openPianoView(player, this);
             return;
         }
         if(!pianoDataObserver.getDetectPressInMinecraftBind().get())
@@ -91,13 +91,7 @@ public class Piano {
             return;
         }
 
-        var sustain = pianoModel.getSustainPedal();
-        if (sustain.isPressed()) {
-            sustain.release();
-        } else {
-            sustain.press();
-        }
-
+       pianoModel.updateSustain();
     }
 
     public boolean isLocationInPianoRage(Location location) {
@@ -111,6 +105,14 @@ public class Piano {
         final var minDistance = settings.getMinDistanceToPiano();
         final var distance = location.distance(getLocation());
         return distance <= minDistance;
+    }
+
+    public Optional<BenchGameObject> getBench()
+    {
+        if(!isCreated)
+            return Optional.empty();
+
+        return Optional.of(pianoModel.getPianoBench());
     }
 
 

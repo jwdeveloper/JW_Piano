@@ -1,13 +1,12 @@
 package jw.piano.extentions;
 
-import jw.fluent.api.spigot.commands.FluentCommand;
 import jw.fluent.api.spigot.commands.api.builder.CommandBuilder;
 import jw.fluent.api.spigot.commands.api.enums.AccessType;
 import jw.fluent.plugin.api.FluentApiExtension;
 import jw.fluent.plugin.api.FluentApiSpigotBuilder;
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.FluentApiSpigot;
-import jw.piano.api.data.PluginPermission;
+import jw.piano.data.PluginPermission;
 import jw.piano.services.PianoService;
 import jw.piano.spigot.gui.MenuGUI;
 
@@ -34,6 +33,7 @@ public class CommandsExtension implements FluentApiExtension {
                 .subCommandsConfig(subCommandConfig ->
                 {
                 //  subCommandConfig.addSubCommand(clearCommand());
+
                 });
     }
 

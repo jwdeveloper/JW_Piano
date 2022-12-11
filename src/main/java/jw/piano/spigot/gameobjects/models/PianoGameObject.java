@@ -1,174 +1,113 @@
 package jw.piano.spigot.gameobjects.models;
 
-import jw.piano.api.data.models.PianoSkin;
-import jw.piano.api.enums.PianoEffect;
-import jw.piano.spigot.gameobjects.factories.ArmorStandFactory;
-import jw.piano.spigot.gameobjects.effects.EffectManager;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import jw.piano.data.models.PianoSkin;
+import jw.piano.data.enums.PianoEffect;
 import jw.fluent.api.spigot.gameobjects.api.GameObject;
 import jw.fluent.api.utilites.math.collistions.HitBox;
+import jw.piano.factory.ArmorStandFactory;
+import jw.piano.spigot.gameobjects.models.key.PianoKeyGameObject;
+import jw.piano.spigot.gameobjects.models.key.PianoKeyGroupGameObject;
+import jw.piano.spigot.gameobjects.models.pedals.PedalGameObject;
+import jw.piano.spigot.gameobjects.models.pedals.PedalGroupGameObject;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
-import org.bukkit.util.Vector;
 
-import java.util.Arrays;
-import java.util.Comparator;
 
-@Getter
 public class PianoGameObject extends GameObject {
 
-    private PianoKeyModel[] pianoKeys = new PianoKeyModel[88];
-    private final PianoPedalModel[] pianoPedals = new PianoPedalModel[3];
+    private final String guid;
+    private final ArmorStandFactory armorStandFactory;
     private HitBox openViewHitBox;
     private ArmorStand pianoArmorStand;
-    private EffectManager effectManager;
+
+    @Getter
     private BenchGameObject pianoBench;
-    private PianoInteractionHandler pianoInteractionHandler;
+    @Getter
+    private PianoKeyGroupGameObject pianoKeyGroup;
+    @Getter
+    private PedalGroupGameObject pedalGroup;
 
-    private String guid;
 
-    public PianoGameObject(String guid) {
-        effectManager = new EffectManager();
-        pianoInteractionHandler = new PianoInteractionHandler(this);
+    public PianoGameObject(String guid, ArmorStandFactory armorStandFactory) {
         this.guid = guid;
+        this.armorStandFactory = armorStandFactory;
     }
 
 
-    public void invokeNote(int pressed, int index, int velocity) {
-        if (index < PianoConsts.MIDI_KEY_OFFSET)
-            return;
-        if (index - PianoConsts.MIDI_KEY_OFFSET > pianoKeys.length - 1)
-            return;
 
-        if (pressed != 0) {
-            pianoKeys[index - PianoConsts.MIDI_KEY_OFFSET].press(index, velocity);
-
-        } else
-            pianoKeys[index - PianoConsts.MIDI_KEY_OFFSET].release(index, velocity);
-    }
-
-
-    public void invokePedal(int isPressed, int index, int velocity) {
-        final var pedal = switch (index) {
-            case 64 -> pianoPedals[2];
-            case 65 -> pianoPedals[1];
-            case 67 -> pianoPedals[0];
-            default -> null;
-        };
-        if (pedal == null)
-            return;
-        if (isPressed == PianoConsts.PRESSED_CODE)
-            pedal.press(index, velocity);
-        else
-            pedal.release(index, velocity);
-    }
-
-    public void create(Location location) {
-        effectManager.create();
+    @Override
+    public void onCreated() {
         location.setYaw(0);
         location.setPitch(0);
-        pianoBench = new BenchGameObject(location, guid);
-        pianoArmorStand = ArmorStandFactory.create(location.clone(), guid);
-        setPianoSkin(new PianoSkin(109,"Grand piano"));
+
+        pianoArmorStand = armorStandFactory.create(location.clone(), guid);
+        setPianoSkin(new PianoSkin(109, "Grand piano"));
+
         openViewHitBox = new HitBox(location.clone().add(-0.7, 1.7, -0.1), location.clone().add(0.3, 2, 0.1));
         openViewHitBox.show();
 
-        //Creating pedals
-        for (int i = 0; i < 3; i++) {
-            pianoPedals[i] = new PianoPedalModel(guid, location.clone().add(-0.4 + (i * 0.20), -0.1, 0.1f));
-        }
-        //Creating keys
-        var startKeysLocation = location.clone().add(-1.5, -0.4, 0.3f);
-        startKeysLocation.setDirection(new Vector(0, 1, 0));
-        var key = 1;
-        for (int i = 1; i <= 88; i++) {
-            if (i > 3 && i < 88) {
-                key = (i - 4) % 12;
-            }
-            if (i <= 3) {
-                key = i + 8;
-            }
+        pianoBench = new BenchGameObject(guid, armorStandFactory);
+        pianoKeyGroup = new PianoKeyGroupGameObject(guid, armorStandFactory);
+        pedalGroup = new PedalGroupGameObject(guid, armorStandFactory);
 
-            switch (key) {
-                case 1, 3, 6, 8, 10:
-                    pianoKeys[i - 1] = new PianoKeyModel(
-                            guid,
-                            pianoPedals[2],
-                            startKeysLocation.clone().add(0.025f, 0.02f, -0.05f),
-                            true,
-                            i + PianoConsts.MIDI_KEY_OFFSET - 1);
-
-                    break;
-                default:
-                    pianoKeys[i - 1] = new PianoKeyModel(
-                            guid,
-                            pianoPedals[2],
-                            startKeysLocation.clone().add(0.05f, 0, 0),
-                            false,
-                            i + PianoConsts.MIDI_KEY_OFFSET - 1);
-                    startKeysLocation = startKeysLocation.clone().add(0.05f, 0, 0);
-                    break;
-            }
-            pianoKeys[i - 1].setEffectManager(effectManager);
-        }
+        addGameComponent(pianoBench);
+        addGameComponent(pianoKeyGroup);
+        addGameComponent(pedalGroup);
     }
 
+    @Override
+    public void onDestroy() {
+        openViewHitBox.hide();
+        pianoArmorStand.remove();
+    }
+
+    public void refreshKeys() {
+        pianoKeyGroup.refreshKeys();
+    }
+
+    public void setEffect(PianoEffect pianoEffect) {
+        pianoKeyGroup.setEffect(pianoEffect);
+    }
+
+    public void setVolume(int volume) {
+        pianoKeyGroup.setVolume(volume);
+    }
+
+    public void updateSustain() {
+        pedalGroup.updateSustain();
+    }
+
+    public void invokeNote(int pressed, int index, int velocity) {
+        pianoKeyGroup.invokeNote(pressed, index, velocity, pedalGroup.isSustainPressed());
+    }
+
+    public void invokePedal(int isPressed, int index) {
+        pedalGroup.invokePedal(isPressed, index);
+    }
 
     public boolean handlePlayerClick(Player player, Action action) {
 
         if (action != Action.LEFT_CLICK_AIR && action != Action.LEFT_CLICK_BLOCK) {
-            return pianoBench.handleClick(player);
+            return pianoBench.onPlayerClick(player);
         }
 
-        if (pianoInteractionHandler.handleClick(player.getEyeLocation())) {
-            return true;
-        }
-        return false;
+        return pianoKeyGroup.onPlayerClick(player, pedalGroup.isSustainPressed());
     }
 
-    public void showGuiHitBox(boolean isVisible)
-    {
-        if(isVisible)
-        {
+    public boolean isGuiHitBoxCollider(Player player) {
+        return openViewHitBox.isCollider(player.getEyeLocation(), 3);
+    }
+
+    public void showGuiHitBox(boolean isVisible) {
+        if (isVisible) {
             openViewHitBox.show();
-        }
-        else
-        {
+        } else {
             openViewHitBox.hide();
         }
-    }
-
-
-    public void refreshKeys() {
-        for (var key : pianoKeys) {
-            key.release();
-        }
-    }
-
-    public void onDestroy() {
-        openViewHitBox.hide();
-        for (var key : pianoKeys) {
-            key.onDestroy();
-        }
-        for (var pedal : pianoPedals) {
-            pedal.onDestroy();
-        }
-        pianoBench.onDestroy();
-        effectManager.destroy();
-        pianoArmorStand.remove();
-    }
-
-    public PianoKeyModel[] getSortedKeys() {
-        var keys = getPianoKeys().clone();
-        Arrays.sort(keys, new Comparator<PianoKeyModel>() {
-            @Override
-            public int compare(PianoKeyModel o1, PianoKeyModel o2) {
-                return Boolean.compare(o1.isWhite(), o2.isWhite());
-            }
-        });
-        return keys;
     }
 
     public void setPianoSkin(PianoSkin skin) {
@@ -180,29 +119,4 @@ public class PianoGameObject extends GameObject {
         }
     }
 
-    public final void setEffect(PianoEffect pianoEffect) {
-        effectManager.setEffect(pianoEffect);
-    }
-
-    public void setVolume(int volume) {
-        for (var key : pianoKeys) {
-            key.setVolume(volume);
-        }
-    }
-
-    public PianoKeyModel[] getPianoKeys() {
-        return pianoKeys;
-    }
-
-    public PianoPedalModel[] getPianoPedals() {
-        return pianoPedals;
-    }
-
-    public PianoPedalModel getSustainPedal() {
-        return pianoPedals[2];
-    }
-
-    public Location getPianoKeysCenterLocation() {
-        return pianoKeys[pianoKeys.length / 2].getLocation();
-    }
 }

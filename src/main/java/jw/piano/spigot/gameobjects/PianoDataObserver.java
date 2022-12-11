@@ -1,7 +1,7 @@
 package jw.piano.spigot.gameobjects;
 
-import jw.piano.api.data.models.PianoData;
-import jw.piano.api.enums.PianoEffect;
+import jw.piano.data.models.PianoData;
+import jw.piano.data.enums.PianoEffect;
 import jw.fluent.api.desing_patterns.observer.implementation.Observer;
 import lombok.Getter;
 import org.bukkit.Location;

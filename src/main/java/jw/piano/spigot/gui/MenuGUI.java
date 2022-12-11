@@ -3,12 +3,12 @@ package jw.piano.spigot.gui;
 import jw.fluent.api.player_context.api.PlayerContext;
 import jw.fluent.plugin.implementation.modules.mediator.FluentMediator;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
-import jw.piano.api.data.PluginConsts;
-import jw.piano.api.data.PluginPermission;
-import jw.piano.api.data.models.PianoData;
-import jw.piano.handlers.piano.create.CreatePiano;
+import jw.piano.data.PluginConsts;
+import jw.piano.data.PluginPermission;
+import jw.piano.data.models.PianoData;
+import jw.piano.mediator.piano.create.CreatePiano;
+import jw.piano.repositories.PianoDataRepository;
 import jw.piano.spigot.gameobjects.Piano;
-import jw.piano.services.PianoDataService;
 import jw.piano.services.PianoService;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
@@ -16,6 +16,7 @@ import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent.api.spigot.inventory_gui.button.ButtonUI;
 import jw.fluent.api.spigot.inventory_gui.implementation.crud_list_ui.CrudListUI;
 import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
+import jw.piano.spigot.gui.piano.PianoViewGUI;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -27,21 +28,21 @@ import org.bukkit.entity.Player;
 public class MenuGUI extends CrudListUI<PianoData> {
 
     private final PianoViewGUI pianoViewGUI;
-    private final PianoDataService pianoDataService;
+    private final PianoDataRepository pianoDataRepository;
     private final PianoService pianoService;
     private final FluentTranslator lang;
     private final FluentMediator mediator;
 
     @Inject
     public MenuGUI(PianoViewGUI pianoViewGUI,
-                   PianoDataService pianoDataService,
+                   PianoDataRepository pianoDataRepository,
                    PianoService pianoService,
                    FluentMediator mediator,
                    FluentTranslator lang) {
         super("pianos", 6);
         this.lang = lang;
         this.pianoService = pianoService;
-        this.pianoDataService = pianoDataService;
+        this.pianoDataRepository = pianoDataRepository;
         this.pianoViewGUI = pianoViewGUI;
         this.mediator = mediator;
     }
@@ -50,13 +51,14 @@ public class MenuGUI extends CrudListUI<PianoData> {
     public void onInitialize() {
 
         pianoViewGUI.setParent(this);
-        getButtonEdit().setActive(false);
+
+        hideEditButton();
         getButtonInsert().setDescription(lang.get("gui.base.insert.desc"));
         getButtonInsert().setPermissions(PluginPermission.CREATE);
         getButtonDelete().setDescription(lang.get("gui.base.delete.desc"));
         getButtonDelete().setPermissions(PluginPermission.REMOVE);
         setTitlePrimary(lang.get("gui.piano-menu.title"));
-        ButtonUI.factory().backgroundButton(0, 5, Material.GRAY_STAINED_GLASS_PANE)  .buildAndAdd(this);
+
         ButtonUI.builder()
                 .setMaterial(Material.CAMPFIRE)
                 .setHighlighted()
@@ -89,7 +91,7 @@ public class MenuGUI extends CrudListUI<PianoData> {
                 })
                 .buildAndAdd(this);
 
-        setContentButtons(pianoDataService.findAll(), (data, button) ->
+        setContentButtons(pianoDataRepository.findAll(), (data, button) ->
         {
             button.setTitlePrimary(data.getName());
             button.setDescription(data.getDescriptionLines());
@@ -114,7 +116,7 @@ public class MenuGUI extends CrudListUI<PianoData> {
         onDelete((player, button) ->
         {
             var piano = button.<PianoData>getDataContext();
-            var result = pianoDataService.delete(piano.getUuid());
+            var result = pianoService.delete(piano.getUuid());
             if (!result) {
                 setTitle(lang.get("gui.base.delete.error"));
             }

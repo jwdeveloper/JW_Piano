@@ -1,8 +1,8 @@
 package jw.piano.services;
 
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
-import jw.piano.api.data.models.PianoSkin;
-import jw.piano.api.data.PluginConfig;
+import jw.piano.data.models.PianoSkin;
+import jw.piano.data.PluginConfig;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 
@@ -13,12 +13,11 @@ import java.util.Optional;
 @Injection
 public class PianoSkinService
 {
-
     private final List<PianoSkin> skinList;
     private final FluentTranslator lang;
 
     @Inject
-    public PianoSkinService(PluginConfig settings, FluentTranslator lang)
+    public PianoSkinService(FluentTranslator lang)
     {
         this.lang =lang;
         skinList = new ArrayList<>();
