@@ -3,7 +3,6 @@ package jw.piano;
 import jw.fluent.plugin.api.FluentApiSpigotBuilder;
 import jw.fluent.plugin.implementation.FluentApiSpigot;
 import jw.fluent.plugin.implementation.FluentPlugin;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.piano.data.PluginConsts;
 import jw.piano.data.PluginPermission;
 import jw.piano.extentions.CommandsExtension;
@@ -11,9 +10,11 @@ import jw.piano.extentions.FileVersionExtension;
 
 public final class Main extends FluentPlugin {
 
+    //TODO V custom-id has been changed to custom-ip
     //TODO Add permissions piano.* , piano.player.*
-    //TODO Make bench move in range, save bench location
+    //TODO save/load bench location
     //TODO Add translations for bench
+    //TODO Add MIDI player
     @Override
     public void onConfiguration(FluentApiSpigotBuilder builder) {
         builder.container()
@@ -47,7 +48,6 @@ public final class Main extends FluentPlugin {
 
     @Override
     public void onFluentApiEnable(FluentApiSpigot fluentAPI) {
-
 
 
     }

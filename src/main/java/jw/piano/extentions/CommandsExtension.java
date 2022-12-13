@@ -2,12 +2,14 @@ package jw.piano.extentions;
 
 import jw.fluent.api.spigot.commands.api.builder.CommandBuilder;
 import jw.fluent.api.spigot.commands.api.enums.AccessType;
+import jw.fluent.api.spigot.gui.armorstand_gui.implementation.gui.interactive.InteractiveGui;
 import jw.fluent.plugin.api.FluentApiExtension;
 import jw.fluent.plugin.api.FluentApiSpigotBuilder;
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.FluentApiSpigot;
 import jw.piano.data.PluginPermission;
 import jw.piano.services.PianoService;
+import jw.piano.spigot.gui.ExampleGui;
 import jw.piano.spigot.gui.MenuGUI;
 
 public class CommandsExtension implements FluentApiExtension {
@@ -32,8 +34,19 @@ public class CommandsExtension implements FluentApiExtension {
                 })
                 .subCommandsConfig(subCommandConfig ->
                 {
-                //  subCommandConfig.addSubCommand(clearCommand());
+                    subCommandConfig.addSubCommand("Test",commandBuilder ->
+                    {
 
+                        commandBuilder.eventsConfig(eventConfig ->
+                        {
+                           eventConfig.onPlayerExecute(event ->
+                           {
+                               var gui = FluentApi.playerContext().find(ExampleGui.class, event.getPlayer());
+                               gui.open(event.getPlayer());
+                           }) ;
+                        });
+
+                    });
                 });
     }
 
@@ -48,12 +61,12 @@ public class CommandsExtension implements FluentApiExtension {
     }
 
     private CommandBuilder clearCommand() {
-       return FluentApi.commands("clear")
+        return FluentApi.commands("clear")
                 .propertiesConfig(propertiesConfig ->
                 {
                     propertiesConfig.setDescription("clears models for all pianos");
                     propertiesConfig.setUsageMessage("/" + PluginPermission.PIANO + " clear");
-                   //propertiesConfig.addPermissions(PluginPermission.CLEAR_CMD);
+                    //propertiesConfig.addPermissions(PluginPermission.CLEAR_CMD);
                     propertiesConfig.setAccess(AccessType.CONSOLE);
                     propertiesConfig.setAccess(AccessType.PLAYER);
                 })

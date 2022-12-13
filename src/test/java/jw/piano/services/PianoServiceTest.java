@@ -1,10 +1,7 @@
 package jw.piano.services;
 
 import be.seeseemelk.mockbukkit.entity.ArmorStandMock;
-import jw.SpigotMock;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.RegistrationType;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.models.RegistrationInfo;
+import jw.fluent.api.utilites.SpigotMock;
 import jw.piano.data.PluginConfig;
 import jw.piano.data.models.PianoData;
 import jw.piano.factory.ArmorStandFactory;
@@ -42,6 +39,10 @@ public class PianoServiceTest {
 
         armorStandMock = mock(ArmorStandMock.class);
         when(armorStandFactoryMock.create(any(),any())).thenReturn(armorStandMock);
+
+
+
+
     }
 
     @Test

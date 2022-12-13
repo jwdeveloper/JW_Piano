@@ -1,7 +1,7 @@
 package jw.piano.mediator.piano.info;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import jw.SpigotMock;
+import jw.fluent.api.utilites.SpigotMock;
 import jw.piano.data.models.PianoData;
 import jw.piano.services.PianoService;
 import jw.piano.spigot.gameobjects.Piano;

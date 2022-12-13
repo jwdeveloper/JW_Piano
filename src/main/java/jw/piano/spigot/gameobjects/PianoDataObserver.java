@@ -1,5 +1,6 @@
 package jw.piano.spigot.gameobjects;
 
+import jw.piano.data.models.BenchSettings;
 import jw.piano.data.models.PianoData;
 import jw.piano.data.enums.PianoEffect;
 import jw.fluent.api.desing_patterns.observer.implementation.Observer;
@@ -43,7 +44,7 @@ public class PianoDataObserver
         enableBind.bind(PianoData.class,"enable");
         volumeBind.bind(PianoData.class,"volume");
         effectBind.bind(PianoData.class,"effect");
-        benchActiveBind.bind(PianoData.class,"benchActive");
+        benchActiveBind.bind(BenchSettings.class,"isActive");
         showGuiHitBoxBind.bind(PianoData.class,"showGuiHitBox");
     }
 
@@ -61,7 +62,7 @@ public class PianoDataObserver
         enableBind.setObject(pianoData);
         volumeBind.setObject(pianoData);
         effectBind.setObject(pianoData);
-        benchActiveBind.setObject(pianoData);
+        benchActiveBind.setObject(pianoData.getBenchSettings());
         desktopClientAllowedBind.setObject(pianoData);
         detectPressInMinecraftBind.setObject(pianoData);
         showGuiHitBoxBind.setObject(pianoData);

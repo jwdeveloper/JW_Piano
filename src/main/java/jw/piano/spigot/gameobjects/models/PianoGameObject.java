@@ -6,6 +6,7 @@ import jw.piano.data.enums.PianoEffect;
 import jw.fluent.api.spigot.gameobjects.api.GameObject;
 import jw.fluent.api.utilites.math.collistions.HitBox;
 import jw.piano.factory.ArmorStandFactory;
+import jw.piano.spigot.gameobjects.Piano;
 import jw.piano.spigot.gameobjects.models.key.PianoKeyGameObject;
 import jw.piano.spigot.gameobjects.models.key.PianoKeyGroupGameObject;
 import jw.piano.spigot.gameobjects.models.pedals.PedalGameObject;
@@ -22,6 +23,8 @@ public class PianoGameObject extends GameObject {
     private final String guid;
     private final ArmorStandFactory armorStandFactory;
     private HitBox openViewHitBox;
+
+    private HitBox pianoHitBox;
     private ArmorStand pianoArmorStand;
 
     @Getter
@@ -38,7 +41,6 @@ public class PianoGameObject extends GameObject {
     }
 
 
-
     @Override
     public void onCreated() {
         location.setYaw(0);
@@ -47,8 +49,8 @@ public class PianoGameObject extends GameObject {
         pianoArmorStand = armorStandFactory.create(location.clone(), guid);
         setPianoSkin(new PianoSkin(109, "Grand piano"));
 
-        openViewHitBox = new HitBox(location.clone().add(-0.7, 1.7, -0.1), location.clone().add(0.3, 2, 0.1));
-        openViewHitBox.show();
+        openViewHitBox = new HitBox(location.clone().add(-1.5, 1.5, -0.5), location.clone().add(1.3, 2.2, 0.3));
+        pianoHitBox = new HitBox(location.clone().add(-1.5, 0.1, -1), location.clone().add(1.3, 2, 0.3));
 
         pianoBench = new BenchGameObject(guid, armorStandFactory);
         pianoKeyGroup = new PianoKeyGroupGameObject(guid, armorStandFactory);
@@ -89,25 +91,24 @@ public class PianoGameObject extends GameObject {
         pedalGroup.invokePedal(isPressed, index);
     }
 
-    public boolean handlePlayerClick(Player player, Action action) {
+    public boolean handlePlayerClick(Player player, Piano piano, boolean isLeftClick) {
 
-        if (action != Action.LEFT_CLICK_AIR && action != Action.LEFT_CLICK_BLOCK) {
-            return pianoBench.onPlayerClick(player);
+        if (pianoBench.onPlayerClick(player, piano, isLeftClick)) {
+            return true;
         }
 
-        return pianoKeyGroup.onPlayerClick(player, pedalGroup.isSustainPressed());
+        if (!pianoHitBox.isCollider(player.getEyeLocation(), 3)) {
+            return false;
+        }
+
+        if (isLeftClick) {
+            return pianoKeyGroup.onPlayerClick(player, pedalGroup.isSustainPressed());
+        }
+        return false;
     }
 
     public boolean isGuiHitBoxCollider(Player player) {
         return openViewHitBox.isCollider(player.getEyeLocation(), 3);
-    }
-
-    public void showGuiHitBox(boolean isVisible) {
-        if (isVisible) {
-            openViewHitBox.show();
-        } else {
-            openViewHitBox.hide();
-        }
     }
 
     public void setPianoSkin(PianoSkin skin) {

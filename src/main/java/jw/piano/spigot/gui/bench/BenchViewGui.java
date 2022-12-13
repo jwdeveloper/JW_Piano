@@ -5,9 +5,10 @@ import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injecti
 import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent.api.desing_patterns.observer.implementation.ObserverBag;
 import jw.fluent.api.player_context.api.PlayerContext;
-import jw.fluent.api.spigot.inventory_gui.button.ButtonUI;
-import jw.fluent.api.spigot.inventory_gui.button.button_observer.ButtonObserverUI;
-import jw.fluent.api.spigot.inventory_gui.implementation.chest_ui.ChestUI;
+import jw.fluent.api.spigot.gui.fluent_ui.FluentChestUI;
+import jw.fluent.api.spigot.gui.inventory_gui.button.ButtonUI;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverUI;
+import jw.fluent.api.spigot.gui.inventory_gui.implementation.chest_ui.ChestUI;
 import jw.fluent.api.utilites.messages.Emoticons;
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
@@ -32,7 +33,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Arrays;
 
 @PlayerContext
-@Injection(lifeTime = LifeTime.TRANSIENT)
+@Injection(lifeTime = LifeTime.SINGLETON)
 public class BenchViewGui extends ChestUI {
     private final FluentTranslator lang;
     private final BenchMoveService benchMoveService;
@@ -41,11 +42,14 @@ public class BenchViewGui extends ChestUI {
 
     private final ObserverBag<Integer> axisObserver = new ObserverBag<>(0);
 
+    private FluentChestUI fluentChestUI;
+
     @Inject
-    public BenchViewGui(FluentTranslator lang, BenchMoveService benchMoveService) {
+    public BenchViewGui(FluentTranslator lang, FluentChestUI chestUI, BenchMoveService benchMoveService) {
         super("Bench", 3);
         this.lang = lang;
         this.benchMoveService = benchMoveService;
+        this.fluentChestUI = chestUI;
     }
 
     public void open(Player player, Piano piano) {
@@ -56,12 +60,15 @@ public class BenchViewGui extends ChestUI {
 
     @Override
     protected void onOpen(Player player) {
-        ButtonObserverUI.factory()
-                .boolObserver(dataObserver.getBenchActiveBind())
+        fluentChestUI.buttonFactory()
+                .observeBool(dataObserver.getBenchActiveBind())
                 .setPermissions(PluginPermission.BENCH)
-                .setTitlePrimary(lang.get("gui.piano.bench-active.title"))
+                .setDescription(options ->
+                {
+                    options.setTitle(lang.get("gui.piano.bench-active.title"));
+                })
                 .setLocation(0, 1)
-                .buildAndAdd(this);
+                .build(this);
     }
 
 
@@ -72,43 +79,46 @@ public class BenchViewGui extends ChestUI {
         setTitlePrimary("Bench settings");
 
         var axis = Arrays.stream(MoveGameObjectAxis.values()).toList();
-        ButtonObserverUI.factory()
-                .listSelectorObserver(axisObserver.getObserver(),
-                        axis,
-                        (c)->
-                        {
-                            var name = switch (c) {
-                                case X -> "right / left";
-                                case Y ->"up / down";
-                                case Z -> "forward / backward";
-                            };
-                            return name;
-                        },
-                        (event) ->
-                        {
-                            var itemstack = switch (event.data()) {
-                                case X -> createXBanner();
-                                case Y -> createYBanner();
-                                case Z -> createZBanner();
-                            };
-                            event.buttonUI().setMaterial(itemstack.getType());
-                            event.buttonUI().setMeta(itemstack.getItemMeta());
-                            event.buttonUI().setTitlePrimary("Move");
-                        })
-                .setTitlePrimary("Move")
-                .setOnClick((player, button) ->
+        fluentChestUI.buttonFactory()
+                .observeList(axisObserver.getObserver(),axis,options ->
+                {
+                    options.setOnNameMapping(input ->
+                    {
+                        var name = switch (input) {
+                            case X -> "right / left";
+                            case Y -> "up / down";
+                            case Z -> "forward / backward";
+                        };
+                        return name;
+                    });
+                    options.setOnSelectionChanged(event ->
+                    {
+                        var itemstack = switch (event.data()) {
+                            case X -> createXBanner();
+                            case Y -> createYBanner();
+                            case Z -> createZBanner();
+                        };
+                        event.buttonUI().setMaterial(itemstack.getType());
+                        event.buttonUI().setMeta(itemstack.getItemMeta());
+                    });
+                })
+                .setDescription(options ->
+                {
+                    options.setTitle("Move");
+                    options.addDescriptionLine(FluentMessage
+                            .message()
+                            .bar(Emoticons.line, 20, ChatColor.GRAY).newLine()
+                            .field(FluentApi.translator().get("gui.base.left-click"), "Edit position").newLine()
+                            .field(FluentApi.translator().get("gui.base.right-click"), "Hande axis").newLine()
+                            .toArray());
+                })
+                .setOnLeftClick((player, button) ->
                 {
                     var current = axis.get(axisObserver.get());
                     onChangeBenchLocation(player, current);
                 })
-                .setDescription(FluentMessage
-                        .message()
-                        .bar(Emoticons.line,20,ChatColor.GRAY).newLine()
-                        .field(FluentApi.translator().get("gui.base.left-click"), "Edit position").newLine()
-                        .field(FluentApi.translator().get("gui.base.right-click"), "Hande axis").newLine()
-                        .toArray())
                 .setLocation(1, 1)
-                .buildAndAdd(this);
+                .build(this);
 
 
         ButtonUI.builder()
@@ -128,33 +138,41 @@ public class BenchViewGui extends ChestUI {
     private void onResetBenchLocation(Player player, ButtonUI buttonUI) {
 
         var optional = piano.getBench();
-        if(optional.isEmpty())
-        {
+        if (optional.isEmpty()) {
             return;
         }
         var bench = optional.get();
         bench.resetLocation();
     }
+
     private void onChangeBenchLocation(Player player, MoveGameObjectAxis moveType) {
         var dto = new BenchMoveDto();
-        dto.setOnAccept(unused ->
+        dto.setOnAccept(message ->
         {
             open(player, piano);
-            FluentApi.messages().chat().info().textSecondary("Location changed").send(player);
+            FluentApi.messages().chat().text(message).send(player);
         });
-        dto.setOnCanceled(unused ->
+        dto.setOnCanceled(message ->
         {
             open(player, piano);
-            FluentApi.messages().chat().info().textSecondary("Location canceled").send(player);
+            FluentApi.messages().chat().text(message).send(player);
         });
         dto.setPiano(piano);
         dto.setPlayer(player);
         dto.setMoveType(moveType);
+
+
+        var result = benchMoveService.register(player.getUniqueId(), dto);
+        if (!result) {
+            return;
+        }
         close();
         sendInfoMessage(player);
-        benchMoveService.register(player.getUniqueId(), dto);
     }
 
+    private void errorMessage(Player player) {
+        FluentApi.messages().chat().error().textSecondary("Both piano and bench must be active (visible)").send(player);
+    }
     private void sendInfoMessage(Player player) {
         FluentApi.messages().chat().info().textPrimary("Scroll mouse").textSecondary(" to move bench").send(player);
         FluentApi.messages().chat().info().textSecondary("Left click to").text(" Accept ", ChatColor.DARK_GREEN).textSecondary("position").send(player);
@@ -163,11 +181,10 @@ public class BenchViewGui extends ChestUI {
 
     public ItemStack createXBanner() {
         ItemStack banner = new ItemStack(Material.CYAN_BANNER);
-        BannerMeta meta = (BannerMeta)banner.getItemMeta();
+        BannerMeta meta = (BannerMeta) banner.getItemMeta();
         meta.addPattern(new Pattern(DyeColor.WHITE, PatternType.CROSS));
         meta.addPattern(new Pattern(DyeColor.CYAN, PatternType.BORDER));
-        for(var flag : ItemFlag.values())
-        {
+        for (var flag : ItemFlag.values()) {
             meta.addItemFlags(flag);
         }
         banner.setItemMeta(meta);
@@ -181,8 +198,7 @@ public class BenchViewGui extends ChestUI {
         ((BannerMeta) meta).addPattern(new Pattern(DyeColor.WHITE, PatternType.STRIPE_DOWNLEFT));
         ((BannerMeta) meta).addPattern(new Pattern(DyeColor.WHITE, PatternType.STRIPE_BOTTOM));
         ((BannerMeta) meta).addPattern(new Pattern(DyeColor.CYAN, PatternType.BORDER));
-        for(var flag : ItemFlag.values())
-        {
+        for (var flag : ItemFlag.values()) {
             meta.addItemFlags(flag);
         }
         banner.setItemMeta(meta);
@@ -197,8 +213,7 @@ public class BenchViewGui extends ChestUI {
         ((BannerMeta) meta).addPattern(new Pattern(DyeColor.CYAN, PatternType.HALF_HORIZONTAL_MIRROR));
         ((BannerMeta) meta).addPattern(new Pattern(DyeColor.WHITE, PatternType.STRIPE_DOWNLEFT));
         ((BannerMeta) meta).addPattern(new Pattern(DyeColor.CYAN, PatternType.BORDER));
-        for(var flag : ItemFlag.values())
-        {
+        for (var flag : ItemFlag.values()) {
             meta.addItemFlags(flag);
         }
         banner.setItemMeta(meta);

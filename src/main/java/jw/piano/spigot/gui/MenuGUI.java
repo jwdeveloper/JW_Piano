@@ -12,9 +12,8 @@ import jw.piano.spigot.gameobjects.Piano;
 import jw.piano.services.PianoService;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.fluent.api.spigot.inventory_gui.button.ButtonUI;
-import jw.fluent.api.spigot.inventory_gui.implementation.crud_list_ui.CrudListUI;
+import jw.fluent.api.spigot.gui.inventory_gui.button.ButtonUI;
+import jw.fluent.api.spigot.gui.inventory_gui.implementation.crud_list_ui.CrudListUI;
 import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import jw.piano.spigot.gui.piano.PianoViewGUI;
 import net.md_5.bungee.api.ChatColor;
@@ -24,7 +23,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 @PlayerContext
-@Injection(lifeTime = LifeTime.SINGLETON)
+@Injection
 public class MenuGUI extends CrudListUI<PianoData> {
 
     private final PianoViewGUI pianoViewGUI;
@@ -58,6 +57,7 @@ public class MenuGUI extends CrudListUI<PianoData> {
         getButtonDelete().setDescription(lang.get("gui.base.delete.desc"));
         getButtonDelete().setPermissions(PluginPermission.REMOVE);
         setTitlePrimary(lang.get("gui.piano-menu.title"));
+
 
         ButtonUI.builder()
                 .setMaterial(Material.CAMPFIRE)

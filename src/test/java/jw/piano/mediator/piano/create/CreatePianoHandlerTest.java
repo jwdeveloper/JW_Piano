@@ -2,7 +2,7 @@ package jw.piano.mediator.piano.create;
 
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import jw.SpigotMock;
+import jw.fluent.api.utilites.SpigotMock;
 import jw.piano.data.models.PianoData;
 import jw.piano.services.PianoService;
 import jw.piano.spigot.gameobjects.Piano;
@@ -24,7 +24,6 @@ public class CreatePianoHandlerTest {
     @Before
     public void setUp() {
         playerMock = SpigotMock.getInstance().getPlayer();
-        ;
         pianoServiceMock = mock(PianoService.class);
         sut = new CreatePianoHandler(pianoServiceMock);
     }

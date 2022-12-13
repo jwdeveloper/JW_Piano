@@ -13,6 +13,7 @@ import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.Optional;
 
@@ -44,8 +45,7 @@ public class Piano {
         pianoDataObserver.getDesktopClientAllowedBind().set(pianoDataObserver.getDesktopClientAllowedBind().get());
         pianoDataObserver.getDetectPressInMinecraftBind().set(pianoDataObserver.getDetectPressInMinecraftBind().get());
         pianoModel.setEffect(pianoDataObserver.getEffectBind().get());
-        pianoModel.getPianoBench().setState(pianoDataObserver.getBenchActiveBind().get());
-        pianoModel.showGuiHitBox(pianoDataObserver.getShowGuiHitBoxBind().get());
+        pianoModel.getPianoBench().setVisible(pianoDataObserver.getBenchActiveBind().get());
         isCreated = true;
     }
 
@@ -67,20 +67,34 @@ public class Piano {
         return pianoDataObserver.getLocationBind().get();
     }
 
-    public void handlePlayerInteraction(Player player, Action action) {
+    public void handlePlayerInteraction(PlayerInteractEvent event) {
         if (!isCreated)
             return;
-
+        var player = event.getPlayer();
         if (pianoModel.isGuiHitBoxCollider(player)) {
             final var gui = FluentApi.playerContext().find(MenuGUI.class, player.getUniqueId());
             gui.openPianoView(player, this);
+            event.setCancelled(true);
             return;
         }
         if(!pianoDataObserver.getDetectPressInMinecraftBind().get())
         {
             return;
         }
-        pianoModel.handlePlayerClick(player,action);
+
+
+        var action = event.getAction();
+        var leftClick = true;
+        if(action != Action.LEFT_CLICK_AIR && action != Action.LEFT_CLICK_BLOCK)
+        {
+            leftClick = false;
+        }
+
+        var hasTriggered = pianoModel.handlePlayerClick(player, this,leftClick);
+        if(hasTriggered)
+        {
+            event.setCancelled(true);
+        }
     }
 
     public void handlePlayerPedalPress() {
@@ -111,6 +125,10 @@ public class Piano {
     {
         if(!isCreated)
             return Optional.empty();
+        if(!getPianoDataObserver().getBenchActiveBind().get())
+        {
+            return Optional.empty();
+        }
 
         return Optional.of(pianoModel.getPianoBench());
     }
@@ -134,7 +152,7 @@ public class Piano {
         });
         observer.getBenchActiveBind().onChange(value ->
         {
-            pianoModel.getPianoBench().setState(value);
+            pianoModel.getPianoBench().setVisible(value);
         });
         observer.getEnableBind().onChange(value ->
         {
@@ -145,7 +163,7 @@ public class Piano {
         });
         observer.getVolumeBind().onChange(pianoModel::setVolume);
         observer.getEffectBind().onChange(pianoModel::setEffect);
-        observer.getShowGuiHitBoxBind().onChange(pianoModel::showGuiHitBox);
+
         return observer;
     }
 

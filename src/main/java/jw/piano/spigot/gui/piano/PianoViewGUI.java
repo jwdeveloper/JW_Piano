@@ -11,10 +11,9 @@ import jw.piano.spigot.gameobjects.Piano;
 import jw.piano.spigot.gameobjects.PianoDataObserver;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.fluent.api.spigot.inventory_gui.EventsListenerInventoryUI;
-import jw.fluent.api.spigot.inventory_gui.button.ButtonUI;
-import jw.fluent.api.spigot.inventory_gui.implementation.chest_ui.ChestUI;
+import jw.fluent.api.spigot.gui.inventory_gui.EventsListenerInventoryUI;
+import jw.fluent.api.spigot.gui.inventory_gui.button.ButtonUI;
+import jw.fluent.api.spigot.gui.inventory_gui.implementation.chest_ui.ChestUI;
 import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import jw.fluent.api.utilites.messages.Emoticons;
 import jw.piano.spigot.gui.bench.BenchViewGui;
@@ -28,7 +27,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 @PlayerContext
-@Injection(lifeTime = LifeTime.TRANSIENT)
+@Injection
 public class PianoViewGUI extends ChestUI {
 
     private final FluentMediator mediator;
@@ -44,6 +43,7 @@ public class PianoViewGUI extends ChestUI {
                         FluentTranslator translator,
                         MidiPlayerGui midiPlayerGui,
                         FluentMediator mediator,
+
                         PianoViewGuiButtons buttons) {
         super("Piano", 5);
         this.mediator = mediator;
@@ -72,32 +72,32 @@ public class PianoViewGUI extends ChestUI {
         midiPlayerGui.setParent(this);
 
         pianoViewButtons.teleportButton()
-                .setOnClick(this::onTeleport)
-                .buildAndAdd(this);
+                .setOnLeftClick(this::onTeleport)
+                .build(this);
 
         pianoViewButtons.tokenButton()
-                .setOnClick(this::onTokenGeneration)
-                .buildAndAdd(this);
+                .setOnLeftClick(this::onTokenGeneration)
+                .build(this);
 
         pianoViewButtons.renameButton()
-                .setOnClick(this::onRename)
-                .buildAndAdd(this);
+                .setOnLeftClick(this::onRename)
+                .build(this);
 
         pianoViewButtons.pianoClearButton()
-                .setOnClick(this::onPianoClear)
-                .buildAndAdd(this);
+                .setOnLeftClick(this::onPianoClear)
+                .build(this);
 
         pianoViewButtons.benchButton()
-                .setOnClick((player, button) ->
+                .setOnLeftClick((player, button) ->
                 {
                     benchViewGui.open(player, piano);
-                }).buildAndAdd(this);
+                }).build(this);
 
         pianoViewButtons.midiPlayerButton()
-                .setOnClick((player, button) ->
+                .setOnLeftClick((player, button) ->
                 {
                     midiPlayerGui.open(player, piano);
-                }).buildAndAdd(this);
+                }).build(this);
 
 
         ButtonUI.factory()

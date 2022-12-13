@@ -2,32 +2,30 @@ package jw.piano.spigot.gui.midi;
 
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent.api.desing_patterns.observer.implementation.Observer;
 import jw.fluent.api.desing_patterns.observer.implementation.ObserverBag;
 import jw.fluent.api.player_context.api.PlayerContext;
-import jw.fluent.api.spigot.inventory_gui.button.ButtonUI;
-import jw.fluent.api.spigot.inventory_gui.button.button_observer.ButtonObserverUI;
-import jw.fluent.api.spigot.inventory_gui.implementation.crud_list_ui.CrudListUI;
+import jw.fluent.api.spigot.gui.fluent_ui.FluentChestUI;
+import jw.fluent.api.spigot.gui.inventory_gui.button.ButtonUI;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverUI;
+import jw.fluent.api.spigot.gui.inventory_gui.implementation.crud_list_ui.CrudListUI;
 import jw.fluent.plugin.implementation.modules.mediator.FluentMediator;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 import jw.piano.data.enums.MidiPlayingType;
-import jw.piano.data.midi.MidiFile;
 import jw.piano.data.models.PianoMidiFile;
 import jw.piano.data.models.PianoMidiSettings;
 import jw.piano.mediator.midi.reader.MidiReader;
 import jw.piano.spigot.gameobjects.Piano;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
-import java.util.Random;
 
 @PlayerContext
-@Injection(lifeTime = LifeTime.TRANSIENT)
+@Injection
 public class MidiPlayerGui extends CrudListUI<PianoMidiFile> {
     private final FluentTranslator lang;
     private final FluentMediator mediator;
+
+    private final FluentChestUI fluentChestUI;
 
     private final MidiFilesPickerGui midiFilePickerGui;
     private final ObserverBag<Boolean> playerInLoop = new ObserverBag<>(false);
@@ -43,11 +41,13 @@ public class MidiPlayerGui extends CrudListUI<PianoMidiFile> {
     @Inject
     public MidiPlayerGui(FluentTranslator lang,
                          FluentMediator mediator,
-                         MidiFilesPickerGui midiFilePickerGui) {
+                         MidiFilesPickerGui midiFilePickerGui,
+                         FluentChestUI fluentChestUI) {
         super("MidiPlayerGui", 4);
         this.lang = lang;
         this.midiFilePickerGui = midiFilePickerGui;
         this.mediator = mediator;
+        this.fluentChestUI = fluentChestUI;
     }
 
     public void open(Player player, Piano piano) {
@@ -87,30 +87,42 @@ public class MidiPlayerGui extends CrudListUI<PianoMidiFile> {
             refreshContent();
         });
 
-        ButtonObserverUI.factory()
-                .boolObserver(playMidi.getObserver())
-                .setTitlePrimary("Play Midi")
+        fluentChestUI.buttonFactory()
+                .observeBool(playMidi.getObserver())
+                .setDescription(options ->
+                {
+                    options.setTitle("Play Midi");
+                })
                 .setLocation(0, 1)
-                .buildAndAdd(this);
+                .build(this);
 
-        ButtonObserverUI.factory()
-                .boolObserver(playerInLoop.getObserver())
-                .setTitlePrimary("Play is loop")
+        fluentChestUI.buttonFactory()
+                .observeBool(playerInLoop.getObserver())
+                .setDescription(options ->
+                {
+                    options.setTitle("Play is loop");
+                })
                 .setLocation(0, 2)
-                .buildAndAdd(this);
+                .build(this);
 
-        ButtonObserverUI.factory()
-                .boolObserver(playerInLoop.getObserver())
-                .setTitlePrimary("Skip song")
+        fluentChestUI.buttonFactory()
+                .observeBool(playerInLoop.getObserver())
+                .setDescription(options ->
+                {
+                    options.setTitle("Skip song");
+                })
                 .setLocation(0, 3)
-                .buildAndAdd(this);
+                .build(this);
 
 
-        ButtonObserverUI.factory()
-                .enumSelectorObserver(midiPlyingTypeObserver)
-                .setTitlePrimary("Player type")
+        fluentChestUI.buttonFactory()
+                .observeEnum(midiPlyingTypeObserver)
+                .setDescription(options ->
+                {
+                    options.setTitle("Player type");
+                })
                 .setLocation(0, 4)
-                .buildAndAdd(this);
+                .build(this);
 
 
         hideEditButton();

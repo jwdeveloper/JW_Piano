@@ -48,8 +48,7 @@ public class PlayerInteractionListener extends EventBase {
         }
 
 
-        pianoUsers.get(player).handlePlayerInteraction(player, event.getAction());
-        event.setCancelled(true);
+        pianoUsers.get(player).handlePlayerInteraction(event);
     }
 
 

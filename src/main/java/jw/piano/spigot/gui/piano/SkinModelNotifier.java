@@ -1,10 +1,11 @@
 package jw.piano.spigot.gui.piano;
 
-import jw.fluent.api.spigot.inventory_gui.button.button_observer.ButtonNotifier;
-import jw.fluent.api.spigot.inventory_gui.button.button_observer.ButtonObserverEvent;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonNotifier;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverEvent;
 import jw.fluent.api.utilites.messages.Emoticons;
 import jw.piano.data.PluginConsts;
 import jw.piano.data.models.PianoSkin;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import java.util.List;
@@ -21,7 +22,23 @@ public final class SkinModelNotifier implements ButtonNotifier<Integer> {
 
 
     @Override
-    public void onClick(ButtonObserverEvent<Integer> event) {
+    public void onRightClick(ButtonObserverEvent<Integer> event) {
+        if (skins.size() == 0) {
+            return;
+        }
+
+        currentIndex = findIndex(event.getValue());
+        currentIndex = (currentIndex - 1);
+        if(currentIndex < 0)
+        {
+            currentIndex = skins.size()-1;
+        }
+        var id = skins.get(currentIndex);
+        event.getObserver().setValue(id.getCustomModelId());
+    }
+
+    @Override
+    public void onLeftClick(ButtonObserverEvent<Integer> event) {
         if (skins.size() == 0) {
             return;
         }
@@ -48,7 +65,7 @@ public final class SkinModelNotifier implements ButtonNotifier<Integer> {
 
 
             } else {
-                description[i] = skins.get(i).getName();
+                description[i] = ChatColor.GRAY+skins.get(i).getName();
             }
         }
         button.setDescription(description);

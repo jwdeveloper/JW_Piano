@@ -63,7 +63,7 @@ public class BenchMoveService {
         }
         unregister(player.getUniqueId());
         benchMoveDto.getPiano().getBench().get().updateHitBox();
-        benchMoveDto.getOnAccept().accept(null);
+        benchMoveDto.getOnAccept().accept(FluentApi.messages().chat().info().text("Location changed").toString());
         return true;
     }
 
@@ -78,7 +78,7 @@ public class BenchMoveService {
         }
         unregister(player.getUniqueId());
         benchMoveDto.getPiano().getBench().get().setLocation(benchMoveDto.getOriginLocation());
-        benchMoveDto.getOnCanceled().accept(null);
+        benchMoveDto.getOnCanceled().accept(FluentApi.messages().chat().info().text("Location canceled").toString());
         return true;
     }
 
@@ -104,8 +104,7 @@ public class BenchMoveService {
     {
         var optional = dto.getPiano().getBench();
         if (optional.isEmpty()) {
-            FluentApi.messages().chat().info().text("Piano not available").send(dto.getPlayer());
-            dto.getOnCanceled().accept(null);
+            dto.getOnCanceled().accept( FluentApi.messages().chat().error().text("Both piano and bench must be visible").toString());
             return false;
         }
         return true;

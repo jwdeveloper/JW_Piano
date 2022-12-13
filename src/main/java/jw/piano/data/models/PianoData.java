@@ -19,8 +19,6 @@ public class PianoData extends DataModel {
 
     private Boolean interactivePedal = true;
 
-    private Boolean benchActive = true;
-
     private Boolean desktopClientAllowed = true;
 
     private Boolean detectKeyPress = true;
@@ -28,6 +26,8 @@ public class PianoData extends DataModel {
     private Integer skinId = 109;
 
     private Boolean showGuiHitBox = true;
+
+    private BenchSettings benchSettings = new BenchSettings();
 
     private PianoMidiSettings pianoMidiSettings = new PianoMidiSettings();
 

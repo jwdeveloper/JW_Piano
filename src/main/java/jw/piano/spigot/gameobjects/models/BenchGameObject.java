@@ -6,10 +6,13 @@ import jw.piano.data.enums.PianoKeysConst;
 import jw.piano.factory.ArmorStandFactory;
 import jw.fluent.api.spigot.gameobjects.api.GameObject;
 import jw.fluent.api.utilites.math.collistions.HitBox;
+import jw.piano.spigot.gameobjects.Piano;
+import jw.piano.spigot.gui.bench.BenchViewGui;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 
 import java.util.ArrayList;
 
@@ -39,16 +42,18 @@ public class BenchGameObject extends GameObject {
         hitBox.update(min, max);
     }
 
-    public void resetLocation()
-    {
-        location =  startLocation.clone().add(-0.2, 0.61, 1.2);
+    public void resetLocation() {
+        location = startLocation.clone().add(-0.2, 0.61, 1.2);
         onLocationUpdated();
     }
 
     @Override
     public void onCreated() {
-        startLocation = location;
-        location =  location.clone().add(-0.2, 0.61, 1.2);
+        if(startLocation == null)
+        {
+            startLocation = location;
+        }
+        location = location.clone().add(-0.2, 0.61, 1.2);
         benchModel = new PianoSkin(PianoKeysConst.BENCH.getId(), "bench");
         hitBox = new HitBox(location, location);
         updateHitBox();
@@ -56,9 +61,24 @@ public class BenchGameObject extends GameObject {
         active = true;
         armorStand = armorStandFactory.create(location, guid);
         armorStand.setSmall(true);
-        armorStand.setHelmet(benchModel.getItemStack());
+        setVisible(active);
         onLocationUpdated();
     }
+
+
+    public void setVisible(boolean isVisible)
+    {
+        active = isVisible;
+        if(isVisible)
+        {
+            armorStand.setHelmet(benchModel.getItemStack());
+        }
+        else
+        {
+            armorStand.setHelmet(null);
+        }
+    }
+
 
     @Override
     public void onDestroy() {
@@ -82,32 +102,39 @@ public class BenchGameObject extends GameObject {
         }, 2);
     }
 
-    public boolean onPlayerClick(Player player) {
+    public boolean onPlayerClick(Player player, Piano piano, boolean isLeftClick) {
         if (!active) {
-            return false;
-        }
-
-        if (armorStand.getPassengers().size() > 0) {
             return false;
         }
         if (!hitBox.isCollider(player.getEyeLocation(), 10)) {
             return false;
         }
+
+        if (isLeftClick) {
+            return onPlayerLeftClick(player, piano);
+        } else {
+            return onPlayerRightClick(player);
+        }
+    }
+
+    private boolean onPlayerLeftClick(Player player, Piano piano)
+    {
+        var gui  = FluentApi.playerContext().find(BenchViewGui.class, player);
+        gui.open(player, piano);
+        return true;
+    }
+
+    private boolean onPlayerRightClick(Player player) {
+        if (armorStand.getPassengers().size() > 0) {
+            return false;
+        }
+
         armorStand.addPassenger(player);
         return true;
     }
 
-    public void setState(boolean state) {
-        if (active == state)
-            return;
 
-        if (state) {
-            create(location);
-        } else {
-            destroy();
-        }
 
-    }
 
 
 }

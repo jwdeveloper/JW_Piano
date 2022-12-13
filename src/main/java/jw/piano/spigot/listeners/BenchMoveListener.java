@@ -1,10 +1,8 @@
 package jw.piano.spigot.listeners;
 
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.desing_patterns.observer.implementation.ObserverBag;
 import jw.fluent.api.spigot.events.EventBase;
-import jw.fluent.api.spigot.inventory_gui.InventoryUI;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import jw.fluent.api.spigot.gui.inventory_gui.InventoryUI;
 import jw.piano.services.BenchMoveService;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -49,13 +47,10 @@ public class BenchMoveListener extends EventBase {
     @EventHandler
     public void onSlotChange(PlayerItemHeldEvent event) {
         var isIncreased = event.getPreviousSlot() < event.getNewSlot();
-        FluentLogger.LOGGER.info("OLD", event.getPreviousSlot(), "NEW: ",event.getNewSlot());
         if (event.getPreviousSlot() == InventoryUI.INVENTORY_WIDTH-1 && event.getNewSlot() == 0) {
-            FluentLogger.LOGGER.info("INCREASE");
             isIncreased = true;
         }
         if (event.getPreviousSlot() == 0 && event.getNewSlot() == InventoryUI.INVENTORY_WIDTH-1) {
-            FluentLogger.LOGGER.info("DECREASE");
             isIncreased = false;
         }
         benchMoveService.move(event.getPlayer(), isIncreased);

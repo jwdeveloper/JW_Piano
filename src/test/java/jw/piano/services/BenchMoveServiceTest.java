@@ -1,7 +1,7 @@
 package jw.piano.services;
 
 import be.seeseemelk.mockbukkit.ServerMock;
-import jw.SpigotMock;
+import jw.fluent.api.utilites.SpigotMock;
 import jw.piano.data.dto.BenchMoveDto;
 import jw.piano.data.enums.MoveGameObjectAxis;
 import jw.piano.spigot.gameobjects.Piano;

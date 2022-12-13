@@ -1,7 +1,7 @@
 package jw.piano.mediator.piano.webclient_link;
 
 import be.seeseemelk.mockbukkit.ServerMock;
-import jw.SpigotMock;
+import jw.fluent.api.utilites.SpigotMock;
 import jw.fluent.plugin.implementation.modules.websocket.api.FluentWebsocket;
 import jw.piano.data.models.PianoData;
 import org.junit.Before;

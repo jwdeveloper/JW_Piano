@@ -19,9 +19,9 @@ public class BenchMoveDto
 
     private Piano piano;
 
-    private Consumer<Void> onAccept;
+    private Consumer<String> onAccept;
 
-    private Consumer<Void> onCanceled;
+    private Consumer<String> onCanceled;
 
     private Location originLocation;
 }
