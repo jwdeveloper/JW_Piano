@@ -15,10 +15,11 @@ public final class Main extends FluentPlugin {
     //TODO save/load bench location
     //TODO Add translations for bench
     //TODO Add MIDI player
+    //TODO fix plugin config to support nested objects
     @Override
     public void onConfiguration(FluentApiSpigotBuilder builder) {
         builder.container()
-                .addMetrics(PluginConsts.METRICTS_ID)
+                .addMetrics(PluginConsts.BSTATS_ID)
                 .addUpdater(options ->
                 {
                     options.setGithub(PluginConsts.GITHUB_URL);

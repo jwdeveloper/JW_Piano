@@ -5,7 +5,7 @@ import jw.fluent.plugin.api.FluentApiExtension;
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.FluentApiSpigot;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
-import jw.piano.data.PluginConfig;
+import jw.piano.data.config.PluginConfig;
 import jw.fluent.plugin.implementation.config.FluentConfig;
 import jw.fluent.api.files.implementation.FileUtility;
 import jw.fluent.api.files.implementation.yml.implementation.YmlConfigurationImpl;

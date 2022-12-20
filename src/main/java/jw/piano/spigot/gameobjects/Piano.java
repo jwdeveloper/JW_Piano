@@ -2,7 +2,7 @@ package jw.piano.spigot.gameobjects;
 
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.piano.data.models.PianoData;
-import jw.piano.data.PluginConfig;
+import jw.piano.data.config.PluginConfig;
 import jw.piano.factory.ArmorStandFactory;
 import jw.piano.spigot.gameobjects.models.BenchGameObject;
 import jw.piano.spigot.gameobjects.models.PianoGameObject;
@@ -11,7 +11,6 @@ import jw.piano.services.PianoSkinService;
 import jw.piano.spigot.listeners.PianoInitializeListener;
 import lombok.Getter;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -46,6 +45,7 @@ public class Piano {
         pianoDataObserver.getDetectPressInMinecraftBind().set(pianoDataObserver.getDetectPressInMinecraftBind().get());
         pianoModel.setEffect(pianoDataObserver.getEffectBind().get());
         pianoModel.getPianoBench().setVisible(pianoDataObserver.getBenchActiveBind().get());
+        pianoModel.getPianoBench().setOffset(getPianoData().getBenchSettings().getOffset());
         isCreated = true;
     }
 
@@ -116,7 +116,7 @@ public class Piano {
             return false;
         }
 
-        final var minDistance = settings.getMinDistanceToPiano();
+        final var minDistance = settings.getPianoConfig().getMinDistanceToPiano();
         final var distance = location.distance(getLocation());
         return distance <= minDistance;
     }

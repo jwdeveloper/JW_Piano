@@ -3,24 +3,24 @@ package jw.piano.spigot.gameobjects.models.key;
 import jw.piano.data.enums.PianoKeysConst;
 import jw.piano.factory.ArmorStandFactory;
 import jw.piano.spigot.effects.EffectManager;
-import jw.piano.spigot.gameobjects.models.CustomModel;
+import jw.piano.spigot.gameobjects.models.PressableGameObject;
 import jw.piano.factory.sounds.SoundPlayerFactory;
 import jw.fluent.api.utilites.math.collistions.HitBox;
 import lombok.Getter;
 import org.bukkit.*;
 
 @Getter
-public class PianoKeyGameObject extends CustomModel implements Comparable {
-    private boolean isBlack;
-    private int index;
-    private boolean isPressed;
+public class PianoKeyGameObject extends PressableGameObject implements Comparable {
+    private final boolean isBlack;
+    private final int index;
+    private final int radious;
+    private final SoundPlayerFactory soundPlayerFactory;
+    private final EffectManager effectManager;
+    private final Location keyLocation;
+
     private float volume;
     private HitBox hitBox;
-    private int radious;
-    private SoundPlayerFactory soundPlayerFactory;
-    private EffectManager effectManager;
-
-    private Location keyLocation;
+    private boolean isPressed;
 
     public PianoKeyGameObject(
             String guid,
@@ -41,7 +41,7 @@ public class PianoKeyGameObject extends CustomModel implements Comparable {
     }
 
     @Override
-    public void onCreated() {
+    public void onCreate() {
         this.hitBox = new HitBox(keyLocation.clone().add(isBlack ? -0.015 : -0.03, isBlack ? 1.61 : 1.6, -0.08),
                 keyLocation.clone().add(isBlack ? 0.015 : 0.03, isBlack ? 1.7 : 1.65, isBlack ? 0.075 : 0.08)
         );
@@ -56,7 +56,7 @@ public class PianoKeyGameObject extends CustomModel implements Comparable {
         getArmorStand().remove();
     }
 
-    public boolean hasCollection(Location rayOrigin, float length) {
+    public boolean hasCollision(Location rayOrigin, float length) {
         return getHitBox().isCollider(rayOrigin, length);
     }
 

@@ -62,7 +62,10 @@ public class BenchMoveService {
             return false;
         }
         unregister(player.getUniqueId());
-        benchMoveDto.getPiano().getBench().get().updateHitBox();
+        var piano = benchMoveDto.getPiano();
+        var bench = piano.getBench().get();
+        var offset  = bench.updateHitbox();
+        piano.getPianoData().getBenchSettings().setOffset(offset);
         benchMoveDto.getOnAccept().accept(FluentApi.messages().chat().info().text("Location changed").toString());
         return true;
     }
@@ -109,5 +112,4 @@ public class BenchMoveService {
         }
         return true;
     }
-
 }

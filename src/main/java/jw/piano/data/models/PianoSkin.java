@@ -34,7 +34,7 @@ public class PianoSkin implements YmlMapping
             return itemStack.clone();
         }
 
-        itemStack =  new ItemStack(PluginConsts.SKINS_MATERIAL,1);
+        itemStack =  new ItemStack(PluginConsts.MATERIAL,1);
         var meta = itemStack.getItemMeta();
         meta.setCustomModelData(customModelId);
         itemStack.setItemMeta(meta);

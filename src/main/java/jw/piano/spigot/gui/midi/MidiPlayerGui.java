@@ -11,12 +11,17 @@ import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObser
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.crud_list_ui.CrudListUI;
 import jw.fluent.plugin.implementation.modules.mediator.FluentMediator;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
+import jw.midiplayer.midiparser.MidiParser;
 import jw.piano.data.enums.MidiPlayingType;
 import jw.piano.data.models.PianoMidiFile;
 import jw.piano.data.models.PianoMidiSettings;
 import jw.piano.mediator.midi.reader.MidiReader;
 import jw.piano.spigot.gameobjects.Piano;
+import jw.piano.workers.MidiPlayerWorker2;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+
+import java.io.File;
 
 
 @PlayerContext
@@ -88,7 +93,7 @@ public class MidiPlayerGui extends CrudListUI<PianoMidiFile> {
         });
 
         fluentChestUI.buttonFactory()
-                .observeBool(playMidi.getObserver())
+                .observeBool(()-> playMidi.getObserver())
                 .setDescription(options ->
                 {
                     options.setTitle("Play Midi");
@@ -97,7 +102,7 @@ public class MidiPlayerGui extends CrudListUI<PianoMidiFile> {
                 .build(this);
 
         fluentChestUI.buttonFactory()
-                .observeBool(playerInLoop.getObserver())
+                .observeBool(()-> playerInLoop.getObserver())
                 .setDescription(options ->
                 {
                     options.setTitle("Play is loop");
@@ -106,7 +111,7 @@ public class MidiPlayerGui extends CrudListUI<PianoMidiFile> {
                 .build(this);
 
         fluentChestUI.buttonFactory()
-                .observeBool(playerInLoop.getObserver())
+                .observeBool(()-> playerInLoop.getObserver())
                 .setDescription(options ->
                 {
                     options.setTitle("Skip song");
@@ -116,7 +121,7 @@ public class MidiPlayerGui extends CrudListUI<PianoMidiFile> {
 
 
         fluentChestUI.buttonFactory()
-                .observeEnum(midiPlyingTypeObserver)
+                .observeEnum(()-> midiPlyingTypeObserver)
                 .setDescription(options ->
                 {
                     options.setTitle("Player type");
@@ -124,6 +129,23 @@ public class MidiPlayerGui extends CrudListUI<PianoMidiFile> {
                 .setLocation(0, 4)
                 .build(this);
 
+
+        fluentChestUI.buttonBuilder()
+                .setDescription(options ->
+                {
+                    options.setTitle("TEST");
+                })
+                .setMaterial(Material.ARROW)
+                .setOnLeftClick((player, button) ->
+                {
+                    var file = new File("D:\\MC\\paper_1.19\\plugins\\JW_Piano\\midi\\Czardas.mid");
+                    var reader = MidiParser.loadFile(file);
+                    var plauer = new MidiPlayerWorker2(reader, piano.getPianoModel());
+                    player.sendMessage("FILE LOADED STARTED PLAYINGs");
+                    plauer.start();
+                })
+                .setLocation(0, 4)
+                .build(this);
 
         hideEditButton();
         getButtonInsert().setTitlePrimary("Add MIDI File");

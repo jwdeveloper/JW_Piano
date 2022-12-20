@@ -1,12 +1,16 @@
 package jw.piano.spigot.gui.piano;
 
+import jw.fluent.api.desing_patterns.observer.implementation.Observer;
+import jw.fluent.api.desing_patterns.observer.implementation.ObserverBag;
 import jw.fluent.api.player_context.api.PlayerContext;
 import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.fluent.plugin.implementation.modules.mediator.FluentMediator;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 import jw.piano.data.PluginConsts;
 import jw.piano.mediator.piano.webclient_link.WebClientLink;
 import jw.piano.services.PianoService;
+import jw.piano.services.PianoSkinService;
 import jw.piano.spigot.gameobjects.Piano;
 import jw.piano.spigot.gameobjects.PianoDataObserver;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
@@ -31,26 +35,31 @@ import org.bukkit.entity.Player;
 public class PianoViewGUI extends ChestUI {
 
     private final FluentMediator mediator;
-    private final PianoViewGuiButtons pianoViewButtons;
+    private final PianoViewButtonsFactory pianoViewButtons;
     private final BenchViewGui benchViewGui;
     private final MidiPlayerGui midiPlayerGui;
     private final FluentTranslator lang;
+    private final Observer<Integer> skinIndexObserver;
+    private final PianoSkinService skinService;
     private PianoDataObserver pianoDataObserver;
     private Piano piano;
 
-    @Inject
-    public PianoViewGUI(BenchViewGui benchViewGui,
-                        FluentTranslator translator,
-                        MidiPlayerGui midiPlayerGui,
-                        FluentMediator mediator,
 
-                        PianoViewGuiButtons buttons) {
+    @Inject
+    public PianoViewGUI(FluentMediator mediator,
+                        FluentTranslator translator,
+                        PianoSkinService skinService,
+                        BenchViewGui benchViewGui,
+                        MidiPlayerGui midiPlayerGui,
+                        PianoViewButtonsFactory buttons) {
         super("Piano", 5);
         this.mediator = mediator;
         this.midiPlayerGui = midiPlayerGui;
         this.benchViewGui = benchViewGui;
         this.pianoViewButtons = buttons;
         this.lang = translator;
+        this.skinService = skinService;
+        skinIndexObserver = new ObserverBag<>(0).getObserver();
     }
 
     public void open(Player player, Piano piano) {
@@ -61,8 +70,9 @@ public class PianoViewGUI extends ChestUI {
     }
 
     @Override
-    public void onOpen(Player player1) {
-        pianoViewButtons.createObserverButtons(pianoDataObserver, this);
+    protected void onOpen(Player player) {
+        var skinIndex = skinService.getSkinIndex(pianoDataObserver.getPianoData().getSkinId());
+        skinIndexObserver.set(skinIndex);
     }
 
     @Override
@@ -99,10 +109,17 @@ public class PianoViewGUI extends ChestUI {
                     midiPlayerGui.open(player, piano);
                 }).build(this);
 
+        pianoViewButtons.pianoEnableButton(() -> pianoDataObserver.getEnableBind()).build(this);
+        pianoViewButtons.pianoDesktopClientEnableButton(() -> pianoDataObserver.getDesktopClientAllowedBind()).build(this);
+        pianoViewButtons.pianoKeyboardEnableButton(() -> pianoDataObserver.getDetectPressInMinecraftBind()).build(this);
+        pianoViewButtons.pianoPedalEnableButton(() -> pianoDataObserver.getInteractivePedalBind()).build(this);
 
-        ButtonUI.factory()
-                .goBackButton(this, getParent())
-                .buildAndAdd(this);
+
+        pianoViewButtons.pianoSkinSelectButton(() -> pianoDataObserver.getSkinIdBind(), skinIndexObserver).build(this);
+        pianoViewButtons.pianoParticleEffectSelectButton(() -> pianoDataObserver.getEffectBind()).build(this);
+        pianoViewButtons.pianoVolumeButton(() -> pianoDataObserver.getVolumeBind()).build(this);
+
+        pianoViewButtons.backButton(this).build(this);
     }
 
     private void onRename(Player player, ButtonUI buttonUI) {
@@ -165,21 +182,38 @@ public class PianoViewGUI extends ChestUI {
             return;
         }
 
-        FluentMessage.message().color(org.bukkit.ChatColor.AQUA).bold().inBrackets("Piano info").space().
-                reset().
-                text(lang.get("gui.piano.token.message-1")).send(player);
+        FluentMessage.message()
+                .color(org.bukkit.ChatColor.AQUA)
+                .bold()
+                .inBrackets("Piano info")
+                .space()
+                .reset()
+                .text(lang.get("gui.piano.token.message-1")).send(player);
 
-        final var msg = new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + Emoticons.arrowRight + lang.get("gui.piano-menu.client-app.message"));
-        msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, PluginConsts.CLIENT_APP_URL));
-        player.spigot().sendMessage(msg);
+        final var desktopAppMessage = FluentMessage.message()
+                .text(ChatColor.AQUA)
+                .text(ChatColor.BOLD)
+                .text(Emoticons.arrowRight)
+                .space()
+                .text(lang.get("gui.piano-menu.client-app.message"))
+                .toTextComponent();
+        desktopAppMessage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, PluginConsts.CLIENT_APP_URL));
 
 
-        final var message = new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + Emoticons.arrowRight + lang.get("gui.piano.token.click-to-copy"));
-        message.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, response.getUrl()));
-
+        final var tokenCopyMessage = FluentMessage.message()
+                .text(ChatColor.AQUA)
+                .text(ChatColor.BOLD)
+                .text(Emoticons.arrowRight)
+                .space()
+                .text(lang.get("gui.piano.token.click-to-copy"))
+                .toTextComponent();
+        tokenCopyMessage.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, response.getUrl()));
         final var hover = new Text(ChatColor.GRAY + lang.get("gui.piano.token.message-2"));
-        message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hover));
-        player.spigot().sendMessage(message);
+        tokenCopyMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hover));
+
+        player.sendMessage(" ");
+        player.spigot().sendMessage(desktopAppMessage);
+        player.spigot().sendMessage(tokenCopyMessage);
         player.sendMessage(" ");
         close();
     }

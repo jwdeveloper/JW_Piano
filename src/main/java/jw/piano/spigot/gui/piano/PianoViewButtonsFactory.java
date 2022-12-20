@@ -2,33 +2,41 @@ package jw.piano.spigot.gui.piano;
 
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
+import jw.fluent.api.desing_patterns.observer.implementation.Observer;
 import jw.fluent.api.player_context.api.PlayerContext;
 import jw.fluent.api.spigot.gui.fluent_ui.FluentButtonUIBuilder;
 import jw.fluent.api.spigot.gui.fluent_ui.FluentChestUI;
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverUI;
+import jw.fluent.api.spigot.gui.inventory_gui.InventoryUI;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 import jw.piano.data.PluginConsts;
 import jw.piano.data.PluginPermission;
+import jw.piano.data.enums.PianoEffect;
 import jw.piano.data.enums.PianoKeysConst;
+import jw.piano.data.models.PianoSkin;
 import jw.piano.services.PianoSkinService;
-import jw.piano.spigot.gameobjects.PianoDataObserver;
 import org.bukkit.Material;
 
+import java.util.function.Supplier;
+
 @PlayerContext
-@Injection(lifeTime = LifeTime.TRANSIENT)
-public class PianoViewGuiButtons {
+@Injection()
+public class PianoViewButtonsFactory {
     private final FluentTranslator lang;
     private final PianoSkinService pianoSkinService;
     private final FluentChestUI fluentUi;
-
     @Inject
-    public PianoViewGuiButtons(FluentTranslator translator,
-                               PianoSkinService pianoSkinService,
-                               FluentChestUI buttonUIBuilder) {
+    public PianoViewButtonsFactory(FluentTranslator translator,
+                                   PianoSkinService pianoSkinService,
+                                   FluentChestUI buttonUIBuilder) {
         this.lang = translator;
         this.pianoSkinService = pianoSkinService;
         this.fluentUi = buttonUIBuilder;
+    }
+
+    public FluentButtonUIBuilder backButton(InventoryUI pianoUI) {
+        return fluentUi.buttonFactory()
+                .back(pianoUI, null);
     }
 
     public FluentButtonUIBuilder midiPlayerButton() {
@@ -66,7 +74,7 @@ public class PianoViewGuiButtons {
                 {
                     buttonDescriptionInfoBuilder.setTitle("Bench");
                 })
-                .setMaterial(PluginConsts.SKINS_MATERIAL, PianoKeysConst.BENCH.getId())
+                .setMaterial(PluginConsts.MATERIAL, PianoKeysConst.BENCH.getId())
                 .setLocation(2, 4);
     }
 
@@ -108,70 +116,91 @@ public class PianoViewGuiButtons {
                 .setLocation(1, 4);
     }
 
-
-    public void createObserverButtons(PianoDataObserver pianoDataObserver, PianoViewGUI pianoViewGUI) {
-        fluentUi.buttonFactory()
-                .observeBool(pianoDataObserver.getEnableBind())
+    public FluentButtonUIBuilder pianoEnableButton(Supplier<Observer<Boolean>> observerSupplier) {
+        return fluentUi.buttonFactory()
+                .observeBool(observerSupplier)
                 .setPermissions(PluginPermission.ACTIVE)
                 .setDescription(options ->
                 {
                     options.setTitle(lang.get("gui.piano.piano-active.title"));
                 })
-                .setLocation(0, 1)
-                .build(pianoViewGUI);
+                .setLocation(0, 1);
+    }
 
-        fluentUi.buttonFactory()
-                .observeBool(pianoDataObserver.getInteractivePedalBind())
+    public FluentButtonUIBuilder pianoPedalEnableButton(Supplier<Observer<Boolean>> observerSupplier) {
+        return fluentUi.buttonFactory()
+                .observeBool(observerSupplier)
                 .setPermissions(PluginPermission.PEDAl)
                 .setDescription(options ->
                 {
                     options.setTitle(lang.get("gui.piano.pedal-active.title"));
                 })
-                .setLocation(0, 2)
-                .build(pianoViewGUI);
+                .setLocation(0, 2);
+    }
 
-        fluentUi.buttonFactory()
-                .observeBool(pianoDataObserver.getDetectPressInMinecraftBind())
+    public FluentButtonUIBuilder pianoKeyboardEnableButton(Supplier<Observer<Boolean>> observerSupplier) {
+        return fluentUi.buttonFactory()
+                .observeBool(observerSupplier)
                 .setPermissions(PluginPermission.DETECT_KEY)
                 .setDescription(options ->
                 {
                     options.setTitle(lang.get("gui.piano.detect-key-active.title"));
                 })
-                .setLocation(0, 3)
-                .build(pianoViewGUI);
+                .setLocation(0, 3);
+    }
 
-        fluentUi.buttonFactory()
-                .observeBool(pianoDataObserver.getDesktopClientAllowedBind())
+    public FluentButtonUIBuilder pianoDesktopClientEnableButton(Supplier<Observer<Boolean>> observerSupplier) {
+        return fluentUi.buttonFactory()
+                .observeBool(observerSupplier)
                 .setPermissions(PluginPermission.DESKTOP_CLIENT)
                 .setDescription(options ->
                 {
                     options.setTitle(lang.get("gui.piano.desktop-client-active.title"));
                 })
-                .setLocation(0, 4)
-                .build(pianoViewGUI);
+                .setLocation(0, 4);
+    }
 
-
-        ButtonObserverUI.builder()
-                .addObserver(pianoDataObserver.getSkinIdBind(), new SkinModelNotifier(pianoSkinService.skins()))
-                .setTitle(lang.get("gui.piano.skin.title"))
+    public FluentButtonUIBuilder pianoSkinSelectButton(Supplier<Observer<Integer>> observerSupplier, Observer<Integer> skinIndexObserver) {
+        return fluentUi.buttonFactory()
+                .observeList(() -> skinIndexObserver, pianoSkinService.skins(), options ->
+                {
+                    options.setOnNameMapping(PianoSkin::getName);
+                    options.setOnSelectionChanged(event ->
+                    {
+                        final var value = event.data().getCustomModelId();
+                        final var skinIdObserver = observerSupplier.get();
+                        skinIdObserver.set(value);
+                        if (value == 0) {
+                            event.buttonUI().setMaterial(Material.NOTE_BLOCK);
+                            return;
+                        }
+                        event.buttonUI().setCustomMaterial(PluginConsts.MATERIAL, value);
+                    });
+                })
+                .setDescription(config ->
+                {
+                    config.setTitle(lang.get("gui.piano.skin.title"));
+                })
                 .setPermissions(PluginPermission.SKIN)
-                .setLocation(3, 4)
-                .buildAndAdd(pianoViewGUI);
+                .setLocation(3, 4);
+    }
 
-
-        fluentUi.buttonFactory()
-                .observeEnum(pianoDataObserver.getEffectBind())
+    public FluentButtonUIBuilder pianoParticleEffectSelectButton(Supplier<Observer<PianoEffect>> observerSupplier) {
+        return fluentUi.buttonFactory()
+                .observeEnum(observerSupplier)
                 .setMaterial(Material.FIREWORK_ROCKET)
                 .setPermissions(PluginPermission.EFFECTS)
                 .setDescription(options ->
                 {
                     options.setTitle(lang.get("gui.piano.effect.title"));
                 })
-                .setLocation(3, 2)
-                .build(pianoViewGUI);
+                .setLocation(3, 2);
+    }
 
-        fluentUi.buttonFactory()
-                .observeInt(pianoDataObserver.getVolumeBind(), options ->
+
+    public FluentButtonUIBuilder pianoVolumeButton(Supplier<Observer<Integer>> observerSupplier) {
+        return fluentUi.buttonFactory()
+                .observeInt(observerSupplier, options ->
                 {
                     options.setYield(5);
                     options.setMaximum(100);
@@ -181,9 +210,10 @@ public class PianoViewGuiButtons {
                 .setPermissions(PluginPermission.VOLUME)
                 .setDescription(options ->
                 {
-                    options .setTitle(lang.get("gui.piano.volume.title"));
+                    options.setTitle(lang.get("gui.piano.volume.title"));
                 })
-                .setLocation(2, 6)
-                .build(pianoViewGUI);
+                .setLocation(2, 6);
     }
+
+
 }

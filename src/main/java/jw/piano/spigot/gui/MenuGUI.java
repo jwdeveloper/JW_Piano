@@ -51,56 +51,59 @@ public class MenuGUI extends CrudListUI<PianoData> {
 
         pianoViewGUI.setParent(this);
 
+        setListTitlePrimary(lang.get("gui.piano-menu.title"));
+
         hideEditButton();
-        getButtonInsert().setDescription(lang.get("gui.base.insert.desc"));
         getButtonInsert().setPermissions(PluginPermission.CREATE);
-        getButtonDelete().setDescription(lang.get("gui.base.delete.desc"));
         getButtonDelete().setPermissions(PluginPermission.REMOVE);
-        setTitlePrimary(lang.get("gui.piano-menu.title"));
-
-
-        ButtonUI.builder()
+        addSearchStrategy("By piano name", event ->
+        {
+            return event.data().getName().contains(event.searchKey());
+        });
+        getFluentUI()
+                .buttonBuilder()
                 .setMaterial(Material.CAMPFIRE)
                 .setHighlighted()
-                .setTitle(FluentMessage.message()
-                        .color(org.bukkit.ChatColor.AQUA)
-                        .inBrackets(lang.get("gui.piano-menu.resourcepack.title")))
-                .setDescription(lang.get("gui.piano-menu.resourcepack.desc"))
-                .setLocation(0, 2)
-                .setOnClick((player, button) ->
+                .setDescription(options ->
                 {
-                    player.setTexturePack(PluginConsts.RESOURCEPACK_URL);
+                    options.setTitle(lang.get("gui.piano-menu.resourcepack.title"));
+                    options.addDescriptionLine(lang.get("gui.piano-menu.resourcepack.desc"));
                 })
-                .buildAndAdd(this);
+                .setLocation(0, 2)
+                .setOnLeftClick((player, button) ->
+                {
+                    player.setResourcePack(PluginConsts.RESOURCEPACK_URL);
+                })
+                .build(this);
 
 
-        ButtonUI.builder()
+        getFluentUI()
+                .buttonBuilder()
                 .setMaterial(Material.SOUL_CAMPFIRE)
                 .setHighlighted()
-                .setTitle(FluentMessage.message()
-                        .color(org.bukkit.ChatColor.AQUA)
-                        .inBrackets(lang.get("gui.piano-menu.client-app.title")))
-                .setDescription(lang.get("gui.piano-menu.client-app.desc"))
+                .setDescription(options ->
+                {
+                    options.setTitle(lang.get("gui.piano-menu.client-app.title"));
+                    options.addDescriptionLine(lang.get("gui.piano-menu.client-app.desc"));
+                })
                 .setLocation(0, 3)
-                .setOnClick((player, button) ->
+                .setOnLeftClick((player, button) ->
                 {
                     final var message = new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + "[" + lang.get("gui.piano-menu.client-app.message") + "]");
                     message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, PluginConsts.CLIENT_APP_URL));
                     player.spigot().sendMessage(message);
                     close();
                 })
-                .buildAndAdd(this);
+                .build(this);
 
         setContentButtons(pianoDataRepository.findAll(), (data, button) ->
         {
             button.setTitlePrimary(data.getName());
-            button.setDescription(data.getDescriptionLines());
             if (data.getSkinId() == 0) {
                 button.setMaterial(Material.JUKEBOX);
             } else {
-                button.setCustomMaterial(PluginConsts.SKINS_MATERIAL, data.getSkinId());
+                button.setCustomMaterial(PluginConsts.MATERIAL, data.getSkinId());
             }
-
             button.setDataContext(data);
         });
 

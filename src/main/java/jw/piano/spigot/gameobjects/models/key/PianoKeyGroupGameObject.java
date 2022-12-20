@@ -1,8 +1,7 @@
 package jw.piano.spigot.gameobjects.models.key;
 
-import jw.fluent.api.spigot.gameobjects.api.GameObject;
+import jw.fluent.api.spigot.gameobjects.implementation.GameObject;
 import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.fluent.plugin.implementation.modules.tasks.FluentTasks;
 import jw.piano.data.PluginConsts;
 import jw.piano.data.enums.PianoEffect;
@@ -34,7 +33,7 @@ public class PianoKeyGroupGameObject extends GameObject
 
 
     @Override
-    public void onCreated() {
+    public void onCreate() {
         effectManager.create();
         var startKeysLocation = location.clone().add(-1.5, -0.4, 0.3f);
         startKeysLocation.setDirection(new Vector(0, 1, 0));
@@ -99,7 +98,7 @@ public class PianoKeyGroupGameObject extends GameObject
     {
         for (final var pianoKey : getSortedKeys())
         {
-            if (!pianoKey.hasCollection(player.getEyeLocation(), pianoKey.getRadious())) {
+            if (!pianoKey.hasCollision(player.getEyeLocation(), pianoKey.getRadious())) {
                 continue;
             }
             FluentTasks.taskTimer(TICKS, (iteration, task) ->

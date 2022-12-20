@@ -11,30 +11,30 @@ import java.util.Map;
 @Injection
 public class MidiReaderHandler implements MediatorHandler<MidiReader.Request, MidiReader.Response>
 {
-    private final Map<String, MidiReader.Response> catchedMidiData;
+    private final Map<String, MidiReader.Response> cachedMidiData;
     private final MidiReaderService readerService;
 
     @Inject
     public MidiReaderHandler(MidiReaderService midiReaderService)
     {
         this.readerService = midiReaderService;
-        catchedMidiData = new LinkedHashMap<>();
+        cachedMidiData = new LinkedHashMap<>();
     }
 
 
     @Override
     public MidiReader.Response handle(MidiReader.Request request)
     {
-        if(catchedMidiData.containsKey(request.path()))
+        if(cachedMidiData.containsKey(request.path()))
         {
-            return catchedMidiData.get(request.path());
+            return cachedMidiData.get(request.path());
         }
 
         try
         {
              var midiData = readerService.readMidiData(request.path());
              var response = new MidiReader.Response(midiData, "",true);
-             catchedMidiData.put(request.path(), response);
+             cachedMidiData.put(request.path(), response);
              return response;
         }
         catch (Exception e)

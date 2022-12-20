@@ -7,8 +7,8 @@ import jw.fluent.api.desing_patterns.observer.implementation.ObserverBag;
 import jw.fluent.api.player_context.api.PlayerContext;
 import jw.fluent.api.spigot.gui.fluent_ui.FluentChestUI;
 import jw.fluent.api.spigot.gui.inventory_gui.button.ButtonUI;
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverUI;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.chest_ui.ChestUI;
+import jw.fluent.api.utilites.java.StringUtils;
 import jw.fluent.api.utilites.messages.Emoticons;
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
@@ -37,19 +37,17 @@ import java.util.Arrays;
 public class BenchViewGui extends ChestUI {
     private final FluentTranslator lang;
     private final BenchMoveService benchMoveService;
+    private final FluentChestUI fluentUI;
+    private final ObserverBag<Integer> axisObserver = new ObserverBag<>(0);
     private Piano piano;
     private PianoDataObserver dataObserver;
-
-    private final ObserverBag<Integer> axisObserver = new ObserverBag<>(0);
-
-    private FluentChestUI fluentChestUI;
 
     @Inject
     public BenchViewGui(FluentTranslator lang, FluentChestUI chestUI, BenchMoveService benchMoveService) {
         super("Bench", 3);
         this.lang = lang;
         this.benchMoveService = benchMoveService;
-        this.fluentChestUI = chestUI;
+        this.fluentUI = chestUI;
     }
 
     public void open(Player player, Piano piano) {
@@ -60,8 +58,8 @@ public class BenchViewGui extends ChestUI {
 
     @Override
     protected void onOpen(Player player) {
-        fluentChestUI.buttonFactory()
-                .observeBool(dataObserver.getBenchActiveBind())
+        fluentUI.buttonFactory()
+                .observeBool(() -> dataObserver.getBenchActiveBind())
                 .setPermissions(PluginPermission.BENCH)
                 .setDescription(options ->
                 {
@@ -71,68 +69,55 @@ public class BenchViewGui extends ChestUI {
                 .build(this);
     }
 
-
     @Override
     public void onInitialize() {
 
         setBorderMaterial(Material.LIGHT_BLUE_STAINED_GLASS_PANE);
         setTitlePrimary("Bench settings");
-
         var axis = Arrays.stream(MoveGameObjectAxis.values()).toList();
-        fluentChestUI.buttonFactory()
-                .observeList(axisObserver.getObserver(),axis,options ->
+        fluentUI.buttonFactory()
+                .observeList(axisObserver::getObserver, axis, options ->
                 {
+                    options.setIgnoreRightClick(true);
                     options.setOnNameMapping(input ->
-                    {
-                        var name = switch (input) {
-                            case X -> "right / left";
-                            case Y -> "up / down";
-                            case Z -> "forward / backward";
-                        };
-                        return name;
-                    });
-                    options.setOnSelectionChanged(event ->
-                    {
-                        var itemstack = switch (event.data()) {
-                            case X -> createXBanner();
-                            case Y -> createYBanner();
-                            case Z -> createZBanner();
-                        };
-                        event.buttonUI().setMaterial(itemstack.getType());
-                        event.buttonUI().setMeta(itemstack.getItemMeta());
-                    });
+                            switch (input) {
+                                case X -> "right / left";
+                                case Y -> "up / down";
+                                case Z -> "forward / backward";
+                            });
                 })
                 .setDescription(options ->
                 {
                     options.setTitle("Move");
-                    options.addDescriptionLine(FluentMessage
-                            .message()
-                            .bar(Emoticons.line, 20, ChatColor.GRAY).newLine()
-                            .field(FluentApi.translator().get("gui.base.left-click"), "Edit position").newLine()
-                            .field(FluentApi.translator().get("gui.base.right-click"), "Hande axis").newLine()
-                            .toArray());
+                    options.addDescriptionLine("Default location might not fit to you.");
+                    options.addDescriptionLine("But it can edit by mouse scrolling");
+                    options.setOnLeftClick("Change direction");
+                    options.setOnRightClick("Edit position");
                 })
-                .setOnLeftClick((player, button) ->
+               .setOnRightClick((player, button) ->
                 {
                     var current = axis.get(axisObserver.get());
                     onChangeBenchLocation(player, current);
                 })
+                .setMaterial(Material.LEAD)
                 .setLocation(1, 1)
                 .build(this);
 
 
-        ButtonUI.builder()
+        fluentUI.buttonBuilder().setDescription(config ->
+                {
+                    config.setTitle("Reset position");
+                    config.addDescriptionLine("Teleport bench to its default location");
+                })
                 .setMaterial(Material.TOTEM_OF_UNDYING)
                 .setPermissions(PluginPermission.DESKTOP_CLIENT)
-                .setTitlePrimary("Reset position")
-                .setOnClick(this::onResetBenchLocation)
-                .setDescription("set bench to default location")
+                .setOnLeftClick(this::onResetBenchLocation)
                 .setLocation(0, 8)
-                .buildAndAdd(this);
+                .build(this);
 
-        ButtonUI.factory()
-                .goBackButton(this, getParent())
-                .buildAndAdd(this);
+        fluentUI.buttonFactory()
+                .back(this, getParent())
+                .build(this);
     }
 
     private void onResetBenchLocation(Player player, ButtonUI buttonUI) {
@@ -142,7 +127,8 @@ public class BenchViewGui extends ChestUI {
             return;
         }
         var bench = optional.get();
-        bench.resetLocation();
+        var defaultOffset = bench.resetLocation();
+        piano.getPianoData().getBenchSettings().setOffset(defaultOffset);
     }
 
     private void onChangeBenchLocation(Player player, MoveGameObjectAxis moveType) {
@@ -164,6 +150,7 @@ public class BenchViewGui extends ChestUI {
 
         var result = benchMoveService.register(player.getUniqueId(), dto);
         if (!result) {
+            errorMessage(player);
             return;
         }
         close();
@@ -173,50 +160,10 @@ public class BenchViewGui extends ChestUI {
     private void errorMessage(Player player) {
         FluentApi.messages().chat().error().textSecondary("Both piano and bench must be active (visible)").send(player);
     }
+
     private void sendInfoMessage(Player player) {
         FluentApi.messages().chat().info().textPrimary("Scroll mouse").textSecondary(" to move bench").send(player);
-        FluentApi.messages().chat().info().textSecondary("Left click to").text(" Accept ", ChatColor.DARK_GREEN).textSecondary("position").send(player);
-        FluentApi.messages().chat().info().textSecondary("Left right to cancel").text(" Cancel ", ChatColor.DARK_RED).textSecondary("position").send(player);
-    }
-
-    public ItemStack createXBanner() {
-        ItemStack banner = new ItemStack(Material.CYAN_BANNER);
-        BannerMeta meta = (BannerMeta) banner.getItemMeta();
-        meta.addPattern(new Pattern(DyeColor.WHITE, PatternType.CROSS));
-        meta.addPattern(new Pattern(DyeColor.CYAN, PatternType.BORDER));
-        for (var flag : ItemFlag.values()) {
-            meta.addItemFlags(flag);
-        }
-        banner.setItemMeta(meta);
-        return banner;
-    }
-
-    public ItemStack createZBanner() {
-        ItemStack banner = new ItemStack(Material.CYAN_BANNER);
-        ItemMeta meta = banner.getItemMeta();
-        ((BannerMeta) meta).addPattern(new Pattern(DyeColor.WHITE, PatternType.STRIPE_TOP));
-        ((BannerMeta) meta).addPattern(new Pattern(DyeColor.WHITE, PatternType.STRIPE_DOWNLEFT));
-        ((BannerMeta) meta).addPattern(new Pattern(DyeColor.WHITE, PatternType.STRIPE_BOTTOM));
-        ((BannerMeta) meta).addPattern(new Pattern(DyeColor.CYAN, PatternType.BORDER));
-        for (var flag : ItemFlag.values()) {
-            meta.addItemFlags(flag);
-        }
-        banner.setItemMeta(meta);
-        return banner;
-    }
-
-
-    public ItemStack createYBanner() {
-        ItemStack banner = new ItemStack(Material.CYAN_BANNER);
-        ItemMeta meta = banner.getItemMeta();
-        ((BannerMeta) meta).addPattern(new Pattern(DyeColor.WHITE, PatternType.STRIPE_DOWNRIGHT));
-        ((BannerMeta) meta).addPattern(new Pattern(DyeColor.CYAN, PatternType.HALF_HORIZONTAL_MIRROR));
-        ((BannerMeta) meta).addPattern(new Pattern(DyeColor.WHITE, PatternType.STRIPE_DOWNLEFT));
-        ((BannerMeta) meta).addPattern(new Pattern(DyeColor.CYAN, PatternType.BORDER));
-        for (var flag : ItemFlag.values()) {
-            meta.addItemFlags(flag);
-        }
-        banner.setItemMeta(meta);
-        return banner;
+        FluentApi.messages().chat().info().textSecondary("Left click: ").text(" Accept ", ChatColor.DARK_GREEN).textSecondary("position").send(player);
+        FluentApi.messages().chat().info().textSecondary("Right click: ").text(" Cancel ", ChatColor.DARK_RED).textSecondary("position").send(player);
     }
 }

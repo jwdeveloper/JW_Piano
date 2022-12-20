@@ -37,6 +37,4 @@ public class PianoInfoPacket extends WebSocketPacket {
         final var response = new ActionResult<>(data,data != null);
         sendJson(webSocket, response);
     }
-
-
 }

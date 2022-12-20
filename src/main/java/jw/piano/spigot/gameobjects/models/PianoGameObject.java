@@ -1,21 +1,16 @@
 package jw.piano.spigot.gameobjects.models;
 
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.piano.data.models.PianoSkin;
 import jw.piano.data.enums.PianoEffect;
-import jw.fluent.api.spigot.gameobjects.api.GameObject;
+import jw.fluent.api.spigot.gameobjects.implementation.GameObject;
 import jw.fluent.api.utilites.math.collistions.HitBox;
 import jw.piano.factory.ArmorStandFactory;
 import jw.piano.spigot.gameobjects.Piano;
-import jw.piano.spigot.gameobjects.models.key.PianoKeyGameObject;
 import jw.piano.spigot.gameobjects.models.key.PianoKeyGroupGameObject;
-import jw.piano.spigot.gameobjects.models.pedals.PedalGameObject;
 import jw.piano.spigot.gameobjects.models.pedals.PedalGroupGameObject;
 import lombok.Getter;
-import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.Action;
 
 
 public class PianoGameObject extends GameObject {
@@ -42,7 +37,7 @@ public class PianoGameObject extends GameObject {
 
 
     @Override
-    public void onCreated() {
+    public void onCreate() {
         location.setYaw(0);
         location.setPitch(0);
 

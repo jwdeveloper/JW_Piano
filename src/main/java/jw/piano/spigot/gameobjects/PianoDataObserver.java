@@ -14,25 +14,25 @@ public class PianoDataObserver
 {
     private PianoData pianoData;
 
-    private final Observer<Location> locationBind = new Observer();
+    private final Observer<Location> locationBind = new Observer<>();
 
-    private final Observer<PianoEffect> effectBind = new Observer();
+    private final Observer<PianoEffect> effectBind = new Observer<>();
 
-    private final Observer<Boolean> interactivePedalBind  = new Observer();
+    private final Observer<Boolean> interactivePedalBind  = new Observer<>();
 
-    private final Observer<Boolean> desktopClientAllowedBind  = new Observer();
+    private final Observer<Boolean> desktopClientAllowedBind  = new Observer<>();
 
-    private final Observer<Boolean> detectPressInMinecraftBind  = new Observer();
+    private final Observer<Boolean> detectPressInMinecraftBind  = new Observer<>();
 
-    private final Observer<Boolean> benchActiveBind  = new Observer();
+    private final Observer<Boolean> benchActiveBind  = new Observer<>();
 
-    private final Observer<Boolean> enableBind  = new Observer();
+    private final Observer<Boolean> enableBind  = new Observer<>();
 
-    private final Observer<Integer> volumeBind  = new Observer();
+    private final Observer<Integer> volumeBind  = new Observer<>();
 
-    private final Observer<Integer> skinIdBind  = new Observer();
+    private final Observer<Integer> skinIdBind  = new Observer<>();
 
-    private final Observer<Boolean> showGuiHitBoxBind = new Observer();
+    private final Observer<Boolean> showGuiHitBoxBind = new Observer<>();
 
     public PianoDataObserver()
     {
@@ -46,11 +46,6 @@ public class PianoDataObserver
         effectBind.bind(PianoData.class,"effect");
         benchActiveBind.bind(BenchSettings.class,"isActive");
         showGuiHitBoxBind.bind(PianoData.class,"showGuiHitBox");
-    }
-
-    public Optional<PianoData> getObservedPianoData()
-    {
-       return Optional.of(pianoData);
     }
 
     public void setObservationModel(PianoData pianoData)

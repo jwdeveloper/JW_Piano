@@ -2,7 +2,7 @@ package jw.piano.services;
 
 import be.seeseemelk.mockbukkit.entity.ArmorStandMock;
 import jw.fluent.api.utilites.SpigotMock;
-import jw.piano.data.PluginConfig;
+import jw.piano.data.config.PluginConfig;
 import jw.piano.data.models.PianoData;
 import jw.piano.factory.ArmorStandFactory;
 import jw.piano.repositories.PianoDataRepository;
@@ -48,7 +48,7 @@ public class PianoServiceTest {
     @Test
     public  void canCreate_success() {
         //Arrange
-        pluginConfigMock.setPianoInstancesLimit(10);
+        pluginConfigMock.getPianoConfig().setPianoInstancesLimit(10);
 
         //Act
         var result = sut.canCreate();
@@ -60,7 +60,7 @@ public class PianoServiceTest {
     @Test
     public void canCreate_fail() {
         //Arrange
-        pluginConfigMock.setPianoInstancesLimit(0);
+        pluginConfigMock.getPianoConfig().setPianoInstancesLimit(0);
 
         //Act
         var result = sut.canCreate();

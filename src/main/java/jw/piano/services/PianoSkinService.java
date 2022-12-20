@@ -2,7 +2,6 @@ package jw.piano.services;
 
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 import jw.piano.data.models.PianoSkin;
-import jw.piano.data.PluginConfig;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 
@@ -13,15 +12,15 @@ import java.util.Optional;
 @Injection
 public class PianoSkinService
 {
-    private final List<PianoSkin> skinList;
+    private final List<PianoSkin> skins;
     private final FluentTranslator lang;
 
     @Inject
     public PianoSkinService(FluentTranslator lang)
     {
         this.lang =lang;
-        skinList = new ArrayList<>();
-        skinList.addAll(defaultSkins());
+        skins = new ArrayList<>();
+        skins.addAll(defaultSkins());
     }
 
     private List<PianoSkin> defaultSkins(){
@@ -35,7 +34,21 @@ public class PianoSkinService
 
     public Optional<PianoSkin> getSkinById(int customId)
     {
-        return skinList.stream().filter(e -> e.getCustomModelId() == customId).findFirst();
+        return skins.stream().filter(e -> e.getCustomModelId() == customId).findFirst();
+    }
+
+    public Integer getSkinIndex(int skinModelId)
+    {
+       var i=0;
+       for(var skin : skins)
+       {
+           if(skin.getCustomModelId() == skinModelId)
+           {
+               return i;
+           }
+           i++;
+       }
+       return -1;
     }
 
     public PianoSkin grandPiano()
@@ -45,7 +58,7 @@ public class PianoSkinService
 
     public List<PianoSkin> skins()
     {
-        return skinList;
+        return skins;
     }
 
 }

@@ -146,7 +146,7 @@ public class BenchMoveServiceTest {
         // assert
         assertTrue(result);
         assertTrue(hasBeenCalled.get());
-        verify(benchMock, times(1)).updateHitBox();
+        verify(benchMock, times(1)).updateHitbox();
     }
 
     @Test

@@ -43,7 +43,7 @@ gui:
       title: Bench active
 
     desktop-client-active:
-      title: Desktop app access active
+      title: Desktop app access
       disabled: Desktop app is disabled for this piano
 
     detect-key-active:

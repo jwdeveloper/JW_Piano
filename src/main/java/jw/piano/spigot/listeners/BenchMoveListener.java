@@ -14,13 +14,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 @Injection(lazyLoad = false)
 public class BenchMoveListener extends EventBase {
     private final BenchMoveService benchMoveService;
-
-
-
     public BenchMoveListener(BenchMoveService service) {
         benchMoveService = service;
     }
-
     @EventHandler
     public void playerLeaveEvent(PlayerQuitEvent event) {
         benchMoveService.unregister(event.getPlayer().getUniqueId());
@@ -55,6 +51,4 @@ public class BenchMoveListener extends EventBase {
         }
         benchMoveService.move(event.getPlayer(), isIncreased);
     }
-
-
 }

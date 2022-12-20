@@ -1,7 +1,6 @@
 package jw.piano.spigot.gameobjects.models.pedals;
 
-import jw.fluent.api.spigot.gameobjects.api.GameObject;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import jw.fluent.api.spigot.gameobjects.implementation.GameObject;
 import jw.piano.data.PluginConsts;
 import jw.piano.factory.ArmorStandFactory;
 
@@ -20,7 +19,7 @@ public class PedalGroupGameObject extends GameObject
     }
 
     @Override
-    public void onCreated()
+    public void onCreate()
     {
         for (int i = 0; i < 3; i++) {
             final var pedalLocation = location.clone().add(-0.4 + (i * 0.20), -0.1, 0.1f);

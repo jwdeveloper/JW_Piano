@@ -103,7 +103,7 @@ public class FlyingNotesEffect implements PianoEffectInvoker {
             pianoY = location.getY();
             armorStand = armorStandFactory.create(location, "");
             armorStand.setSmall(true);
-            itemStack = new ItemStack(PluginConsts.SKINS_MATERIAL, 1);
+            itemStack = new ItemStack(PluginConsts.MATERIAL, 1);
             air = new ItemStack(Material.AIR, 1);
             var meta = itemStack.getItemMeta();
             meta.setCustomModelData(PianoKeysConst.FLYING_NOTE.getId());

@@ -2,11 +2,11 @@ package jw.piano.spigot.gameobjects.models.pedals;
 
 import jw.piano.data.enums.PianoKeysConst;
 import jw.piano.factory.ArmorStandFactory;
-import jw.piano.spigot.gameobjects.models.CustomModel;
+import jw.piano.spigot.gameobjects.models.PressableGameObject;
 import lombok.Getter;
 import org.bukkit.Location;
 
-public class PedalGameObject extends CustomModel
+public class PedalGameObject extends PressableGameObject
 {
     @Getter
     private boolean isPressed;
@@ -16,7 +16,7 @@ public class PedalGameObject extends CustomModel
     }
 
     @Override
-    public void onCreated() {
+    public void onCreate() {
         setCustomModelData(PianoKeysConst.PEDAL.getId());
     }
 

@@ -1,6 +1,6 @@
 package jw.piano.services;
 
-import jw.piano.data.PluginConfig;
+import jw.piano.data.config.PluginConfig;
 import jw.piano.data.models.PianoData;
 import jw.piano.data.enums.PianoEffect;
 import jw.piano.factory.ArmorStandFactory;
@@ -19,10 +19,11 @@ public class PianoService {
     private final HashMap<UUID, Piano> pianos = new HashMap<>();
     private final PluginConfig config;
     private final PianoDataRepository pianoDataService;
-
     private final ArmorStandFactory armorStandFactory;
 
-    public PianoService(PluginConfig config, PianoDataRepository pianoDataService, ArmorStandFactory armorStandFactory) {
+    public PianoService(PluginConfig config,
+                        PianoDataRepository pianoDataService,
+                        ArmorStandFactory armorStandFactory) {
         this.config = config;
         this.pianoDataService = pianoDataService;
         this.armorStandFactory = armorStandFactory;
@@ -60,7 +61,6 @@ public class PianoService {
         return Optional.of(piano);
     }
 
-
     public boolean delete(UUID pianoID) {
         var model = find(pianoID);
         if (model.isEmpty()) {
@@ -78,7 +78,6 @@ public class PianoService {
         return true;
     }
 
-
     public Optional<Piano> find(UUID pianoID) {
         if (!pianos.containsKey(pianoID)) {
             return Optional.empty();
@@ -90,11 +89,11 @@ public class PianoService {
         return pianos.values();
     }
 
-    public int clear() {
+    public void clear() {
         for (var piano : pianos.values()) {
             piano.clear();
         }
-        return pianos.size();
+        // return pianos.size();
     }
 
     public Optional<Piano> getNearestPiano(Location location) {
@@ -108,7 +107,7 @@ public class PianoService {
 
 
     public boolean canCreate() {
-        final var limit = config.getPianoInstancesLimit();
+        final var limit = config.getPianoConfig().getPianoInstancesLimit();
         return pianoDataService.findAll().size() + 1 < limit;
     }
 }
