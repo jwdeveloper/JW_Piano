@@ -25,9 +25,9 @@ public class PianoObserver
     private final Observer<Boolean> activeBind = new Observer<>();
 
     private final Observer<Integer> volumeBind  = new Observer<>();
-    public final Observer<String> skinNameBind = new Observer<>();
+    private final Observer<String> skinNameBind = new Observer<>();
 
-    public final Observer<String> effectNameBind = new Observer<>();
+    private final Observer<String> effectNameBind = new Observer<>();
 
     private final Observer<Boolean> showGuiHitBoxBind = new Observer<>();
 

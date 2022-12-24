@@ -60,6 +60,8 @@ public class SkinLoaderService {
             var materialName = configSkin.getMaterial().toUpperCase();
             var material = Material.valueOf(materialName);
             var itemStack = new ItemStack(material);
+
+
             var pianoSkin = new PianoSkin(configSkin.getCustomModelId(), configSkin.getName(),itemStack);
             skins.add(pianoSkin);
         }

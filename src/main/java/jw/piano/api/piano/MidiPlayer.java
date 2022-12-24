@@ -1,16 +1,29 @@
 package jw.piano.api.piano;
 
+import jw.piano.api.data.enums.MidiPlayingType;
+import jw.piano.api.data.models.midi.PianoMidiFile;
+import jw.piano.api.observers.MidiPlayerSettingsObserver;
+
+import java.util.List;
+
 public interface MidiPlayer
 {
+    void next();
+    void previous();
     void play();
 
     void stop();
 
-    void reset();
+    void setPlayMode(MidiPlayingType type);
 
-    void setPlayMode();
+    void setCurrentSong(PianoMidiFile midiFile);
 
-    void setSong();
+    void addSong(PianoMidiFile midiFile);
+    void removeSong(PianoMidiFile midiFile);
 
-    void getSongs();
+    PianoMidiFile getCurrentSong();
+
+    List<PianoMidiFile> getSongs();
+
+    public MidiPlayerSettingsObserver getObserver();
 }

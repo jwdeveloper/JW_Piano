@@ -23,6 +23,14 @@ public class PianoSkin
         this.customModelId = customModelId;
         this.name = name;
         this.itemStack = itemStack;
+
+        var meta = itemStack.getItemMeta();
+        if(meta != null)
+        {
+            meta.setCustomModelData(customModelId);
+            itemStack.setItemMeta(meta);
+        }
+
     }
 
     public ItemStack getItemStack()

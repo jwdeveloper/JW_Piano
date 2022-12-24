@@ -3,7 +3,7 @@ package jw.piano.midi;
 import jw.piano.api.data.midi.reader.ChangeTempoEvent;
 import jw.piano.api.data.midi.reader.MidiCraftEvent;
 import jw.piano.api.data.midi.reader.MidiRawData;
-import jw.piano.core.services.MidiReaderService;
+import jw.piano.core.services.MidiLoaderService;
 import org.junit.Test;
 
 public class MidiReaderTest {
@@ -11,7 +11,7 @@ public class MidiReaderTest {
     @Test
     public void createMinecraftSections()
     {
-        var sut = new MidiReaderService();
+        var sut = new MidiLoaderService();
         var midiData = new MidiRawData();
 
         midiData.addEvent(5,new MidiCraftEvent(33,1,1,1));

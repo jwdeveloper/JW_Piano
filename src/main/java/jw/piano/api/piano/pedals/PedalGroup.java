@@ -10,5 +10,7 @@ public interface PedalGroup extends Teleportable, Interactable {
 
     boolean isSustainPressed();
 
-    public boolean triggerSustainPedal();
+     boolean triggerSustainPedal();
+
+    void refresh();
 }

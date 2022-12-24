@@ -22,13 +22,8 @@ public class PluginConsts
     public final static Integer BSTATS_ID = 15825;
 
     public final static NamespacedKey PIANO_NAMESPACE = NamespacedKey.minecraft("piano");
-
     public final static Color PARTICLE_COLOR = Color.fromRGB(92, 225, 230);
-
     public final static Material MATERIAL = Material.STICK;
-    public final static String SOUND_PATH = "minecraft";
-
-    public final static SoundCategory SOUND_CATEGORY = SoundCategory.VOICE;
 
     public static final int MIDI_KEY_OFFSET = 21;
     public static final int PRESSED_CODE = 1;

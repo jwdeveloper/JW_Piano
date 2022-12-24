@@ -23,27 +23,26 @@ import org.bukkit.entity.Player;
 
 @PlayerContext
 @Injection
-public class MenuGUI extends CrudListUI<PianoData> {
+public class MenuGUI extends CrudListUI<Piano> {
 
     private final PianoViewGUI pianoViewGUI;
-    private final PianoDataRepository pianoDataRepository;
     private final PianoService pianoService;
     private final FluentTranslator lang;
     private final FluentMediator mediator;
 
     @Inject
     public MenuGUI(PianoViewGUI pianoViewGUI,
-                   PianoDataRepository pianoDataRepository,
                    PianoService pianoService,
                    FluentMediator mediator,
                    FluentTranslator lang) {
         super("pianos", 6);
         this.lang = lang;
         this.pianoService = pianoService;
-        this.pianoDataRepository = pianoDataRepository;
         this.pianoViewGUI = pianoViewGUI;
         this.mediator = mediator;
     }
+
+
 
     @Override
     public void onInitialize() {
@@ -91,16 +90,10 @@ public class MenuGUI extends CrudListUI<PianoData> {
                 })
                 .build(this);
 
-        setContentButtons(pianoDataRepository.findAll(), (data, button) ->
+
+        onListOpen(player ->
         {
-          /*  button.setTitlePrimary(data.getName());
-            if (data.getSkinName() == 0) {
-                button.setMaterial(Material.JUKEBOX);
-            } else {
-                button.setCustomMaterial(PluginConsts.MATERIAL, data.getSkinId());
-            }*/
-            button.setMaterial(Material.JUKEBOX);
-            button.setDataContext(data);
+            loadPianos();
         });
 
         onInsert((player, button) ->
@@ -114,23 +107,22 @@ public class MenuGUI extends CrudListUI<PianoData> {
         });
         onDelete((player, button) ->
         {
-            var piano = button.<PianoData>getDataContext();
-            var result = pianoService.delete(piano.getUuid());
+            var piano = button.<Piano>getDataContext();
+            var result = pianoService.delete(piano.getPianoObserver().getPianoData().getUuid());
             if (!result) {
                 setTitle(lang.get("gui.base.delete.error"));
             }
-            refreshContent();
+            loadPianos();
         });
         onGet((player, button) ->
         {
-            var pianoData = button.<PianoData>getDataContext();
-            var result = pianoService.find(pianoData.getUuid());
-            if (result.isEmpty()) {
+            var pianoData = button.<Piano>getDataContext();
+            if (pianoData == null) {
                 setTitle(lang.get("gui.piano-menu.click.error"));
                 refreshContent();
                 return;
             }
-            openPianoGui(player, result.get());
+            openPianoGui(player,pianoData);
         });
 
         onListOpen(player ->
@@ -139,8 +131,19 @@ public class MenuGUI extends CrudListUI<PianoData> {
         });
     }
 
-    public void openPianoGui(Player player, Piano piano)
+    public void loadPianos()
     {
+        setContentButtons(pianoService.findAll(), (data, button) ->
+        {
+            button.setTitlePrimary(data.getPianoObserver().getPianoData().getName());
+
+            var skin = data.getSkinManager().getCurrent();
+            button.setCustomMaterial(skin.getItemStack().getType(), skin.getCustomModelId());
+            button.setDataContext(data);
+        });
+    }
+
+    public void openPianoGui(Player player, Piano piano) {
         pianoViewGUI.open(player, piano);
     }
 }

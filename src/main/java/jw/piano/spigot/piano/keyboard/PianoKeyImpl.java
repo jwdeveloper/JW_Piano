@@ -50,6 +50,7 @@ public class PianoKeyImpl extends GameObject implements PianoKey {
         {
             armorStandModel.setItemStack(PluginConsts.ITEMSTACK());
             armorStandModel.getArmorStand().setSmall(true);
+            armorStandModel.setId(PluginConsts.PIANO_NAMESPACE, pianoData.getUuid());
             release();
         });
     }
@@ -97,6 +98,11 @@ public class PianoKeyImpl extends GameObject implements PianoKey {
     public boolean isWhite()
     {
         return !isBlack;
+    }
+
+    @Override
+    public void refresh() {
+        armorStandModel.refresh();
     }
 
     @Override

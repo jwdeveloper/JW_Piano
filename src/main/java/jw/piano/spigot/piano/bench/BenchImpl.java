@@ -44,6 +44,7 @@ public class BenchImpl extends GameObject implements Bench {
             armorStandModel.getArmorStand().setSmall(true);
             armorStandModel.setItemStack(PluginConsts.ITEMSTACK());
             armorStandModel.setCustomModelId(PianoKeysConst.BENCH.getId());
+            armorStandModel.setId(PluginConsts.PIANO_NAMESPACE, piano.getPianoObserver().getPianoData().getUuid());
             armorStandModel.setLocation(location);
         });
         var xBox = 0.8;
@@ -52,7 +53,6 @@ public class BenchImpl extends GameObject implements Bench {
         var max = new Vector(xBox, 0.3, zBox);
         hitBox = new InteractiveHitBox(location, min, max);
         display= new HitBoxDisplay(hitBox);
-        display.show(0.4f);
     }
 
     private HitBoxDisplay display;
@@ -64,6 +64,11 @@ public class BenchImpl extends GameObject implements Bench {
 
     public void move(BenchMove benchMove) {
         benchMovingHandler.move(benchMove, location.clone());
+    }
+
+    @Override
+    public void refresh() {
+        model.refresh();
     }
 
     @Override
@@ -91,7 +96,16 @@ public class BenchImpl extends GameObject implements Bench {
     @Override
     public void setVisible(boolean visible) {
         active = visible;
-        model.setVisible(visible);
+        if(visible)
+        {
+            model.setItemStack(PluginConsts.ITEMSTACK());
+            model.setCustomModelId(PianoKeysConst.BENCH.getId());
+        }
+        else
+        {
+            model.setItemStack(null);
+        }
+
     }
 
     @Override

@@ -23,7 +23,7 @@ public class PedalGroupImpl extends GameObject implements PedalGroup {
     public void onCreate() {
         for (int i = 0; i < 3; i++) {
             final var pedalLocation = location.clone().add(-0.4 + (i * 0.20), -0.1, 0.1f);
-            final var pedal = new PedalImpl();
+            final var pedal = new PedalImpl(pianoData);
             pedal.setLocation(pedalLocation);
             pedals[i] = addGameComponent(pedal);
         }
@@ -61,6 +61,14 @@ public class PedalGroupImpl extends GameObject implements PedalGroup {
             triggerPedal(0, 64,0);
         }
         return true;
+    }
+
+    @Override
+    public void refresh() {
+        for(var pedal : pedals)
+        {
+            pedal.refresh();
+        }
     }
 
     @Override

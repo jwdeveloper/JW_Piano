@@ -28,6 +28,8 @@ public class CreatePianoHandler implements MediatorHandler<CreatePiano.Request, 
         final var pianoData = new PianoData();
         pianoData.setName(player.getName()+"'s piano");
         pianoData.setLocation(location);
+        pianoData.setSkinName("none");
+        pianoData.setEffectName("none");
         pianoData.setActive(true);
         final var result = pianoService.create(pianoData);
         if(result.isEmpty())

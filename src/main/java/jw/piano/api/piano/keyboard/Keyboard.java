@@ -8,4 +8,6 @@ public interface Keyboard extends Teleportable, Interactable, Resetable
 {
      PianoKey[] getPianoKeys();
      void triggerNote(int pressed, int midiIndex, int velocity);
+
+     void refresh();
 }

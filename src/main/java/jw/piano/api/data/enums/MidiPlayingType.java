@@ -2,5 +2,5 @@ package jw.piano.api.data.enums;
 
 public enum MidiPlayingType
 {
-    RANDOM, IN_ORDER
+    NONE, RANDOM, IN_ORDER,  LOOP
 }

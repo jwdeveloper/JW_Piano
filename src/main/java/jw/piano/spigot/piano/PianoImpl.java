@@ -8,23 +8,28 @@ import jw.fluent.plugin.implementation.modules.dependecy_injection.FluentInjecti
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.fluent.plugin.implementation.modules.mediator.FluentMediator;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
+import jw.piano.api.data.PluginConsts;
 import jw.piano.api.data.config.PluginConfig;
 import jw.piano.api.data.events.PianoInteractEvent;
 import jw.piano.api.data.models.PianoData;
 import jw.piano.api.observers.PianoObserver;
 import jw.piano.api.piano.MidiPlayer;
 import jw.piano.api.piano.Piano;
+import jw.piano.core.services.MidiLoaderService;
 import jw.piano.spigot.piano.bench.BenchImpl;
 import jw.piano.spigot.piano.managers.EffectManagerImpl;
 import jw.piano.spigot.gui.MenuGUI;
 import jw.piano.spigot.piano.keyboard.KeyboardImpl;
+import jw.piano.spigot.piano.midi.MidiPlayerImpl;
 import jw.piano.spigot.piano.pedals.PedalGroupImpl;
 import jw.piano.spigot.piano.managers.SkinManagerImpl;
 import jw.piano.spigot.piano.managers.SoundsManagerImpl;
 import jw.piano.spigot.piano.token.TokenGeneratorImpl;
 import lombok.Getter;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
 public class PianoImpl extends GameObject implements Piano {
@@ -52,6 +57,7 @@ public class PianoImpl extends GameObject implements Piano {
     private final PluginConfig pluginConfig;
     private final FluentTranslator translator;
     private final FluentMediator mediator;
+    private final MidiLoaderService midiLoaderService;
 
     private ArmorStandModel modelRenderer;
     private InteractiveHitBox openGuiHitBox;
@@ -64,6 +70,7 @@ public class PianoImpl extends GameObject implements Piano {
         skinManager = container.findInjection(SkinManagerImpl.class);
         translator = container.findInjection(FluentTranslator.class);
         mediator = container.findInjection(FluentMediator.class);
+        midiLoaderService = container.findInjection(MidiLoaderService.class);
     }
 
     @Override
@@ -84,6 +91,7 @@ public class PianoImpl extends GameObject implements Piano {
         modelRenderer.setOnCreated(armorStandModel ->
         {
             armorStandModel.setItemStack(skinManager.getCurrent().getItemStack());
+            armorStandModel.setId(PluginConsts.PIANO_NAMESPACE, pianoData.getUuid());
         });
         bench = new BenchImpl(this);
         keyboard = new KeyboardImpl(pianoData, effectManager, soundsManager);
@@ -94,6 +102,8 @@ public class PianoImpl extends GameObject implements Piano {
         addGameComponent(keyboard);
         addGameComponent(pedals);
         effectManager.create();
+
+        midiPlayer = new MidiPlayerImpl(this, midiLoaderService);
     }
 
     @Override
@@ -185,7 +195,25 @@ public class PianoImpl extends GameObject implements Piano {
     }
 
     @Override
-    public void reset() {
+    public void reset()
+    {
+        var entities = location.getWorld().getNearbyEntities(location, 4, 6, 4);
+        var pianoid = pianoData.getUuid().toString();
+        for (var entity : entities) {
+            var container = entity.getPersistentDataContainer();
+            if (!container.has(PluginConsts.PIANO_NAMESPACE, PersistentDataType.STRING)) {
+                continue;
+            }
+            var id = container.get(PluginConsts.PIANO_NAMESPACE, PersistentDataType.STRING);
+            if (!id.equals(pianoid)) {
+                continue;
+            }
+            entity.remove();
+        }
+        modelRenderer.refresh();
 
+        keyboard.refresh();
+        bench.refresh();
+        pedals.refresh();
     }
 }

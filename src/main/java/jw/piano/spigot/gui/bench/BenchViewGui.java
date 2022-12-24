@@ -49,7 +49,7 @@ public class BenchViewGui extends ChestUI {
     protected void onOpen(Player player) {
         fluentUI.buttonFactory()
                 .observeBool(() -> dataObserver.getBenchActiveBind())
-                .setPermissions(PluginPermission.BENCH)
+                .setPermissions(PluginPermission.BENCH_ACTIVE)
                 .setDescription(options ->
                 {
                     options.setTitle(lang.get("gui.piano.bench-active.title"));
@@ -89,8 +89,8 @@ public class BenchViewGui extends ChestUI {
                     onChangeBenchLocation(player, current);
                 })
                 .setMaterial(Material.LEAD)
-                .setLocation(1, 1)
-                .build(this);
+                .setLocation(1, 1);
+              //  .build(this);
 
 
         fluentUI.buttonBuilder().setDescription(config ->

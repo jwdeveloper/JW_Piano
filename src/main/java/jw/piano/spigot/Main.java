@@ -29,8 +29,8 @@ public final class Main extends FluentPlugin {
                 .addDocumentation(options ->
                 {
                     options.addSection(new PluginDocumentation());
-                  //  options.setUseSpigotDocumentation(true);
-                 //   options.setUseGithubDocumentation(true);
+                    options.setUseSpigotDocumentation(true);
+                    options.setUseGithubDocumentation(true);
                     options.setPermissionModel(PluginPermission.class);
                 })
                 .addWebSocket()

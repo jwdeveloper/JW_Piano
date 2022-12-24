@@ -50,6 +50,7 @@ public class PianoViewButtonsFactory {
                     buttonStyleBuilder.addDescriptionLine("Play Midi files on this piano. Files should be located in plugins/JW_Piano/midi");
                 })
                 .setMaterial(Material.JUKEBOX)
+                .setPermissions(PluginPermission.MIDI_PLAYER)
                 .setLocation(1, 2);
     }
 
@@ -72,6 +73,7 @@ public class PianoViewButtonsFactory {
     public FluentButtonUIBuilder benchButton() {
         return fluentUi
                 .buttonBuilder()
+                .setPermissions(PluginPermission.BENCH)
                 .setDescription(buttonDescriptionInfoBuilder ->
                 {
                     buttonDescriptionInfoBuilder.setTitle("Bench");
@@ -257,7 +259,7 @@ public class PianoViewButtonsFactory {
                         }
                 )
                 .setMaterial(Material.MUSIC_DISC_WARD)
-           //     .setPermissions(PluginPermission.EFFECTS)
+                .setPermissions(PluginPermission.SOUND)
                 .setDescription(options ->
                 {
                     options.setTitle("Sounds");

@@ -89,6 +89,14 @@ public class KeyboardImpl extends GameObject implements Keyboard {
     }
 
     @Override
+    public void refresh() {
+        for(var key : pianoKeys)
+        {
+            key.refresh();
+        }
+    }
+
+    @Override
     public boolean triggerPlayerClick(PianoInteractEvent event) {
         if (!pianoData.getInteractiveKeyboard()) {
             return false;

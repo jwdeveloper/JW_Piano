@@ -3,6 +3,7 @@ package jw.piano.spigot.gui.piano;
 import jw.fluent.api.desing_patterns.observer.implementation.Observer;
 import jw.fluent.api.player_context.api.PlayerContext;
 import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.piano.api.data.models.PianoSkin;
 import jw.piano.api.data.sounds.PianoSound;
 import jw.piano.api.managers.effects.EffectInvoker;

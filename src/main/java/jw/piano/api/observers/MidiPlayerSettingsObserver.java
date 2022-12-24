@@ -10,25 +10,22 @@ import lombok.Data;
 public class MidiPlayerSettingsObserver
 {
     private MidiPlayerSettings midiPlayerSetting;
-    private Observer<Boolean> isPlayingInLoopObserver = new Observer<>();
     private Observer<Boolean> isPlayingObserver = new Observer<>();
     private Observer<Integer> speedObserver = new Observer<>();
-    private Observer<MidiPlayingType> midiPlayingTypeObserver = new Observer<>();
+    private Observer<MidiPlayingType> playingTypeObserver = new Observer<>();
 
     public MidiPlayerSettingsObserver()
     {
-        isPlayingInLoopObserver.bind(MidiPlayerSettings.class,"isPlayingInLoop");
         isPlayingObserver.bind(MidiPlayerSettings.class,"isPlaying");
         speedObserver.bind(MidiPlayerSettings.class,"speed");
-        midiPlayingTypeObserver.bind(MidiPlayerSettings.class,"midiPlayingType");
+        playingTypeObserver.bind(MidiPlayerSettings.class,"playingType");
     }
 
     public void setObject(MidiPlayerSettings model)
     {
         midiPlayerSetting = model;
-        isPlayingInLoopObserver.setObject(model);
         isPlayingObserver.setObject(model);
         speedObserver.setObject(model);
-        midiPlayingTypeObserver.setObject(model);
+        playingTypeObserver.setObject(model);
     }
 }

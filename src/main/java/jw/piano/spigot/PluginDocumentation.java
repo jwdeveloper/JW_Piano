@@ -58,22 +58,24 @@ public class PluginDocumentation extends DocumentationDecorator {
         addText("Resourcepack", documentation, "bold");
         addListMember("When you have some problems with resourcepack download it directly", documentation);
 
-        addText("Desktop app configuration, `config.yml` > `plugin.websocket.custom-id`", documentation, "bold");
+        addText("Desktop app configuration, `config.yml` > `plugin.websocket.server-ip`", documentation, "bold");
         addListMember("Make sure port you are trying to use is open", documentation);
-        addListMember("When you've got problems with connection try to change `plugin.websocket.custom-id` or  `plugin.websocket.port`", documentation);
+        addListMember("When you've got problems with connection try to change `plugin.websocket.server-ip` or  `plugin.websocket.port`", documentation);
         addListMember("Check if you need to create new port in the server hosting panel and then set in to `plugin.websocket.port`", documentation);
-        addListMember("When your server use proxy use Proxy IP to `plugin.websocket.custom-id`", documentation);
+        addListMember("When your server use proxy use Proxy IP to `plugin.websocket.server-ip`", documentation);
         addListMember("When you server IP has port ignore port. Example: ", documentation);
         addText(documentation);
         addText("Wrong: `craftplayer.com:22225`",documentation);
         addText(documentation);
         addText("Correct: `craftplayer.com`",documentation);
         addText(documentation);
-        addListMember("When you are running server locally set value to `localhost` to `plugin.websocket.custom-id`", documentation);
-        addListMember("When above solutions does not help set IP that you use in Minecraft server lists to `plugin.websocket.custom-id`", documentation);
+        addListMember("When you are running server locally set value to `localhost` to `plugin.websocket.server-ip`", documentation);
+        addListMember("When above solutions does not help set IP that you use in Minecraft server lists to `plugin.websocket.server-ip`", documentation);
 
         addText("</details>",documentation,"spigot-ignore", "plugin-ignore");
         addText("[/SPOILER]",documentation,"github-ignore", "plugin-ignore");
+
+
 
         addText(documentation);
     }
