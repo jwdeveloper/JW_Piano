@@ -7,27 +7,29 @@ import jw.fluent.api.player_context.api.PlayerContext;
 import jw.fluent.api.spigot.gui.fluent_ui.FluentButtonUIBuilder;
 import jw.fluent.api.spigot.gui.fluent_ui.FluentChestUI;
 import jw.fluent.api.spigot.gui.inventory_gui.InventoryUI;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
-import jw.piano.data.PluginConsts;
-import jw.piano.data.PluginPermission;
-import jw.piano.data.enums.PianoEffect;
-import jw.piano.data.enums.PianoKeysConst;
-import jw.piano.data.models.PianoSkin;
-import jw.piano.services.PianoSkinService;
+import jw.piano.api.data.PluginConsts;
+import jw.piano.api.data.PluginPermission;
+import jw.piano.api.data.enums.PianoKeysConst;
+import jw.piano.api.data.models.PianoSkin;
+import jw.piano.api.data.sounds.PianoSound;
+import jw.piano.api.managers.effects.EffectInvoker;
+import jw.piano.core.services.SkinLoaderService;
 import org.bukkit.Material;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 @PlayerContext
 @Injection()
 public class PianoViewButtonsFactory {
     private final FluentTranslator lang;
-    private final PianoSkinService pianoSkinService;
+    private final SkinLoaderService pianoSkinService;
     private final FluentChestUI fluentUi;
+
     @Inject
     public PianoViewButtonsFactory(FluentTranslator translator,
-                                   PianoSkinService pianoSkinService,
+                                   SkinLoaderService pianoSkinService,
                                    FluentChestUI buttonUIBuilder) {
         this.lang = translator;
         this.pianoSkinService = pianoSkinService;
@@ -47,7 +49,7 @@ public class PianoViewButtonsFactory {
                     buttonStyleBuilder.setTitle("Midi player");
                     buttonStyleBuilder.addDescriptionLine("Play Midi files on this piano. Files should be located in plugins/JW_Piano/midi");
                 })
-                .setMaterial(Material.MUSIC_DISC_13)
+                .setMaterial(Material.JUKEBOX)
                 .setLocation(1, 2);
     }
 
@@ -86,9 +88,9 @@ public class PianoViewButtonsFactory {
                     buttonStyleBuilder.setTitle(lang.get("gui.piano.rename.title"));
                     buttonStyleBuilder.addDescriptionLine(lang.get("gui.piano.rename.desc"));
                 })
-                .setMaterial(Material.PAPER)
+                .setMaterial(Material.NAME_TAG)
                 .setPermissions(PluginPermission.RENAME)
-                .setLocation(3, 6);
+                .setLocation(2, 6);
     }
 
     public FluentButtonUIBuilder teleportButton() {
@@ -138,6 +140,23 @@ public class PianoViewButtonsFactory {
                 .setLocation(0, 2);
     }
 
+    public FluentButtonUIBuilder pianoVolumeButton(Supplier<Observer<Integer>> observerSupplier) {
+        return fluentUi.buttonFactory()
+                .observeInt(observerSupplier, options ->
+                {
+                    options.setYield(5);
+                    options.setMaximum(100);
+                    options.setMinimum(0);
+                })
+                .setMaterial(Material.BELL)
+                .setPermissions(PluginPermission.VOLUME)
+                .setDescription(options ->
+                {
+                    options.setTitle(lang.get("gui.piano.volume.title"));
+                })
+                .setLocation(1, 6);
+    }
+
     public FluentButtonUIBuilder pianoKeyboardEnableButton(Supplier<Observer<Boolean>> observerSupplier) {
         return fluentUi.buttonFactory()
                 .observeBool(observerSupplier)
@@ -160,21 +179,52 @@ public class PianoViewButtonsFactory {
                 .setLocation(0, 4);
     }
 
-    public FluentButtonUIBuilder pianoSkinSelectButton(Supplier<Observer<Integer>> observerSupplier, Observer<Integer> skinIndexObserver) {
+    public FluentButtonUIBuilder pianoParticleEffectSelectButton(
+            Supplier<Observer<String>> observerSupplier,
+            Supplier<List<EffectInvoker>> effectSupplier,
+            Observer<EffectInvoker> effectIndexSupplier) {
+
         return fluentUi.buttonFactory()
-                .observeList(() -> skinIndexObserver, pianoSkinService.skins(), options ->
+                .observeList(() -> effectIndexSupplier,
+                        effectSupplier,
+                        options ->
+                        {
+                            options.setOnNameMapping(EffectInvoker::getName);
+                            options.setOnSelectionChanged(event ->
+                            {
+                                final var value = event.data().getName();
+                                final var observer = observerSupplier.get();
+                                observer.set(value);
+                                event.buttonUI().setMaterial(event.data().getIcon());
+                            });
+                        }
+                )
+                .setMaterial(Material.FIREWORK_ROCKET)
+                .setPermissions(PluginPermission.EFFECTS)
+                .setDescription(options ->
+                {
+                    options.setTitle(lang.get("gui.piano.effect.title"));
+                })
+                .setLocation(3, 2);
+    }
+
+    public FluentButtonUIBuilder pianoSkinSelectButton(Supplier<Observer<String>> observerSupplier,
+                                                       Supplier<List<PianoSkin>> skinsSupplier,
+                                                       Observer<PianoSkin> skinObserver) {
+        return fluentUi.buttonFactory()
+                .observeList(() -> skinObserver, skinsSupplier, options ->
                 {
                     options.setOnNameMapping(PianoSkin::getName);
                     options.setOnSelectionChanged(event ->
                     {
-                        final var value = event.data().getCustomModelId();
-                        final var skinIdObserver = observerSupplier.get();
-                        skinIdObserver.set(value);
-                        if (value == 0) {
+                        final var value = event.data().getName();
+                        final var observer = observerSupplier.get();
+                        observer.set(value);
+                        if (value.equals("none")) {
                             event.buttonUI().setMaterial(Material.NOTE_BLOCK);
                             return;
                         }
-                        event.buttonUI().setCustomMaterial(PluginConsts.MATERIAL, value);
+                        event.buttonUI().setCustomMaterial(PluginConsts.MATERIAL, event.data().getCustomModelId());
                     });
                 })
                 .setDescription(config ->
@@ -185,35 +235,36 @@ public class PianoViewButtonsFactory {
                 .setLocation(3, 4);
     }
 
-    public FluentButtonUIBuilder pianoParticleEffectSelectButton(Supplier<Observer<PianoEffect>> observerSupplier) {
-        return fluentUi.buttonFactory()
-                .observeEnum(observerSupplier)
-                .setMaterial(Material.FIREWORK_ROCKET)
-                .setPermissions(PluginPermission.EFFECTS)
-                .setDescription(options ->
-                {
-                    options.setTitle(lang.get("gui.piano.effect.title"));
-                })
-                .setLocation(3, 2);
-    }
 
 
-    public FluentButtonUIBuilder pianoVolumeButton(Supplier<Observer<Integer>> observerSupplier) {
+    public FluentButtonUIBuilder pianoSoundsSelectButton(
+            Supplier<Observer<String>> observerSupplier,
+            Supplier<List<PianoSound>> effectSupplier,
+            Observer<PianoSound> effectIndexSupplier) {
+
         return fluentUi.buttonFactory()
-                .observeInt(observerSupplier, options ->
-                {
-                    options.setYield(5);
-                    options.setMaximum(100);
-                    options.setMinimum(0);
-                })
-                .setMaterial(Material.BELL)
-                .setPermissions(PluginPermission.VOLUME)
+                .observeList(() -> effectIndexSupplier,
+                        effectSupplier,
+                        options ->
+                        {
+                            options.setOnNameMapping(PianoSound::getName);
+                            options.setOnSelectionChanged(event ->
+                            {
+                                final var value = event.data().getName();
+                                final var observer = observerSupplier.get();
+                                observer.set(value);
+                            });
+                        }
+                )
+                .setMaterial(Material.MUSIC_DISC_WARD)
+           //     .setPermissions(PluginPermission.EFFECTS)
                 .setDescription(options ->
                 {
-                    options.setTitle(lang.get("gui.piano.volume.title"));
+                    options.setTitle("Sounds");
                 })
-                .setLocation(2, 6);
+                .setLocation(3, 6);
     }
+
 
 
 }

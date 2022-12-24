@@ -3,16 +3,15 @@ package jw.piano.spigot.gui;
 import jw.fluent.api.player_context.api.PlayerContext;
 import jw.fluent.plugin.implementation.modules.mediator.FluentMediator;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
-import jw.piano.data.PluginConsts;
-import jw.piano.data.PluginPermission;
-import jw.piano.data.models.PianoData;
-import jw.piano.mediator.piano.create.CreatePiano;
-import jw.piano.repositories.PianoDataRepository;
-import jw.piano.spigot.gameobjects.Piano;
-import jw.piano.services.PianoService;
+import jw.piano.api.data.PluginConsts;
+import jw.piano.api.data.PluginPermission;
+import jw.piano.api.data.models.PianoData;
+import jw.piano.api.piano.Piano;
+import jw.piano.core.mediator.piano.create.CreatePiano;
+import jw.piano.core.repositories.PianoDataRepository;
+import jw.piano.core.services.PianoService;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.spigot.gui.inventory_gui.button.ButtonUI;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.crud_list_ui.CrudListUI;
 import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import jw.piano.spigot.gui.piano.PianoViewGUI;
@@ -56,10 +55,6 @@ public class MenuGUI extends CrudListUI<PianoData> {
         hideEditButton();
         getButtonInsert().setPermissions(PluginPermission.CREATE);
         getButtonDelete().setPermissions(PluginPermission.REMOVE);
-        addSearchStrategy("By piano name", event ->
-        {
-            return event.data().getName().contains(event.searchKey());
-        });
         getFluentUI()
                 .buttonBuilder()
                 .setMaterial(Material.CAMPFIRE)
@@ -98,12 +93,13 @@ public class MenuGUI extends CrudListUI<PianoData> {
 
         setContentButtons(pianoDataRepository.findAll(), (data, button) ->
         {
-            button.setTitlePrimary(data.getName());
-            if (data.getSkinId() == 0) {
+          /*  button.setTitlePrimary(data.getName());
+            if (data.getSkinName() == 0) {
                 button.setMaterial(Material.JUKEBOX);
             } else {
                 button.setCustomMaterial(PluginConsts.MATERIAL, data.getSkinId());
-            }
+            }*/
+            button.setMaterial(Material.JUKEBOX);
             button.setDataContext(data);
         });
 
@@ -134,7 +130,7 @@ public class MenuGUI extends CrudListUI<PianoData> {
                 refreshContent();
                 return;
             }
-            openPianoView(player, result.get());
+            openPianoGui(player, result.get());
         });
 
         onListOpen(player ->
@@ -143,7 +139,8 @@ public class MenuGUI extends CrudListUI<PianoData> {
         });
     }
 
-    public void openPianoView(Player player, Piano piano) {
+    public void openPianoGui(Player player, Piano piano)
+    {
         pianoViewGUI.open(player, piano);
     }
 }

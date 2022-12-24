@@ -1,9 +1,9 @@
 package jw.piano.midi;
 
-import jw.piano.data.midi.ChangeTempoEvent;
-import jw.piano.data.midi.MidiCraftEvent;
-import jw.piano.data.midi.MidiRawData;
-import jw.piano.services.MidiReaderService;
+import jw.piano.api.data.midi.reader.ChangeTempoEvent;
+import jw.piano.api.data.midi.reader.MidiCraftEvent;
+import jw.piano.api.data.midi.reader.MidiRawData;
+import jw.piano.core.services.MidiReaderService;
 import org.junit.Test;
 
 public class MidiReaderTest {

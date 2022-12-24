@@ -1,7 +1,8 @@
 package jw.piano.spigot.listeners;
 
-import jw.piano.spigot.gameobjects.Piano;
-import jw.piano.services.PianoService;
+import jw.piano.api.data.events.PianoInteractEvent;
+import jw.piano.api.piano.Piano;
+import jw.piano.core.services.PianoService;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import jw.fluent.api.spigot.events.EventBase;
@@ -33,45 +34,40 @@ public class PlayerInteractionListener extends EventBase {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteractEvent(PlayerInteractEvent event) {
-        if(isPluginDisabled())
-        {
+        if (isPluginDisabled()) {
             return;
         }
         final var player = event.getPlayer();
         if (!pianoUsers.containsKey(player)) {
             var pianoOptional = pianoService.getNearestPiano(player.getLocation());
-            if(pianoOptional.isEmpty())  //there is no piano in player the nearest location;
+            if (pianoOptional.isEmpty())  //there is no piano in player the nearest location;
             {
                 return;
             }
             pianoUsers.put(player, pianoOptional.get());
         }
-
-
-        pianoUsers.get(player).handlePlayerInteraction(event);
+        final var result = pianoUsers.get(player).triggerPlayerClick(new PianoInteractEvent(event));
+        event.setCancelled(result);
     }
 
 
     @EventHandler
     public void onChangeSlotEvent(PlayerSwapHandItemsEvent event) {
-        if(isPluginDisabled())
-        {
+        if (isPluginDisabled()) {
             return;
         }
         final var piano = pianoUsers.get(event.getPlayer());
-        if(piano == null)
+        if (piano == null)
             return;
 
-        piano.handlePlayerPedalPress();
-        event.setCancelled(true);
+        var result = piano.getPedals().triggerSustainPedal();
+        event.setCancelled(result);
     }
 
 
     @EventHandler
-    public void playerQuitEvent(PlayerQuitEvent event)
-    {
-        if(isPluginDisabled())
-        {
+    public void playerQuitEvent(PlayerQuitEvent event) {
+        if (isPluginDisabled()) {
             return;
         }
         pianoUsers.remove(event.getPlayer());
@@ -87,21 +83,17 @@ public class PlayerInteractionListener extends EventBase {
         checkPlayerToPianoDistanceTask.stop();
     }
 
-    private SimpleTaskTimer checkDistanceTask()
-    {
+    private SimpleTaskTimer checkDistanceTask() {
         var playersToRemove = new ArrayList<>();
-        return new SimpleTaskTimer(5,(iteration, task) ->
+        return new SimpleTaskTimer(5, (iteration, task) ->
         {
             playersToRemove.clear();
-            for(var pianoPlayer : pianoUsers.entrySet())
-            {
-                if(!pianoPlayer.getValue().isLocationInPianoRage(pianoPlayer.getKey().getLocation()))
-                {
+            for (var pianoPlayer : pianoUsers.entrySet()) {
+                if (!pianoPlayer.getValue().isLocationAtPianoRange(pianoPlayer.getKey().getLocation())) {
                     playersToRemove.add(pianoPlayer.getKey());
                 }
             }
-            for(var toRemove:playersToRemove)
-            {
+            for (var toRemove : playersToRemove) {
                 pianoUsers.remove(toRemove);
             }
         });

@@ -3,9 +3,9 @@ package jw.piano.spigot.listeners;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import jw.fluent.api.spigot.events.EventBase;
 import jw.fluent.plugin.implementation.FluentApi;
-import jw.piano.data.PluginConsts;
-import jw.piano.repositories.PianoDataRepository;
-import jw.piano.services.PianoService;
+import jw.piano.api.data.PluginConsts;
+import jw.piano.core.repositories.PianoDataRepository;
+import jw.piano.core.services.PianoService;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.server.PluginDisableEvent;
@@ -27,23 +27,16 @@ public class PianoInitializeListener extends EventBase {
     @EventHandler
     public void onServerLoad(ServerLoadEvent event) {
         for (var pianoData : pianoDataRepository.findAll()) {
-            pianoService.initialize(pianoData);
+            pianoService.create(pianoData);
         }
 
         FluentApi.tasks().taskTimer(20, (iteration, task) ->
                 {
-                   pianoService.clear();
+                  // pianoService.clear();
                 })
                 .startAfterTicks(20 * 5)
                 .stopAfterIterations(1)
                 .run();
-    }
-
-    @Override
-    public void onPluginStop(PluginDisableEvent event) {
-        for (var piano : pianoService.findAll()) {
-            piano.destroy();
-        }
     }
 
     public static void removeOldArmorstands(Location location, String guid) {

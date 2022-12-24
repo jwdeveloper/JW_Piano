@@ -3,32 +3,21 @@ package jw.piano.spigot.gui.bench;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
+import jw.fluent.api.desing_patterns.observer.implementation.Observer;
 import jw.fluent.api.desing_patterns.observer.implementation.ObserverBag;
 import jw.fluent.api.player_context.api.PlayerContext;
 import jw.fluent.api.spigot.gui.fluent_ui.FluentChestUI;
-import jw.fluent.api.spigot.gui.inventory_gui.button.ButtonUI;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.chest_ui.ChestUI;
-import jw.fluent.api.utilites.java.StringUtils;
-import jw.fluent.api.utilites.messages.Emoticons;
 import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
-import jw.piano.data.PluginPermission;
-import jw.piano.data.dto.BenchMoveDto;
-import jw.piano.data.enums.MoveGameObjectAxis;
-import jw.piano.services.BenchMoveService;
-import jw.piano.spigot.gameobjects.Piano;
-import jw.piano.spigot.gameobjects.PianoDataObserver;
+import jw.piano.api.data.PluginPermission;
+import jw.piano.api.data.dto.BenchMove;
+import jw.piano.api.data.enums.AxisMove;
+import jw.piano.api.piano.Piano;
+import jw.piano.api.observers.PianoObserver;
 import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
-import org.bukkit.block.banner.Pattern;
-import org.bukkit.block.banner.PatternType;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 
@@ -36,23 +25,23 @@ import java.util.Arrays;
 @Injection(lifeTime = LifeTime.SINGLETON)
 public class BenchViewGui extends ChestUI {
     private final FluentTranslator lang;
-    private final BenchMoveService benchMoveService;
     private final FluentChestUI fluentUI;
-    private final ObserverBag<Integer> axisObserver = new ObserverBag<>(0);
+    private final Observer<AxisMove> axisObserver;
+    private AxisMove axisMove;
+    private PianoObserver dataObserver;
     private Piano piano;
-    private PianoDataObserver dataObserver;
 
     @Inject
-    public BenchViewGui(FluentTranslator lang, FluentChestUI chestUI, BenchMoveService benchMoveService) {
+    public BenchViewGui(FluentTranslator lang, FluentChestUI chestUI) {
         super("Bench", 3);
         this.lang = lang;
-        this.benchMoveService = benchMoveService;
         this.fluentUI = chestUI;
+        axisObserver = new Observer<>(this, "axisMove");
     }
 
     public void open(Player player, Piano piano) {
         this.piano = piano;
-        this.dataObserver = piano.getPianoDataObserver();
+        this.dataObserver = piano.getPianoObserver();
         open(player);
     }
 
@@ -74,9 +63,9 @@ public class BenchViewGui extends ChestUI {
 
         setBorderMaterial(Material.LIGHT_BLUE_STAINED_GLASS_PANE);
         setTitlePrimary("Bench settings");
-        var axis = Arrays.stream(MoveGameObjectAxis.values()).toList();
+        var axis = Arrays.stream(AxisMove.values()).toList();
         fluentUI.buttonFactory()
-                .observeList(axisObserver::getObserver, axis, options ->
+                .observeList(() -> axisObserver, () -> axis, options ->
                 {
                     options.setIgnoreRightClick(true);
                     options.setOnNameMapping(input ->
@@ -94,9 +83,9 @@ public class BenchViewGui extends ChestUI {
                     options.setOnLeftClick("Change direction");
                     options.setOnRightClick("Edit position");
                 })
-               .setOnRightClick((player, button) ->
+                .setOnRightClick((player, button) ->
                 {
-                    var current = axis.get(axisObserver.get());
+                    var current = axisObserver.get();
                     onChangeBenchLocation(player, current);
                 })
                 .setMaterial(Material.LEAD)
@@ -111,7 +100,10 @@ public class BenchViewGui extends ChestUI {
                 })
                 .setMaterial(Material.TOTEM_OF_UNDYING)
                 .setPermissions(PluginPermission.DESKTOP_CLIENT)
-                .setOnLeftClick(this::onResetBenchLocation)
+                .setOnLeftClick((player, button) ->
+                {
+                    piano.getBench().reset();
+                })
                 .setLocation(0, 8)
                 .build(this);
 
@@ -120,45 +112,25 @@ public class BenchViewGui extends ChestUI {
                 .build(this);
     }
 
-    private void onResetBenchLocation(Player player, ButtonUI buttonUI) {
+    private void onChangeBenchLocation(Player player, AxisMove moveType) {
+        var benchMove = BenchMove.builder()
+                .axisMove(moveType)
+                .timeout(20 * 60)
+                .player(player)
+                .onAccept(message ->
+                {
+                    open(player, piano);
+                    FluentApi.messages().chat().text(message).send(player);
+                })
+                .onCanceled(message ->
+                {
+                    open(player, piano);
+                    FluentApi.messages().chat().text(message).send(player);
+                }).build();
 
-        var optional = piano.getBench();
-        if (optional.isEmpty()) {
-            return;
-        }
-        var bench = optional.get();
-        var defaultOffset = bench.resetLocation();
-        piano.getPianoData().getBenchSettings().setOffset(defaultOffset);
-    }
-
-    private void onChangeBenchLocation(Player player, MoveGameObjectAxis moveType) {
-        var dto = new BenchMoveDto();
-        dto.setOnAccept(message ->
-        {
-            open(player, piano);
-            FluentApi.messages().chat().text(message).send(player);
-        });
-        dto.setOnCanceled(message ->
-        {
-            open(player, piano);
-            FluentApi.messages().chat().text(message).send(player);
-        });
-        dto.setPiano(piano);
-        dto.setPlayer(player);
-        dto.setMoveType(moveType);
-
-
-        var result = benchMoveService.register(player.getUniqueId(), dto);
-        if (!result) {
-            errorMessage(player);
-            return;
-        }
+        piano.getBench().move(benchMove);
         close();
         sendInfoMessage(player);
-    }
-
-    private void errorMessage(Player player) {
-        FluentApi.messages().chat().error().textSecondary("Both piano and bench must be active (visible)").send(player);
     }
 
     private void sendInfoMessage(Player player) {

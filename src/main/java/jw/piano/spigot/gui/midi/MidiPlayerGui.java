@@ -7,17 +7,16 @@ import jw.fluent.api.desing_patterns.observer.implementation.ObserverBag;
 import jw.fluent.api.player_context.api.PlayerContext;
 import jw.fluent.api.spigot.gui.fluent_ui.FluentChestUI;
 import jw.fluent.api.spigot.gui.inventory_gui.button.ButtonUI;
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverUI;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.crud_list_ui.CrudListUI;
 import jw.fluent.plugin.implementation.modules.mediator.FluentMediator;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
-import jw.midiplayer.midiparser.MidiParser;
-import jw.piano.data.enums.MidiPlayingType;
-import jw.piano.data.models.PianoMidiFile;
-import jw.piano.data.models.PianoMidiSettings;
-import jw.piano.mediator.midi.reader.MidiReader;
-import jw.piano.spigot.gameobjects.Piano;
-import jw.piano.workers.MidiPlayerWorker2;
+import jw.piano.api.midiplayer.midiparser.MidiParser;
+import jw.piano.api.data.enums.MidiPlayingType;
+import jw.piano.api.data.models.midi.PianoMidiFile;
+import jw.piano.api.data.models.midi.MidiPlayerSettings;
+import jw.piano.api.piano.Piano;
+import jw.piano.core.mediator.midi.reader.MidiReader;
+import jw.piano.core.workers.MidiPlayerWorker;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -41,7 +40,7 @@ public class MidiPlayerGui extends CrudListUI<PianoMidiFile> {
 
     private Piano piano;
 
-    private PianoMidiSettings midiSettings;
+    private MidiPlayerSettings midiSettings;
 
     @Inject
     public MidiPlayerGui(FluentTranslator lang,
@@ -57,7 +56,7 @@ public class MidiPlayerGui extends CrudListUI<PianoMidiFile> {
 
     public void open(Player player, Piano piano) {
         this.piano = piano;
-        midiSettings = piano.getPianoData().getPianoMidiSettings();
+        midiSettings = piano.getPianoObserver().getMidiPlayerSettingsObserver().getMidiPlayerSetting();
         open(player);
     }
 
@@ -140,7 +139,7 @@ public class MidiPlayerGui extends CrudListUI<PianoMidiFile> {
                 {
                     var file = new File("D:\\MC\\paper_1.19\\plugins\\JW_Piano\\midi\\Czardas.mid");
                     var reader = MidiParser.loadFile(file);
-                    var plauer = new MidiPlayerWorker2(reader, piano.getPianoModel());
+                    var plauer = new MidiPlayerWorker(reader, piano);
                     player.sendMessage("FILE LOADED STARTED PLAYINGs");
                     plauer.start();
                 })

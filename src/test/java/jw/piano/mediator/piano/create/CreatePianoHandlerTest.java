@@ -3,9 +3,11 @@ package jw.piano.mediator.piano.create;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import jw.fluent.api.utilites.SpigotMock;
-import jw.piano.data.models.PianoData;
-import jw.piano.services.PianoService;
-import jw.piano.spigot.gameobjects.Piano;
+import jw.piano.api.data.models.PianoData;
+import jw.piano.api.piano.Piano;
+import jw.piano.core.mediator.piano.create.CreatePiano;
+import jw.piano.core.mediator.piano.create.CreatePianoHandler;
+import jw.piano.core.services.PianoService;
 import org.junit.Before;
 import org.junit.Test;
 

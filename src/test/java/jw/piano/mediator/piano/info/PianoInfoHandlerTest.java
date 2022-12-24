@@ -2,9 +2,11 @@ package jw.piano.mediator.piano.info;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import jw.fluent.api.utilites.SpigotMock;
-import jw.piano.data.models.PianoData;
-import jw.piano.services.PianoService;
-import jw.piano.spigot.gameobjects.Piano;
+import jw.piano.api.data.models.PianoData;
+import jw.piano.api.piano.Piano;
+import jw.piano.core.mediator.piano.info.PianoInfo;
+import jw.piano.core.mediator.piano.info.PianoInfoHandler;
+import jw.piano.core.services.PianoService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,13 +44,12 @@ public class PianoInfoHandlerTest {
 
         var pianoData = new PianoData();
         pianoData.setUuid(pianoId);
-        pianoData.setSkinId(pianoSkin);
         pianoData.setName(pianoName);
         pianoData.setVolume(pianoVolume);
         pianoData.setLocation(pianoLocation);
 
         var pianoMock = mock(Piano.class);
-        when(pianoMock.getPianoData()).thenReturn(pianoData);
+        when(pianoMock.getPianoObserver().getPianoData()).thenReturn(pianoData);
         when(pianoServiceMock.find(pianoId)).thenReturn(Optional.of(pianoMock));
 
         //Act

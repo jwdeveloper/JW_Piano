@@ -6,8 +6,8 @@ import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent.api.player_context.api.PlayerContext;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.picker_list_ui.PickerUI;
 import jw.fluent.plugin.implementation.modules.mediator.FluentMediator;
-import jw.piano.data.models.PianoMidiFile;
-import jw.piano.mediator.midi.files.MidiFiles;
+import jw.piano.api.data.models.midi.PianoMidiFile;
+import jw.piano.core.mediator.midi.files.MidiFiles;
 import org.bukkit.Material;
 
 import java.util.ArrayList;

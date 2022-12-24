@@ -1,7 +1,8 @@
 package jw.piano.repositories;
 
 import jw.fluent.api.utilites.SpigotMock;
-import jw.piano.data.models.PianoData;
+import jw.piano.api.data.models.PianoData;
+import jw.piano.core.repositories.PianoDataRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
