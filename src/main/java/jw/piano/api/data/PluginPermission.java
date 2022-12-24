@@ -37,6 +37,10 @@ public class PluginPermission
     public final static String ACTIVE = PIANO +".active";
 
     @PermissionGroup(group = "plugin")
+    @PermissionProperty(description = "player can change piano sound")
+    public final static String SOUND = PIANO +".sound";
+
+    @PermissionGroup(group = "plugin")
     @PermissionProperty(description = "player set piano particles in GUI")
     public final static String EFFECTS = PIANO +".effects";
 
@@ -45,8 +49,12 @@ public class PluginPermission
     public final static String PEDAl = PIANO +".pedal";
 
     @PermissionGroup(group = "plugin")
-    @PermissionProperty(description = "player enable/disable piano bench in GUI")
+    @PermissionProperty(description = "open bench GUI")
     public final static String BENCH = PIANO +".bench";
+
+    @PermissionGroup(group = "plugin")
+    @PermissionProperty(description = "change visibility of bench")
+    public final static String BENCH_ACTIVE = BENCH +".active";
 
     @PermissionGroup(group = "plugin")
     @PermissionProperty(description = "player teleport to piano in GUI")
@@ -60,7 +68,27 @@ public class PluginPermission
     @PermissionProperty(description = "player can use desktop-client")
     public final static String DESKTOP_CLIENT = PIANO +".desktop-client";
 
+
+
     @PermissionGroup(group = "plugin")
-    @PermissionProperty(description = "player can disable or enable gui hitbox")
-    public final static String SHOW_GUI_HITBOX = PIANO +".show-gui-hitbox";
+    @PermissionProperty(description = "opens midi player in gui",group = "midi-player",isParent = true)
+    public final static String MIDI_PLAYER = "midi-player";
+
+
+    @PermissionGroup(group = "midi-player")
+    @PermissionProperty(description = "can play/stop songs ")
+    public final static String PLAY =  MIDI_PLAYER+".play";
+
+    @PermissionGroup(group = "midi-player")
+    @PermissionProperty(description = "can set current song, load song, delete song, skip")
+    public final static String CHANGE_SONG =  MIDI_PLAYER+".song";
+
+    @PermissionGroup(group = "midi-player")
+    @PermissionProperty(description = "change midi player type")
+    public final static String CHANGE_TYPE =  MIDI_PLAYER+".type";
+
+    @PermissionGroup(group = "midi-player")
+    @PermissionProperty(description = "change speed of midi song")
+    public final static String CHANGE_SPEED =  MIDI_PLAYER+".speed";
+
 }

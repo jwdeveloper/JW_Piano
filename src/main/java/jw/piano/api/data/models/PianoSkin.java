@@ -1,31 +1,37 @@
 package jw.piano.api.data.models;
 
-import jw.fluent.api.files.implementation.yml.api.YmlMapping;
+
 import jw.piano.api.data.PluginConsts;
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Data
-@AllArgsConstructor
-public class PianoSkin implements YmlMapping
+public class PianoSkin
 {
     private int customModelId;
-
     private String name;
-
-    //ignore
     private ItemStack itemStack;
 
-    public PianoSkin(int modelid, String  name)
+    public PianoSkin(int customModelId, String  name)
     {
-       this.customModelId = modelid;
+       this.customModelId = customModelId;
        this.name = name;
     }
+    public PianoSkin(int customModelId, String  name, ItemStack itemStack)
+    {
+        this.customModelId = customModelId;
+        this.name = name;
+        this.itemStack = itemStack;
 
+        var meta = itemStack.getItemMeta();
+        if(meta != null)
+        {
+            meta.setCustomModelData(customModelId);
+            itemStack.setItemMeta(meta);
+        }
+
+    }
 
     public ItemStack getItemStack()
     {
@@ -34,26 +40,10 @@ public class PianoSkin implements YmlMapping
             return itemStack.clone();
         }
 
-        itemStack =  new ItemStack(PluginConsts.SKINS_MATERIAL,1);
+        itemStack =  new ItemStack(PluginConsts.MATERIAL,1);
         var meta = itemStack.getItemMeta();
         meta.setCustomModelData(customModelId);
         itemStack.setItemMeta(meta);
         return itemStack;
-    }
-
-    @Override
-    public Map<String, Object> serialize()
-    {
-        var map = new HashMap<String ,Object>();
-        map.put("name",name);
-        map.put("custom-model-id",customModelId);
-        return map;
-    }
-
-    @Override
-    public Object deserialize(Map<String, Object> props)
-    {
-
-        return null;
     }
 }
