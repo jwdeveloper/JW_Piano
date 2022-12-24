@@ -66,7 +66,7 @@ public class MidiFilesPickerGui extends PickerUI<PianoMidiFile>
         for(var file : files)
         {
             var index = random.nextInt(0, materials.length-1);
-            pianoMidiFiles.add(new PianoMidiFile(file.getPath(),file.getName(),materials[index],0,false));
+            pianoMidiFiles.add(new PianoMidiFile(file.getPath(),file.getName(),Material.MUSIC_DISC_CAT,0,false));
         }
         return pianoMidiFiles;
     }

@@ -16,6 +16,6 @@ public class PianoConfig {
              Piano became interactive when player distance to piano is lower or equal that `piano-range`
              """
     )
-    private float pianoRange = 3;
+    private double pianoRange = 3;
 
 }

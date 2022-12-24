@@ -3,6 +3,7 @@ version: ${project.version}
 main: jw.piano.spigot.Main
 api-version: 1.17
 permissions:
+
   # plugin
   piano:
     description: Default permission for plugin
@@ -15,13 +16,15 @@ permissions:
       - piano.rename
       - piano.skin
       - piano.active
+      - piano.sound
       - piano.effects
       - piano.pedal
       - piano.bench
+      - piano.bench.active
       - piano.teleport
       - piano.detect-key
       - piano.desktop-client
-      - piano.show-gui-hitbox
+      - midi-player
 
   piano.create:
     description: player can create piano
@@ -41,6 +44,9 @@ permissions:
   piano.active:
     description: player change piano state in GUI
 
+  piano.sound:
+    description: player can change piano sound
+
   piano.effects:
     description: player set piano particles in GUI
 
@@ -48,7 +54,10 @@ permissions:
     description: player enable/disable piano pedal in GUI
 
   piano.bench:
-    description: player enable/disable piano bench in GUI
+    description: open bench GUI
+
+  piano.bench.active:
+    description: change visibility of bench
 
   piano.teleport:
     description: player teleport to piano in GUI
@@ -58,9 +67,6 @@ permissions:
 
   piano.desktop-client:
     description: player can use desktop-client
-
-  piano.show-gui-hitbox:
-    description: player can disable or enable gui hitbox
 
   # commands
   commands:
@@ -84,3 +90,23 @@ permissions:
   # gui
   gui:
     description: Default permission for gui
+
+  midi-player:
+    description: opens midi player in gui
+    children:
+      - midi-player.play
+      - midi-player.song
+      - midi-player.type
+      - midi-player.speed
+
+  midi-player.play:
+    description: can play/stop songs
+
+  midi-player.song:
+    description: can set current song, load song, delete song, skip
+
+  midi-player.type:
+    description: change midi player type
+
+  midi-player.speed:
+    description: change speed of midi song
