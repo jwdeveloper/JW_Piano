@@ -24,19 +24,19 @@ Overall, this plugin would be a fun and unique addition to Minecraft, providing 
 ### Resourcepack
  -  When you have some problems with resourcepack download it directly
 
-### Desktop app configuration, `config.yml` > `plugin.websocket.custom-id`
+### Desktop app configuration, `config.yml` > `plugin.websocket.server-ip`
  -  Make sure port you are trying to use is open
- -  When you've got problems with connection try to change `plugin.websocket.custom-id` or  `plugin.websocket.port`
+ -  When you've got problems with connection try to change `plugin.websocket.server-ip` or  `plugin.websocket.port`
  -  Check if you need to create new port in the server hosting panel and then set in to `plugin.websocket.port`
- -  When your server use proxy use Proxy IP to `plugin.websocket.custom-id`
+ -  When your server use proxy use Proxy IP to `plugin.websocket.server-ip`
  -  When you server IP has port ignore port. Example: 
 
 Wrong: `craftplayer.com:22225`
 
 Correct: `craftplayer.com`
 
- -  When you are running server locally set value to `localhost` to `plugin.websocket.custom-id`
- -  When above solutions does not help set IP that you use in Minecraft server lists to `plugin.websocket.custom-id`
+ -  When you are running server locally set value to `localhost` to `plugin.websocket.server-ip`
+ -  When above solutions does not help set IP that you use in Minecraft server lists to `plugin.websocket.server-ip`
 </details>
 
 
@@ -90,23 +90,84 @@ Correct: `craftplayer.com`
 # ! When default IP not works try use IP that you are using in minecraft server list
 #
 #
+# plugin.websocket.server-ip
+#    Set own IP for websocket, by default plugin use IP of your server
+# ! When you are using proxy set here proxy IP
+# ! When you are running plugin locally on your PC, set 'localhost'
+# ! When default IP not works try use IP that you are using in minecraft server list
+#
+#
+# plugin.websocket.server-ip
+#    Set own IP for websocket, by default plugin use IP of your server
+# ! When you are using proxy set here proxy IP
+# ! When you are running plugin locally on your PC, set 'localhost'
+# ! When default IP not works try use IP that you are using in minecraft server list
+#
+#
+# <PluginConfig>
+# 
+# piano.models-limit
+#  Limit of pianos that could be spawn on the server
+# 
+# piano.piano-range
+#  Piano became interactive when player distance to piano is lower or equal that `piano-range`
+# 
+# 
+# skins.name
+#  test
+# 
+# skins.custom-model-id
+#  test
+# 
+# skins.material
+#  test
+# 
+# sounds.namespace
+#  Name of the folder that sounds are save in resourcepack
+# 
+# 
+# sounds.sound-category
+#  Define sound category from minecraft settings that sound will play in.
+#  Allowed categories [AMBIENT, BLOCKS, HOSTILE, MASTER, MUSIC, NEUTRAL, RECORDS, VOICE, WEATHER]
+# 
+# </PluginConfig>
 
 plugin:
-  version: 1.1.4
+  version: 1.2.0
   resourcepack:
     url: https://download.mc-packs.net/pack/6fd6764e874d973fecd2d6debce416671399782b.zip
     load-on-join: false
   websocket:
     run: true
     port: 443
-    custom-id: ''
+    server-ip: 5.173.198.132
   saving-frequency: 5
   language: en
-piano-config:
+piano:
   models-limit: 10
-  minDistanceToPiano: 3.0
-  maxDistanceFromPiano: 3.0
-  maxDistanceFromKeys: 2.0
+  piano-range: 3.0
+skins:
+  value-1:
+    name: none
+    custom-model-id: 0
+    material: AIR
+  value-2:
+    name: upright piano
+    custom-model-id: 108
+    material: STICK
+  value-3:
+    name: grand piano
+    custom-model-id: 109
+    material: STICK
+  value-4:
+    name: electric piano
+    custom-model-id: 110
+    material: STICK
+sounds:
+  value-1:
+    name: Default
+    namespace: minecraft
+    sound-category: VOICE
 
 ```
 
@@ -119,20 +180,14 @@ commands:
 # /piano
   piano: 
     children: 
-      - update
       - resourcepack
       - lang
+      - Create
+      - update
     permissions: 
       - piano.commands.piano
     description: opens GUI where you can Create/Edit/Delete pianos
     usage: /piano
-# /piano update
-  update: 
-    permissions: 
-      - piano.commands.update
-    description: download plugin latest version, can be trigger both by player or console
-    usage: /piano update
-
 # /piano resourcepack
   resourcepack: 
     description: downloads plugin resourcepack
@@ -152,6 +207,16 @@ commands:
               - pl
     description: Changes plugin languages, changes will be applied after server reload. Change be use both be player or console
     usage: /piano lang <language>
+
+# Create
+  Create: 
+
+# /piano update
+  update: 
+    permissions: 
+      - piano.commands.update
+    description: download plugin latest version, can be trigger both by player or console
+    usage: /piano update
 
 
 
@@ -174,13 +239,15 @@ permissions:
       - piano.rename
       - piano.skin
       - piano.active
+      - piano.sound
       - piano.effects
       - piano.pedal
       - piano.bench
+      - piano.bench.active
       - piano.teleport
       - piano.detect-key
       - piano.desktop-client
-      - piano.show-gui-hitbox
+      - midi-player
 
   piano.create: 
     description: player can create piano
@@ -200,6 +267,9 @@ permissions:
   piano.active: 
     description: player change piano state in GUI
 
+  piano.sound: 
+    description: player can change piano sound
+
   piano.effects: 
     description: player set piano particles in GUI
 
@@ -207,7 +277,10 @@ permissions:
     description: player enable/disable piano pedal in GUI
 
   piano.bench: 
-    description: player enable/disable piano bench in GUI
+    description: open bench GUI
+
+  piano.bench.active: 
+    description: change visibility of bench
 
   piano.teleport: 
     description: player teleport to piano in GUI
@@ -217,9 +290,6 @@ permissions:
 
   piano.desktop-client: 
     description: player can use desktop-client
-
-  piano.show-gui-hitbox: 
-    description: player can disable or enable gui hitbox
 
 # commands
   commands: 
@@ -243,6 +313,26 @@ permissions:
 # gui
   gui: 
     description: Default permission for gui
+
+  midi-player: 
+    description: opens midi player in gui
+    children: 
+      - midi-player.play
+      - midi-player.song
+      - midi-player.type
+      - midi-player.speed
+
+  midi-player.play: 
+    description: can play/stop songs 
+
+  midi-player.song: 
+    description: can set current song, load song, delete song, skip
+
+  midi-player.type: 
+    description: change midi player type
+
+  midi-player.speed: 
+    description: change speed of midi song
 
 
 ```
