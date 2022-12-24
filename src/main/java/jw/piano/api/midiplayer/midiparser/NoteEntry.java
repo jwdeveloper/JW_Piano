@@ -40,7 +40,7 @@
  */
 package jw.piano.api.midiplayer.midiparser;
 
-import jw.piano.api.midiplayer.configuration.ConfigProvider;
+
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -68,22 +68,6 @@ public class NoteEntry {
         velocity = volume;
     }
 
-    public void play(Player player, Location location) {
-        if (m_instrumentPatch == null
-                || velocity == 0
-                || player == null || !player.isOnline()) {
-            return;
-        }
-
-        if (location == null) {
-            location = player.getLocation();
-        }
-
-        if (m_frq < 0 || m_frq > 2) {
-            return;
-        }
-        player.playSound(location, m_instrumentPatch, ConfigProvider.getSoundCategory(), velocity, m_frq);
-    }
 
     @Override
     public int hashCode() {

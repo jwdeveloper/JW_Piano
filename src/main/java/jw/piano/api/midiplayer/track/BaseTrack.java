@@ -40,7 +40,6 @@
  */
 package jw.piano.api.midiplayer.track;
 
-import jw.piano.api.midiplayer.configuration.ConfigProvider;
 import jw.piano.api.midiplayer.midiparser.NoteFrame;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -56,7 +55,8 @@ public abstract class BaseTrack {
     /**
      * Legth of 1/2 tick in miliseconds
      */
-    private final static int HALF_TICK = 1000 / ConfigProvider.TICKS_PER_SECOND / 2;
+    private static int tick = 20;
+    private final static int HALF_TICK = 1000 / tick / 2;
 
     /**
      * Number of miliseconds to wait before performing loop
@@ -138,31 +138,7 @@ public abstract class BaseTrack {
      */
     protected Location getLocation(Player player)  { return null; }
 
-    public void play(long delta) {
-        m_wait -= delta;
 
-        final Collection<? extends Player> players = getPlayers();
-        final Location location = m_perPlayerLocation ? null : getLocation();
-
-        while (m_wait <= HALF_TICK && m_nextNote != null) {
-            for (Player p : players) {
-                m_nextNote.play(p, m_perPlayerLocation ? getLocation(p) : location);
-            }
-
-            m_pos++;
-            if (m_pos < m_notes.length) {
-                m_nextNote = m_notes[m_pos];
-                m_wait += m_nextNote.getWait();
-            } else if (m_isLooped) {
-                m_pos %= m_notes.length;
-                m_nextNote = m_notes[m_pos];
-
-                m_wait += LOOP_WAIT;
-            } else {
-                m_nextNote = null;
-            }
-        }
-    }
 
     /**
      * Is track finished
