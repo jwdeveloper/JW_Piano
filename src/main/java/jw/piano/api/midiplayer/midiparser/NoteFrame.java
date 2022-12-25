@@ -88,16 +88,4 @@ public class NoteFrame {
         }
     }
 
-    public void play(Player player, Location location) {
-        if (player == null || !player.isOnline()) {
-            return;
-        }
-
-        if (location == null) {
-            location = player.getLocation();
-        }
-        for (NoteEntry note : notes) {
-            note.play(player, location);
-        }
-    }
 }
