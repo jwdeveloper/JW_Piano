@@ -9,6 +9,8 @@ import jw.piano.api.piano.common.*;
 import jw.piano.api.piano.keyboard.Keyboard;
 import jw.piano.api.piano.pedals.PedalGroup;
 import jw.piano.api.piano.token.TokenGenerator;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -29,6 +31,8 @@ public interface Piano extends Teleportable, Interactable, Visiable, GuiViewer, 
     Keyboard getKeyboard();
 
     MidiPlayer getMidiPlayer();
+
+    void setColor(Color color);
 
     PianoObserver getPianoObserver();
 

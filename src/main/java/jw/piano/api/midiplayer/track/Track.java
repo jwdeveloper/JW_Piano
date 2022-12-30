@@ -40,35 +40,20 @@
  */
 package jw.piano.api.midiplayer.track;
 
-import jw.piano.api.midiplayer.midiparser.NoteFrame;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
+import jw.piano.api.midiplayer.NoteFrame;
 
 
-import java.util.Collection;
+public abstract class Track {
 
-/**
- * Global music track - music played by this track type
- * is heard all over the server
- * @author SBPrime
- */
-public class GlobalTrack extends BaseTrack {
-    /**
-     * The plugin
-     */
-    private final JavaPlugin m_plugin;
-    
-    @Override
-    protected Collection<? extends Player> getPlayers() {
-        return m_plugin.getServer().getOnlinePlayers();
+
+    private final NoteFrame[] frames;
+
+    protected Track(NoteFrame[] notes) {
+        frames = notes;
     }
 
-    public GlobalTrack(JavaPlugin plugin, NoteFrame[] notes) {
-        this(plugin, notes, false);
-    }
-    
-    public GlobalTrack(JavaPlugin plugin, NoteFrame[] notes, boolean loop) {
-        super(notes, loop, true);
-        m_plugin = plugin;
-    }
+
+
+
+
 }

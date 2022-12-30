@@ -6,8 +6,9 @@ import org.bukkit.entity.Player;
 
 import javax.security.auth.Refreshable;
 
-public interface Bench extends Teleportable, Visiable, Interactable, GuiViewer, Resetable{
+public interface Bench extends Teleportable, Visiable, Interactable, GuiViewer, Resetable {
     boolean sitPlayer(Player player);
+
     void move(BenchMove benchMove);
 
     void refresh();

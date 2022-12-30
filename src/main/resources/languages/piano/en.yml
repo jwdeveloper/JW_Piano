@@ -1,3 +1,6 @@
+general:
+ info: Piano info
+
 gui:
   base:
     insert:
@@ -6,8 +9,8 @@ gui:
       desc: Remove a piano
       error: Unable to remove piano
 
-  piano-menu:
-    title: Piano menu
+  piano-list:
+    title: Piano list
     resourcepack:
       title: Get resourcepack
       desc: Click here to get current version of resourcepack
@@ -29,31 +32,102 @@ gui:
     rename:
       title: Rename
       desc: Set custom piano's name
+      message-1: Write new piano's name on the chat
     token:
       title: Click to copy token
       desc: Connect your real piano or play MIDI files with client app
       message-1: Copy and paste token to Piano client app
       message-2: Value will be copied after click
       click-to-copy: Click to copy token
+      error: Can't generate link, unknown error
     piano-active:
       title: Piano active
     pedal-active:
-      title: Active pedal on 'f' press
+      title: Push pedal on 'f' press
     bench-active:
       title: Bench active
-
     desktop-client-active:
       title: Desktop app access
       disabled: Desktop app is disabled for this piano
-
     detect-key-active:
       title: Pressing piano keys active
+    sounds:
+      title: Sounds
+    piano-options:
+      title: Piano options
+    clear:
+      title: Clear
+      message-1: Might be helpful when server has been suddenly shut down
+      message-2: and old piano model has not been properly removed.
+      message-3: Try also use /reload to clear all pianos
+      message-clear: Piano has refreshed
+    midi-player:
+      title: Midi player
+      desc: Play Midi files on this piano. Files should be located in plugins/JW_Piano/midi
+    bench:
+     title: Bench
 
-    show-gui-hitbox:
-      title: Show GUI hit box
+  midi-player:
+   title: MIDI player
+   speed:
+     title: Speed
+     desc: Percentage speed, default 100%
+   state:
+     title: Player state
+     stop: Stopped
+     play: Playing
+   song:
+     title: Midi song slot
+     click:
+       left: Select Midi
+       right: Remove Midi
+       shift: Set song as current
+   next:
+     title: Next song
+   previous:
+     title: Previous song
+   mode:
+     title: Mode
+     random:
+       title: Random
+       desc: Songs will be played in random order
+     loop:
+       title: Loop
+       desc: Current song will be played forever in loop
+     in-order:
+       title: In order
+       desc: Songs will be played one after another
+
+  bench:
+    title: Bench settings
+    reset:
+      title: Reset position
+      desc: Teleport bench to its default location
+    move:
+      title: Move
+      axis:
+       x: right / left
+       y: up / down
+       z: forward / backward
+      desc:
+       message-1: Default location might not fit to you.
+       message-2: But it can edit by mouse scrolling
+      click:
+       shift: Edit position
 
 skins:
   none: none
   grand-piano: grand piano
   upright-piano: upright piano
   electric-piano: electric piano
+
+piano:
+  create:
+    error-too-much: Can't add more pianos on the server
+    error: Unable to add new piano
+
+commands:
+  piano:
+    desc: opens GUI where you can Create/Edit/Delete pianos
+
+

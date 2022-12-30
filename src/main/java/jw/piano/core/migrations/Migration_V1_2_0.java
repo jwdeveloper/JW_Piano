@@ -8,7 +8,7 @@ import java.io.IOException;
 public class Migration_V1_2_0 implements ConfigMigration {
     @Override
     public String version() {
-        return "1.1.5";
+        return "1.2.0";
     }
 
     @Override

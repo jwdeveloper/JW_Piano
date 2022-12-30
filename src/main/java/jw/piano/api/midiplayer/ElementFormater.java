@@ -38,54 +38,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package jw.piano.api.midiplayer.midiparser;
 
-import lombok.Getter;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
+package jw.piano.api.midiplayer;
 
-import java.util.Set;
+import javax.sound.midi.Sequence;
 
-/**
- * Collection of MIDI notes played on the same time
- * @author SBPrime
- */
-public class NoteFrame {
+public class ElementFormater {
 
-    /**
-     * The frame wait in milliseconds
-     */
-    private final long m_wait;
-
-    /**
-     * Get the wait delay in milliseconds
-     * @return The wait delay
-     */
-    public long getWait() {
-        return m_wait;
-    }
-
-    /**
-     * The notes
-     */
-    @Getter
-    private final NoteEntry[] notes;
-
-    public NoteFrame(long delta, Set<TrackEntry> notes) {
-        m_wait = delta;
-
-        if (notes == null) {
-            this.notes = new NoteEntry[0];
-        } else {
-            final int cnt = notes.size();
-            this.notes = new NoteEntry[cnt];
-
-            int i = 0;
-            for (TrackEntry entry : notes) {
-                this.notes[i] = entry.getNote();
-                i++;
-            }
+    public static String getDivisionName(float divType) {
+        if (divType == Sequence.PPQ) {
+            return "PPQ";
+        } else if (divType == Sequence.SMPTE_24) {
+            return "SMPTE, 24 frames per second";
+        } else if (divType == Sequence.SMPTE_25) {
+            return "SMPTE, 25 frames per second";
+        } else if (divType == Sequence.SMPTE_30DROP) {
+            return "SMPTE, 29.97 frames per second";
+        } else if (divType == Sequence.SMPTE_30) {
+            return "SMPTE, 30 frames per second";
         }
-    }
 
+        return String.format("(%.2f)", divType);
+    }
+    
 }

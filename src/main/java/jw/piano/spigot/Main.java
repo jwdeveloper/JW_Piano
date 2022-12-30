@@ -4,13 +4,18 @@ import jw.fluent.plugin.api.FluentApiSpigotBuilder;
 import jw.fluent.plugin.implementation.FluentApiSpigot;
 import jw.fluent.plugin.implementation.FluentPlugin;
 import jw.piano.api.data.PluginConsts;
-import jw.piano.api.data.PluginPermission;
+import jw.piano.api.data.PluginPermissions;
 import jw.piano.spigot.extentions.CommandsExtension;
 import jw.piano.spigot.extentions.ConfigLoaderExtension;
-import org.bukkit.entity.Player;
 
 public final class Main extends FluentPlugin {
 
+    //TODO
+    /*
+      - bench move
+      - midi player, pedal
+      - F press pedal
+     */
     @Override
     public void onConfiguration(FluentApiSpigotBuilder builder) {
         builder.container()
@@ -28,14 +33,14 @@ public final class Main extends FluentPlugin {
                     options.addSection(new PluginDocumentation());
                    // options.setUseSpigotDocumentation(true);
                    // options.setUseGithubDocumentation(true);
-                    options.setPermissionModel(PluginPermission.class);
+                    options.setPermissionTemplate(PermissionsTemplate.class);
                 })
                 .addWebSocket()
                 .addPlayerContext();
 
 
         builder.permissions()
-                .setBasePermissionName(PluginPermission.PIANO);
+                .setBasePermissionName(PluginPermissions.BASE);
 
         builder.useExtension(new ConfigLoaderExtension());
         builder.useExtension(new CommandsExtension());

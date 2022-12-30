@@ -3,6 +3,7 @@ package jw.piano.core.services;
 import jw.fluent.plugin.api.config.FluentConfig;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
+import jw.piano.api.data.PluginTranslations;
 import jw.piano.api.data.config.PluginConfig;
 import jw.piano.api.data.config.SkinConfig;
 import jw.piano.api.data.models.PianoSkin;
@@ -18,7 +19,6 @@ import java.util.List;
 public class SkinLoaderService {
     private final List<PianoSkin> skins;
     private final FluentTranslator lang;
-
     private final FluentConfig config;
     private final PluginConfig pluginConfig;
 
@@ -60,8 +60,6 @@ public class SkinLoaderService {
             var materialName = configSkin.getMaterial().toUpperCase();
             var material = Material.valueOf(materialName);
             var itemStack = new ItemStack(material);
-
-
             var pianoSkin = new PianoSkin(configSkin.getCustomModelId(), configSkin.getName(),itemStack);
             skins.add(pianoSkin);
         }
@@ -69,15 +67,15 @@ public class SkinLoaderService {
 
     public PianoSkin grandPianoSkin()
     {
-        return new PianoSkin(109, lang.get("skins.grand-piano"));
+        return new PianoSkin(109, lang.get(PluginTranslations.SKINS.GRAND_PIANO));
     }
 
     private List<PianoSkin> createDefaultSkins() {
         var result = new ArrayList<PianoSkin>();
-        result.add(new PianoSkin(0, lang.get("skins.none"), new ItemStack(Material.AIR)));
-        result.add(new PianoSkin(108, lang.get("skins.upright-piano")));
+        result.add(new PianoSkin(0, lang.get(PluginTranslations.SKINS.NONE), new ItemStack(Material.AIR)));
+        result.add(new PianoSkin(108, lang.get(PluginTranslations.SKINS.UPRIGHT_PIANO)));
         result.add(grandPianoSkin());
-        result.add(new PianoSkin(110, lang.get("skins.electric-piano")));
+        result.add(new PianoSkin(110, lang.get(PluginTranslations.SKINS.ELECTRIC_PIANO)));
         return result;
     }
 

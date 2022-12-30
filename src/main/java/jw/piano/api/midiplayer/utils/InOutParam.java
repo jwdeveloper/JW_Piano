@@ -38,36 +38,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package jw.piano.api.midiplayer.utils;
 
-package jw.piano.api.midiplayer.midiparser;
 
-import javax.sound.midi.Sequence;
+public class InOutParam<T> {
 
-/**
- *
- * @author SBPrime
- */
-public class ElementFormater {
-    /**
-     * Convert division type to name
-     *
-     * @param divType The type of the division
-     * @return The name of the division
-     */
-    public static String getDivisionName(float divType) {
-        if (divType == Sequence.PPQ) {
-            return "PPQ";
-        } else if (divType == Sequence.SMPTE_24) {
-            return "SMPTE, 24 frames per second";
-        } else if (divType == Sequence.SMPTE_25) {
-            return "SMPTE, 25 frames per second";
-        } else if (divType == Sequence.SMPTE_30DROP) {
-            return "SMPTE, 29.97 frames per second";
-        } else if (divType == Sequence.SMPTE_30) {
-            return "SMPTE, 30 frames per second";
+
+    public static <T> InOutParam<T> Ref(T value) {
+        return new InOutParam<T>(value);
+    }
+
+
+    public static <T> InOutParam<T> Out() {
+        return new InOutParam<T>();
+    }
+
+
+    private boolean m_isSet;
+
+
+    private T m_value;
+
+
+    private InOutParam(T value) {
+        m_value = value;
+        m_isSet = true;
+    }
+
+    private InOutParam() {
+        m_isSet = false;
+    }
+
+
+    public T getValue() {
+        if (m_isSet) {
+            return m_value;
         }
 
-        return String.format("(%.2f)", divType);
+        throw new IllegalStateException("Output parameter not set");
     }
-    
+
+    public void setValue(T value) {
+        m_isSet = true;
+        m_value = value;
+    }
+
+
+    public boolean isSet() {
+        return m_isSet;
+    }
 }

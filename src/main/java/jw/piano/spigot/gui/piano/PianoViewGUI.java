@@ -2,8 +2,11 @@ package jw.piano.spigot.gui.piano;
 
 import jw.fluent.api.desing_patterns.observer.implementation.Observer;
 import jw.fluent.api.player_context.api.PlayerContext;
+import jw.fluent.api.spigot.gui.fluent_ui.observers.list.checkbox.CheckBox;
 import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
+import jw.piano.api.data.PluginPermissions;
+import jw.piano.api.data.PluginTranslations;
 import jw.piano.api.data.models.PianoSkin;
 import jw.piano.api.data.sounds.PianoSound;
 import jw.piano.api.managers.effects.EffectInvoker;
@@ -15,14 +18,21 @@ import jw.fluent.api.spigot.gui.inventory_gui.EventsListenerInventoryUI;
 import jw.fluent.api.spigot.gui.inventory_gui.button.ButtonUI;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.chest_ui.ChestUI;
 import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
+import jw.piano.spigot.PluginDocumentation;
 import jw.piano.spigot.gui.bench.BenchViewGui;
 import jw.piano.spigot.gui.midi.MidiPlayerGui;
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @PlayerContext
 @Injection
 public class PianoViewGUI extends ChestUI {
+
+    private final FluentTranslator lang;
     private final PianoViewButtonsFactory pianoViewButtons;
     private final BenchViewGui benchViewGui;
     private final MidiPlayerGui midiPlayerGui;
@@ -34,26 +44,55 @@ public class PianoViewGUI extends ChestUI {
     private final Observer<PianoSound> soundObserver;
     private PianoSound pianoSound;
 
+
+    @Getter
+    private final List<CheckBox> checkBoxes;
+
     private PianoObserver pianoDataObserver;
     private Piano piano;
 
     @Inject
     public PianoViewGUI(BenchViewGui benchViewGui,
                         MidiPlayerGui midiPlayerGui,
-                        PianoViewButtonsFactory buttons) {
+                        PianoViewButtonsFactory buttons,
+                        FluentTranslator lang) {
         super("Piano", 5);
         this.midiPlayerGui = midiPlayerGui;
         this.benchViewGui = benchViewGui;
         this.pianoViewButtons = buttons;
+        this.lang = lang;
 
         skinObserver = new Observer<>(this, "pianoSkin");
-        effectObserver= new Observer<>(this, "effectInvoker");
+        effectObserver = new Observer<>(this, "effectInvoker");
         soundObserver = new Observer<>(this, "pianoSound");
+        checkBoxes = new ArrayList<>();
     }
 
     public void open(Player player, Piano piano) {
         pianoDataObserver = piano.getPianoObserver();
         this.piano = piano;
+
+
+        checkBoxes.clear();
+        checkBoxes.add(new CheckBox(
+                lang.get(PluginTranslations.GUI.PIANO.PIANO_ACTIVE.TITLE),
+                pianoDataObserver.getActiveBind(),
+                PluginPermissions.GUI.PIANO.SETTINGS.PIANO_ACTIVE));
+
+        checkBoxes.add(new CheckBox(
+                lang.get(PluginTranslations.GUI.PIANO.PEDAL_ACTIVE.TITLE),
+                pianoDataObserver.getPedalsInteractionBind(),
+                PluginPermissions.GUI.PIANO.SETTINGS.PEDAL_PRESSING_ACTIVE));
+
+        checkBoxes.add(new CheckBox(
+                lang.get(PluginTranslations.GUI.PIANO.DESKTOP_CLIENT_ACTIVE.TITLE),
+                pianoDataObserver.getDesktopClientAllowedBind(),
+                PluginPermissions.GUI.PIANO.SETTINGS.DESKTOP_APP_ACTIVE));
+
+        checkBoxes.add(new CheckBox(
+                lang.get(PluginTranslations.GUI.PIANO.DETECT_KEY_ACTIVE.TITLE),
+                pianoDataObserver.getKeyboardInteraction(),
+                PluginPermissions.GUI.PIANO.SETTINGS.KEYBOARD_PRESSING_ACTIVE));
         setTitlePrimary(pianoDataObserver.getPianoData().getName());
         open(player);
     }
@@ -99,12 +138,9 @@ public class PianoViewGUI extends ChestUI {
                     midiPlayerGui.open(player, piano);
                 }).build(this);
 
-        pianoViewButtons.pianoEnableButton(() -> pianoDataObserver.getActiveBind()).build(this);
-        pianoViewButtons.pianoDesktopClientEnableButton(() -> pianoDataObserver.getDesktopClientAllowedBind()).build(this);
-        pianoViewButtons.pianoKeyboardEnableButton(() -> pianoDataObserver.getKeyboardInteraction()).build(this);
-        pianoViewButtons.pianoPedalEnableButton(() -> pianoDataObserver.getPedalsInteractionBind()).build(this);
-        pianoViewButtons.pianoVolumeButton(() -> pianoDataObserver.getVolumeBind()).build(this);
 
+        pianoViewButtons.pianoVolumeButton(() -> pianoDataObserver.getVolumeBind()).build(this);
+        pianoViewButtons.pianoOptionsButton(this, this::getCheckBoxes).build(this);
         pianoViewButtons.pianoSkinSelectButton(
                         () -> pianoDataObserver.getSkinNameBind(),
                         () -> piano.getSkinManager().getItems(),
@@ -123,6 +159,7 @@ public class PianoViewGUI extends ChestUI {
                         soundObserver)
                 .build(this);
 
+
         pianoViewButtons.backButton(this).build(this);
     }
 
@@ -131,10 +168,10 @@ public class PianoViewGUI extends ChestUI {
         FluentMessage.message()
                 .color(org.bukkit.ChatColor.AQUA)
                 .bold()
-                .inBrackets("Piano info")
-                .space().
-                reset().
-                text("Write new piano's name on the chat").send(player);
+                .inBrackets(PluginTranslations.GENERAL.INFO)
+                .space()
+                .reset()
+                .text(PluginTranslations.GUI.PIANO.RENAME.MESSAGE_1).send(player);
         EventsListenerInventoryUI.registerTextInput(player, s ->
         {
             pianoDataObserver.getPianoData().setName(s);
@@ -152,7 +189,7 @@ public class PianoViewGUI extends ChestUI {
         FluentApi.messages()
                 .chat()
                 .info()
-                .text("Piano has refreshed")
+                .text(PluginTranslations.GUI.PIANO.CLEAR.MESSAGE_CLEAR)
                 .send(player);
     }
 

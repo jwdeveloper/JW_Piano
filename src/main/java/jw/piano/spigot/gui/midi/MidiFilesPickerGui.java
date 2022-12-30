@@ -34,12 +34,7 @@ public class MidiFilesPickerGui extends PickerUI<PianoMidiFile>
         icons.add(Material.MUSIC_DISC_CHIRP);
         icons.add(Material.MUSIC_DISC_WARD);
         icons.add(Material.MUSIC_DISC_MALL);
-
     }
-
-
-
-
 
     @Override
     protected void onInitialize() {

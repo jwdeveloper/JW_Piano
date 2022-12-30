@@ -5,7 +5,6 @@ import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injecti
 import jw.fluent.api.spigot.gameobjects.implementation.GameObjectManager;
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.modules.dependecy_injection.FluentInjection;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.piano.api.data.config.PluginConfig;
 import jw.piano.api.data.models.PianoData;
 import jw.piano.api.piano.Piano;
@@ -30,11 +29,10 @@ public class PianoService {
         injection = FluentApi.container();
     }
 
-    public Optional<Piano> initalize(PianoData pianoData) {
+    public void initialize(PianoData pianoData) {
         var piano = new PianoImpl(pianoData, injection);
         GameObjectManager.register(piano, pianoData.getLocation());
         pianos.put(pianoData.getUuid(), piano);
-        return Optional.of(piano);
     }
 
 

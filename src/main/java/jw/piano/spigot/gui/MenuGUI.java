@@ -4,11 +4,10 @@ import jw.fluent.api.player_context.api.PlayerContext;
 import jw.fluent.plugin.implementation.modules.mediator.FluentMediator;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 import jw.piano.api.data.PluginConsts;
-import jw.piano.api.data.PluginPermission;
-import jw.piano.api.data.models.PianoData;
+import jw.piano.api.data.PluginPermissions;
+import jw.piano.api.data.PluginTranslations;
 import jw.piano.api.piano.Piano;
 import jw.piano.core.mediator.piano.create.CreatePiano;
-import jw.piano.core.repositories.PianoDataRepository;
 import jw.piano.core.services.PianoService;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
@@ -35,7 +34,7 @@ public class MenuGUI extends CrudListUI<Piano> {
                    PianoService pianoService,
                    FluentMediator mediator,
                    FluentTranslator lang) {
-        super("pianos", 6);
+        super("piano list", 6);
         this.lang = lang;
         this.pianoService = pianoService;
         this.pianoViewGUI = pianoViewGUI;
@@ -48,20 +47,19 @@ public class MenuGUI extends CrudListUI<Piano> {
     public void onInitialize() {
 
         pianoViewGUI.setParent(this);
-
-        setListTitlePrimary(lang.get("gui.piano-menu.title"));
+        setListTitlePrimary(lang.get(PluginTranslations.GUI.PIANO_LIST.TITLE));
 
         hideEditButton();
-        getButtonInsert().setPermissions(PluginPermission.CREATE);
-        getButtonDelete().setPermissions(PluginPermission.REMOVE);
+        getButtonInsert().setPermissions(PluginPermissions.GUI.PIANO_LIST.CREATE);
+        getButtonDelete().setPermissions(PluginPermissions.GUI.PIANO_LIST.REMOVE);
         getFluentUI()
                 .buttonBuilder()
                 .setMaterial(Material.CAMPFIRE)
                 .setHighlighted()
                 .setDescription(options ->
                 {
-                    options.setTitle(lang.get("gui.piano-menu.resourcepack.title"));
-                    options.addDescriptionLine(lang.get("gui.piano-menu.resourcepack.desc"));
+                    options.setTitle(lang.get(PluginTranslations.GUI.PIANO_LIST.RESOURCEPACK.TITLE));
+                    options.addDescriptionLine(lang.get(PluginTranslations.GUI.PIANO_LIST.RESOURCEPACK.DESC));
                 })
                 .setLocation(0, 2)
                 .setOnLeftClick((player, button) ->
@@ -77,13 +75,13 @@ public class MenuGUI extends CrudListUI<Piano> {
                 .setHighlighted()
                 .setDescription(options ->
                 {
-                    options.setTitle(lang.get("gui.piano-menu.client-app.title"));
-                    options.addDescriptionLine(lang.get("gui.piano-menu.client-app.desc"));
+                    options.setTitle(lang.get(PluginTranslations.GUI.PIANO_LIST.CLIENT_APP.TITLE));
+                    options.addDescriptionLine(lang.get(PluginTranslations.GUI.PIANO_LIST.CLIENT_APP.DESC));
                 })
                 .setLocation(0, 3)
                 .setOnLeftClick((player, button) ->
                 {
-                    final var message = new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + "[" + lang.get("gui.piano-menu.client-app.message") + "]");
+                    final var message = new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + "[" + lang.get(PluginTranslations.GUI.PIANO_LIST.CLIENT_APP.MESSAGE) + "]");
                     message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, PluginConsts.CLIENT_APP_URL));
                     player.spigot().sendMessage(message);
                     close();
@@ -110,7 +108,7 @@ public class MenuGUI extends CrudListUI<Piano> {
             var piano = button.<Piano>getDataContext();
             var result = pianoService.delete(piano.getPianoObserver().getPianoData().getUuid());
             if (!result) {
-                setTitle(lang.get("gui.base.delete.error"));
+                setTitle(lang.get(PluginTranslations.GUI.BASE.DELETE.ERROR));
             }
             loadPianos();
         });
@@ -118,7 +116,7 @@ public class MenuGUI extends CrudListUI<Piano> {
         {
             var pianoData = button.<Piano>getDataContext();
             if (pianoData == null) {
-                setTitle(lang.get("gui.piano-menu.click.error"));
+                setTitle(lang.get(PluginTranslations.GUI.PIANO_LIST.CLICK.ERROR));
                 refreshContent();
                 return;
             }

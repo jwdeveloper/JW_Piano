@@ -8,6 +8,7 @@ import jw.fluent.plugin.implementation.modules.mediator.FluentMediator;
 import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 import jw.piano.api.data.PluginConsts;
+import jw.piano.api.data.PluginTranslations;
 import jw.piano.api.data.models.PianoData;
 import jw.piano.api.piano.token.TokenGenerator;
 import jw.piano.core.mediator.piano.token_data.TokenData;
@@ -33,33 +34,34 @@ public class TokenGeneratorImpl implements TokenGenerator {
 
     public String generateAndSend(Player player) {
         if (!pianoData.getDesktopClientAllowed()) {
-            FluentMessage.message().color(org.bukkit.ChatColor.AQUA).bold().inBrackets("Piano info").space().
+            FluentMessage.message().color(org.bukkit.ChatColor.AQUA).bold().inBrackets(PluginTranslations.GENERAL.INFO).space().
                     reset().
-                    text(lang.get("gui.piano.desktop-client-active.disabled")).send(player);
+                    text(lang.get(PluginTranslations.GUI.PIANO.DESKTOP_CLIENT_ACTIVE.DISABLED)).send(player);
             return StringUtils.EMPTY;
         }
 
         var token = generate();
         if(token.equals(StringUtils.EMPTY))
         {
-            FluentMessage.message().error().text("Can't generate link, unknown error");
+            FluentMessage.message().error().text(PluginTranslations.GUI.PIANO.TOKEN.ERROR);
             return token;
         }
 
         FluentMessage.message()
                 .color(org.bukkit.ChatColor.AQUA)
                 .bold()
-                .inBrackets("Piano info")
+                .inBrackets(PluginTranslations.GENERAL.INFO)
                 .space()
                 .reset()
-                .text(lang.get("gui.piano.token.message-1")).send(player);
+                .text(lang.get(PluginTranslations.GUI.PIANO.TOKEN.MESSAGE_1)).send(player);
+
 
         final var desktopAppMessage = FluentMessage.message()
                 .text(ChatColor.AQUA)
                 .text(ChatColor.BOLD)
                 .text(Emoticons.arrowRight)
                 .space()
-                .text(lang.get("gui.piano-menu.client-app.message"))
+                .text(lang.get(PluginTranslations.GUI.PIANO_LIST.CLIENT_APP.MESSAGE))
                 .toTextComponent();
         desktopAppMessage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, PluginConsts.CLIENT_APP_URL));
 
@@ -69,10 +71,10 @@ public class TokenGeneratorImpl implements TokenGenerator {
                 .text(ChatColor.BOLD)
                 .text(Emoticons.arrowRight)
                 .space()
-                .text(lang.get("gui.piano.token.click-to-copy"))
+                .text(lang.get(PluginTranslations.GUI.PIANO.TOKEN.CLICK_TO_COPY))
                 .toTextComponent();
         tokenCopyMessage.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, token));
-        final var hover = new Text(ChatColor.GRAY + lang.get("gui.piano.token.message-2"));
+        final var hover = new Text(ChatColor.GRAY + lang.get(PluginTranslations.GUI.PIANO.TOKEN.MESSAGE_2));
         tokenCopyMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hover));
 
         player.sendMessage(" ");

@@ -27,7 +27,7 @@ public class CreatePianoHandlerTest {
     public void setUp() {
         playerMock = SpigotMock.getInstance().getPlayer();
         pianoServiceMock = mock(PianoService.class);
-        sut = new CreatePianoHandler(pianoServiceMock);
+        sut = new CreatePianoHandler(pianoServiceMock, null);
     }
 
     @Test

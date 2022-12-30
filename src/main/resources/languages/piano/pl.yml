@@ -5,9 +5,7 @@ gui:
     delete:
       desc: Usuń pianino
       error: Błąd, nie można usunąć pianina
-
-
-  piano-menu:
+  piano-list:
     title: Menu główne
     resourcepack:
       title: Pobierz Resourcepack

@@ -5,12 +5,12 @@ import lombok.Data;
 
 @Data
 public class SkinConfig {
-    @YamlProperty( name = "name", description = "test")
+    @YamlProperty( name = "name")
     private String name;
 
-    @YamlProperty(name = "custom-model-id", description = "test")
+    @YamlProperty(name = "custom-model-id")
     private Integer customModelId;
 
-    @YamlProperty(name = "material", description = "test")
+    @YamlProperty(name = "material")
     private String material;
 }

@@ -38,7 +38,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package jw.piano.api.midiplayer.midiparser;
+package jw.piano.api.midiplayer;
 
 
 import lombok.Getter;
@@ -46,15 +46,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 
-/**
- * MIDI note.
- *
- * @author SBPrime
- */
+
 public class NoteEntry {
 
-    @Getter
-    private final String m_instrumentPatch;
 
     @Getter
     private final float velocity;
@@ -62,33 +56,11 @@ public class NoteEntry {
     @Getter
     private final float m_frq;
 
-    public  NoteEntry(String instrumentPatch, float frq, float volume) {
-        m_instrumentPatch = instrumentPatch;
+    public  NoteEntry(float frq, float volume) {
         m_frq = frq;
         velocity = volume;
     }
 
 
-    @Override
-    public int hashCode() {
-        return ((Float) m_frq).hashCode()
-                ^ ((Float) velocity).hashCode()
-                ^ (m_instrumentPatch != null ? m_instrumentPatch.hashCode() : 0);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof NoteEntry) {
-            NoteEntry other = (NoteEntry) obj;
-
-            return m_frq == other.m_frq &&
-                    //m_volume == other.m_volume &&
-                    ((m_instrumentPatch == null && other.m_instrumentPatch == null) ||
-                            (m_instrumentPatch != null && m_instrumentPatch.equals(other.m_instrumentPatch)));
-        }
-
-        return false;
-    }
-    
     
 }

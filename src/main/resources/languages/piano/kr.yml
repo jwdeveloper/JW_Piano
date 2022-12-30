@@ -6,7 +6,7 @@ gui:
       desc: 피아노 제거하기
       error: 피아노를 제거 할 수 없습니다
 
-  piano-menu:
+  piano-list:
     title: 피아노 메뉴
     resourcepack:
       title: 리소스팩 받기

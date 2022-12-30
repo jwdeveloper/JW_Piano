@@ -38,44 +38,60 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package jw.piano.api.midiplayer.midiparser.instruments;
-
-import jw.piano.api.midiplayer.midiparser.utils.InOutParam;
+package jw.piano.api.midiplayer;
 
 
-import java.util.Map;
+public class TrackEntry {
 
-/**
- * Midi instrument
- * @author SBPrime
- */
-public class Instrument {
-    /**
-     * Instrument entries for octaves
-     */
-    private final Map<OctaveDefinition, InstrumentEntry> m_octaveEntries;
-
-
-    public Instrument(Map<OctaveDefinition, InstrumentEntry> octaveEntries) {
-        m_octaveEntries = octaveEntries;        
-    }
-
+    private long m_millis;
     
-    /**
-     * Get instrument entry for provided octave (first in range)
-     * @param octave The octave
-     * @param startOctave The instrument entry starting midi octave
-     * @return Instrument entry
-     */
-    public InstrumentEntry getEntry(int octave, InOutParam<Integer> startOctave) {
-        for (OctaveDefinition od : m_octaveEntries.keySet()) {
-            int from = od.getFrom();
-            int to = od.getTo();
-            if (from <= octave &&  octave <= to) {                
-                startOctave.setValue(od.getFrom());
-                return m_octaveEntries.get(od);
-            }
-        }
-        return null;
+    protected   NoteEntry m_note;
+
+    public NoteEntry getNote() {
+        return m_note;
     }
+    
+    public long getMillis() {
+        return m_millis;
+    }
+
+    public void setMillis(long milis) {
+        m_millis = milis;
+    }
+    
+    public NoteEntry getEntry() {
+        return m_note;
+    }
+
+
+    public TrackEntry(long millis,  int octave, int note, float volume) {
+        float scale;
+        m_millis = millis;
+
+        final float frq = (float) Math.pow(2, (note + 12 * (octave % 2) - 12.0) / 12.0);
+        final float vv = Math.max(0, Math.min(1, volume )) * 3.0f;
+        
+        m_note = new NoteEntry(frq, vv);
+    }
+
+    @Override
+    public int hashCode() {
+        return (m_note != null ? m_note.hashCode() : 0) ^
+                ((Long)m_millis).hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        TrackEntry other = obj instanceof TrackEntry ? (TrackEntry)obj : null;
+        if (other == null) 
+        {
+            return false;
+        }
+        
+        return m_millis == other.m_millis &&
+                ((m_note == null && other.m_note == null) || 
+                 (m_note!=null && m_note.equals(other.m_note)));
+    }
+    
+    
 }

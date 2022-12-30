@@ -4,7 +4,6 @@ import be.seeseemelk.mockbukkit.entity.ArmorStandMock;
 import jw.fluent.api.utilites.SpigotMock;
 import jw.piano.api.data.config.PluginConfig;
 import jw.piano.api.data.models.PianoData;
-import jw.piano.core.factory.ArmorStandFactory;
 import jw.piano.core.repositories.PianoDataRepository;
 import jw.piano.core.services.PianoService;
 import org.junit.Before;
@@ -20,7 +19,7 @@ public class PianoServiceTest {
     private PianoService sut;
     private PluginConfig pluginConfigMock;
     private PianoDataRepository pianoDataRepositoryMock;
-    private ArmorStandFactory armorStandFactoryMock;
+
 
     private ArmorStandMock armorStandMock;
 
@@ -31,12 +30,12 @@ public class PianoServiceTest {
 
         pluginConfigMock = new PluginConfig();
         pianoDataRepositoryMock = mock(PianoDataRepository.class);
-        armorStandFactoryMock = mock(ArmorStandFactory.class);
+      //  armorStandFactoryMock = mock(ArmorStandFactory.class);
 
         sut = new PianoService(pluginConfigMock, pianoDataRepositoryMock);
 
         armorStandMock = mock(ArmorStandMock.class);
-        when(armorStandFactoryMock.create(any(),any())).thenReturn(armorStandMock);
+     //   when(armorStandFactoryMock.create(any(),any())).thenReturn(armorStandMock);
 
     }
 

@@ -38,43 +38,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package jw.piano.api.midiplayer.midiparser.instruments;
+package jw.piano.api.midiplayer;
 
-/**
- * Mapping to minecraft sounds
- * @author SBPrime
- */
-public class InstrumentEntry {    
-    /**
-     * Instrument path
-     */
-    private final String m_patch;
+import lombok.Getter;
+
+import java.util.Set;
 
 
-    /**
-     * The volume scale
-     */
-    private final float m_volumeScale;
+public class NoteFrame {
 
 
-    /**
-     * Sound patch
-     * @return The patch of this instrument
-     */
-    public String getPatch() {
-        return m_patch;
+    private final long m_wait;
+
+
+    public long getWait() {
+        return m_wait;
     }
-    
-    /**
-     * Get the volume scale
-     * @return The volume scale for this instrument
-     */
-    public float getVolumeScale() {
-        return m_volumeScale;
+
+    @Getter
+    private final NoteEntry[] notes;
+
+    public NoteFrame(long delta, Set<TrackEntry> notes) {
+        m_wait = delta;
+
+        if (notes == null) {
+            this.notes = new NoteEntry[0];
+        } else {
+            final int cnt = notes.size();
+            this.notes = new NoteEntry[cnt];
+
+            int i = 0;
+            for (TrackEntry entry : notes) {
+                this.notes[i] = entry.getNote();
+                i++;
+            }
+        }
     }
-        
-    public InstrumentEntry(String patch, float volumeScale) {
-        m_patch = patch;
-        m_volumeScale = volumeScale;
-    }
+
 }

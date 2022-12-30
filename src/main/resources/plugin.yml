@@ -2,111 +2,162 @@ name: JW_Piano
 version: ${project.version}
 main: jw.piano.spigot.Main
 api-version: 1.17
+#====================================================================================================
+#                                                   Permissions
+#====================================================================================================
 permissions:
 
-  # plugin
-  piano:
-    description: Default permission for plugin
+  jw-piano.*:
     children:
-      - commands
-      - gui
-      - piano.create
-      - piano.remove
-      - piano.volume
-      - piano.rename
-      - piano.skin
-      - piano.active
-      - piano.sound
-      - piano.effects
-      - piano.pedal
-      - piano.bench
-      - piano.bench.active
-      - piano.teleport
-      - piano.detect-key
-      - piano.desktop-client
-      - midi-player
+      - jw-piano.piano.*
+      - jw-piano.commands.*
+      - jw-piano.gui.*
 
-  piano.create:
-    description: player can create piano
+  jw-piano.piano.*:
+    children:
+      - jw-piano.piano.Keyboard.*
+      - jw-piano.piano.Bench.*
+      - jw-piano.piano.pedal.*
 
-  piano.remove:
-    description: player can remove piano
+  jw-piano.piano.Keyboard.*:
+    children:
+      - jw-piano.piano.Keyboard.use
 
-  piano.volume:
-    description: player can edit piano volume in GUI
+  jw-piano.piano.Keyboard.use:
+    description: player click on the piano keys
 
-  piano.rename:
-    description: player can rename piano in GUI
+  jw-piano.piano.Bench.*:
+    children:
+      - jw-piano.piano.Bench.use
 
-  piano.skin:
-    description: player change piano skin in GUI
+  jw-piano.piano.Bench.use:
+    description: player sit on the bench
 
-  piano.active:
-    description: player change piano state in GUI
+  jw-piano.piano.pedal.*:
+    children:
+      - jw-piano.piano.pedal.use
 
-  piano.sound:
+  jw-piano.piano.pedal.use:
+    description: player can push sustain pedal with 'f' press
+
+  jw-piano.commands.*:
+    children:
+      - jw-piano.commands.piano
+
+  jw-piano.commands.piano:
+    description: player can open piano list gui
+
+  jw-piano.gui.*:
+    children:
+      - jw-piano.gui.midi-player.*
+      - jw-piano.gui.bench.*
+      - jw-piano.gui.piano.*
+      - jw-piano.gui.piano-list.*
+
+  jw-piano.gui.midi-player.*:
+    children:
+      - jw-piano.gui.midi-player.speed
+      - jw-piano.gui.midi-player.player-type
+      - jw-piano.gui.midi-player.next-song
+      - jw-piano.gui.midi-player.previous-song
+      - jw-piano.gui.midi-player.play-stop
+      - jw-piano.gui.midi-player.select-song
+      - jw-piano.gui.midi-player.remove-song
+
+  jw-piano.gui.midi-player.speed:
+    description: player can change speed of midi player
+
+  jw-piano.gui.midi-player.player-type:
+    description: MIDI player type
+
+  jw-piano.gui.midi-player.next-song:
+    description: player can play next song
+
+  jw-piano.gui.midi-player.previous-song:
+    description: player can play previous song
+
+  jw-piano.gui.midi-player.play-stop:
+    description: player can play or stop midi player
+
+  jw-piano.gui.midi-player.select-song:
+    description: player can add song to MIDI player
+
+  jw-piano.gui.midi-player.remove-song:
+    description: player can remove song from MIDI player
+
+  jw-piano.gui.bench.*:
+    children:
+      - jw-piano.gui.bench.move
+      - jw-piano.gui.bench.settings.*
+
+  jw-piano.gui.bench.move:
+    description: player can move bench around
+
+  jw-piano.gui.bench.settings.*:
+    children:
+      - jw-piano.gui.bench.settings.active
+
+  jw-piano.gui.bench.settings.active:
+    description: player can disable bench
+
+  jw-piano.gui.piano.*:
+    children:
+      - jw-piano.gui.piano.generate-token
+      - jw-piano.gui.piano.volume
+      - jw-piano.gui.piano.rename
+      - jw-piano.gui.piano.teleport
+      - jw-piano.gui.piano.skin
+      - jw-piano.gui.piano.effect
+      - jw-piano.gui.piano.sound
+      - jw-piano.gui.piano.settings.*
+
+  jw-piano.gui.piano.generate-token:
+    description: player can generate token for desktop app
+
+  jw-piano.gui.piano.volume:
+    description: player can teleport to piano
+
+  jw-piano.gui.piano.rename:
+    description: player can rename piano
+
+  jw-piano.gui.piano.teleport:
+    description: player can teleport to piano
+
+  jw-piano.gui.piano.skin:
+    description: player can change piano skin
+
+  jw-piano.gui.piano.effect:
+    description: player can change piano particle effect
+
+  jw-piano.gui.piano.sound:
     description: player can change piano sound
 
-  piano.effects:
-    description: player set piano particles in GUI
-
-  piano.pedal:
-    description: player enable/disable piano pedal in GUI
-
-  piano.bench:
-    description: open bench GUI
-
-  piano.bench.active:
-    description: change visibility of bench
-
-  piano.teleport:
-    description: player teleport to piano in GUI
-
-  piano.detect-key:
-    description: player is able to click at the piano keys
-
-  piano.desktop-client:
-    description: player can use desktop-client
-
-  # commands
-  commands:
-    description: Default permission for commands
+  jw-piano.gui.piano.settings.*:
     children:
-      - piano.commands.lang
-      - piano.commands.update
-      - piano.commands.piano
+      - jw-piano.gui.piano.settings.piano-active
+      - jw-piano.gui.piano.settings.keyboard-pressing-active
+      - jw-piano.gui.piano.settings.pedal-pressing-active
+      - jw-piano.gui.piano.settings.desktop-app-active
 
-  piano.commands.lang:
-    description: Allow player to change plugin language
-    default: op
+  jw-piano.gui.piano.settings.piano-active:
+    description: piano can be disabled but not removed
 
-  piano.commands.update:
-    description: players with this permission can update plugin
-    default: op
+  jw-piano.gui.piano.settings.keyboard-pressing-active:
+    description: player can enable/disable clicking at the piano keys
 
-  piano.commands.piano:
-    description: player open gui to create/remove piano
+  jw-piano.gui.piano.settings.pedal-pressing-active:
+    description: player can enable/disable pushing sustain pedal after 'f' press
 
-  # gui
-  gui:
-    description: Default permission for gui
+  jw-piano.gui.piano.settings.desktop-app-active:
+    description: piano will receiving data from desktop-app
 
-  midi-player:
-    description: opens midi player in gui
+  jw-piano.gui.piano-list.*:
     children:
-      - midi-player.play
-      - midi-player.song
-      - midi-player.type
-      - midi-player.speed
+      - jw-piano.gui.piano-list.create
+      - jw-piano.gui.piano-list.remove
 
-  midi-player.play:
-    description: can play/stop songs
+  jw-piano.gui.piano-list.create:
+    description: player can create piano
 
-  midi-player.song:
-    description: can set current song, load song, delete song, skip
-
-  midi-player.type:
-    description: change midi player type
-
-  midi-player.speed:
-    description: change speed of midi song
+  jw-piano.gui.piano-list.remove:
+    description: player can remove piano

@@ -1,5 +1,8 @@
 package jw.piano.core.mediator.piano.create;
 
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
+import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
+import jw.piano.api.data.PluginTranslations;
 import jw.piano.api.data.models.PianoData;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import jw.fluent.api.desing_patterns.mediator.api.MediatorHandler;
@@ -10,9 +13,13 @@ import org.bukkit.util.Vector;
 public class CreatePianoHandler implements MediatorHandler<CreatePiano.Request, CreatePiano.Response> {
 
     private final PianoService pianoService;
-    public CreatePianoHandler(PianoService pianoService)
+    private final FluentTranslator translator;
+
+    @Inject
+    public CreatePianoHandler(PianoService pianoService, FluentTranslator translator)
     {
         this.pianoService = pianoService;
+        this.translator = translator;
     }
 
 
@@ -20,7 +27,7 @@ public class CreatePianoHandler implements MediatorHandler<CreatePiano.Request, 
     public CreatePiano.Response handle(CreatePiano.Request request) {
         if(!pianoService.canCreate())
         {
-            return new CreatePiano.Response(false,"Can't add more pianos on the server");
+            return new CreatePiano.Response(false,translator.get(PluginTranslations.PIANO.CREATE.ERROR_TOO_MUCH));
         }
 
         final var player = request.player();
@@ -34,7 +41,7 @@ public class CreatePianoHandler implements MediatorHandler<CreatePiano.Request, 
         final var result = pianoService.create(pianoData);
         if(result.isEmpty())
         {
-            return new CreatePiano.Response(false,"Unable to add new piano");
+            return new CreatePiano.Response(false,translator.get(PluginTranslations.PIANO.CREATE.ERROR));
         }
 
         return new CreatePiano.Response(true,"");

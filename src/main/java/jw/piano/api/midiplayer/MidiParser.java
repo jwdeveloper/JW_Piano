@@ -38,14 +38,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package jw.piano.api.midiplayer.midiparser;
+package jw.piano.api.midiplayer;
 
 
-import jw.piano.api.midiplayer.midiparser.instruments.Instrument;
-import jw.piano.api.midiplayer.midiparser.instruments.InstrumentMap;
-import jw.piano.api.midiplayer.midiparser.jw.PianoTrackEntry;
-import jw.piano.api.midiplayer.midiparser.utils.InOutParam;
-import jw.piano.api.midiplayer.midiparser.utils.Pair;
+import jw.piano.api.midiplayer.jw.PianoTrackEntry;
+import jw.piano.api.midiplayer.utils.InOutParam;
+import jw.piano.api.midiplayer.utils.Pair;
 import javax.sound.midi.*;
 import java.io.File;
 import java.io.IOException;
@@ -55,13 +53,6 @@ import static javax.sound.midi.ShortMessage.*;
 
 
 public class MidiParser {
-
-    //TEST
-    public static void main(String[] args) {
-        File file = new File("D:\\MC\\paper_1.19\\plugins\\JW_Piano\\midi\\liebestraum.mid");
-        NoteTrack track = loadFile(file);
-        int i = 0;
-    }
 
 
     public static NoteTrack loadFile(File midiFile) {
@@ -148,7 +139,7 @@ public class MidiParser {
 
                 switch (shortmessage.getCommand()) {
                     case PROGRAM_CHANGE -> {
-                        setInstrument(instruments, channel, InstrumentMap.getInstrument(shortmessage.getData1()));
+
                         continue;
                     }
                     case CONTROL_CHANGE -> {
@@ -165,7 +156,6 @@ public class MidiParser {
                     case STOP, START -> 2;
                     default -> -1;
                 };
-                var instrument = getInstrument(instruments, channel);
 
                 int key = shortmessage.getData1();
                 int velocity = shortmessage.getData2();
@@ -176,7 +166,6 @@ public class MidiParser {
                 int octave = (key / 12) - 1;
                 int note = key % 12;
                 var entry = new PianoTrackEntry(milis,
-                        instrument,
                         octave,
                         note,
                         volume
@@ -207,30 +196,7 @@ public class MidiParser {
         return result;
     }
 
-    private static Instrument getInstrument(Map<Integer, Instrument> instruments, int channel) {
-        if (instruments == null) {
-            return null;
-        }
 
-        if (instruments.containsKey(channel)) {
-            return instruments.get(channel);
-        }
-
-        return InstrumentMap.getDefault();
-    }
-
-
-    private static void setInstrument(Map<Integer, Instrument> instruments, int channel, Instrument instrument) {
-        if (instruments == null) {
-            return;
-        }
-
-        if (instruments.containsKey(channel)) {
-            instruments.remove(channel);
-        }
-
-        instruments.put(channel, instrument);
-    }
 
 
     private static List<Pair<Long, Set<TrackEntry>>> aggregate(List<TrackEntry> notes) {

@@ -1,7 +1,7 @@
-package jw.piano.api.midiplayer.midiparser.jw;
+package jw.piano.api.midiplayer.jw;
 
-import jw.piano.api.midiplayer.midiparser.NoteFrame;
-import jw.piano.api.midiplayer.midiparser.TrackEntry;
+import jw.piano.api.midiplayer.NoteFrame;
+import jw.piano.api.midiplayer.TrackEntry;
 
 import java.util.Set;
 

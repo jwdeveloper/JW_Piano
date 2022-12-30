@@ -1,5 +1,7 @@
 package jw.piano.spigot.piano;
 
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent.api.spigot.gameobjects.implementation.ArmorStandModel;
 import jw.fluent.api.spigot.gameobjects.implementation.GameObject;
 import jw.fluent.api.utilites.math.InteractiveHitBox;
@@ -26,12 +28,15 @@ import jw.piano.spigot.piano.managers.SkinManagerImpl;
 import jw.piano.spigot.piano.managers.SoundsManagerImpl;
 import jw.piano.spigot.piano.token.TokenGeneratorImpl;
 import lombok.Getter;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
+@Injection(lifeTime = LifeTime.TRANSIENT, toInterface = Piano.class)
 public class PianoImpl extends GameObject implements Piano {
 
     @Getter
@@ -112,6 +117,12 @@ public class PianoImpl extends GameObject implements Piano {
         pianoObserver.unsubscribe();
     }
 
+
+    @Override
+    public void setColor(Color color)
+    {
+     modelRenderer.setColor(color);
+    }
 
     @Override
     public void setVisible(boolean isVisible) {
@@ -198,14 +209,14 @@ public class PianoImpl extends GameObject implements Piano {
     public void reset()
     {
         var entities = location.getWorld().getNearbyEntities(location, 4, 6, 4);
-        var pianoid = pianoData.getUuid().toString();
+        var piano = pianoData.getUuid().toString();
         for (var entity : entities) {
             var container = entity.getPersistentDataContainer();
             if (!container.has(PluginConsts.PIANO_NAMESPACE, PersistentDataType.STRING)) {
                 continue;
             }
             var id = container.get(PluginConsts.PIANO_NAMESPACE, PersistentDataType.STRING);
-            if (!id.equals(pianoid)) {
+            if (!id.equals(piano)) {
                 continue;
             }
             entity.remove();

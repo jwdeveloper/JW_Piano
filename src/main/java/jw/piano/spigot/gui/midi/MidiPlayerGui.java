@@ -10,8 +10,7 @@ import jw.fluent.api.spigot.gui.inventory_gui.implementation.chest_ui.ChestUI;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
 import jw.fluent.api.utilites.messages.Emoticons;
 import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.modules.mediator.FluentMediator;
-import jw.piano.api.data.PluginPermission;
+import jw.piano.api.data.PluginPermissions;
 import jw.piano.api.data.models.midi.PianoMidiFile;
 import jw.piano.api.observers.MidiPlayerSettingsObserver;
 import jw.piano.api.piano.MidiPlayer;
@@ -68,7 +67,7 @@ public class MidiPlayerGui extends ChestUI {
                     options.setTitle("Player state");
                 })
                 .setLocation(4, 4)
-                .setPermissions(PluginPermission.PLAY)
+                .setPermissions(PluginPermissions.GUI.MIDI_PLAYER.PLAY_STOP)
                 .build(this);
 
         fluentChestUI.buttonBuilder()
@@ -83,7 +82,7 @@ public class MidiPlayerGui extends ChestUI {
                     open(player, piano);
                 })
                 .setLocation(4, 3)
-                .setPermissions(PluginPermission.CHANGE_SONG)
+                .setPermissions(PluginPermissions.GUI.MIDI_PLAYER.PREVIOUS_SONG)
                 .build(this);
 
         fluentChestUI.buttonBuilder()
@@ -98,7 +97,7 @@ public class MidiPlayerGui extends ChestUI {
                     open(player, piano);
                 })
                 .setMaterial(Material.ARROW)
-                .setPermissions(PluginPermission.CHANGE_SONG)
+                .setPermissions(PluginPermissions.GUI.MIDI_PLAYER.NEXT_SONG)
                 .build(this);
 
 
@@ -115,7 +114,7 @@ public class MidiPlayerGui extends ChestUI {
                 })
                 .setMaterial(Material.DIAMOND)
                 .setLocation(0, 1)
-                .setPermissions(PluginPermission.CHANGE_TYPE)
+                .setPermissions(PluginPermissions.GUI.MIDI_PLAYER.PLAYER_TYPE)
                 .build(this);
 
         fluentChestUI.buttonFactory()
@@ -132,7 +131,7 @@ public class MidiPlayerGui extends ChestUI {
                 })
                 .setMaterial(Material.REPEATER)
                 .setLocation(0, 2)
-                .setPermissions(PluginPermission.CHANGE_SPEED)
+                .setPermissions(PluginPermissions.GUI.MIDI_PLAYER.SPEED)
                 .build(this);
 
         fluentChestUI.buttonFactory()
@@ -180,7 +179,7 @@ public class MidiPlayerGui extends ChestUI {
                     .setOnRightClick(this::onRemoveMidi)
                     .setOnShiftClick(this::onSelectCurrent)
                     .setLocation(2, i)
-                    .setPermissions(PluginPermission.CHANGE_SONG)
+                    .setPermissions(PluginPermissions.GUI.MIDI_PLAYER.SELECT_SONG)
                     .build(this);
             result.add(btn);
         }

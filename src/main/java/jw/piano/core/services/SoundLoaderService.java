@@ -44,6 +44,7 @@ public class SoundLoaderService {
 
 
     private void checkDefaultSound() {
+        var skinConfig = pluginConfig.getSoundsConfig();
         if (!pluginConfig.getSoundsConfig().isEmpty()) {
             return;
         }
