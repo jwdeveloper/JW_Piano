@@ -41,8 +41,6 @@ public class MenuGUI extends CrudListUI<Piano> {
         this.mediator = mediator;
     }
 
-
-
     @Override
     public void onInitialize() {
 

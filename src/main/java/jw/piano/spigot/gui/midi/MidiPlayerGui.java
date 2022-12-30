@@ -11,6 +11,7 @@ import jw.fluent.api.spigot.messages.message.MessageBuilder;
 import jw.fluent.api.utilites.messages.Emoticons;
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.piano.api.data.PluginPermissions;
+import jw.piano.api.data.PluginTranslations;
 import jw.piano.api.data.models.midi.PianoMidiFile;
 import jw.piano.api.observers.MidiPlayerSettingsObserver;
 import jw.piano.api.piano.MidiPlayer;
@@ -51,7 +52,7 @@ public class MidiPlayerGui extends ChestUI {
 
     @Override
     protected void onInitialize() {
-        setTitlePrimary("MIDI player");
+        setTitlePrimary(PluginTranslations.GUI.MIDI_PLAYER.TITLE);
         drawBorder();
         midiSongSlots = createMidiSongSlots();
         midiFilePickerGui.setParent(this);
@@ -59,12 +60,12 @@ public class MidiPlayerGui extends ChestUI {
         fluentChestUI.buttonFactory()
                 .observeBool(() -> observer.getIsPlayingObserver(), options ->
                 {
-                    options.setEnabled("Playing");
-                    options.setDisabled("Stopped");
+                    options.setEnabled(PluginTranslations.GUI.MIDI_PLAYER.STATE.PLAY);
+                    options.setDisabled(PluginTranslations.GUI.MIDI_PLAYER.STATE.STOP);
                 })
                 .setDescription(options ->
                 {
-                    options.setTitle("Player state");
+                    options.setTitle(PluginTranslations.GUI.MIDI_PLAYER.STATE.TITLE);
                 })
                 .setLocation(4, 4)
                 .setPermissions(PluginPermissions.GUI.MIDI_PLAYER.PLAY_STOP)
@@ -73,7 +74,7 @@ public class MidiPlayerGui extends ChestUI {
         fluentChestUI.buttonBuilder()
                 .setDescription(options ->
                 {
-                    options.setTitle("Previous song");
+                    options.setTitle(PluginTranslations.GUI.MIDI_PLAYER.PREVIOUS.TITLE);
                 })
                 .setMaterial(Material.ARROW)
                 .setOnLeftClick((player, button) ->
@@ -88,7 +89,7 @@ public class MidiPlayerGui extends ChestUI {
         fluentChestUI.buttonBuilder()
                 .setDescription(options ->
                 {
-                    options.setTitle("Next song");
+                    options.setTitle(PluginTranslations.GUI.MIDI_PLAYER.NEXT.TITLE);
                 })
                 .setLocation(4, 5)
                 .setOnLeftClick((player, button) ->
@@ -106,11 +107,17 @@ public class MidiPlayerGui extends ChestUI {
                 .setDescription(options ->
                 {
                     var description = new MessageBuilder();
-                    description.text("Random ").text(Emoticons.arrowRight).text(" songs will be played in random order").newLine().newLine()
-                            .newLine().text("In order ").text(Emoticons.arrowRight).text(" songs will be played one after another").newLine().newLine()
-                            .newLine().text("Loop ").text(Emoticons.arrowRight).text(" current song will be played forever in loop").newLine().newLine();
+                    description.text(PluginTranslations.GUI.MIDI_PLAYER.MODE.RANDOM.TITLE).text(Emoticons.arrowRight)
+                            .text(PluginTranslations.GUI.MIDI_PLAYER.MODE.RANDOM.DESC).newLine().newLine()
+
+                            .newLine().text(PluginTranslations.GUI.MIDI_PLAYER.MODE.IN_ORDER.TITLE).text(Emoticons.arrowRight)
+                            .text(PluginTranslations.GUI.MIDI_PLAYER.MODE.IN_ORDER.DESC).newLine().newLine()
+
+                            .newLine().text(PluginTranslations.GUI.MIDI_PLAYER.MODE.LOOP.TITLE).text(Emoticons.arrowRight)
+                            .text(PluginTranslations.GUI.MIDI_PLAYER.MODE.LOOP.DESC).newLine().newLine();
+
                     options.addDescriptionLine(description.toArray());
-                    options.setTitle("Mode");
+                    options.setTitle(PluginTranslations.GUI.MIDI_PLAYER.MODE.TITLE);
                 })
                 .setMaterial(Material.DIAMOND)
                 .setLocation(0, 1)
@@ -126,8 +133,8 @@ public class MidiPlayerGui extends ChestUI {
                 })
                 .setDescription(options ->
                 {
-                    options.setTitle("Speed");
-                    options.addDescriptionLine("Percentage speed, default 100%");
+                    options.setTitle(PluginTranslations.GUI.MIDI_PLAYER.SPEED.TITLE);
+                    options.addDescriptionLine(PluginTranslations.GUI.MIDI_PLAYER.SPEED.DESC);
                 })
                 .setMaterial(Material.REPEATER)
                 .setLocation(0, 2)
@@ -170,10 +177,10 @@ public class MidiPlayerGui extends ChestUI {
                     {
                         descriptionInfoBuilder.addDescriptionLine(" ");
                         descriptionInfoBuilder.addDescriptionLine(" ");
-                        descriptionInfoBuilder.setTitle("Midi song slot");
-                        descriptionInfoBuilder.setOnLeftClick("Select Midi");
-                        descriptionInfoBuilder.setOnRightClick("Remove Midi");
-                        descriptionInfoBuilder.setOnShiftClick("Set song as current");
+                        descriptionInfoBuilder.setTitle(PluginTranslations.GUI.MIDI_PLAYER.SONG.TITLE);
+                        descriptionInfoBuilder.setOnLeftClick(PluginTranslations.GUI.MIDI_PLAYER.SONG.CLICK.LEFT);
+                        descriptionInfoBuilder.setOnRightClick(PluginTranslations.GUI.MIDI_PLAYER.SONG.CLICK.RIGHT);
+                        descriptionInfoBuilder.setOnShiftClick(PluginTranslations.GUI.MIDI_PLAYER.SONG.CLICK.SHIFT);
                     })
                     .setOnLeftClick(this::onInsertMidi)
                     .setOnRightClick(this::onRemoveMidi)
