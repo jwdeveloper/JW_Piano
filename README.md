@@ -14,9 +14,247 @@ Overall, this plugin would be a fun and unique addition to Minecraft, providing 
 [Download Desktop App](https://github.com/jwdeveloper/JW_Piano_Desktop/releases/latest/download/JW_Piano_Desktop.jar)
 
 
-[Download Resourcepack](https://download.mc-packs.net/pack/6fd6764e874d973fecd2d6debce416671399782b.zip)
+[Download Resourcepack](https://download.mc-packs.net/pack/4d00dcb5c0eeb65464f37ced9c0c93551cd70bdc.zip)
 
 
+
+<details>
+<summary>Oraxen</summary>
+
+
+### Oraxen configuration
+ -  Setup for all users that willing to use Piano with Oraxen
+
+[open piano Oraxen config file](https://github.com/jwdeveloper/JW_Piano/tree/master/resources/oraxen/jw_piano_oraxen_config.yml)
+
+``` yaml
+#Generated template for Oraxen, It only contains models from pianopack
+#Remember to refresh config when pianopack got updated
+#Note that when you change LEATHER_HORSE_ARMOR to other material functionalities as Colored keys, Pianos, will not work
+
+piano-key:
+ displayname: piano key
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/key/piano_key
+  custom_model_data: 102
+
+piano-key-down:
+ displayname: piano key down
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/key/piano_key_down
+  custom_model_data: 103
+
+piano-black-key:
+ displayname: piano black key
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/key/piano_black_key
+  custom_model_data: 104
+
+piano-black-key-down:
+ displayname: piano black key down
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/key/piano_black_key_down
+  custom_model_data: 105
+
+piano-pedal:
+ displayname: piano pedal
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/pedal/piano_pedal
+  custom_model_data: 106
+
+piano-pedal-down:
+ displayname: piano pedal down
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/pedal/piano_pedal_down
+  custom_model_data: 107
+
+up-right-piano-close:
+ displayname: up right piano close
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/piano/up_right_piano_close
+  custom_model_data: 108
+
+grand-piano:
+ displayname: grand piano
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/piano/grand_piano
+  custom_model_data: 109
+
+electric-piano:
+ displayname: electric piano
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/piano/electric_piano
+  custom_model_data: 110
+
+grand-piano-close:
+ displayname: grand piano close
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/piano/grand_piano_close
+  custom_model_data: 111
+
+flyingnote:
+ displayname: flyingnote
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/flyingnote
+  custom_model_data: 200
+
+pianist:
+ displayname: pianist
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/pianist/pianist
+  custom_model_data: 300
+
+pianist-hands:
+ displayname: pianist hands
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/pianist/pianist_hands
+  custom_model_data: 301
+
+pianist-head:
+ displayname: pianist head
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/pianist/pianist_head
+  custom_model_data: 302
+
+bench:
+ displayname: bench
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/bench
+  custom_model_data: 400
+
+icon:
+ displayname: icon
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/icons/icon
+  custom_model_data: 450
+
+
+```
+</details>
+<details>
+<summary>API for plugin developers</summary>
+
+JW_Piano provides programming API to manipulate Pianos behaviour.
+You can use it but adding JW_Piano.jar as soft dependency to your Plugin
+ 
+
+### Create Piano
+
+ ```java
+        public void creatingPiano(Player player) {
+         Optional<Piano> optional = PianoApi.create(player.getLocation(), "new piano");
+         if (optional.isEmpty()) {
+            Bukkit.getConsoleSender().sendMessage("Unable to create piano ;<");
+            return;
+         }
+         Piano piano = optional.get();
+        }
+```
+ 
+
+### Register new skin
+
+ ```java
+
+  public void addSkin(Piano piano) {
+     int customModelId = 100;
+     String name = "custom skin";
+     ItemStack itemStack = new ItemStack(Material.STICK);
+     PianoSkin customSkin = new PianoSkin(customModelId, name, itemStack);
+     piano.getSkinManager().register(customSkin);
+     piano.getSkinManager().setCurrent(customSkin);
+  }
+```
+
+### Register new effect
+
+ ```java
+
+  public void addNewEffect(Piano piano) {
+        EffectInvoker customEffect = new CustomEffect();
+        piano.getEffectManager().register(customEffect);
+        piano.getEffectManager().setCurrent(customEffect);
+    }
+
+
+    public class CustomEffect implements EffectInvoker {
+        @Override
+        public String getName() {
+            return "custom";
+        }
+
+        @Override
+        public void onNote(PianoKey pianoKey, Location location, int noteIndex, int velocity, Color color) {
+            Bukkit.getConsoleSender().sendMessage(color + "Note: " + noteIndex + "  Volume:" + velocity);
+            location.getWorld().spawnParticle(Particle.NOTE, location, 1);
+        }
+
+        @Override
+        public void onDestroy() {
+            Bukkit.getConsoleSender().sendMessage(getName() + "Destroyed");
+        }
+
+        @Override
+        public void onCreate() {
+            Bukkit.getConsoleSender().sendMessage(getName() + "Created");
+        }
+
+        @Override
+        public void refresh() {
+            Bukkit.getConsoleSender().sendMessage(getName() + "Refreshed");
+        }
+    }
+  }
+```
+</details>
 <details>
 <summary>Common issues</summary>
 
@@ -39,7 +277,6 @@ Correct: `craftplayer.com`
  -  When above solutions does not help set IP that you use in Minecraft server lists to `plugin.websocket.server-ip`
 </details>
 
-
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/F4iKXAMIioo/0.jpg)](https://www.youtube.com/watch?v=F4iKXAMIioo&t=2s&ab_channel=JW)
 
 
@@ -56,54 +293,6 @@ Correct: `craftplayer.com`
 
 ``` yaml
 #
-# piano-config.models-limit
-# -> Limit of pianos that could be spawn on the server
-#
-# plugin.resourcepack.url
-#    If you need to replace default resourcepack with your custom one
-#    set this to link of you resourcepack
-#    ! after plugin update make sure your custom resourcepack is compatible !
-#
-# plugin.resourcepack.load-on-join
-#    Downloads resourcepack when player joins to server
-#
-# plugin.websocket.run
-#    When false websocket will not run 
-#
-# plugin.saving-frequency
-#    Determinate how frequent data is saved to files, value in minutes
-#
-# plugin.language
-#    If you want add your language open `languages` folder copy `en.yml` call it as you want \n" +
-#  "set `language` property to your file name and /reload server 
-#
-# plugin.websocket.port
-#    Set port for websocket
-# ! Make sure that port is open
-# ! When you have server on hosting, generate new port on the hosting panel
-#
-#
-# plugin.websocket.custom-id
-#    Set own IP for websocket, by default plugin use IP of your server
-# ! When you are using proxy set here proxy IP
-# ! When you are running plugin locally on your PC, set 'localhost'
-# ! When default IP not works try use IP that you are using in minecraft server list
-#
-#
-# plugin.websocket.server-ip
-#    Set own IP for websocket, by default plugin use IP of your server
-# ! When you are using proxy set here proxy IP
-# ! When you are running plugin locally on your PC, set 'localhost'
-# ! When default IP not works try use IP that you are using in minecraft server list
-#
-#
-# plugin.websocket.server-ip
-#    Set own IP for websocket, by default plugin use IP of your server
-# ! When you are using proxy set here proxy IP
-# ! When you are running plugin locally on your PC, set 'localhost'
-# ! When default IP not works try use IP that you are using in minecraft server list
-#
-#
 # <PluginConfig>
 # 
 # piano.models-limit
@@ -112,15 +301,6 @@ Correct: `craftplayer.com`
 # piano.piano-range
 #  Piano became interactive when player distance to piano is lower or equal that `piano-range`
 # 
-# 
-# skins.name
-#  test
-# 
-# skins.custom-model-id
-#  test
-# 
-# skins.material
-#  test
 # 
 # sounds.namespace
 #  Name of the folder that sounds are save in resourcepack
@@ -131,16 +311,54 @@ Correct: `craftplayer.com`
 #  Allowed categories [AMBIENT, BLOCKS, HOSTILE, MASTER, MUSIC, NEUTRAL, RECORDS, VOICE, WEATHER]
 # 
 # </PluginConfig>
+# 
+# plugin.resourcepack.url
+#    If you need to replace default resourcepack with your custom one
+#    set this to link of you resourcepack
+#    ! after plugin update make sure your custom resourcepack is compatible !
+# 
+# 
+# plugin.resourcepack.download-on-join
+#    Downloads resourcepack when player joins to server
+# 
+# 
+# plugin.websocket.run
+#    When false websocket will not run 
+# 
+# 
+# plugin.saving-frequency
+#    Determinate how frequent data is saved to files, value in minutes
+# 
+# 
+# plugin.language
+#    If you want add your language open `languages` folder copy `en.yml` call it as you want \n" +
+#  "set `language` property to your file name and /reload server 
+# 
+# 
+# plugin.websocket.port
+#    Set port for websocket
+# ! Make sure that port is open
+# ! When you have server on hosting, generate new port on the hosting panel
+# 
+# 
+# 
+# plugin.websocket.server-ip
+#    Set own IP for websocket, by default plugin use IP of your server
+# ! When you are using proxy set here proxy IP
+# ! When you are running plugin locally on your PC, set 'localhost'
+# ! When default IP not works try use IP that you are using in minecraft server list
+# 
+# 
 
 plugin:
-  version: 1.2.0
+  version: 1.2.2
   resourcepack:
-    url: https://download.mc-packs.net/pack/6fd6764e874d973fecd2d6debce416671399782b.zip
-    load-on-join: false
+    url: https://download.mc-packs.net/pack/4d00dcb5c0eeb65464f37ced9c0c93551cd70bdc.zip
+    download-on-join: false
   websocket:
     run: true
     port: 443
-    server-ip: 5.173.198.132
+    server-ip: localhost
   saving-frequency: 5
   language: en
 piano:
@@ -154,15 +372,19 @@ skins:
   value-2:
     name: upright piano
     custom-model-id: 108
-    material: STICK
+    material: LEATHER_HORSE_ARMOR
   value-3:
     name: grand piano
     custom-model-id: 109
-    material: STICK
+    material: LEATHER_HORSE_ARMOR
   value-4:
     name: electric piano
     custom-model-id: 110
-    material: STICK
+    material: LEATHER_HORSE_ARMOR
+  value-5:
+    name: grand piano closed
+    custom-model-id: 111
+    material: LEATHER_HORSE_ARMOR
 sounds:
   value-1:
     name: Default
@@ -180,43 +402,74 @@ commands:
 # /piano
   piano: 
     children: 
-      - resourcepack
       - lang
-      - Create
+      - colors
       - update
+      - resourcepack
     permissions: 
-      - piano.commands.piano
-    description: opens GUI where you can Create/Edit/Delete pianos
+      - jw-piano.commands.piano
+    description: base plugin commands, /piano opens piano list
     usage: /piano
-# /piano resourcepack
-  resourcepack: 
-    description: downloads plugin resourcepack
-    usage: /piano resourcepack
-
 # /piano lang <language>
   lang: 
     permissions: 
-      - piano.commands.lang
+      - lang
     arguments: 
       - language:
           type: text
           description: select language
           options: 
+              - cs
+              - de
               - en
-              - kr
+              - es
+              - fr
+              - it
+              - ko
               - pl
+              - pt
+              - ru
+              - tr
+              - zh
     description: Changes plugin languages, changes will be applied after server reload. Change be use both be player or console
     usage: /piano lang <language>
 
-# Create
-  Create: 
+# colors
+  colors: 
+    children: 
+      - page
+    description: command used for internal color picker system, just ignore it
+# page
+  page: 
+    arguments: 
+      - color:
+          type: text
+
 
 # /piano update
   update: 
     permissions: 
-      - piano.commands.update
+      - update
     description: download plugin latest version, can be trigger both by player or console
     usage: /piano update
+
+# /piano resourcepack
+  resourcepack: 
+    children: 
+      - download
+      - link
+    description: downloads plugin resourcepack
+    usage: /piano resourcepack
+# /piano resourcepack download
+  download: 
+    description: downloads plugin resourcepack
+    usage: /piano resourcepack download
+
+# /piano resourcepack link
+  link: 
+    description: sending to player resourcepack link
+    usage: /piano resourcepack link
+
 
 
 
@@ -227,112 +480,144 @@ commands:
 ``` yaml
 permissions: 
 
-# plugin
-  piano: 
-    description: Default permission for plugin
-    children: 
-      - commands
-      - gui
-      - piano.create
-      - piano.remove
-      - piano.volume
-      - piano.rename
-      - piano.skin
-      - piano.active
-      - piano.sound
-      - piano.effects
-      - piano.pedal
-      - piano.bench
-      - piano.bench.active
-      - piano.teleport
-      - piano.detect-key
-      - piano.desktop-client
-      - midi-player
+# ======================================== jw-piano =================================
+  jw-piano.*: 
+    description: full access
 
-  piano.create: 
-    description: player can create piano
+# ======================================== jw-piano.piano ===========================
+  jw-piano.piano.*: 
+    description: full access
 
-  piano.remove: 
-    description: player can remove piano
+# ======================================== jw-piano.piano.keyboard ==================
+  jw-piano.piano.keyboard.*: 
+    description: full access
 
-  piano.volume: 
-    description: player can edit piano volume in GUI
+  jw-piano.piano.keyboard.use: 
+    description: player click on the piano keys
 
-  piano.rename: 
-    description: player can rename piano in GUI
+# ======================================== jw-piano.piano.bench =====================
+  jw-piano.piano.bench.*: 
+    description: full access
 
-  piano.skin: 
-    description: player change piano skin in GUI
+  jw-piano.piano.bench.use: 
+    description: player sit on the bench
 
-  piano.active: 
-    description: player change piano state in GUI
+# ======================================== jw-piano.piano.pedal =====================
+  jw-piano.piano.pedal.*: 
+    description: full access
 
-  piano.sound: 
+  jw-piano.piano.pedal.use: 
+    description: player can push sustain pedal with 'f' press
+
+# ======================================== jw-piano.commands ========================
+  jw-piano.commands.*: 
+    description: full access
+
+  jw-piano.commands.piano: 
+    description: player can open piano list gui
+
+  jw-piano.commands.lang: 
+    description: Allow player to change plugin language
+
+  jw-piano.commands.update: 
+    description: players with this permission can update plugin
+
+# ======================================== jw-piano.gui =============================
+  jw-piano.gui.*: 
+    description: full access
+
+# ======================================== jw-piano.gui.midi-player =================
+  jw-piano.gui.midi-player.*: 
+    description: full access
+
+  jw-piano.gui.midi-player.speed: 
+    description: player can change speed of midi player
+
+  jw-piano.gui.midi-player.player-type: 
+    description: MIDI player type
+
+  jw-piano.gui.midi-player.next-song: 
+    description: player can play next song
+
+  jw-piano.gui.midi-player.previous-song: 
+    description: player can play previous song
+
+  jw-piano.gui.midi-player.play-stop: 
+    description: player can play or stop midi player
+
+  jw-piano.gui.midi-player.select-song: 
+    description: player can add song to MIDI player
+
+  jw-piano.gui.midi-player.remove-song: 
+    description: player can remove song from MIDI player
+
+# ======================================== jw-piano.gui.bench =======================
+  jw-piano.gui.bench.*: 
+    description: full access
+
+  jw-piano.gui.bench.move: 
+    description: player can move bench around
+
+# ======================================== jw-piano.gui.bench.settings ==============
+  jw-piano.gui.bench.settings.*: 
+    description: full access
+
+  jw-piano.gui.bench.settings.active: 
+    description: player can disable bench
+
+# ======================================== jw-piano.gui.piano =======================
+  jw-piano.gui.piano.*: 
+    description: full access
+
+  jw-piano.gui.piano.generate-token: 
+    description: player can generate token for desktop app
+
+  jw-piano.gui.piano.volume: 
+    description: player can teleport to piano
+
+  jw-piano.gui.piano.rename: 
+    description: player can rename piano
+
+  jw-piano.gui.piano.teleport: 
+    description: player can teleport to piano
+
+  jw-piano.gui.piano.skin: 
+    description: player can change piano skin
+
+  jw-piano.gui.piano.effect: 
+    description: player can change piano particle effect
+
+  jw-piano.gui.piano.sound: 
     description: player can change piano sound
 
-  piano.effects: 
-    description: player set piano particles in GUI
+  jw-piano.gui.piano.clear: 
+    description: player can refresh piano model
 
-  piano.pedal: 
-    description: player enable/disable piano pedal in GUI
+# ======================================== jw-piano.gui.piano.settings ==============
+  jw-piano.gui.piano.settings.*: 
+    description: full access
 
-  piano.bench: 
-    description: open bench GUI
+  jw-piano.gui.piano.settings.keyboard-pressing-active: 
+    description: player can enable/disable clicking at the piano keys
 
-  piano.bench.active: 
-    description: change visibility of bench
+  jw-piano.gui.piano.settings.pedal-pressing-active: 
+    description: player can enable/disable pushing sustain pedal after 'f' press
 
-  piano.teleport: 
-    description: player teleport to piano in GUI
+  jw-piano.gui.piano.settings.desktop-app-active: 
+    description: piano will receiving data from desktop-app
 
-  piano.detect-key: 
-    description: player is able to click at the piano keys
+  jw-piano.gui.piano.settings.pianist-active: 
+    description: pianist will appear and start playing
 
-  piano.desktop-client: 
-    description: player can use desktop-client
+# ======================================== jw-piano.gui.piano-list ==================
+  jw-piano.gui.piano-list.*: 
+    description: full access
 
-# commands
-  commands: 
-    description: Default permission for commands
-    children: 
-      - piano.commands.lang
-      - piano.commands.update
-      - piano.commands.piano
+  jw-piano.gui.piano-list.create: 
+    description: player can create piano
 
-  piano.commands.lang: 
-    description: Allow player to change plugin language
-    default: op
-
-  piano.commands.update: 
-    description: players with this permission can update plugin
-    default: op
-
-  piano.commands.piano: 
-    description: player open gui to create/remove piano
-
-# gui
-  gui: 
-    description: Default permission for gui
-
-  midi-player: 
-    description: opens midi player in gui
-    children: 
-      - midi-player.play
-      - midi-player.song
-      - midi-player.type
-      - midi-player.speed
-
-  midi-player.play: 
-    description: can play/stop songs 
-
-  midi-player.song: 
-    description: can set current song, load song, delete song, skip
-
-  midi-player.type: 
-    description: change midi player type
-
-  midi-player.speed: 
-    description: change speed of midi song
+  jw-piano.gui.piano-list.remove: 
+    description: player can remove piano
 
 
 ```
