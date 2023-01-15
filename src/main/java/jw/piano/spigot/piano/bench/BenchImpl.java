@@ -1,18 +1,47 @@
+/*
+ * JW_PIANO  Copyright (C) 2023. by jwdeveloper
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the "Software"), to deal in the Software
+ *  without restriction, including without limitation the rights to use, copy, modify, merge,
+ *  and/or sell copies of the Software, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies
+ * or substantial portions of the Software.
+ *
+ * The Software shall not be resold or distributed for commercial purposes without the
+ * express written consent of the copyright holder.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ *  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+ * OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ *
+ *
+ */
+
 package jw.piano.spigot.piano.bench;
 
 import jw.fluent.api.spigot.gameobjects.implementation.ArmorStandModel;
 import jw.fluent.api.spigot.gameobjects.implementation.GameObject;
 import jw.fluent.api.spigot.gui.armorstand_gui.implementation.gui.interactive.HitBoxDisplay;
+import jw.fluent.api.spigot.permissions.implementation.PermissionsUtility;
 import jw.fluent.api.utilites.math.InteractiveHitBox;
 import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.piano.api.data.PluginConsts;
+import jw.piano.api.data.PluginModels;
+import jw.piano.api.data.PluginPermissions;
 import jw.piano.api.data.dto.BenchMove;
-import jw.piano.api.data.enums.PianoKeysConst;
 import jw.piano.api.data.events.PianoInteractEvent;
 import jw.piano.api.piano.Bench;
 import jw.piano.api.piano.Piano;
 import jw.piano.spigot.gui.bench.BenchViewGui;
+import jw.piano.spigot.piano.PianistImpl;
+import lombok.Getter;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -28,6 +57,9 @@ public class BenchImpl extends GameObject implements Bench {
     private Location origin;
     private BenchMovingHandler benchMovingHandler;
 
+    @Getter
+    private PianistImpl pianist;
+
     public BenchImpl(Piano piano) {
         this.piano = piano;
     }
@@ -42,20 +74,30 @@ public class BenchImpl extends GameObject implements Bench {
         model.setOnCreated(armorStandModel ->
         {
             armorStandModel.getArmorStand().setSmall(true);
-            armorStandModel.setItemStack(PluginConsts.ITEMSTACK());
-            armorStandModel.setCustomModelId(PianoKeysConst.BENCH.getId());
+            armorStandModel.setItemStack(PluginModels.BENCH.toItemStack());
+            armorStandModel.setCustomModelId(PluginModels.BENCH.id());
             armorStandModel.setId(PluginConsts.PIANO_NAMESPACE, piano.getPianoObserver().getPianoData().getUuid());
             armorStandModel.setLocation(location);
+            pianist.setLocation(location.clone());
         });
+
+
         var xBox = 0.8;
         var zBox = 0.4;
         var min = new Vector(-xBox, -0.61, -zBox);
         var max = new Vector(xBox, 0.3, zBox);
         hitBox = new InteractiveHitBox(location, min, max);
-        display= new HitBoxDisplay(hitBox);
+        display = new HitBoxDisplay(hitBox);
+        pianist = addGameComponent(new PianistImpl(piano.getPianoObserver().getPianoData()));
     }
 
     private HitBoxDisplay display;
+
+    @Override
+    public void refresh() {
+        model.refresh();
+        pianist.refresh();
+    }
 
     @Override
     public void onDestroy() {
@@ -66,10 +108,6 @@ public class BenchImpl extends GameObject implements Bench {
         benchMovingHandler.move(benchMove, location.clone());
     }
 
-    @Override
-    public void refresh() {
-        model.refresh();
-    }
 
     @Override
     public boolean sitPlayer(Player player) {
@@ -82,10 +120,15 @@ public class BenchImpl extends GameObject implements Bench {
 
     @Override
     public boolean triggerPlayerClick(PianoInteractEvent event) {
+
         if (!active) {
             return false;
         }
         if (!hitBox.isCollider(event.getEyeLocation(), 10)) {
+            return false;
+        }
+        if(!PermissionsUtility.hasOnePermission(event.getPlayer(), PluginPermissions.PIANO.BENCH.USE))
+        {
             return false;
         }
 
@@ -96,13 +139,10 @@ public class BenchImpl extends GameObject implements Bench {
     @Override
     public void setVisible(boolean visible) {
         active = visible;
-        if(visible)
-        {
-            model.setItemStack(PluginConsts.ITEMSTACK());
-            model.setCustomModelId(PianoKeysConst.BENCH.getId());
-        }
-        else
-        {
+        if (visible) {
+            model.setItemStack(PluginModels.BENCH.toItemStack());
+            model.setCustomModelId(PluginModels.BENCH.id());
+        } else {
             model.setItemStack(null);
         }
 
@@ -137,5 +177,10 @@ public class BenchImpl extends GameObject implements Bench {
     @Override
     public void reset() {
         teleport(benchMovingHandler.reset());
+    }
+
+    @Override
+    public void setColor(Color color) {
+        model.setColor(color);
     }
 }

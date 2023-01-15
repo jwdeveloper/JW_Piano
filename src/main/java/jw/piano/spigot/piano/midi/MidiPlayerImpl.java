@@ -1,3 +1,28 @@
+/*
+ * JW_PIANO  Copyright (C) 2023. by jwdeveloper
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the "Software"), to deal in the Software
+ *  without restriction, including without limitation the rights to use, copy, modify, merge,
+ *  and/or sell copies of the Software, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies
+ * or substantial portions of the Software.
+ *
+ * The Software shall not be resold or distributed for commercial purposes without the
+ * express written consent of the copyright holder.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ *  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+ * OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ *
+ *
+ */
+
 package jw.piano.spigot.piano.midi;
 
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
@@ -17,36 +42,37 @@ import java.util.Random;
 public class MidiPlayerImpl implements MidiPlayer {
 
     private final MidiLoaderService loaderService;
-    private final MidiPlayerWorker worker;
+
+    private final Piano piano;
     @Getter
     private final MidiPlayerSettingsObserver observer;
 
     private PianoMidiFile current;
 
+    private MidiPlayerWorker worker;
+
     public MidiPlayerImpl(Piano piano, MidiLoaderService midiLoaderService) {
         this.loaderService = midiLoaderService;
-        this.observer = piano.getPianoObserver().getMidiPlayerSettingsObserver();
+        this.observer = piano.getPianoObserver().getMidiPlayerSettings();
+        this.piano = piano;
+    }
+
+
+    public void enable() {
         worker = new MidiPlayerWorker(piano);
-        observer.getSpeedObserver().onChange(integer ->
-        {
-            var value = integer / 2;
-            worker.setSpeed(value);
-        });
-        observer.getIsPlayingObserver().onChange(aBoolean ->
+        observer.getSpeed().onChange(worker::setSpeed);
+        observer.getIsPlaying().onChange(aBoolean ->
         {
             if (aBoolean) {
                 if (current == null) {
                     return;
                 }
-                try
-                {
-                    var data = midiLoaderService.load(current.getPath());
-                    worker.setSpeed(observer.getSpeedObserver().get());
+                try {
+                    var data = loaderService.load(current.getPath());
+                    worker.setSpeed(observer.getSpeed().get());
                     worker.start(data);
-                }
-                catch (Exception e)
-                {
-                    FluentLogger.LOGGER.warning("Unable to load midi for path",current.getPath(),e.getMessage());
+                } catch (Exception e) {
+                    FluentLogger.LOGGER.warning("Unable to load midi for path", current.getPath(), e.getMessage());
                 }
 
             } else {
@@ -56,39 +82,53 @@ public class MidiPlayerImpl implements MidiPlayer {
         });
         worker.setOnStopPlaying(unused ->
         {
-            var mode = observer.getMidiPlayerSetting().getPlayingType();
+            var mode = observer.getMidiPlayerSettings().getPlayingType();
             switch (mode) {
                 case IN_ORDER -> next();
                 case LOOP -> play();
                 case RANDOM -> {
                     var random = new Random();
-                    var index = random.nextInt(0, observer.getMidiPlayerSetting().getMidiFiles().size() - 1);
-                    setCurrentSong(observer.getMidiPlayerSetting().getMidiFiles().get(index));
+                    var bound = observer.getMidiPlayerSettings().getMidiFiles().size() - 1;
+                    var index =0;
+                    if(bound > 0)
+                    {
+                       index = random.nextInt(0, bound);
+                    }
+                    setCurrentSong(observer.getMidiPlayerSettings().getMidiFiles().get(index));
                 }
             }
 
         });
+
+
+        if (observer.getPlayingType().get() != MidiPlayingType.NONE) {
+            if (!observer.getMidiPlayerSettings().hasMidiFiles()) {
+                return;
+            }
+            setCurrentSong(observer.getMidiPlayerSettings().getMidiFiles().get(0));
+            play();
+        }
     }
 
     @Override
     public void play() {
-        observer.getIsPlayingObserver().set(true);
-
+        observer.getIsPlaying().set(true);
     }
+
 
     @Override
     public void stop() {
-        observer.getIsPlayingObserver().set(false);
+        observer.getIsPlaying().set(false);
     }
 
     @Override
     public void setPlayMode(MidiPlayingType type) {
-        observer.getPlayingTypeObserver().set(type);
+        observer.getPlayingType().set(type);
     }
 
     @Override
     public void next() {
-        var songs = observer.getMidiPlayerSetting().getMidiFiles();
+        var songs = observer.getMidiPlayerSettings().getMidiFiles();
         if (songs.isEmpty()) {
             return;
         }
@@ -113,7 +153,7 @@ public class MidiPlayerImpl implements MidiPlayer {
 
     @Override
     public void previous() {
-        var songs = observer.getMidiPlayerSetting().getMidiFiles();
+        var songs = observer.getMidiPlayerSettings().getMidiFiles();
         if (songs.isEmpty()) {
             return;
         }
@@ -140,7 +180,7 @@ public class MidiPlayerImpl implements MidiPlayer {
     @Override
     public void setCurrentSong(PianoMidiFile midiFile) {
 
-        if (observer.getIsPlayingObserver().get()) {
+        if (observer.getIsPlaying().get()) {
             stop();
             this.current = midiFile;
             play();
@@ -156,23 +196,29 @@ public class MidiPlayerImpl implements MidiPlayer {
 
     @Override
     public void addSong(PianoMidiFile midiFile) {
+        var wasPlaying = observer.getIsPlaying().get();
         stop();
-        var songs = observer.getMidiPlayerSetting().getMidiFiles();
-        if (songs.isEmpty()) {
-            setCurrentSong(midiFile);
-        }
+        var songs = observer.getMidiPlayerSettings().getMidiFiles();
+
 
         var isSlotOccupied = songs.stream().filter(c -> c.getIndex() == midiFile.getIndex()).findFirst();
         if (isSlotOccupied.isPresent()) {
             removeSong(isSlotOccupied.get());
         }
-        observer.getMidiPlayerSetting().addMidiFile(midiFile);
+        observer.getMidiPlayerSettings().addMidiFile(midiFile);
+        if (songs.isEmpty() || songs.size() == 1) {
+            setCurrentSong(midiFile);
+        }
+        if(wasPlaying)
+        {
+            play();
+        }
     }
 
     @Override
     public void removeSong(PianoMidiFile midiFile) {
         stop();
-        observer.getMidiPlayerSetting().removeMidiFile(midiFile);
+        observer.getMidiPlayerSettings().removeMidiFile(midiFile);
         if (current == midiFile) {
             current = null;
         }
@@ -181,7 +227,7 @@ public class MidiPlayerImpl implements MidiPlayer {
 
     @Override
     public List<PianoMidiFile> getSongs() {
-        return observer.getMidiPlayerSetting().getMidiFiles();
+        return observer.getMidiPlayerSettings().getMidiFiles();
     }
 
 

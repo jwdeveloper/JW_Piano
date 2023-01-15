@@ -1,15 +1,45 @@
+/*
+ * JW_PIANO  Copyright (C) 2023. by jwdeveloper
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the "Software"), to deal in the Software
+ *  without restriction, including without limitation the rights to use, copy, modify, merge,
+ *  and/or sell copies of the Software, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies
+ * or substantial portions of the Software.
+ *
+ * The Software shall not be resold or distributed for commercial purposes without the
+ * express written consent of the copyright holder.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ *  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+ * OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ *
+ *
+ */
+
 package jw.piano.spigot.piano.keyboard;
 
 import jw.fluent.api.spigot.gameobjects.implementation.GameObject;
+import jw.fluent.api.spigot.permissions.implementation.PermissionsUtility;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.piano.api.data.PluginConsts;
+import jw.piano.api.data.PluginPermissions;
 import jw.piano.api.data.events.PianoInteractEvent;
 import jw.piano.api.data.models.PianoData;
+import jw.piano.api.data.models.keyboard.KeyboardTrackColor;
 import jw.piano.api.managers.effects.EffectManager;
 import jw.piano.api.managers.sounds.SoundsManager;
 import jw.piano.api.piano.keyboard.Keyboard;
 import jw.piano.api.piano.keyboard.PianoKey;
 
 import lombok.Getter;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
@@ -34,7 +64,16 @@ public class KeyboardImpl extends GameObject implements Keyboard {
 
 
     @Override
-    public void onCreate() {
+    public void onCreate()
+    {
+        var colors = pianoData.getKeyboardSettings().getMidiTrackColors();
+        if(colors.size() == 0)
+        {
+            colors.add(new KeyboardTrackColor(1, Color.GREEN, "default"));
+            colors.add(new KeyboardTrackColor(2, Color.BLUE, "default"));
+            colors.add(new KeyboardTrackColor(3, Color.RED, "default"));
+        }
+
         var startKeysLocation = location.clone().add(-1.5, -0.4, 0.3f);
         startKeysLocation.setDirection(new Vector(0, 1, 0));
         var key = 1;
@@ -55,7 +94,7 @@ public class KeyboardImpl extends GameObject implements Keyboard {
                             effectManager,
                             true,
                             i + PluginConsts.MIDI_KEY_OFFSET - 1);
-                    pianoKeyLocation = startKeysLocation.clone().add(0.025f, 0.02f, -0.05f);
+                    pianoKeyLocation = startKeysLocation.clone().add(0.025f, 1.52f, -0.05f);
                 }
                 default -> {
                     pianoKey = new PianoKeyImpl(
@@ -64,8 +103,8 @@ public class KeyboardImpl extends GameObject implements Keyboard {
                             effectManager,
                             false,
                             i + PluginConsts.MIDI_KEY_OFFSET - 1);
-                    pianoKeyLocation = startKeysLocation.clone().add(0.05f, 0, 0);
-                    startKeysLocation = startKeysLocation.clone().add(0.05f, 0, 0);
+                     pianoKeyLocation = startKeysLocation.clone().add(0.05f, 1.5, 0);
+                     startKeysLocation = startKeysLocation.clone().add(0.05f, 0, 0);
                 }
             }
             pianoKey.setLocation(pianoKeyLocation);
@@ -75,18 +114,18 @@ public class KeyboardImpl extends GameObject implements Keyboard {
     }
 
 
-    public void triggerNote(int pressed, int midiIndex, int velocity) {
+    public void triggerNote(int pressed, int midiIndex, int velocity, int trackId) {
         if (midiIndex < PluginConsts.MIDI_KEY_OFFSET)
             return;
         if (midiIndex - PluginConsts.MIDI_KEY_OFFSET > pianoKeys.length - 1)
             return;
 
         if (pressed != 0) {
-            pianoKeys[midiIndex - PluginConsts.MIDI_KEY_OFFSET].press(velocity);
-
+            pianoKeys[midiIndex - PluginConsts.MIDI_KEY_OFFSET].press(velocity, trackId);
         } else
             pianoKeys[midiIndex - PluginConsts.MIDI_KEY_OFFSET].release();
     }
+
 
     @Override
     public void refresh() {
@@ -99,6 +138,10 @@ public class KeyboardImpl extends GameObject implements Keyboard {
     @Override
     public boolean triggerPlayerClick(PianoInteractEvent event) {
         if (!pianoData.getInteractiveKeyboard()) {
+            return false;
+        }
+        if(!PermissionsUtility.hasOnePermission(event.getPlayer(), PluginPermissions.PIANO.KEYBOARD.USE))
+        {
             return false;
         }
         for (var key : sortedByColor) {

@@ -1,0 +1,157 @@
+general:
+  info: Informace o klavíru
+gui:
+  base:
+    insert:
+      desc: Vytvořte nové piano
+    delete:
+      desc: Odstraňte klavír
+      error: Nelze odebrat piano
+    active:
+      title: Aktivní
+  piano-list:
+    title: Seznam klavírů
+    resourcepack:
+      title: Získejte Resourcepack
+      desc: Kliknutím sem získáte aktuální verzi resourcepacku
+      click:
+        left: Stáhněte si resourcepack do minecraftu
+        right: Odeslat odkaz na resourcepack
+    client-app:
+      title: Získejte klientskou aplikaci
+      desc: Kliknutím sem získáte aktuální verzi aplikace prohlížeče
+      message: Kliknutím sem stáhnete aplikaci prohlížeče
+    click:
+      error: Nelze najít klavír
+  piano:
+    teleport:
+      title: Teleportovat se
+    effect:
+      title: Účinek
+    skin:
+      title: Kůže
+    keyboard:
+      title: Klavírní klávesnice
+      desc: Změna barvy kláves klavíru
+    rename:
+      desc: Nastavte vlastní název klavíru
+      message-1: Napište jméno nového klavíru do chatu
+      title: Nastavit název
+    token:
+      title: Kliknutím zkopírujete token
+      message-2: Hodnota bude zkopírována po kliknutí
+      click-to-copy: Kliknutím zkopírujete token
+      error: Odkaz nelze vygenerovat, neznámá chyba
+      message-1: Zkopírujte a vložte token do aplikace prohlížeče Piano
+      desc: Připojte své skutečné piano nebo hrajte MIDI soubory s aplikací prohlížeče,
+        Token musíte obnovit pokaždé, když se změní IP serveru v konfiguraci
+    pedal-active:
+      title: Stiskněte pedál při kliknutí „f“.
+    pianist-active:
+      title: Klavírista
+    bench-active:
+      title: Lavička aktivní
+    desktop-client-active:
+      title: Přístup k aplikaci prohlížeče
+      disabled: Aplikace prohlížeče je pro toto piano zakázána
+    detect-key-active:
+      title: Stisk kláves klavíru
+    sounds:
+      title: Zvuky
+    piano-options:
+      title: Možnosti klavíru
+    clear:
+      title: Obnovit klavír
+      message-1: Může být užitečné, když byl server náhle vypnut
+      message-2: a starý model klavíru nebyl řádně odstraněn.
+      message-3: Zkuste také použít /reload k vymazání všech pian
+      message-clear: Piano se osvěžilo
+    midi-player:
+      title: Midi hráč
+      desc: Přehrávejte soubory MIDI na tomto klavíru. Soubory by měly být umístěny
+        v plugins/JW_Piano/midi
+    bench:
+      title: Lavice
+    color:
+      title: Barva
+    volume:
+      title: Hlasitost
+  midi-player:
+    title: MIDI přehrávač
+    speed:
+      title: Rychlost
+    state:
+      title: Stav MIDI přehrávače
+      stop: Zastavil
+      play: Hraní
+      click:
+        left: Změňte stav MIDI přehrávače
+    song:
+      click:
+        left: Vyberte MIDI
+        right: Odebrat MIDI
+        shift: Nastavit skladbu jako aktuální
+      title: Umístěte MIDI skladbu
+    next:
+      title: Další píseň
+    previous:
+      title: Předchozí skladba
+    mode:
+      title: Režim
+      random:
+        title: Náhodný
+        desc: Skladby se budou přehrávat v náhodném pořadí
+      loop:
+        title: Smyčka
+        desc: Aktuální skladba se bude přehrávat navždy ve smyčce
+      in-order:
+        title: V pořádku
+        desc: Písničky se budou hrát jedna po druhé
+  bench:
+    title: Nastavení lavičky
+    reset:
+      title: Resetovat polohu
+      desc: Teleportujte lavici do výchozího umístění
+    move:
+      title: Hýbat se
+      axis:
+        x: vpravo vlevo
+        y: nahoru / dolů
+        z: dopředu Dozadu
+      desc:
+        message-1: Výchozí umístění vám nemusí vyhovovat.
+        message-2: Ale lze to upravit rolováním myší
+      click:
+        shift: Upravit pozici
+  keyboard:
+    title: Nastavení klávesnice
+    chat:
+      info: Chcete-li chatovat, zadejte číslo MIDI stopy
+      error: Neplatná hodnota, povoleno pouze číslo
+    click:
+      left: Změnit barvu
+      shift: Změňte číslo MIDI stopy
+    default-color:
+      title: Výchozí barva tisku
+    midi-track:
+      title: Přidat MIDI stopu
+      desc:
+        line-1: Většinou má MIDI 2 stopy
+        line-2: 1 -> pro pravou ruku
+        line-3: 2 -> pro levou ruku
+        line-4: ale můžete jich přidat víc
+      click:
+        left: Přidat novou MIDI stopu
+skins:
+  none: žádný
+  grand-piano: křídlo
+  upright-piano: pianino
+  electric-piano: elektrické piano
+  grand-piano-closed: křídlo zavřené
+piano:
+  create:
+    error-too-much: Na server nelze přidat další klavíry
+    error: Nelze přidat nové piano
+commands:
+  piano:
+    desc: otevře GUI, kde můžete vytvářet/upravovat/mazat piana

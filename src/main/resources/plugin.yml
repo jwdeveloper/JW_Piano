@@ -1,68 +1,63 @@
 name: JW_Piano
 version: ${project.version}
-main: jw.piano.spigot.Main
+main: jw.piano.spigot.PianoPluginMain
+author: JW
+description: Basically It adds pianos and MIDI player to Minecraft
 api-version: 1.17
 #====================================================================================================
 #                                                   Permissions
 #====================================================================================================
 permissions:
 
+  # ======================================== jw-piano =================================
   jw-piano.*:
-    children:
-      - jw-piano.piano.*
-      - jw-piano.commands.*
-      - jw-piano.gui.*
+    description: full access
 
+  # ======================================== jw-piano.piano ===========================
   jw-piano.piano.*:
-    children:
-      - jw-piano.piano.Keyboard.*
-      - jw-piano.piano.Bench.*
-      - jw-piano.piano.pedal.*
+    description: full access
 
-  jw-piano.piano.Keyboard.*:
-    children:
-      - jw-piano.piano.Keyboard.use
+  # ======================================== jw-piano.piano.keyboard ==================
+  jw-piano.piano.keyboard.*:
+    description: full access
 
-  jw-piano.piano.Keyboard.use:
+  jw-piano.piano.keyboard.use:
     description: player click on the piano keys
 
-  jw-piano.piano.Bench.*:
-    children:
-      - jw-piano.piano.Bench.use
+  # ======================================== jw-piano.piano.bench =====================
+  jw-piano.piano.bench.*:
+    description: full access
 
-  jw-piano.piano.Bench.use:
+  jw-piano.piano.bench.use:
     description: player sit on the bench
 
+  # ======================================== jw-piano.piano.pedal =====================
   jw-piano.piano.pedal.*:
-    children:
-      - jw-piano.piano.pedal.use
+    description: full access
 
   jw-piano.piano.pedal.use:
     description: player can push sustain pedal with 'f' press
 
+  # ======================================== jw-piano.commands ========================
   jw-piano.commands.*:
-    children:
-      - jw-piano.commands.piano
+    description: full access
 
   jw-piano.commands.piano:
     description: player can open piano list gui
 
-  jw-piano.gui.*:
-    children:
-      - jw-piano.gui.midi-player.*
-      - jw-piano.gui.bench.*
-      - jw-piano.gui.piano.*
-      - jw-piano.gui.piano-list.*
+  jw-piano.commands.lang:
+    description: Allow player to change plugin language
 
+  jw-piano.commands.update:
+    description: players with this permission can update plugin
+
+  # ======================================== jw-piano.gui =============================
+  jw-piano.gui.*:
+    description: full access
+
+  # ======================================== jw-piano.gui.midi-player =================
   jw-piano.gui.midi-player.*:
-    children:
-      - jw-piano.gui.midi-player.speed
-      - jw-piano.gui.midi-player.player-type
-      - jw-piano.gui.midi-player.next-song
-      - jw-piano.gui.midi-player.previous-song
-      - jw-piano.gui.midi-player.play-stop
-      - jw-piano.gui.midi-player.select-song
-      - jw-piano.gui.midi-player.remove-song
+    description: full access
 
   jw-piano.gui.midi-player.speed:
     description: player can change speed of midi player
@@ -85,31 +80,23 @@ permissions:
   jw-piano.gui.midi-player.remove-song:
     description: player can remove song from MIDI player
 
+  # ======================================== jw-piano.gui.bench =======================
   jw-piano.gui.bench.*:
-    children:
-      - jw-piano.gui.bench.move
-      - jw-piano.gui.bench.settings.*
+    description: full access
 
   jw-piano.gui.bench.move:
     description: player can move bench around
 
+  # ======================================== jw-piano.gui.bench.settings ==============
   jw-piano.gui.bench.settings.*:
-    children:
-      - jw-piano.gui.bench.settings.active
+    description: full access
 
   jw-piano.gui.bench.settings.active:
     description: player can disable bench
 
+  # ======================================== jw-piano.gui.piano =======================
   jw-piano.gui.piano.*:
-    children:
-      - jw-piano.gui.piano.generate-token
-      - jw-piano.gui.piano.volume
-      - jw-piano.gui.piano.rename
-      - jw-piano.gui.piano.teleport
-      - jw-piano.gui.piano.skin
-      - jw-piano.gui.piano.effect
-      - jw-piano.gui.piano.sound
-      - jw-piano.gui.piano.settings.*
+    description: full access
 
   jw-piano.gui.piano.generate-token:
     description: player can generate token for desktop app
@@ -132,12 +119,12 @@ permissions:
   jw-piano.gui.piano.sound:
     description: player can change piano sound
 
+  jw-piano.gui.piano.clear:
+    description: player can refresh piano model
+
+  # ======================================== jw-piano.gui.piano.settings ==============
   jw-piano.gui.piano.settings.*:
-    children:
-      - jw-piano.gui.piano.settings.piano-active
-      - jw-piano.gui.piano.settings.keyboard-pressing-active
-      - jw-piano.gui.piano.settings.pedal-pressing-active
-      - jw-piano.gui.piano.settings.desktop-app-active
+    description: full access
 
   jw-piano.gui.piano.settings.piano-active:
     description: piano can be disabled but not removed
@@ -151,13 +138,20 @@ permissions:
   jw-piano.gui.piano.settings.desktop-app-active:
     description: piano will receiving data from desktop-app
 
+  jw-piano.gui.piano.settings.pianist-active:
+    description: pianist will appear and start playing
+
+  # ======================================== jw-piano.gui.piano-list ==================
   jw-piano.gui.piano-list.*:
-    children:
-      - jw-piano.gui.piano-list.create
-      - jw-piano.gui.piano-list.remove
+    description: full access
 
   jw-piano.gui.piano-list.create:
     description: player can create piano
 
   jw-piano.gui.piano-list.remove:
     description: player can remove piano
+
+
+
+
+

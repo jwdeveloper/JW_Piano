@@ -1,3 +1,28 @@
+/*
+ * JW_PIANO  Copyright (C) 2023. by jwdeveloper
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the "Software"), to deal in the Software
+ *  without restriction, including without limitation the rights to use, copy, modify, merge,
+ *  and/or sell copies of the Software, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies
+ * or substantial portions of the Software.
+ *
+ * The Software shall not be resold or distributed for commercial purposes without the
+ * express written consent of the copyright holder.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ *  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+ * OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ *
+ *
+ */
+
 package jw.piano.spigot.gui.bench;
 
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
@@ -6,6 +31,7 @@ import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent.api.desing_patterns.observer.implementation.Observer;
 import jw.fluent.api.player_context.api.PlayerContext;
 import jw.fluent.api.spigot.gui.fluent_ui.FluentChestUI;
+import jw.fluent.api.spigot.gui.fluent_ui.observers.list.checkbox.CheckBox;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.chest_ui.ChestUI;
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
@@ -13,13 +39,15 @@ import jw.piano.api.data.PluginPermissions;
 import jw.piano.api.data.PluginTranslations;
 import jw.piano.api.data.dto.BenchMove;
 import jw.piano.api.data.enums.AxisMove;
+import jw.piano.api.observers.PianoDataObserver;
 import jw.piano.api.piano.Piano;
-import jw.piano.api.observers.PianoObserver;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @PlayerContext
 @Injection(lifeTime = LifeTime.SINGLETON)
@@ -28,8 +56,11 @@ public class BenchViewGui extends ChestUI {
     private final FluentChestUI fluentUI;
     private final Observer<AxisMove> axisObserver;
     private AxisMove axisMove;
-    private PianoObserver dataObserver;
+    private PianoDataObserver dataObserver;
     private Piano piano;
+
+
+    private List<CheckBox> checkBoxes;
 
     @Inject
     public BenchViewGui(FluentTranslator lang, FluentChestUI chestUI) {
@@ -37,6 +68,7 @@ public class BenchViewGui extends ChestUI {
         this.lang = lang;
         this.fluentUI = chestUI;
         axisObserver = new Observer<>(this, "axisMove");
+        checkBoxes = new ArrayList<>();
     }
 
     public void open(Player player, Piano piano) {
@@ -47,23 +79,31 @@ public class BenchViewGui extends ChestUI {
 
     @Override
     protected void onOpen(Player player) {
-        fluentUI.buttonFactory()
-                .observeBool(() -> dataObserver.getBenchActiveBind())
-                .setPermissions(PluginPermissions.GUI.BENCH.SETTINGS.ACTIVE)
-                .setDescription(options ->
-                {
-                    options.setTitle(lang.get("gui.piano.bench-active.title"));
-                })
-                .setLocation(0, 1)
-                .build(this);
+
+        checkBoxes.clear();
+        checkBoxes.add(new CheckBox(
+                lang.get(PluginTranslations.GUI.PIANO.BENCH_ACTIVE.TITLE),
+                dataObserver.getBenchSettings().getActive(),
+                PluginPermissions.GUI.BENCH.SETTINGS.ACTIVE));
     }
 
     @Override
     public void onInitialize() {
 
         setBorderMaterial(Material.LIGHT_BLUE_STAINED_GLASS_PANE);
-        setTitlePrimary(PluginTranslations.GUI.BENCH.TITLE);
+        setTitlePrimary(lang.get(PluginTranslations.GUI.BENCH.TITLE));
         var axis = Arrays.stream(AxisMove.values()).toList();
+        fluentUI.buttonFactory().observeCheckBoxList(this, () -> checkBoxes, checkBoxListNotifierOptions ->
+                {
+                })
+                .setDescription(descriptionInfoBuilder ->
+                {
+                    descriptionInfoBuilder.setTitle(lang.get(PluginTranslations.GUI.BENCH.TITLE));
+                })
+                .setMaterial(Material.REPEATER)
+                .setLocation(0, 1)
+                .build(this);
+
         fluentUI.buttonFactory()
                 .observeList(() -> axisObserver, () -> axis, options ->
                 {

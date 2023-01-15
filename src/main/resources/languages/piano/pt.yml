@@ -1,0 +1,158 @@
+general:
+  info: Informações do piano
+gui:
+  base:
+    insert:
+      desc: Criar novo piano
+    delete:
+      desc: Remover um piano
+      error: Não foi possível remover o piano
+    active:
+      title: Ativo
+  piano-list:
+    title: lista de piano
+    resourcepack:
+      title: Obter pacote de recursos
+      desc: Clique aqui para obter a versão atual do pacote de recursos
+      click:
+        left: Baixe o pacote de recursos para minecraft
+        right: Enviar link do pacote de recursos
+    client-app:
+      title: Obter aplicativo cliente
+      desc: Clique aqui para obter a versão atual do aplicativo do navegador
+      message: Clique aqui para baixar o aplicativo do navegador
+    click:
+      error: Não foi possível encontrar o piano
+  piano:
+    teleport:
+      title: teleporte
+    effect:
+      title: Efeito
+    skin:
+      title: Pele
+    keyboard:
+      title: teclado de piano
+      desc: Mude as cores das teclas do piano
+    rename:
+      desc: Defina o nome do piano personalizado
+      message-1: Escreva o nome do novo piano no chat
+      title: Nome do conjunto
+    token:
+      title: Clique para copiar o token
+      message-2: O valor será copiado após o clique
+      click-to-copy: Clique para copiar o token
+      error: Não é possível gerar o link, erro desconhecido
+      message-1: Copie e cole o token no aplicativo do navegador Piano
+      desc: Conecte seu piano real ou reproduza arquivos MIDI com um aplicativo de
+        navegador. Você precisa atualizar o Token toda vez que o IP do servidor na
+        configuração for alterado
+    pedal-active:
+      title: Pressione o pedal em 'f' clique
+    pianist-active:
+      title: Pianista
+    bench-active:
+      title: banco ativo
+    desktop-client-active:
+      title: Acesso ao aplicativo do navegador
+      disabled: O aplicativo do navegador está desativado para este piano
+    detect-key-active:
+      title: Pressionando as teclas do piano
+    sounds:
+      title: Sons
+    piano-options:
+      title: opções de piano
+    clear:
+      title: Atualizar piano
+      message-1: Pode ser útil quando o servidor foi desligado repentinamente
+      message-2: e o modelo de piano antigo não foi removido corretamente.
+      message-3: Tente também usar /reload para limpar todos os pianos
+      message-clear: O piano foi atualizado
+    midi-player:
+      title: reprodutor midi
+      desc: Reproduza arquivos MIDI neste piano. Os arquivos devem estar localizados
+        em plugins/JW_Piano/midi
+    bench:
+      title: Banco
+    color:
+      title: Cor
+    volume:
+      title: Loudness
+  midi-player:
+    title: reprodutor MIDI
+    speed:
+      title: Velocidade
+    state:
+      title: Estado do reprodutor MIDI
+      stop: Parou
+      play: Jogando
+      click:
+        left: Alterar o estado do reprodutor MIDI
+    song:
+      click:
+        left: Selecione MIDI
+        right: Remover MIDI
+        shift: Definir música como atual
+      title: Colocar música MIDI
+    next:
+      title: Próxima música
+    previous:
+      title: música anterior
+    mode:
+      title: Modo
+      random:
+        title: Aleatório
+        desc: As músicas serão tocadas em ordem aleatória
+      loop:
+        title: Laço
+        desc: A música atual será tocada para sempre em loop
+      in-order:
+        title: Em ordem
+        desc: As músicas serão tocadas uma após a outra
+  bench:
+    title: configurações de banco
+    reset:
+      title: Redefinir posição
+      desc: Bancada de teletransporte para seu local padrão
+    move:
+      title: Jogada
+      axis:
+        x: direita esquerda
+        y: cima baixo
+        z: para a frente / para trás
+      desc:
+        message-1: O local padrão pode não caber em você.
+        message-2: Mas pode editar por rolagem do mouse
+      click:
+        shift: Editar posição
+  keyboard:
+    title: Configurações do teclado
+    chat:
+      info: Digite o número da faixa MIDI para conversar
+      error: Valor inválido, apenas número permitido
+    click:
+      left: Mudar cor
+      shift: Alterar o número da faixa MIDI
+    default-color:
+      title: Cor de impressão padrão
+    midi-track:
+      title: Adicionar faixa MIDI
+      desc:
+        line-1: Principalmente MIDI tem 2 faixas
+        line-2: 1 -> para a mão direita
+        line-3: 2 -> para a mão esquerda
+        line-4: mas você pode adicionar mais deles
+      click:
+        left: Adicionar nova faixa MIDI
+skins:
+  none: Nenhum
+  grand-piano: piano de cauda
+  upright-piano: piano vertical
+  electric-piano: piano elétrico
+  grand-piano-closed: piano de cauda fechado
+piano:
+  create:
+    error-too-much: Não é possível adicionar mais pianos no servidor
+    error: Não foi possível adicionar um novo piano
+commands:
+  piano:
+    desc: abre GUI onde você pode criar/editar/excluir pianos

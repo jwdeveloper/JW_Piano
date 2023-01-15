@@ -1,7 +1,33 @@
+/*
+ * JW_PIANO  Copyright (C) 2023. by jwdeveloper
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the "Software"), to deal in the Software
+ *  without restriction, including without limitation the rights to use, copy, modify, merge,
+ *  and/or sell copies of the Software, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies
+ * or substantial portions of the Software.
+ *
+ * The Software shall not be resold or distributed for commercial purposes without the
+ * express written consent of the copyright holder.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ *  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+ * OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ *
+ *
+ */
+
 package jw.piano.spigot.piano.token;
 
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import jw.fluent.api.utilites.LinkMessageUtility;
 import jw.fluent.api.utilites.java.StringUtils;
 import jw.fluent.api.utilites.messages.Emoticons;
 import jw.fluent.plugin.implementation.modules.mediator.FluentMediator;
@@ -18,7 +44,6 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.entity.Player;
 
-@Injection
 public class TokenGeneratorImpl implements TokenGenerator {
 
     private PianoData pianoData;
@@ -34,7 +59,7 @@ public class TokenGeneratorImpl implements TokenGenerator {
 
     public String generateAndSend(Player player) {
         if (!pianoData.getDesktopClientAllowed()) {
-            FluentMessage.message().color(org.bukkit.ChatColor.AQUA).bold().inBrackets(PluginTranslations.GENERAL.INFO).space().
+            FluentMessage.message().color(org.bukkit.ChatColor.AQUA).bold().inBrackets(lang.get(PluginTranslations.GENERAL.INFO)).space().
                     reset().
                     text(lang.get(PluginTranslations.GUI.PIANO.DESKTOP_CLIENT_ACTIVE.DISABLED)).send(player);
             return StringUtils.EMPTY;
@@ -50,7 +75,7 @@ public class TokenGeneratorImpl implements TokenGenerator {
         FluentMessage.message()
                 .color(org.bukkit.ChatColor.AQUA)
                 .bold()
-                .inBrackets(PluginTranslations.GENERAL.INFO)
+                .inBrackets(lang.get(PluginTranslations.GENERAL.INFO))
                 .space()
                 .reset()
                 .text(lang.get(PluginTranslations.GUI.PIANO.TOKEN.MESSAGE_1)).send(player);
@@ -79,8 +104,10 @@ public class TokenGeneratorImpl implements TokenGenerator {
 
         player.sendMessage(" ");
         player.spigot().sendMessage(desktopAppMessage);
-        player.spigot().sendMessage(tokenCopyMessage);
+       // player.spigot().sendMessage(tokenCopyMessage);
         player.sendMessage(" ");
+
+        LinkMessageUtility.send(player,token,"Desktop app access token");
         return token;
     }
 
