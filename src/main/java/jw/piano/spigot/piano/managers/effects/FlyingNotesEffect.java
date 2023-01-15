@@ -1,16 +1,45 @@
+/*
+ * JW_PIANO  Copyright (C) 2023. by jwdeveloper
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the "Software"), to deal in the Software
+ *  without restriction, including without limitation the rights to use, copy, modify, merge,
+ *  and/or sell copies of the Software, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies
+ * or substantial portions of the Software.
+ *
+ * The Software shall not be resold or distributed for commercial purposes without the
+ * express written consent of the copyright holder.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ *  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+ * OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ *
+ *
+ */
+
 package jw.piano.spigot.piano.managers.effects;
 
-import jw.fluent.plugin.implementation.FluentApi;
-import jw.piano.api.data.PluginConsts;
-import jw.piano.api.data.enums.PianoKeysConst;
-import jw.piano.api.managers.effects.EffectInvoker;
-import jw.piano.core.factory.ArmorStandFactory;
 import jw.fluent.api.spigot.tasks.SimpleTaskTimer;
+import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.modules.tasks.FluentTasks;
+import jw.piano.api.data.PluginConsts;
+import jw.piano.api.data.PluginModels;
+import jw.piano.api.data.models.PianoData;
+import jw.piano.api.managers.effects.EffectInvoker;
+import jw.piano.api.piano.keyboard.PianoKey;
+import jw.piano.core.factory.ArmorStandFactory;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,19 +53,24 @@ public class FlyingNotesEffect implements EffectInvoker {
     private SimpleTaskTimer taskTimer;
     private final ArmorStandFactory armorStandFactory;
 
-    public FlyingNotesEffect() {
+    private final PianoData pianoData;
+
+    public FlyingNotesEffect(PianoData pianoData) {
         notes = new ArrayList<>(200);
+        this.pianoData = pianoData;
         armorStandFactory = FluentApi.container().findInjection(ArmorStandFactory.class);
-
+        taskTimer = FluentTasks.taskTimer(1, this::onTask);
     }
 
-    @Override
-    public String getName() {
-        return "flying notes";
-    }
 
     @Override
-    public void onNote(Location location, int noteIndex, int sensivity) {
+    public void onNote(PianoKey pianoKey, Location location, int noteIndex, int velocity, Color color, boolean isPressed) {
+
+        if(!isPressed)
+        {
+            return;
+        }
+
         if (worldMaxHeight == -1) {
             worldMaxHeight = location.getY() + maxHeight;
         }
@@ -44,46 +78,59 @@ public class FlyingNotesEffect implements EffectInvoker {
         location = location.clone().add(0, 0, 0);
         var note = notes.stream().filter(c -> c.free).findFirst();
         if (note.isPresent()) {
-            note.get().enable(location);
+            note.get().enable(location, color);
             return;
         }
 
         var flyingNote = new FlyingNote(noteIndex, location);
-        flyingNote.enable(location);
+        flyingNote.enable(location, color);
         notes.add(flyingNote);
+    }
+
+
+    public void onTask(int iteration, SimpleTaskTimer task) {
+        for (var note : notes) {
+
+            if (note.disabled) {
+                note.postDisable();
+                continue;
+            }
+
+            if (note.free) {
+                continue;
+            }
+            if (note.location.getY() + speed > worldMaxHeight) {
+                note.disable();
+                continue;
+            }
+
+            note.move();
+        }
     }
 
     @Override
     public void onDestroy() {
+        taskTimer.stop();
         for (var note : notes) {
             note.armorStand.remove();
         }
-        taskTimer.stop();
+        notes.clear();
     }
 
     @Override
     public void onCreate() {
-        notes.clear();
-        taskTimer = FluentTasks.taskTimer(1, (iteration, task) ->
-        {
-            for (var note : notes) {
+        taskTimer.run();
+    }
 
-                if (note.disabled) {
-                    note.postDisable();
-                    continue;
-                }
+    @Override
+    public void refresh() {
+        onDestroy();
+        onCreate();
+    }
 
-                if (note.free) {
-                    continue;
-                }
-                if (note.location.getY() + speed > worldMaxHeight) {
-                    note.disable();
-                    continue;
-                }
-
-                note.move();
-            }
-        }).run();
+    @Override
+    public String getName() {
+        return "flying notes";
     }
 
 
@@ -102,16 +149,22 @@ public class FlyingNotesEffect implements EffectInvoker {
 
         public static FlyingNote instance;
 
+        int disableLocks = 7;
+        int maxDisableLocks = 7;
+        boolean disabled = false;
+
         public FlyingNote(int index, Location location) {
             this.location = location;
             this.lastLoc = location;
             pianoY = location.getY();
-            armorStand = armorStandFactory.create(location, "");
+            armorStand = armorStandFactory.create(location, pianoData.getUuid().toString());
             armorStand.setSmall(true);
+
+
             itemStack = new ItemStack(PluginConsts.MATERIAL, 1);
             air = new ItemStack(Material.AIR, 1);
             var meta = itemStack.getItemMeta();
-            meta.setCustomModelData(PianoKeysConst.FLYING_NOTE.getId());
+            meta.setCustomModelData(PluginModels.FLYINGNOTE.id());
             itemStack.setItemMeta(meta);
             locks = maxLocks;
             if (instance == null) {
@@ -120,12 +173,15 @@ public class FlyingNotesEffect implements EffectInvoker {
         }
 
 
-        public void enable(Location location) {
+        public void enable(Location location, Color color) {
             this.lastLoc = this.location;
             this.location = location.clone();
-            //  armorStand.teleport(location);
-            //    armorStand.setHelmet(itemStack);
-            //   FluentLogger.log(lastLoc.getY()+" - "+location.getY());
+
+
+            if (itemStack.getItemMeta() instanceof LeatherArmorMeta meta) {
+                meta.setColor(color);
+                itemStack.setItemMeta(meta);
+            }
             free = false;
         }
 
@@ -133,22 +189,19 @@ public class FlyingNotesEffect implements EffectInvoker {
             locks -= 1;
             if (locks == 5) {
                 armorStand.teleport(location);
+
             }
 
             if (locks == 1) {
-                armorStand.setHelmet(itemStack);
+                armorStand.getEquipment().setHelmet(itemStack);
             }
 
             if (locks <= 0) {
                 armorStand.teleport(location.add(0, speed, 0));
             }
-            //   armorStand.teleport(location.add(0,speed,0));
+
 
         }
-
-        int disableLocks = 7;
-        int maxDisableLocks = 7;
-        boolean disabled = false;
 
 
         public void postDisable() {
@@ -158,17 +211,14 @@ public class FlyingNotesEffect implements EffectInvoker {
             }
             if (disableLocks == 4) {
                 armorStand.teleport(new Location(location.getWorld(), location.getX(), pianoY, location.getZ()));
-                //FluentLogger.log("teleporting");
             }
 
             if (disableLocks == 0) {
                 free = true;
                 locks = maxLocks;
                 disabled = false;
-                //FluentLogger.log("ready");
             }
             disableLocks--;
-            // FluentLogger.log("post disable");
         }
 
         public void disable() {

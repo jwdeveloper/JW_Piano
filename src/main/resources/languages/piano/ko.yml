@@ -1,0 +1,155 @@
+gui:
+  base:
+    insert:
+      desc: 피아노 만들기
+    delete:
+      desc: 피아노 제거하기
+      error: 피아노를 제거 할 수 없습니다
+    active:
+      title: 활성
+  piano-list:
+    title: 피아노 메뉴
+    resourcepack:
+      title: 리소스팩 받기
+      desc: 클릭하여 현재 버전에 맞는 리소스팩을 받습니다
+      click:
+        left: 마인크래프트에 리소스팩 다운로드
+        right: 리소스팩 링크 보내기
+    client-app:
+      title: 피아노 설정 앱
+      desc: 현재 버전의 브라우저 앱을 다운로드하려면 여기를 클릭하십시오.
+      message: 브라우저 앱을 다운로드하려면 여기를 클릭하십시오.
+    click:
+      error: 피아노를 찾을 수 없습니다
+  piano:
+    teleport:
+      title: 이동
+    effect:
+      title: 효과
+    skin:
+      title: 스킨
+    rename:
+      desc: 피아노 이름을 커스터마이징 합니다
+      message-1: 피아노 이름을 적어주세요
+      title: 이름 설정
+    token:
+      title: 클릭하여 토큰을 복사합니다.
+      message-2: 토큰의 값은 채팅창을 클릭하면 자동 복사됩니다
+      click-to-copy: 클릭하여 토큰을 복사합니다
+      error: 링크를 생성할수 없습니다. 알수없는 오류.
+      message-1: 피아노 브라우저 앱에 토큰 복사 및 붙여넣기
+      desc: 브라우저 앱으로 실제 피아노를 연결하거나 MIDI 파일을 재생하세요. 구성의 서버 IP가 변경될 때마다 토큰을 새로고침해야 합니다.
+    pedal-active:
+      title: F를 눌러 페달을 활성 합니다
+    pianist-active:
+      title: Pianist
+    bench-active:
+      title: 벤치 활성화
+    desktop-client-active:
+      title: 브라우저 앱 액세스
+      disabled: 이 피아노에는 브라우저 앱이 비활성화되어 있습니다.
+    detect-key-active:
+      title: 활성 피아노 건반 누르기
+    sounds:
+      title: 사운드
+    piano-options:
+      title: 피아노 옵션들
+    clear:
+      title: 초기화
+      message-1: 서버가 갑자기 닫혔을 때 유용할 수 있습니다.
+      message-2: 또한 오래된 피아노 객체가 제대로 제거 되지 않을때 유용합니다.
+      message-3: /reload를 사용하여 피아노를 모두 초기화 가능합니다.
+      message-clear: 피아노가 새로 고침 되었습니다.
+    midi-player:
+      title: 미디 플레이어
+      desc: 이 피아노에서 미디파일을 실행합니다. 파일은 plugins/JW_Paino/midi 안에 배치하면됩니다.
+    bench:
+      title: 의자
+    color:
+      title: 색깔
+    keyboard:
+      title: 피아노 키보드
+      desc: 피아노 건반의 색상 변경
+    volume:
+      title: 라우드니스
+  midi-player:
+    title: 미디 플레이어
+    speed:
+      title: 속도
+    state:
+      title: 플레이어 속성
+      stop: 연주 중지
+      play: 연주 중
+      click:
+        left: MIDI 플레이어 상태 변경
+    song:
+      click:
+        left: 미디 선택
+        right: 미디 제거
+        shift: 음악을 현재 음악으로 설정합니다.
+      title: MIDI 곡 배치
+    next:
+      title: 다음 음악
+    previous:
+      title: 이전 음악
+    mode:
+      title: 모드
+      random:
+        title: 랜덤
+        desc: 음악이 랜덤으로 재생됩니다.
+      loop:
+        title: 반복
+        desc: 현재 음악이 무한으로 반복됩니다.
+      in-order:
+        title: 순서대로
+        desc: 음악이 순차적으로 재생됩니다.
+  bench:
+    title: 의자 세팅
+    reset:
+      title: 위치 초기화
+      desc: 피아노 의자를 기본 값으로 초기화 합니다.
+    move:
+      title: 위치 변경
+      axis:
+        x: 우측으로 이동 / 좌측으로 이동
+        y: 위로 이동 / 밑으로 이동
+        z: 앞으로 이동 / 뒤로 이동
+      desc:
+        message-1: 기본 위치가 알맞지 않을 수 있습니다.
+        message-2: 허나 마우스 스크롤을 통하여 위치를 수정 할 수 있습니다.
+      click:
+        shift: 위치를 수정합니다.
+  keyboard:
+    title: 키보드 설정
+    click:
+      left: 색상 변경
+      shift: MIDI 트랙 번호 변경
+    default-color:
+      title: 기본 프레스 색상
+    midi-track:
+      title: 미디 트랙 추가
+      desc:
+        line-1: 대부분 MIDI에는 2개의 트랙이 있습니다.
+        line-2: 1 -> 오른손용
+        line-3: 2 -> 왼손용
+        line-4: 하지만 더 추가할 수 있습니다.
+      click:
+        left: 새 MIDI 트랙 추가
+    chat:
+      info: 채팅하려면 MIDI 트랙 번호를 입력하세요.
+      error: 잘못된 값, 숫자만 허용됨
+skins:
+  none: 없음
+  grand-piano: 그랜드 피아노
+  upright-piano: 업라이트 피아노
+  electric-piano: 전자 피아노
+  grand-piano-closed: 그랜드 피아노가 닫혔습니다.
+commands:
+  piano:
+    desc: 피아노를 생성/수정/삭제 가능한 곳에서 GUI를 엽니다.
+general:
+  info: Piano info
+piano:
+  create:
+    error-too-much: 서버에 피아노를 더 추가할 수 없습니다.
+    error: 새 피아노를 추가할 수 없습니다.

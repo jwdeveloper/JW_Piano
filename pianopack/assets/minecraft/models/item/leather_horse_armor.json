@@ -1,0 +1,24 @@
+{
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "minecraft:item/leather_horse_armor"
+    },
+    "overrides": [
+        { "predicate": {  "custom_model_data": 167072 } , "model": "item/jw/bench" },
+        { "predicate": {  "custom_model_data": 167073 } , "model": "item/jw/flyingnote" },
+        { "predicate": {  "custom_model_data": 167074 } , "model": "item/jw/icons/icon" },
+        { "predicate": {  "custom_model_data": 167075 } , "model": "item/jw/key/piano_black_key" },
+        { "predicate": {  "custom_model_data": 167076 } , "model": "item/jw/key/piano_black_key_down" },
+        { "predicate": {  "custom_model_data": 167077 } , "model": "item/jw/key/piano_key" },
+        { "predicate": {  "custom_model_data": 167078 } , "model": "item/jw/key/piano_key_down" },
+        { "predicate": {  "custom_model_data": 167079 } , "model": "item/jw/pedal/piano_pedal" },
+        { "predicate": {  "custom_model_data": 167080 } , "model": "item/jw/pedal/piano_pedal_down" },
+        { "predicate": {  "custom_model_data": 167081 } , "model": "item/jw/pianist/pianist_body" },
+        { "predicate": {  "custom_model_data": 167082 } , "model": "item/jw/pianist/pianist_hands" },
+        { "predicate": {  "custom_model_data": 167083 } , "model": "item/jw/pianist/pianist_head" },
+        { "predicate": {  "custom_model_data": 167084 } , "model": "item/jw/piano/electric_piano" },
+        { "predicate": {  "custom_model_data": 167085 } , "model": "item/jw/piano/grand_piano" },
+        { "predicate": {  "custom_model_data": 167086 } , "model": "item/jw/piano/grand_piano_close" },
+        { "predicate": {  "custom_model_data": 167087 } , "model": "item/jw/piano/up_right_piano_close" }
+    ]
+}

@@ -1,0 +1,158 @@
+general:
+  info: Informazioni sul pianoforte
+gui:
+  base:
+    insert:
+      desc: Crea un nuovo pianoforte
+    delete:
+      desc: Rimuovi un pianoforte
+      error: Impossibile rimuovere il pianoforte
+    active:
+      title: Attivo
+  piano-list:
+    title: Elenco pianoforte
+    resourcepack:
+      title: Ottieni Resourcepack
+      desc: Fare clic qui per ottenere la versione corrente di resourcepack
+      click:
+        left: Scarica il pacchetto di risorse su minecraft
+        right: Invia collegamento al pacchetto di risorse
+    client-app:
+      title: Ottieni l'app client
+      desc: Fare clic qui per ottenere la versione corrente dell'app del browser
+      message: Fare clic qui per scaricare l'app del browser
+    click:
+      error: Impossibile trovare il pianoforte
+  piano:
+    teleport:
+      title: Teletrasporto
+    effect:
+      title: Effetto
+    skin:
+      title: Pelle
+    keyboard:
+      title: Tastiera di pianoforte
+      desc: Cambia i colori per i tasti del pianoforte
+    rename:
+      desc: Imposta il nome del pianoforte personalizzato
+      message-1: Scrivi il nome del nuovo pianoforte sulla chat
+      title: Imposta nome
+    token:
+      title: Fare clic per copiare il token
+      message-2: Il valore verrà copiato dopo il clic
+      click-to-copy: Fare clic per copiare il token
+      error: Impossibile generare il collegamento, errore sconosciuto
+      message-1: Copia e incolla il token nell'app del browser Piano
+      desc: Collega il tuo vero pianoforte o riproduci file MIDI con un'app browser,
+        devi aggiornare il token ogni volta che l'IP del server nella configurazione
+        verrà modificato
+    pedal-active:
+      title: Premere il pedale sul clic 'f'
+    pianist-active:
+      title: Pianista
+    bench-active:
+      title: Banco attivo
+    desktop-client-active:
+      title: Accesso all'app del browser
+      disabled: L'app browser è disabilitata per questo pianoforte
+    detect-key-active:
+      title: Premendo i tasti del pianoforte
+    sounds:
+      title: Suoni
+    piano-options:
+      title: Opzioni per pianoforte
+    clear:
+      title: Aggiorna il pianoforte
+      message-1: Potrebbe essere utile quando il server è stato improvvisamente spento
+      message-2: e il vecchio modello di pianoforte non è stato rimosso correttamente.
+      message-3: Prova anche a usare /reload per cancellare tutti i pianoforti
+      message-clear: Il pianoforte si è aggiornato
+    midi-player:
+      title: Lettore midi
+      desc: Riproduci file MIDI su questo pianoforte. I file dovrebbero trovarsi in
+        plugins/JW_Piano/midi
+    bench:
+      title: Panca
+    color:
+      title: Colore
+    volume:
+      title: Volume
+  midi-player:
+    title: riproduttore MIDI
+    speed:
+      title: Velocità
+    state:
+      title: Stato del lettore MIDI
+      stop: Fermato
+      play: Giocando
+      click:
+        left: Modifica lo stato del lettore MIDI
+    song:
+      click:
+        left: Seleziona MIDI
+        right: Rimuovi MIDI
+        shift: Imposta il brano come corrente
+      title: Posiziona la canzone MIDI
+    next:
+      title: Prossima canzone
+    previous:
+      title: Canzone precedente
+    mode:
+      title: Modalità
+      random:
+        title: Casuale
+        desc: I brani verranno riprodotti in ordine casuale
+      loop:
+        title: Ciclo continuo
+        desc: Il brano corrente verrà riprodotto per sempre in loop
+      in-order:
+        title: In ordine
+        desc: I brani verranno riprodotti uno dopo l'altro
+  bench:
+    title: Impostazioni del banco
+    reset:
+      title: Ripristina posizione
+      desc: Teletrasporta la panca nella sua posizione predefinita
+    move:
+      title: Mossa
+      axis:
+        x: destra sinistra
+        y: sottosopra
+        z: avanti indietro
+      desc:
+        message-1: La posizione predefinita potrebbe non essere adatta a te.
+        message-2: Ma può essere modificato scorrendo il mouse
+      click:
+        shift: Modifica posizione
+  keyboard:
+    title: Impostazioni della tastiera
+    chat:
+      info: Inserisci il numero della traccia MIDI per chattare
+      error: Valore non valido, solo numero consentito
+    click:
+      left: Cambia colore
+      shift: Cambia il numero della traccia MIDI
+    default-color:
+      title: Colore di stampa predefinito
+    midi-track:
+      title: Aggiungi traccia MIDI
+      desc:
+        line-1: Principalmente il MIDI ha 2 tracce
+        line-2: 1 -> per la mano destra
+        line-3: 2 -> per la mano sinistra
+        line-4: ma puoi aggiungerne altri
+      click:
+        left: Aggiungi nuova traccia MIDI
+skins:
+  none: nessuno
+  grand-piano: pianoforte a coda
+  upright-piano: piano verticale
+  electric-piano: pianoforte elettrico
+  grand-piano-closed: pianoforte a coda chiuso
+piano:
+  create:
+    error-too-much: Impossibile aggiungere altri pianoforti sul server
+    error: Impossibile aggiungere un nuovo pianoforte
+commands:
+  piano:
+    desc: apre la GUI dove puoi creare/modificare/eliminare i pianoforti

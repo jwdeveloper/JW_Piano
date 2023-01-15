@@ -1,24 +1,43 @@
+/*
+ * JW_PIANO  Copyright (C) 2023. by jwdeveloper
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the "Software"), to deal in the Software
+ *  without restriction, including without limitation the rights to use, copy, modify, merge,
+ *  and/or sell copies of the Software, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies
+ * or substantial portions of the Software.
+ *
+ * The Software shall not be resold or distributed for commercial purposes without the
+ * express written consent of the copyright holder.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ *  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+ * OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ *
+ *
+ */
+
 package jw.piano.core.workers;
 
 import jw.fluent.api.spigot.tasks.SimpleTaskTimer;
 import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
-import jw.piano.api.data.midi.reader.MidiData;
-import jw.piano.api.data.models.midi.PianoMidiFile;
-import jw.piano.api.midiplayer.midiparser.MidiParser;
-import jw.piano.api.midiplayer.midiparser.NoteFrame;
-import jw.piano.api.midiplayer.midiparser.NoteTrack;
-import jw.piano.api.midiplayer.midiparser.jw.PianoNodeEntry;
 import jw.piano.api.piano.Piano;
+import jw.piano.core.midi.MidiFile;
+import jw.piano.core.midi.NoteFrame;
 import lombok.Setter;
 
-import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 
 public class MidiPlayerWorker {
-    private Piano piano;
+    private final Piano piano;
     private NoteFrame[] frames;
     private int frameIndex = 0;
 
@@ -38,12 +57,16 @@ public class MidiPlayerWorker {
         this.piano = piano;
     }
 
-    public void start(NoteTrack track) {
+
+    private List<NoteFrame> framesToPlay;
+
+    public void start(MidiFile track) {
         stop();
         frames = track.getNotes();
         isStarted = true;
         frameIndex = 0;
-        task = FluentApi.tasks().taskTimer(1, (iteration, task) ->
+
+        task = FluentApi.tasks().taskTimer(00, (iteration, task) ->
         {
             if (frameIndex > frames.length - 1) {
                 task.cancel();
@@ -60,8 +83,8 @@ public class MidiPlayerWorker {
             }
             isStarted = false;
             frameIndex++;
-            List<NoteFrame> framesToPlayer = new LinkedList<>();
-            framesToPlayer.add(currentFrame);
+            framesToPlay = new LinkedList<>();
+            framesToPlay.add(currentFrame);
             long offset = speed;
             while (offset > 0) {
                 if (frameIndex > frames.length - 1) {
@@ -71,22 +94,21 @@ public class MidiPlayerWorker {
                 if (frames[frameIndex].getWait() > offset) {
                     break;
                 }
-                var f = frames[frameIndex];
-                offset = offset - f.getWait();
-                framesToPlayer.add(f);
+                var frame = frames[frameIndex];
+                offset = offset - frame.getWait();
+                framesToPlay.add(frame);
                 frameIndex++;
             }
 
-            for (var noteFrame : framesToPlayer) {
+            for (var noteFrame : framesToPlay) {
                 for (var note : noteFrame.getNotes()) {
-                    if (note instanceof PianoNodeEntry entry) {
-                        var sounds = (entry.getVelocity() * 100);
-                        switch (entry.getEvent()) {
-                            case 0 ->
-                                    piano.triggerNote((int) (entry.getVelocity() * 100), entry.getIndex(), (int) sounds);
-                            case 1 -> piano.triggerPedal(1, entry.getIndex(), 100);
-                            case 2 -> piano.getKeyboard().reset();
-                        }
+                    var volume = (note.getVelocity() * 100);
+                    switch (note.getEvent()) {
+                        case 0 ->
+                                piano.triggerNote((int) (note.getVelocity() * 100), note.getIndex(), (int) volume, note.getTrack());
+                        case 1 ->
+                                piano.triggerPedal((int) note.getVelocity(), note.getIndex(), (int) note.getVelocity());
+                        case 2 -> piano.getKeyboard().reset();
                     }
                 }
             }
