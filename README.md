@@ -25,7 +25,7 @@ Overall, this plugin would be a fun and unique addition to Minecraft, providing 
 ### Oraxen configuration
  -  Setup for all users that willing to use Piano with Oraxen
 
-[open piano Oraxen config file](https://github.com/jwdeveloper/JW_Piano/tree/master/src/main/resources/oraxen/jw_piano_oraxen_config.yml)
+[open piano Oraxen config file](https://github.com/jwdeveloper/JW_Piano/blob/master/src/main/resources/oraxen/jw_piano_oraxen_config.yml)
 
 ``` yaml
 #Generated template for Oraxen, It only contains models from pianopack
@@ -464,14 +464,38 @@ commands:
 # /piano
   piano: 
     children: 
+      - lang
       - colors
       - update
       - resourcepack
-      - lang
     permissions: 
       - jw-piano.commands.piano
     description: base plugin commands, /piano opens piano list
     usage: /piano
+# /piano lang <language>
+  lang: 
+    permissions: 
+      - lang
+    arguments: 
+      - language:
+          type: text
+          description: select language
+          options: 
+              - cs
+              - de
+              - en
+              - es
+              - fr
+              - it
+              - ko
+              - pl
+              - pt
+              - ru
+              - tr
+              - zh
+    description: Changes plugin languages, changes will be applied after server reload. Change be use both be player or console
+    usage: /piano lang <language>
+
 # colors
   colors: 
     children: 
@@ -508,30 +532,6 @@ commands:
     description: sending to player resourcepack link
     usage: /piano resourcepack link
 
-
-# /piano lang <language>
-  lang: 
-    permissions: 
-      - lang
-    arguments: 
-      - language:
-          type: text
-          description: select language
-          options: 
-              - cs
-              - de
-              - en
-              - es
-              - fr
-              - it
-              - ko
-              - pl
-              - pt
-              - ru
-              - tr
-              - zh
-    description: Changes plugin languages, changes will be applied after server reload. Change be use both be player or console
-    usage: /piano lang <language>
 
 
 
