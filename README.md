@@ -25,7 +25,7 @@ Overall, this plugin would be a fun and unique addition to Minecraft, providing 
 ### Oraxen configuration
  -  Setup for all users that willing to use Piano with Oraxen
 
-[open piano Oraxen config file](https://github.com/jwdeveloper/JW_Piano/tree/master/resources/oraxen/jw_piano_oraxen_config.yml)
+[open piano Oraxen config file](https://github.com/jwdeveloper/JW_Piano/tree/master/src/main/resources/oraxen/jw_piano_oraxen_config.yml)
 
 ``` yaml
 #Generated template for Oraxen, It only contains models from pianopack
