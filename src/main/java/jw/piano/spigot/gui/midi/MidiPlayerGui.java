@@ -38,6 +38,7 @@ import jw.fluent.api.utilites.messages.Emoticons;
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 import jw.piano.api.data.PluginConsts;
+import jw.piano.api.data.PluginModels;
 import jw.piano.api.data.PluginPermissions;
 import jw.piano.api.data.PluginTranslations;
 import jw.piano.api.data.models.midi.PianoMidiFile;
@@ -194,7 +195,7 @@ public class MidiPlayerGui extends ChestUI {
             }
             var song = optional.get();
 
-            button.setCustomMaterial(PluginConsts.MATERIAL, 450);
+            button.setCustomMaterial(PluginConsts.MATERIAL,  PluginModels.ICON.id());
             button.setDataContext(song);
             button.setColor(Color.WHITE);
             button.updateDescription(3, FluentApi.messages().chat().space().text(song.getName(), ChatColor.WHITE).toString());

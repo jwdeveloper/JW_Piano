@@ -154,7 +154,7 @@ public class PluginDocumentation extends DocumentationDecorator {
         addText(documentation);
         addText("Oraxen configuration", documentation, "bold","plugin-ignore");
         addListMember("Setup for all users that willing to use Piano with Oraxen", documentation);
-        addLink("open piano Oraxen config file","https://github.com/jwdeveloper/JW_Piano/tree/master/resources/oraxen/jw_piano_oraxen_config.yml", documentation);
+        addLink("open piano Oraxen config file","https://github.com/jwdeveloper/JW_Piano/blob/master/src/main/resources/oraxen/jw_piano_oraxen_config.yml", documentation);
 
         addYml(content, documentation,"plugin-ignore");
 

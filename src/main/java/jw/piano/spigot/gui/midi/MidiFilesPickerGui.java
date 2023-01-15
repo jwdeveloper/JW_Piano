@@ -32,6 +32,7 @@ import jw.fluent.api.player_context.api.PlayerContext;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.picker_list_ui.PickerUI;
 import jw.fluent.plugin.implementation.modules.mediator.FluentMediator;
 import jw.piano.api.data.PluginConsts;
+import jw.piano.api.data.PluginModels;
 import jw.piano.api.data.models.midi.PianoMidiFile;
 import jw.piano.core.mediator.midi.files.MidiFiles;
 import org.bukkit.Color;
@@ -71,7 +72,7 @@ public class MidiFilesPickerGui extends PickerUI<PianoMidiFile>
             setContentButtons(getMidiFiles(),(data, button) ->
             {
                 button.setTitlePrimary(data.getName());
-                button.setCustomMaterial(PluginConsts.MATERIAL, 450);
+                button.setCustomMaterial(PluginConsts.MATERIAL, PluginModels.ICON.id());
                 button.setDataContext(data);
                 button.setColor(Color.WHITE);
             });
