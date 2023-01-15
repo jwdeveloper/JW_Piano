@@ -14,7 +14,7 @@ Overall, this plugin would be a fun and unique addition to Minecraft, providing 
 [Download Desktop App](https://github.com/jwdeveloper/JW_Piano_Desktop/releases/latest/download/JW_Piano_Desktop.jar)
 
 
-[Download Resourcepack](https://download.mc-packs.net/pack/4d00dcb5c0eeb65464f37ced9c0c93551cd70bdc.zip)
+[Download Resourcepack](https://download.mc-packs.net/pack/5637db2609d0c73c45b80614db98053147e598ef.zip)
 
 
 
@@ -32,95 +32,14 @@ Overall, this plugin would be a fun and unique addition to Minecraft, providing 
 #Remember to refresh config when pianopack got updated
 #Note that when you change LEATHER_HORSE_ARMOR to other material functionalities as Colored keys, Pianos, will not work
 
-piano-key:
- displayname: piano key
+bench:
+ displayname: bench
  material: LEATHER_HORSE_ARMOR
  excludeFromInventory: true
  Pack:
   generate_model: false
-  model: item/jw/key/piano_key
-  custom_model_data: 102
-
-piano-key-down:
- displayname: piano key down
- material: LEATHER_HORSE_ARMOR
- excludeFromInventory: true
- Pack:
-  generate_model: false
-  model: item/jw/key/piano_key_down
-  custom_model_data: 103
-
-piano-black-key:
- displayname: piano black key
- material: LEATHER_HORSE_ARMOR
- excludeFromInventory: true
- Pack:
-  generate_model: false
-  model: item/jw/key/piano_black_key
-  custom_model_data: 104
-
-piano-black-key-down:
- displayname: piano black key down
- material: LEATHER_HORSE_ARMOR
- excludeFromInventory: true
- Pack:
-  generate_model: false
-  model: item/jw/key/piano_black_key_down
-  custom_model_data: 105
-
-piano-pedal:
- displayname: piano pedal
- material: LEATHER_HORSE_ARMOR
- excludeFromInventory: true
- Pack:
-  generate_model: false
-  model: item/jw/pedal/piano_pedal
-  custom_model_data: 106
-
-piano-pedal-down:
- displayname: piano pedal down
- material: LEATHER_HORSE_ARMOR
- excludeFromInventory: true
- Pack:
-  generate_model: false
-  model: item/jw/pedal/piano_pedal_down
-  custom_model_data: 107
-
-up-right-piano-close:
- displayname: up right piano close
- material: LEATHER_HORSE_ARMOR
- excludeFromInventory: true
- Pack:
-  generate_model: false
-  model: item/jw/piano/up_right_piano_close
-  custom_model_data: 108
-
-grand-piano:
- displayname: grand piano
- material: LEATHER_HORSE_ARMOR
- excludeFromInventory: true
- Pack:
-  generate_model: false
-  model: item/jw/piano/grand_piano
-  custom_model_data: 109
-
-electric-piano:
- displayname: electric piano
- material: LEATHER_HORSE_ARMOR
- excludeFromInventory: true
- Pack:
-  generate_model: false
-  model: item/jw/piano/electric_piano
-  custom_model_data: 110
-
-grand-piano-close:
- displayname: grand piano close
- material: LEATHER_HORSE_ARMOR
- excludeFromInventory: true
- Pack:
-  generate_model: false
-  model: item/jw/piano/grand_piano_close
-  custom_model_data: 111
+  model: item/jw/bench
+  custom_model_data: 167072
 
 flyingnote:
  displayname: flyingnote
@@ -129,43 +48,7 @@ flyingnote:
  Pack:
   generate_model: false
   model: item/jw/flyingnote
-  custom_model_data: 200
-
-pianist:
- displayname: pianist
- material: LEATHER_HORSE_ARMOR
- excludeFromInventory: true
- Pack:
-  generate_model: false
-  model: item/jw/pianist/pianist
-  custom_model_data: 300
-
-pianist-hands:
- displayname: pianist hands
- material: LEATHER_HORSE_ARMOR
- excludeFromInventory: true
- Pack:
-  generate_model: false
-  model: item/jw/pianist/pianist_hands
-  custom_model_data: 301
-
-pianist-head:
- displayname: pianist head
- material: LEATHER_HORSE_ARMOR
- excludeFromInventory: true
- Pack:
-  generate_model: false
-  model: item/jw/pianist/pianist_head
-  custom_model_data: 302
-
-bench:
- displayname: bench
- material: LEATHER_HORSE_ARMOR
- excludeFromInventory: true
- Pack:
-  generate_model: false
-  model: item/jw/bench
-  custom_model_data: 400
+  custom_model_data: 167073
 
 icon:
  displayname: icon
@@ -174,8 +57,187 @@ icon:
  Pack:
   generate_model: false
   model: item/jw/icons/icon
-  custom_model_data: 450
+  custom_model_data: 167074
 
+piano-black-key:
+ displayname: piano black key
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/key/piano_black_key
+  custom_model_data: 167075
+
+piano-black-key-down:
+ displayname: piano black key down
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/key/piano_black_key_down
+  custom_model_data: 167076
+
+piano-key:
+ displayname: piano key
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/key/piano_key
+  custom_model_data: 167077
+
+piano-key-down:
+ displayname: piano key down
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/key/piano_key_down
+  custom_model_data: 167078
+
+piano-pedal:
+ displayname: piano pedal
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/pedal/piano_pedal
+  custom_model_data: 167079
+
+piano-pedal-down:
+ displayname: piano pedal down
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/pedal/piano_pedal_down
+  custom_model_data: 167080
+
+pianist-body:
+ displayname: pianist body
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/pianist/pianist_body
+  custom_model_data: 167081
+
+pianist-hands:
+ displayname: pianist hands
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/pianist/pianist_hands
+  custom_model_data: 167082
+
+pianist-head:
+ displayname: pianist head
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/pianist/pianist_head
+  custom_model_data: 167083
+
+electric-piano:
+ displayname: electric piano
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/piano/electric_piano
+  custom_model_data: 167084
+
+grand-piano:
+ displayname: grand piano
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/piano/grand_piano
+  custom_model_data: 167085
+
+grand-piano-close:
+ displayname: grand piano close
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/piano/grand_piano_close
+  custom_model_data: 167086
+
+up-right-piano-close:
+ displayname: up right piano close
+ material: LEATHER_HORSE_ARMOR
+ excludeFromInventory: true
+ Pack:
+  generate_model: false
+  model: item/jw/piano/up_right_piano_close
+  custom_model_data: 167087
+
+
+note_a:
+  texture: icons/notes/a
+  ascent: 2
+  height: 2
+  code: 4096
+note_aSharp:
+  texture: icons/notes/a_sharp
+  ascent: 2
+  height: 2
+  code: 4097
+note_b:
+  texture: icons/notes/b
+  ascent: 2
+  height: 2
+  code: 4098
+note_c:
+  texture: icons/notes/c
+  ascent: 2
+  height: 2
+  code: 4099
+note_cSharp:
+  texture: icons/notes/c_sharp
+  ascent: 2
+  height: 2
+  code: 4100
+note_d:
+  texture: icons/notes/d
+  ascent: 2
+  height: 2
+  code: 4101
+note_dSharp:
+  texture: icons/notes/d_sharp
+  ascent: 2
+  height: 2
+  code: 4102
+note_e:
+  texture: icons/notes/e
+  ascent: 2
+  height: 2
+  code: 4103
+note_f:
+  texture: icons/notes/f
+  ascent: 2
+  height: 2
+  code: 4104
+note_fSharp:
+  texture: icons/notes/f_sharp
+  ascent: 2
+  height: 2
+  code: 4105
+note_g:
+  texture: icons/notes/g
+  ascent: 2
+  height: 2
+  code: 4112
+note_gSharp:
+  texture: icons/notes/g_sharp
+  ascent: 2
+  height: 2
+  code: 4113
+  
 
 ```
 </details>
@@ -364,6 +426,11 @@ plugin:
 piano:
   models-limit: 10
   piano-range: 3.0
+sounds:
+  value-1:
+    name: Default
+    namespace: minecraft
+    sound-category: VOICE
 skins:
   value-1:
     name: none
@@ -371,25 +438,20 @@ skins:
     material: AIR
   value-2:
     name: upright piano
-    custom-model-id: 108
+    custom-model-id: 167087
     material: LEATHER_HORSE_ARMOR
   value-3:
     name: grand piano
-    custom-model-id: 109
+    custom-model-id: 167085
     material: LEATHER_HORSE_ARMOR
   value-4:
     name: electric piano
-    custom-model-id: 110
+    custom-model-id: 167084
     material: LEATHER_HORSE_ARMOR
   value-5:
     name: grand piano closed
-    custom-model-id: 111
+    custom-model-id: 167086
     material: LEATHER_HORSE_ARMOR
-sounds:
-  value-1:
-    name: Default
-    namespace: minecraft
-    sound-category: VOICE
 
 ```
 
@@ -402,38 +464,14 @@ commands:
 # /piano
   piano: 
     children: 
-      - lang
       - colors
       - update
       - resourcepack
+      - lang
     permissions: 
       - jw-piano.commands.piano
     description: base plugin commands, /piano opens piano list
     usage: /piano
-# /piano lang <language>
-  lang: 
-    permissions: 
-      - lang
-    arguments: 
-      - language:
-          type: text
-          description: select language
-          options: 
-              - cs
-              - de
-              - en
-              - es
-              - fr
-              - it
-              - ko
-              - pl
-              - pt
-              - ru
-              - tr
-              - zh
-    description: Changes plugin languages, changes will be applied after server reload. Change be use both be player or console
-    usage: /piano lang <language>
-
 # colors
   colors: 
     children: 
@@ -470,6 +508,30 @@ commands:
     description: sending to player resourcepack link
     usage: /piano resourcepack link
 
+
+# /piano lang <language>
+  lang: 
+    permissions: 
+      - lang
+    arguments: 
+      - language:
+          type: text
+          description: select language
+          options: 
+              - cs
+              - de
+              - en
+              - es
+              - fr
+              - it
+              - ko
+              - pl
+              - pt
+              - ru
+              - tr
+              - zh
+    description: Changes plugin languages, changes will be applied after server reload. Change be use both be player or console
+    usage: /piano lang <language>
 
 
 
