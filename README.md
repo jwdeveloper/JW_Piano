@@ -14,7 +14,7 @@ Overall, this plugin would be a fun and unique addition to Minecraft, providing 
 [Download Desktop App](https://github.com/jwdeveloper/JW_Piano_Desktop/releases/latest/download/JW_Piano_Desktop.jar)
 
 
-[Download Resourcepack](https://download.mc-packs.net/pack/5637db2609d0c73c45b80614db98053147e598ef.zip)
+[Download Resourcepack](https://download.mc-packs.net/pack/5fb90b8870c925ec73f6debc7b7dfb18ec565ebc.zip)
 
 
 
@@ -339,7 +339,7 @@ Correct: `craftplayer.com`
  -  When above solutions does not help set IP that you use in Minecraft server lists to `plugin.websocket.server-ip`
 </details>
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/F4iKXAMIioo/0.jpg)](https://www.youtube.com/watch?v=F4iKXAMIioo&t=2s&ab_channel=JW)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/0KSN7dfi7PQ/0.jpg)](https://www.youtube.com/watch?v=0KSN7dfi7PQ&ab_channel=JW)
 
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/PSbwsbX7xc0/0.jpg)](https://www.youtube.com/watch?v=PSbwsbX7xc0&t=27s&ab_channel=JW)
@@ -413,9 +413,9 @@ Correct: `craftplayer.com`
 # 
 
 plugin:
-  version: 1.2.2
+  version: 1.2.3
   resourcepack:
-    url: https://download.mc-packs.net/pack/4d00dcb5c0eeb65464f37ced9c0c93551cd70bdc.zip
+    url: https://download.mc-packs.net/pack/5fb90b8870c925ec73f6debc7b7dfb18ec565ebc.zip
     download-on-join: false
   websocket:
     run: true
@@ -426,11 +426,6 @@ plugin:
 piano:
   models-limit: 10
   piano-range: 3.0
-sounds:
-  value-1:
-    name: Default
-    namespace: minecraft
-    sound-category: VOICE
 skins:
   value-1:
     name: none
@@ -452,6 +447,11 @@ skins:
     name: grand piano closed
     custom-model-id: 167086
     material: LEATHER_HORSE_ARMOR
+sounds:
+  value-1:
+    name: Default
+    namespace: minecraft
+    sound-category: VOICE
 
 ```
 
@@ -464,14 +464,39 @@ commands:
 # /piano
   piano: 
     children: 
-      - lang
-      - colors
       - update
       - resourcepack
+      - lang
+      - colors
     permissions: 
       - jw-piano.commands.piano
     description: base plugin commands, /piano opens piano list
     usage: /piano
+# /piano update
+  update: 
+    permissions: 
+      - update
+    description: download plugin latest version, can be trigger both by player or console
+    usage: /piano update
+
+# /piano resourcepack
+  resourcepack: 
+    children: 
+      - download
+      - link
+    description: downloads plugin resourcepack
+    usage: /piano resourcepack
+# /piano resourcepack download
+  download: 
+    description: downloads plugin resourcepack
+    usage: /piano resourcepack download
+
+# /piano resourcepack link
+  link: 
+    description: sending to player resourcepack link
+    usage: /piano resourcepack link
+
+
 # /piano lang <language>
   lang: 
     permissions: 
@@ -506,31 +531,6 @@ commands:
     arguments: 
       - color:
           type: text
-
-
-# /piano update
-  update: 
-    permissions: 
-      - update
-    description: download plugin latest version, can be trigger both by player or console
-    usage: /piano update
-
-# /piano resourcepack
-  resourcepack: 
-    children: 
-      - download
-      - link
-    description: downloads plugin resourcepack
-    usage: /piano resourcepack
-# /piano resourcepack download
-  download: 
-    description: downloads plugin resourcepack
-    usage: /piano resourcepack download
-
-# /piano resourcepack link
-  link: 
-    description: sending to player resourcepack link
-    usage: /piano resourcepack link
 
 
 
