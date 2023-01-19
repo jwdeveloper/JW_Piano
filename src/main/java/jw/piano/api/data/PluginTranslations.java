@@ -2,7 +2,6 @@ package jw.piano.api.data;
 
 public class PluginTranslations
 {
-
     public static class GENERAL
     {
 

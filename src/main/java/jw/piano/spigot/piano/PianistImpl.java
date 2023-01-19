@@ -102,16 +102,12 @@ public class PianistImpl extends GameObject {
 
     @Override
     public void setVisible(boolean visible) {
-
+        handsTask.stop();
+        headTask.stop();
         if(visible)
         {
             handsTask.run();
             headTask.run();
-        }
-        else
-        {
-            handsTask.stop();
-            headTask.stop();
         }
         super.setVisible(visible);
     }

@@ -40,8 +40,8 @@ public class PluginConsts
 
     // < 1.2.1 resource-pack=https://download.mc-packs.net/pack/4d00dcb5c0eeb65464f37ced9c0c93551cd70bdc.zip
 
-    //resource-pack-sha1=4d00dcb5c0eeb65464f37ced9c0c93551cd70bdc
-    public final static String RESOURCEPACK_URL = "https://download.mc-packs.net/pack/5637db2609d0c73c45b80614db98053147e598ef.zip";
+    //resource-pack-sha1=5fb90b8870c925ec73f6debc7b7dfb18ec565ebc
+    public final static String RESOURCEPACK_URL = "https://download.mc-packs.net/pack/5fb90b8870c925ec73f6debc7b7dfb18ec565ebc.zip";
 
 
 

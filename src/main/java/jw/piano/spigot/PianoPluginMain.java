@@ -25,6 +25,7 @@
 
 package jw.piano.spigot;
 
+import jw.fluent.plugin.api.FluentApiExtension;
 import jw.fluent.plugin.api.FluentApiSpigotBuilder;
 import jw.fluent.plugin.implementation.FluentApiSpigot;
 import jw.fluent.plugin.implementation.FluentPlugin;
@@ -32,13 +33,15 @@ import jw.piano.api.data.PluginConsts;
 import jw.piano.api.data.PluginPermissions;
 import jw.piano.spigot.extentions.CommandsExtension;
 import jw.piano.spigot.extentions.ConfigLoaderExtension;
+import lombok.Data;
+
+import java.util.function.Consumer;
 
 public final class PianoPluginMain extends FluentPlugin {
 
     //  /give @p minecraft:leather_horse_armor{display:{color:16711680},CustomModelData:108} 1
     @Override
     public void onConfiguration(FluentApiSpigotBuilder builder) {
-        int i=222222215;
         builder.container()
                 .addMetrics(PluginConsts.BSTATS_ID)
                 .addUpdater(options ->
@@ -52,8 +55,8 @@ public final class PianoPluginMain extends FluentPlugin {
                 .addDocumentation(options ->
                 {
                     options.addSection(new PluginDocumentation());
-                 //   options.setUseSpigotDocumentation(true);
-               //     options.setUseGithubDocumentation(true);
+                    options.setUseSpigotDocumentation(false);
+                    options.setUseGithubDocumentation(false);
                     options.setPermissionTemplate(PermissionsTemplate.class);
                 })
                 .addWebSocket()
@@ -62,6 +65,10 @@ public final class PianoPluginMain extends FluentPlugin {
         builder.permissions()
                 .setBasePermissionName(PluginPermissions.BASE);
 
+        builder.useExtension(FluentScreen.extension(config ->
+        {
+            config.setNumberOfPlayers(12);
+        }));
         builder.useExtension(new ConfigLoaderExtension());
         builder.useExtension(new CommandsExtension());
     }
@@ -77,4 +84,36 @@ public final class PianoPluginMain extends FluentPlugin {
     public void onFluentApiDisabled(FluentApiSpigot fluentAPI) {
 
     }
+
+    public static class FluentScreen implements FluentApiExtension
+    {
+
+        public static FluentScreen extension(Consumer<Config> consumer)
+        {
+            return new FluentScreen();
+        }
+        @Data
+        public static class Config
+        {
+            private boolean useScreens;
+            private int numberOfPlayers;
+        }
+
+        @Override
+        public void onConfiguration(FluentApiSpigotBuilder builder) {
+
+        }
+
+        @Override
+        public void onFluentApiEnable(FluentApiSpigot fluentAPI) throws Exception {
+
+        }
+
+        @Override
+        public void onFluentApiDisabled(FluentApiSpigot fluentAPI) throws Exception {
+
+        }
+    }
+
+
 }

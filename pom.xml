@@ -31,7 +31,7 @@
     <groupId>JW_Piano</groupId>
     <artifactId>JW_Piano</artifactId>
 
-    <version>1.2.2</version>
+    <version>1.2.3</version>
 
     <packaging>jar</packaging>
 
@@ -144,7 +144,7 @@
         </dependency>
         <dependency>
             <groupId>jw</groupId>
-            <artifactId>SpigotFluentApi</artifactId>
+            <artifactId>spigot-fluent-api</artifactId>
             <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>

@@ -55,7 +55,7 @@ public class PluginDocumentation extends DocumentationDecorator {
         createOraxenInfo(documentation);
         createApiDocumentation(documentation);
         createFAQInfo(documentation);
-        addVideo("https://www.youtube.com/watch?v=F4iKXAMIioo&t=2s&ab_channel=JW", documentation);
+        addVideo("https://www.youtube.com/watch?v=0KSN7dfi7PQ&ab_channel=JW", documentation);
         addVideo("https://www.youtube.com/watch?v=PSbwsbX7xc0&t=27s&ab_channel=JW", documentation);
         addImage("https://raw.githubusercontent.com/jwdeveloper/JW_Piano/master/resources/images/style.png", documentation);
         addImage("https://raw.githubusercontent.com/jwdeveloper/JW_Piano/master/resources/images/webclient.png", documentation);

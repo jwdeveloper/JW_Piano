@@ -78,7 +78,6 @@ public class BenchImpl extends GameObject implements Bench {
             armorStandModel.setCustomModelId(PluginModels.BENCH.id());
             armorStandModel.setId(PluginConsts.PIANO_NAMESPACE, piano.getPianoObserver().getPianoData().getUuid());
             armorStandModel.setLocation(location);
-            pianist.setLocation(location.clone());
         });
 
 
@@ -92,6 +91,13 @@ public class BenchImpl extends GameObject implements Bench {
     }
 
     private HitBoxDisplay display;
+
+    @Override
+    public void onCreated() {
+        model.refresh();
+        pianist.setLocation(model.getLocation());
+        pianist.refresh();
+    }
 
     @Override
     public void refresh() {

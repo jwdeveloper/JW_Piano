@@ -158,7 +158,6 @@ public class PianoKeyImpl extends GameObject implements PianoKey {
         effectManager.getCurrent().onNote(this,keyModelLocation, midiIndex, 0, lastColor, false);
         if (isBlack) {
             armorStandModel.setColor(black());
-            //PluginModels.PIANO_PEDAL_DOWN.id()
             armorStandModel.setCustomModelId(PluginModels.PIANO_BLACK_KEY.id());
         } else {
             armorStandModel.setColor(Color.WHITE);
@@ -190,6 +189,13 @@ public class PianoKeyImpl extends GameObject implements PianoKey {
     @Override
     public void refresh() {
         armorStandModel.refresh();
+        if (isBlack) {
+            armorStandModel.setColor(black());
+            armorStandModel.setCustomModelId(PluginModels.PIANO_BLACK_KEY.id());
+        } else {
+            armorStandModel.setColor(Color.WHITE);
+            armorStandModel.setCustomModelId(PluginModels.PIANO_KEY.id());
+        }
     }
 
     @Override

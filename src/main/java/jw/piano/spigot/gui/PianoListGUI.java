@@ -99,7 +99,9 @@ public class PianoListGUI extends CrudListUI<Piano> {
                 .setLocation(0, 2)
                 .setOnLeftClick((player, button) ->
                 {
+                    close();
                     player.setResourcePack(resourcepackOptions.getDefaultUrl());
+                    open(player);
                 })
                 .setOnRightClick((player, button) ->
                 {
