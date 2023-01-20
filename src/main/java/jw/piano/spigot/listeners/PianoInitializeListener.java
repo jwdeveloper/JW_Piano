@@ -30,6 +30,7 @@ import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injecti
 import jw.fluent.api.spigot.events.EventBase;
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import jw.piano.api.data.PluginConsts;
 import jw.piano.core.repositories.PianoDataRepository;
 import jw.piano.core.services.PianoService;
 import org.bukkit.Chunk;
@@ -39,6 +40,8 @@ import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkPopulateEvent;
+import org.bukkit.event.world.EntitiesLoadEvent;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -64,10 +67,25 @@ public class PianoInitializeListener extends EventBase {
     public void onServerLoad(ServerLoadEvent event) {
         for (var pianoData : pianoDataRepository.findAll()) {
             var chunk = pianoData.getLocation().getChunk();
-            pianoService.initialize(pianoData);
             chunks.add(chunk);
             chunk.setForceLoaded(true);
             chunk.load();
+            //FluentLogger.LOGGER.log("CHUNK TO LOAD",chunk,chunk.isEntitiesLoaded(),chunk.getEntities().length);
+            for(var entity : chunk.getEntities())
+            {
+                var container = entity.getPersistentDataContainer();
+                if (!container.has(PluginConsts.PIANO_NAMESPACE, PersistentDataType.STRING)) {
+                    continue;
+                }
+                var id = container.get(PluginConsts.PIANO_NAMESPACE, PersistentDataType.STRING);
+                if (!id.equals(pianoData.getUuid().toString())) {
+                    continue;
+                }
+                entity.remove();
+            }
+
+
+            pianoService.initialize(pianoData);
             FluentApi.tasks().taskTimer(10, (iteration, task) ->
                     {
                         pianoService.reset();
@@ -77,5 +95,16 @@ public class PianoInitializeListener extends EventBase {
                     .run();
 
         }
+    }
+    @EventHandler
+    public void onChunk(ChunkLoadEvent event)
+    {
+       // FluentLogger.LOGGER.log("ChunkLoadEvent LOADED ",event.isNewChunk());
+    }
+
+    @EventHandler
+    public void onEntitis(EntitiesLoadEvent event)
+    {
+      //  FluentLogger.LOGGER.log("EntitiesLoadEvent LOADED ",event.getChunk(),event.getEntities().size());
     }
 }

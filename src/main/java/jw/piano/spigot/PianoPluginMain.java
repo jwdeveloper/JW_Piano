@@ -55,7 +55,7 @@ public final class PianoPluginMain extends FluentPlugin {
                 .addDocumentation(options ->
                 {
                     options.addSection(new PluginDocumentation());
-                    options.setUseSpigotDocumentation(false);
+                    options.setUseSpigotDocumentation(true);
                     options.setUseGithubDocumentation(false);
                     options.setPermissionTemplate(PermissionsTemplate.class);
                 })

@@ -74,6 +74,7 @@ public class PianoListGUI extends CrudListUI<Piano> {
         this.pianoViewGUI = pianoViewGUI;
         this.mediator = mediator;
         this.resourcepackOptions = resourcepackOptions;
+
     }
 
     @Override
@@ -81,7 +82,6 @@ public class PianoListGUI extends CrudListUI<Piano> {
 
         pianoViewGUI.setParent(this);
         setListTitlePrimary(lang.get(PluginTranslations.GUI.PIANO_LIST.TITLE));
-
         hideEditButton();
         getButtonInsert().setPermissions(PluginPermissions.GUI.PIANO_LIST.CREATE);
         getButtonDelete().setPermissions(PluginPermissions.GUI.PIANO_LIST.REMOVE);
@@ -141,6 +141,7 @@ public class PianoListGUI extends CrudListUI<Piano> {
             final var response = mediator.resolve(new CreatePiano.Request(player), CreatePiano.Response.class);
             if (!response.created()) {
                 setTitle(FluentMessage.message().error().inBrackets(response.message()));
+                open(player);
                 return;
             }
             close();
@@ -153,6 +154,7 @@ public class PianoListGUI extends CrudListUI<Piano> {
                 setTitle(lang.get(PluginTranslations.GUI.BASE.DELETE.ERROR));
             }
             loadPianos();
+            open(player);
         });
         onGet((player, button) ->
         {
