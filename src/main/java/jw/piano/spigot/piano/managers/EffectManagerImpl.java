@@ -55,6 +55,7 @@ public class EffectManagerImpl implements EffectManager {
         register(new FlyingNotesEffect(pianoData));
      //   register(new FlyingNotesWithParticleEffect(pianoData));
         register(new SimpleParticleEffect());
+        register(new TestStuff());
        // register(new NoteNameEffect());
     }
 

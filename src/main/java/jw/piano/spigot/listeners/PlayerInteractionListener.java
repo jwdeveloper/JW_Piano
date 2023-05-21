@@ -25,13 +25,14 @@
 
 package jw.piano.spigot.listeners;
 
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
+import io.github.jwdeveloper.ff.core.spigot.events.implementation.EventBase;
+import io.github.jwdeveloper.ff.core.spigot.tasks.api.FluentTaskManager;
+import io.github.jwdeveloper.ff.core.spigot.tasks.implementation.SimpleTaskTimer;
 import jw.piano.api.data.events.PianoInteractEvent;
 import jw.piano.api.piano.Piano;
 import jw.piano.core.services.PianoService;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.spigot.events.EventBase;
-import jw.fluent.api.spigot.tasks.SimpleTaskTimer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -40,6 +41,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
+import org.bukkit.plugin.Plugin;
 
 import java.util.*;
 
@@ -49,11 +51,14 @@ public class PlayerInteractionListener extends EventBase {
     private final PianoService pianoService;
     private final HashMap<Player, Piano> pianoUsers;
     private final SimpleTaskTimer checkPlayerToPianoDistanceTask;
+    private final FluentTaskManager taskManager;
 
     @Inject
-    public PlayerInteractionListener(PianoService service) {
+    public PlayerInteractionListener(Plugin plugin, PianoService service, FluentTaskManager taskManager) {
+        super(plugin);
         this.pianoUsers = new HashMap<>();
         this.pianoService = service;
+        this.taskManager = taskManager;
         this.checkPlayerToPianoDistanceTask = checkDistanceTask();
     }
 
@@ -111,7 +116,7 @@ public class PlayerInteractionListener extends EventBase {
 
     private SimpleTaskTimer checkDistanceTask() {
         var playersToRemove = new ArrayList<>();
-        return new SimpleTaskTimer(5, (iteration, task) ->
+        return taskManager.taskTimer(5,(iteration, task) ->
         {
             playersToRemove.clear();
             for (var pianoPlayer : pianoUsers.entrySet()) {

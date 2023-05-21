@@ -25,8 +25,8 @@
 
 package jw.piano.core.workers;
 
-import jw.fluent.api.spigot.tasks.SimpleTaskTimer;
-import jw.fluent.plugin.implementation.FluentApi;
+import io.github.jwdeveloper.ff.core.spigot.tasks.api.FluentTaskManager;
+import io.github.jwdeveloper.ff.core.spigot.tasks.implementation.SimpleTaskTimer;
 import jw.piano.api.piano.Piano;
 import jw.piano.core.midi.MidiFile;
 import jw.piano.core.midi.NoteFrame;
@@ -38,6 +38,9 @@ import java.util.function.Consumer;
 
 public class MidiPlayerWorker {
     private final Piano piano;
+
+    private final FluentTaskManager taskManager;
+
     private NoteFrame[] frames;
     private int frameIndex = 0;
 
@@ -53,8 +56,9 @@ public class MidiPlayerWorker {
     private Consumer<Void> onStopPlaying = (e) -> {
     };
 
-    public MidiPlayerWorker(Piano piano) {
+    public MidiPlayerWorker(Piano piano, FluentTaskManager taskManager) {
         this.piano = piano;
+        this.taskManager = taskManager;
     }
 
 
@@ -66,7 +70,7 @@ public class MidiPlayerWorker {
         isStarted = true;
         frameIndex = 0;
 
-        task = FluentApi.tasks().taskTimer(00, (iteration, task) ->
+        task = taskManager.taskTimer(00, (iteration, task) ->
         {
             if (frameIndex > frames.length - 1) {
                 task.cancel();

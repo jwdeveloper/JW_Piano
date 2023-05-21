@@ -25,11 +25,8 @@
 
 package jw.piano.api.data.dto;
 
-import jw.fluent.api.files.api.models.DataModel;
-import lombok.AllArgsConstructor;
+import io.github.jwdeveloper.ff.core.repository.api.DataModel;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Color;
 
 @Data

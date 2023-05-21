@@ -25,12 +25,13 @@
 
 package jw.piano.spigot.extentions;
 
-import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.fluent.plugin.api.FluentApiExtension;
-import jw.fluent.plugin.api.FluentApiSpigotBuilder;
-import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.FluentApiSpigot;
+import io.github.jwdeveloper.ff.core.injector.api.enums.LifeTime;
+import io.github.jwdeveloper.ff.plugin.api.FluentApiSpigotBuilder;
+import io.github.jwdeveloper.ff.plugin.api.extention.FluentApiExtension;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApiSpigot;
 import jw.piano.api.data.PluginPermissions;
+import jw.piano.spigot.CrazyKey;
 import jw.piano.spigot.colorpicker.ColorPickerCommand;
 import jw.piano.spigot.gui.PianoListGUI;
 
@@ -40,7 +41,7 @@ public class CommandsExtension implements FluentApiExtension {
 
 
         var colorPicker = new ColorPickerCommand();
-        builder.container().register(ColorPickerCommand.class, LifeTime.SINGLETON,(a)->colorPicker);
+        builder.container().register(ColorPickerCommand.class, LifeTime.SINGLETON, (a) -> colorPicker);
         builder.defaultCommand()
                 .setName("piano")
                 .propertiesConfig(propertiesConfig ->
@@ -52,6 +53,16 @@ public class CommandsExtension implements FluentApiExtension {
                 .subCommandsConfig(subCommandConfig ->
                 {
                     subCommandConfig.addSubCommand(ColorPickerCommand.getCommand());
+                    subCommandConfig.addSubCommand("key",commandBuilder ->
+                    {
+                       commandBuilder.eventsConfig(eventConfig ->
+                       {
+                           eventConfig.onPlayerExecute(event ->
+                           {
+                              new CrazyKey(event.getPlayer().getLocation().add(0,2,0));
+                           });
+                       });
+                    });
                 })
                 .eventsConfig(eventConfig ->
                 {
@@ -62,6 +73,9 @@ public class CommandsExtension implements FluentApiExtension {
                     });
                 });
     }
+
+
+
 
     @Override
     public void onFluentApiEnable(FluentApiSpigot fluentAPI) throws Exception {

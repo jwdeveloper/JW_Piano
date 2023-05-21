@@ -25,11 +25,11 @@
 
 package jw.piano.core.mediator.midi.files;
 
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.desing_patterns.mediator.api.MediatorHandler;
-import jw.fluent.api.files.implementation.FileUtility;
-import jw.fluent.plugin.implementation.FluentApi;
+import io.github.jwdeveloper.ff.core.files.FileUtility;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
+import io.github.jwdeveloper.ff.core.mediator.api.MediatorHandler;
+import jw.fluent_plugin.implementation.FluentApi;
 import jw.piano.api.data.midi.reader.MidiFile;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class MidiFilesHandler implements MediatorHandler<MidiFiles.Request, Midi
     @Inject
     public MidiFilesHandler()
     {
-        path = FluentApi.path()+FileUtility.separator()+"midi";
+        path = FluentApi.path()+ FileUtility.separator()+"midi";
     }
 
     @Override

@@ -24,11 +24,11 @@
  */
 
 package jw.piano.core.websocket;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.utilites.ActionResult;
-import jw.fluent.api.web_socket.WebSocketPacket;
-import jw.fluent.api.web_socket.annotations.PacketProperty;
-import jw.fluent.plugin.implementation.modules.mediator.FluentMediator;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
+import io.github.jwdeveloper.ff.core.spigot.tasks.api.FluentTaskManager;
+import io.github.jwdeveloper.ff.extension.websocket.core.api.annotations.PacketProperty;
+import io.github.jwdeveloper.ff.extension.websocket.core.implementation.WebSocketPacket;
+import io.github.jwdeveloper.ff.plugin.implementation.extensions.mediator.FluentMediator;
 import jw.piano.core.mediator.piano.info.PianoInfo;
 import org.java_websocket.WebSocket;
 
@@ -42,17 +42,18 @@ public class PianoInfoPacket extends WebSocketPacket {
     @PacketProperty
     public long b;
 
+    private final FluentMediator mediator;
+
+    public PianoInfoPacket(FluentTaskManager manager, FluentMediator mediator) {
+        super(manager);
+        this.mediator = mediator;
+    }
+
     @Override
     public int getPacketId() {
         return 1;
     }
 
-    private FluentMediator mediator;
-
-    public PianoInfoPacket(FluentMediator mediator)
-    {
-        this.mediator = mediator;
-    }
 
     @Override
     public void onPacketTriggered(final WebSocket webSocket)

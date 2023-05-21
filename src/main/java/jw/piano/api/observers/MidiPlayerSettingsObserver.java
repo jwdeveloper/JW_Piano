@@ -25,10 +25,9 @@
 
 package jw.piano.api.observers;
 
+import io.github.jwdeveloper.ff.core.observer.implementation.Observer;
 import lombok.Getter;
-import jw.fluent.api.desing_patterns.observer.implementation.Observer;
 import jw.piano.api.data.models.midi.MidiPlayerSettings;
-import java.lang.Boolean;
 import java.lang.Boolean;
 import java.lang.Integer;
 import jw.piano.api.data.enums.MidiPlayingType;

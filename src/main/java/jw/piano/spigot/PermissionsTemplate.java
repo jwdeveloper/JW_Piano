@@ -25,8 +25,8 @@
 
 package jw.piano.spigot;
 
-import jw.fluent.api.spigot.permissions.api.annotations.PermissionGroup;
-import jw.fluent.api.spigot.permissions.api.annotations.PermissionProperty;
+import io.github.jwdeveloper.ff.core.spigot.permissions.api.annotations.PermissionGroup;
+import io.github.jwdeveloper.ff.core.spigot.permissions.api.annotations.PermissionProperty;
 
 @PermissionGroup(group = "jw-piano")
 public class PermissionsTemplate

@@ -25,16 +25,7 @@
 
 package jw.piano.core.websocket.v_1_2_1;
 
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.api.web_socket.annotations.PacketVersion;
-import jw.piano.api.data.dto.PianoAction;
-import jw.piano.core.workers.PianoActionWorker;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.web_socket.WebSocketPacket;
-import jw.fluent.api.web_socket.annotations.PacketProperty;
-import org.java_websocket.WebSocket;
-
-import java.util.UUID;
+import io.github.jwdeveloper.ff.extension.websocket.core.api.annotations.PacketProperty;
 
 @Deprecated
 public class PianoActionPacket  {

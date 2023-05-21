@@ -25,9 +25,9 @@
 
 package jw.piano.core.services;
 
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.files.implementation.FileUtility;
+import io.github.jwdeveloper.ff.core.files.FileUtility;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
 import jw.piano.core.midi.MidiParser;
 import jw.piano.core.midi.MidiFile;
 

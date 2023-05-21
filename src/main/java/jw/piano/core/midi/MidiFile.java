@@ -25,7 +25,7 @@
 package jw.piano.core.midi;
 
 
-import jw.fluent.api.utilites.java.StringUtils;
+import io.github.jwdeveloper.ff.core.common.java.StringUtils;
 
 public class MidiFile {
     private final String message;

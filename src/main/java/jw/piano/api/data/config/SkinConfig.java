@@ -25,7 +25,7 @@
 
 package jw.piano.api.data.config;
 
-import jw.fluent.api.files.implementation.yaml_reader.api.annotations.YamlProperty;
+import io.github.jwdeveloper.ff.core.files.yaml.api.annotations.YamlProperty;
 import lombok.Data;
 
 @Data

@@ -1,13 +1,8 @@
 package jw.piano.core.migrations;
 
-import jw.fluent.api.files.implementation.FileUtility;
-import jw.fluent.api.spigot.messages.message.MessageBuilder;
-import jw.fluent.plugin.api.config.migrations.ConfigMigration;
-import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import io.github.jwdeveloper.ff.core.common.logger.FluentLogger;
+import io.github.jwdeveloper.ff.plugin.api.config.migrations.ConfigMigration;
 import jw.piano.api.data.PluginConsts;
-import net.md_5.bungee.api.chat.ClickEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.IOException;

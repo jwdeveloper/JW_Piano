@@ -24,13 +24,11 @@
 
 package jw;
 
-import jw.fluent.plugin.api.FluentApiExtension;
-import jw.fluent.plugin.api.FluentApiSpigotBuilder;
-import jw.fluent.plugin.implementation.FluentApiSpigot;
+import io.github.jwdeveloper.ff.plugin.api.FluentApiSpigotBuilder;
+import io.github.jwdeveloper.ff.plugin.api.extention.FluentApiExtension;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApiSpigot;
 import jw.piano.api.data.PluginConsts;
 import jw.piano.api.data.PluginPermissions;
-import jw.piano.spigot.PermissionsTemplate;
-import jw.piano.spigot.PluginDocumentation;
 import jw.piano.spigot.extentions.CommandsExtension;
 import jw.piano.spigot.extentions.ConfigLoaderExtension;
 
@@ -40,25 +38,25 @@ public class PianoPluginMainMock implements FluentApiExtension {
 
     @Override
     public void onConfiguration(FluentApiSpigotBuilder builder) {
-        builder.container()
-                .addMetrics(PluginConsts.BSTATS_ID)
-                .addUpdater(options ->
+        builder
+                .useMetrics(PluginConsts.BSTATS_ID)
+                .useUpdater(options ->
                 {
-                    options.setGithub(PluginConsts.GITHUB_URL);
+                    options.useGithub().setRepositoryName(PluginConsts.GITHUB_URL);
                 })
-                .addResourcePack(options ->
+                .useResourcePack(resourcepackOptions ->
                 {
-                    options.setDefaultUrl(PluginConsts.RESOURCEPACK_URL);
+                    resourcepackOptions.setDefaultUrl(PluginConsts.RESOURCEPACK_URL);
                 })
-                .addDocumentation(options ->
+                .container();
+                /*.addDocumentation(options ->
                 {
                     options.addSection(new PluginDocumentation());
                     options.setUseSpigotDocumentation(true);
                     options.setUseGithubDocumentation(true);
                     options.setPermissionTemplate(PermissionsTemplate.class);
-                })
-                .addWebSocket()
-                .addPlayerContext();
+                })*/
+
 
         builder.permissions()
                 .setBasePermissionName(PluginPermissions.BASE);

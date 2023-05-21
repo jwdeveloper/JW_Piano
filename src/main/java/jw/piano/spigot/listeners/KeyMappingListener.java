@@ -25,16 +25,11 @@
 
 package jw.piano.spigot.listeners;
 
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.spigot.events.EventBase;
-import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
 import jw.piano.api.events.PianoKeyPressEvent;
 import org.bukkit.event.EventHandler;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -56,7 +51,7 @@ public class KeyMappingListener
             event.setCancelled(true);
 
             event.getPiano().triggerNote(1, event.getPianoKey().getMidiIndex(), 20,1);
-            FluentApi.tasks().taskLater((iteration, task) ->
+            FluentApi.tasks().taskLater(() ->
             {
                 event.getPiano().triggerNote(0,event.getPianoKey().getMidiIndex(),0,1);
             },10);
@@ -71,7 +66,7 @@ public class KeyMappingListener
         var index =  mapping.get(slot);
 
         event.getPiano().triggerNote(1, index, 100,0);
-        FluentApi.tasks().taskLater((iteration, task) ->
+        FluentApi.tasks().taskLater(() ->
         {
             event.getPiano().triggerNote(0,index,0,0);
         },10);

@@ -25,15 +25,12 @@
 
 package jw.piano.core.services;
 
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+
+import io.github.jwdeveloper.ff.core.common.logger.FluentLogger;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
 import jw.piano.api.data.dto.ColorInfo;
 import jw.piano.core.repositories.ColorsRepository;
-import lombok.Getter;
 import org.bukkit.Color;
-import org.bukkit.entity.Parrot;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Injection(lazyLoad = false)

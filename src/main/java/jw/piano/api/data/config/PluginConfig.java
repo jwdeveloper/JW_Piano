@@ -25,9 +25,9 @@
 
 package jw.piano.api.data.config;
 
-import jw.fluent.api.files.implementation.yaml_reader.api.annotations.YamlProperty;
-import jw.fluent.plugin.api.config.ConfigSection;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import io.github.jwdeveloper.ff.core.files.yaml.api.annotations.YamlProperty;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
+import io.github.jwdeveloper.ff.plugin.api.config.ConfigSection;
 import lombok.Data;
 
 import java.util.ArrayList;

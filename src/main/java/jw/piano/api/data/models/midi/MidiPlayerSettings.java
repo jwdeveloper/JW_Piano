@@ -24,14 +24,11 @@
  */
 
 package jw.piano.api.data.models.midi;
-
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.piano.api.data.enums.MidiPlayingType;
 import lombok.Data;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @Data

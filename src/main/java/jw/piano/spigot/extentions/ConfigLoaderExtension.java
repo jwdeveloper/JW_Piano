@@ -25,9 +25,9 @@
 
 package jw.piano.spigot.extentions;
 
-import jw.fluent.plugin.api.FluentApiExtension;
-import jw.fluent.plugin.api.FluentApiSpigotBuilder;
-import jw.fluent.plugin.implementation.FluentApiSpigot;
+import io.github.jwdeveloper.ff.plugin.api.FluentApiSpigotBuilder;
+import io.github.jwdeveloper.ff.plugin.api.extention.FluentApiExtension;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApiSpigot;
 import jw.piano.core.services.SkinLoaderService;
 import jw.piano.core.services.SoundLoaderService;
 

@@ -25,7 +25,7 @@
 
 package jw.piano.core.migrations;
 
-import jw.fluent.plugin.api.config.migrations.ConfigMigration;
+import io.github.jwdeveloper.ff.plugin.api.config.migrations.ConfigMigration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.IOException;

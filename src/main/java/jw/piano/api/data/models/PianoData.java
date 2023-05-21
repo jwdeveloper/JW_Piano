@@ -26,8 +26,8 @@
 package jw.piano.api.data.models;
 
 
-import jw.fluent.api.desing_patterns.observer.api.ObserverField;
-import jw.fluent.api.files.api.models.DataModel;
+import io.github.jwdeveloper.ff.core.repository.api.DataModel;
+import io.github.jwdeveloper.ff.tools.files.generators.observer.ObserverField;
 import jw.piano.api.data.models.keyboard.KeyboardSettings;
 import jw.piano.api.data.models.midi.MidiPlayerSettings;
 import lombok.Data;

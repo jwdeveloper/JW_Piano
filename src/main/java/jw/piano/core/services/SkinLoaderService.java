@@ -25,19 +25,17 @@
 
 package jw.piano.core.services;
 
-import jw.fluent.plugin.api.config.FluentConfig;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
-import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
+import io.github.jwdeveloper.ff.core.translator.api.FluentTranslator;
+import io.github.jwdeveloper.ff.plugin.api.config.FluentConfig;
 import jw.piano.api.data.PluginModels;
 import jw.piano.api.data.PluginTranslations;
 import jw.piano.api.data.config.PluginConfig;
 import jw.piano.api.data.config.SkinConfig;
 import jw.piano.api.data.models.PianoSkin;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +47,9 @@ public class SkinLoaderService {
     private final PluginConfig pluginConfig;
 
     @Inject
-    public SkinLoaderService(FluentTranslator lang, PluginConfig pluginConfig, FluentConfig config) {
+    public SkinLoaderService(FluentTranslator lang,
+                             PluginConfig pluginConfig,
+                             FluentConfig config) {
         this.lang = lang;
         this.pluginConfig = pluginConfig;
         this.config = config;

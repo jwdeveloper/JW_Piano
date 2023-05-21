@@ -27,7 +27,9 @@ package jw.piano.spigot.piano;
 
 import jw.fluent.api.spigot.gameobjects.implementation.ArmorStandModel;
 import jw.fluent.api.spigot.gameobjects.implementation.GameObject;
+import jw.fluent.api.utilites.java.StringUtils;
 import jw.fluent.api.utilites.math.InteractiveHitBox;
+import jw.fluent.api.utilites.messages.Emoticons;
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.modules.dependecy_injection.FluentInjection;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
@@ -55,8 +57,12 @@ import lombok.Getter;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TextDisplay;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
+import org.joml.AxisAngle4f;
+import org.joml.Vector3f;
 
 
 public class PianoImpl extends GameObject implements Piano {
@@ -99,13 +105,34 @@ public class PianoImpl extends GameObject implements Piano {
         mediator = container.findInjection(FluentMediator.class);
         midiLoaderService = container.findInjection(MidiLoaderService.class);
     }
+    private TextDisplay textDisplay;
 
     @Override
     public void onCreate() {
         location.setYaw(0);
         location.setPitch(0);
 
+        textDisplay = location.getWorld().spawn(location.clone().add(0,0,3),TextDisplay.class);
 
+
+        var start = StringUtils.EMPTY;
+        start += Emoticons.music+ "                                                                          [_] [#] [x]\n";
+        for(var i =0;i<10;i++)
+        {
+            start += Emoticons.music+ "   dupa dupa dupa                                                                                           \n";
+
+        }
+
+        textDisplay.setText(start);
+        textDisplay.setGlowColorOverride(Color.GREEN);
+        textDisplay.setBackgroundColor(Color.BLACK);
+        textDisplay.setLineWidth(200);
+        textDisplay.setAlignment(TextDisplay.TextAligment.CENTER);
+        textDisplay.setTransformation(new Transformation(
+                new Vector3f(0,0,0),
+                new AxisAngle4f(0,0,0,0),
+                new Vector3f(0.05f,0.05f,0.05f),
+                new AxisAngle4f(0,0,0,0)));
         skinManager.setOnSkinSet(pianoSkin ->
         {
             modelRenderer.setItemStack(pianoSkin.getItemStack());
@@ -154,6 +181,7 @@ public class PianoImpl extends GameObject implements Piano {
     public void onDestroy() {
         effectManager.destroy();
         midiPlayer.stop();
+        textDisplay.remove();
     }
 
 

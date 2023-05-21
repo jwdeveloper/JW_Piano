@@ -25,23 +25,14 @@
 
 package jw.piano.api.observers;
 
+import io.github.jwdeveloper.ff.core.observer.implementation.Observer;
 import lombok.Getter;
-import jw.fluent.api.desing_patterns.observer.implementation.Observer;
 import jw.piano.api.data.models.PianoData;
 import org.bukkit.Location;
 import java.lang.Integer;
 import java.lang.Boolean;
-import java.lang.Boolean;
-import java.lang.Boolean;
-import java.lang.Boolean;
-import java.lang.String;
-import java.lang.String;
 import java.lang.String;
 import org.bukkit.Color;
-import jw.piano.api.data.models.keyboard.KeyboardSettings;
-import jw.piano.api.data.models.PedalsSettings;
-import jw.piano.api.data.models.BenchSettings;
-import jw.piano.api.data.models.midi.MidiPlayerSettings;
 
 //@JW generated code source don't modify it
 

@@ -25,7 +25,7 @@
 
 package jw.piano.core.factory;
 
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
 import jw.piano.api.data.PluginConsts;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;

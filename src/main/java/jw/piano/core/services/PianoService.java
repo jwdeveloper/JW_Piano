@@ -25,11 +25,10 @@
 
 package jw.piano.core.services;
 
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.spigot.gameobjects.implementation.GameObjectManager;
-import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.modules.dependecy_injection.FluentInjection;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
+import jw.fluent_plugin.implementation.modules.dependecy_injection.FluentInjection;
 import jw.piano.api.data.config.PluginConfig;
 import jw.piano.api.data.models.PianoData;
 import jw.piano.api.piano.Piano;

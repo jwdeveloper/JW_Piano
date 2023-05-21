@@ -25,6 +25,8 @@
 
 package jw.piano.spigot.gui;
 
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
 import jw.fluent.api.player_context.api.PlayerContext;
 import jw.fluent.api.spigot.permissions.implementation.PermissionsUtility;
 import jw.fluent.api.utilites.LinkMessageUtility;
@@ -37,21 +39,15 @@ import jw.piano.api.data.PluginTranslations;
 import jw.piano.api.piano.Piano;
 import jw.piano.core.mediator.piano.create.CreatePiano;
 import jw.piano.core.services.PianoService;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.spigot.gui.inventory_gui.implementation.crud_list_ui.CrudListUI;
-import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import jw.piano.spigot.gui.piano.PianoViewGUI;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
-import org.bukkit.Statistic;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 
-@PlayerContext
+
 @Injection
 public class PianoListGUI extends CrudListUI<Piano> {
 

@@ -25,6 +25,8 @@
 
 package jw.piano.spigot.piano.midi;
 
+import io.github.jwdeveloper.ff.core.common.logger.FluentLogger;
+import io.github.jwdeveloper.ff.core.spigot.tasks.api.FluentTaskManager;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.piano.api.data.enums.MidiPlayingType;
 import jw.piano.api.data.models.midi.PianoMidiFile;
@@ -44,6 +46,9 @@ public class MidiPlayerImpl implements MidiPlayer {
     private final MidiLoaderService loaderService;
 
     private final Piano piano;
+
+    private final FluentTaskManager taskManager;
+
     @Getter
     private final MidiPlayerSettingsObserver observer;
 
@@ -51,17 +56,18 @@ public class MidiPlayerImpl implements MidiPlayer {
 
     private MidiPlayerWorker worker;
 
-    public MidiPlayerImpl(Piano piano, MidiLoaderService midiLoaderService) {
+    public MidiPlayerImpl(Piano piano, FluentTaskManager taskManager, MidiLoaderService midiLoaderService) {
         this.loaderService = midiLoaderService;
         this.observer = piano.getPianoObserver().getMidiPlayerSettings();
         this.piano = piano;
+        this.taskManager = taskManager;
     }
 
 
     public void enable() {
-        worker = new MidiPlayerWorker(piano);
-        observer.getSpeed().onChange(worker::setSpeed);
-        observer.getIsPlaying().onChange(aBoolean ->
+        worker = new MidiPlayerWorker(piano, taskManager);
+        observer.getSpeed().subscribe(worker::setSpeed);
+        observer.getIsPlaying().subscribe(aBoolean ->
         {
             if (aBoolean) {
                 if (current == null) {

@@ -25,11 +25,11 @@
 
 package jw.piano.core.websocket;
 
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.web_socket.WebSocketPacket;
-import jw.fluent.api.web_socket.annotations.PacketProperty;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
+import io.github.jwdeveloper.ff.core.spigot.tasks.api.FluentTaskManager;
+import io.github.jwdeveloper.ff.extension.websocket.core.api.annotations.PacketProperty;
+import io.github.jwdeveloper.ff.extension.websocket.core.implementation.WebSocketPacket;
 import jw.piano.api.data.dto.PianoAction;
 import jw.piano.core.workers.PianoActionWorker;
 import org.java_websocket.WebSocket;
@@ -69,7 +69,8 @@ public class PianoActionPacket extends WebSocketPacket
     private final PianoActionWorker pianoActionWorker;
 
     @Inject
-    public PianoActionPacket(PianoActionWorker pianoActionWorker) {
+    public PianoActionPacket(PianoActionWorker pianoActionWorker, FluentTaskManager taskManager) {
+        super(taskManager);
         this.pianoActionWorker = pianoActionWorker;
     }
 

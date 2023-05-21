@@ -25,7 +25,7 @@
 package jw.piano.core.midi;
 
 
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import io.github.jwdeveloper.ff.core.common.logger.FluentLogger;
 import jw.piano.core.midi.jw.PianoTrackEntry;
 import jw.piano.core.midi.utils.InOutParam;
 import jw.piano.core.midi.utils.Pair;

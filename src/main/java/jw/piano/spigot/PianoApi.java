@@ -25,7 +25,7 @@
 
 package jw.piano.spigot;
 
-import jw.fluent.plugin.implementation.FluentApi;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
 import jw.piano.api.data.models.PianoData;
 import jw.piano.api.piano.Piano;
 import jw.piano.core.services.PianoService;

@@ -25,17 +25,15 @@
 
 package jw.piano.core.services;
 
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.plugin.api.config.FluentConfig;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
+import io.github.jwdeveloper.ff.plugin.api.config.FluentConfig;
 import jw.piano.api.data.PluginConsts;
 import jw.piano.api.data.config.PluginConfig;
 import jw.piano.api.data.config.SoundConfig;
 import jw.piano.api.data.sounds.PianoSound;
 import lombok.Getter;
 import org.bukkit.SoundCategory;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

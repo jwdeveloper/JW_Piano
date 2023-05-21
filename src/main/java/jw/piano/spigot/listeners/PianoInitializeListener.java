@@ -25,27 +25,23 @@
 
 package jw.piano.spigot.listeners;
 
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.spigot.events.EventBase;
-import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
+import io.github.jwdeveloper.ff.core.spigot.events.implementation.EventBase;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
 import jw.piano.api.data.PluginConsts;
 import jw.piano.core.repositories.PianoDataRepository;
 import jw.piano.core.services.PianoService;
 import org.bukkit.Chunk;
-import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
-import org.bukkit.event.world.ChunkPopulateEvent;
 import org.bukkit.event.world.EntitiesLoadEvent;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 
 import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 @Injection(lazyLoad = false)
@@ -55,7 +51,10 @@ public class PianoInitializeListener extends EventBase {
     private final PianoDataRepository pianoDataRepository;
 
     @Inject
-    public PianoInitializeListener(PianoService pianoService, PianoDataRepository pianoDataRepository) {
+    public PianoInitializeListener(Plugin plugin,
+                                   PianoService pianoService,
+                                   PianoDataRepository pianoDataRepository) {
+        super(plugin);
         this.pianoService = pianoService;
         this.pianoDataRepository = pianoDataRepository;
 

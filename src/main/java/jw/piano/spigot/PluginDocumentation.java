@@ -26,16 +26,14 @@
 
 package jw.piano.spigot;
 
-import jw.fluent.api.files.implementation.FileUtility;
-import jw.fluent.api.spigot.documentation.api.DocumentationDecorator;
-import jw.fluent.api.spigot.documentation.api.models.Documentation;
-import jw.fluent.api.utilites.java.StringUtils;
-import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.FluentPlugin;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import io.github.jwdeveloper.ff.core.common.java.StringUtils;
+import io.github.jwdeveloper.ff.core.common.logger.FluentLogger;
+import io.github.jwdeveloper.ff.core.documentation.api.DocumentationDecorator;
+import io.github.jwdeveloper.ff.core.documentation.api.models.Documentation;
+import jw.fluent_plugin.implementation.FluentApi;
 import jw.piano.api.data.PluginConsts;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
+
 
 import java.nio.charset.StandardCharsets;
 
@@ -142,7 +140,7 @@ public class PluginDocumentation extends DocumentationDecorator {
             var bytes = in.readAllBytes();
             content = new String(bytes, charset);
         } catch (Exception e) {
-           FluentLogger.LOGGER.log("oraxen documentation not generated");
+           FluentLogger.LOGGER.info("oraxen documentation not generated");
             return;
         }
 

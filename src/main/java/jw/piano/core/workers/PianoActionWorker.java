@@ -25,10 +25,9 @@
 
 package jw.piano.core.workers;
 
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.spigot.tasks.SimpleTaskTimer;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
+import io.github.jwdeveloper.ff.core.spigot.tasks.api.FluentTaskManager;
 import jw.piano.api.data.dto.PianoAction;
 import jw.piano.core.services.PianoService;
 
@@ -40,11 +39,13 @@ public class PianoActionWorker
 {
     private final PianoService pianoService;
     private final Queue<PianoAction.WorkerInfo> actions;
+    private final FluentTaskManager taskManager;
 
     @Inject
-    public PianoActionWorker(PianoService pianoService)
+    public PianoActionWorker(PianoService pianoService, FluentTaskManager taskManager)
     {
         this.pianoService = pianoService;
+        this.taskManager = taskManager;
         actions = new LinkedBlockingQueue<>();
         runWorker();
     }
@@ -67,12 +68,11 @@ public class PianoActionWorker
 
     private void runWorker()
     {
-        var taskTimer = new SimpleTaskTimer(0, (currentTick, fluentTaskTimer) ->
-        {
 
+        taskManager.taskTimer(0,(iteration, taskTimer) ->
+        {
             for (final var task : actions)
             {
-
                 switch (task.eventType()) {
                     case 0 -> task.model().triggerNote(task.velocity(), task.note(), task.velocity(),task.track());
                     case 1 -> task.model().triggerPedal(task.velocity(), task.note(),100);
@@ -80,7 +80,6 @@ public class PianoActionWorker
                 }
             }
             actions.clear();
-        });
-        taskTimer.run();
+        }).run();
     }
 }
