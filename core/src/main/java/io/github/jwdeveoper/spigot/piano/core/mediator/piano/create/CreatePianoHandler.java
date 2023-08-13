@@ -29,6 +29,7 @@ import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
 import io.github.jwdeveloper.ff.core.mediator.api.MediatorHandler;
 import io.github.jwdeveloper.ff.extension.translator.api.FluentTranslator;
+import io.github.jwdeveloper.spigot.piano.api.PianoPluginPluginTranslations;
 import io.github.jwdeveloper.spigot.piano.api.data.PianoData;
 import io.github.jwdeveoper.spigot.piano.core.services.ColorsService;
 import io.github.jwdeveoper.spigot.piano.core.services.PianoService;
@@ -41,24 +42,22 @@ public class CreatePianoHandler implements MediatorHandler<CreatePiano.Request, 
     private final FluentTranslator translator;
 
     @Inject
-    public CreatePianoHandler(PianoService pianoService, FluentTranslator translator)
-    {
+    public CreatePianoHandler(PianoService pianoService, FluentTranslator translator) {
         this.pianoService = pianoService;
         this.translator = translator;
     }
 
-
     @Override
     public CreatePiano.Response handle(CreatePiano.Request request) {
-        if(!pianoService.canCreate())
-        {
-            return new CreatePiano.Response(false,translator.get(PluginTranslations.PIANO.CREATE.ERROR_TOO_MUCH));
+
+        if (!pianoService.canCreate()) {
+            return new CreatePiano.Response(false, translator.get(PianoPluginPluginTranslations.PIANO.CREATE.ERROR_TOO_MUCH));
         }
 
         final var player = request.player();
         final var location = player.getLocation().setDirection(new Vector(0, 0, 1));
         final var pianoData = new PianoData();
-        pianoData.setName(player.getName()+"'s piano");
+        pianoData.setName(player.getName() + "'s piano");
         pianoData.setLocation(location);
         pianoData.setSkinName("grand piano");
         pianoData.setEffectName("midi player");
@@ -66,11 +65,11 @@ public class CreatePianoHandler implements MediatorHandler<CreatePiano.Request, 
         pianoData.setActive(true);
         pianoData.setColor(ColorsService.brown());
         final var result = pianoService.create(pianoData);
-        if(result.isEmpty())
-        {
-            return new CreatePiano.Response(false,translator.get(PluginTranslations.PIANO.CREATE.ERROR));
+        if (result.isEmpty()) {
+
+            return new CreatePiano.Response(false, translator.get(PianoPluginPluginTranslations.PIANO.CREATE.ERROR));
         }
 
-        return new CreatePiano.Response(true,"");
+        return new CreatePiano.Response(true, "");
     }
 }

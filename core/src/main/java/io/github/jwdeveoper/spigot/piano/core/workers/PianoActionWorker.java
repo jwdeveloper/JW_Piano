@@ -28,12 +28,8 @@ package io.github.jwdeveoper.spigot.piano.core.workers;
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
 import io.github.jwdeveloper.ff.core.spigot.tasks.api.FluentTaskFactory;
-import io.github.jwdeveloper.ff.core.spigot.tasks.api.FluentTaskManager;
 import io.github.jwdeveoper.spigot.piano.core.mediator.piano.action.PianoAction;
 import io.github.jwdeveoper.spigot.piano.core.services.PianoService;
-import jw.piano.api.data.dto.PianoAction;
-import jw.piano.core.services.PianoService;
-
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -62,7 +58,7 @@ public class PianoActionWorker
         }
 
         var piano = optional.get();
-        if(!piano.getPianoObserver().getDesktopClientAllowed().get())
+        if(!piano.getPianoData().getDesktopClientAllowed())
         {
             return;
         }

@@ -26,6 +26,7 @@
 package io.github.jwdeveloper.spigot.piano.api.piano;
 
 
+import io.github.jwdeveloper.spigot.piano.api.data.PianoData;
 import io.github.jwdeveloper.spigot.piano.api.managers.effects.EffectManager;
 import io.github.jwdeveloper.spigot.piano.api.managers.skins.SkinManager;
 import io.github.jwdeveloper.spigot.piano.api.managers.sounds.SoundsManager;
@@ -56,6 +57,7 @@ public interface Piano extends Teleportable, Interactable, Visiable, GuiViewer, 
     void setColor(Color color);
 
     //PianoDataObserver getPianoObserver();
+    PianoData getPianoData();
 
     void setVisible(boolean isVisible);
 

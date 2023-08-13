@@ -23,38 +23,50 @@
  *
  */
 
-package io.github.jwdeveoper.spigot.piano.core.mediator.files;
+package io.github.jwdeveoper.spigot.piano.core.midi_player.data;
 
-import io.github.jwdeveloper.ff.core.files.FileUtility;
-import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
-import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
-import io.github.jwdeveloper.ff.core.mediator.api.MediatorHandler;
-import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
-import io.github.jwdeveoper.spigot.piano.core.midi_player.data.MidiFileDto;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.ArrayList;
+import java.util.*;
 
-@Injection
-public class MidiFilesHandler implements MediatorHandler<MidiFiles.Request, MidiFiles.Response> {
+@Data
+public class MidiRawData {
 
-    private final String path;
+    private final Map<Long, Set<MidiCraftEvent>> timeLine = new TreeMap<>();
+    private String fileName;
 
-    @Inject
-    public MidiFilesHandler()
+    @Getter
+    @Setter
+    private int Resoultion;
+    @Getter
+    @Setter
+    private int tickPerBar;
+    private Long ticks;
+    private final LinkedList<ChangeTempoEvent> changeTempoEvents = new LinkedList<>();
+
+
+    public Map<Long, Set<MidiCraftEvent>> getTimeLine()
     {
-        path = FluentApi.getFluentApiSpigot().path()+ FileUtility.separator()+"midi";
+            return timeLine;
     }
 
-    @Override
-    public MidiFiles.Response handle(MidiFiles.Request request)
+    public void addChangeTempo(ChangeTempoEvent event)
     {
-        FileUtility.ensurePath(path);
-        var files = FileUtility.getFolderFilesName(path, "mid","midi");
-        var midiFiles = new ArrayList<MidiFileDto>();
-        for(var file : files)
-        {
-            midiFiles.add(new MidiFileDto(path+FileUtility.separator()+file,file));
+        changeTempoEvents.add(event);
+    }
+
+    public void addEvent(long tick, MidiCraftEvent event) {
+        if (!timeLine.containsKey(tick)) {
+            timeLine.put(tick, new LinkedHashSet<>());
         }
-        return new MidiFiles.Response(midiFiles);
+        var events = timeLine.get(tick);
+        events.add(event);
+    }
+
+    public Set<MidiCraftEvent> getEvents(Long tick)
+    {
+        return timeLine.get(tick);
     }
 }

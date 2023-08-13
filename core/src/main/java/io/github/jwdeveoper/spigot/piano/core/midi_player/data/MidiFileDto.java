@@ -23,17 +23,16 @@
  *
  */
 
-package io.github.jwdeveoper.spigot.piano.core.mediator.files;
+package io.github.jwdeveoper.spigot.piano.core.midi_player.data;
 
-import io.github.jwdeveoper.spigot.piano.core.midi_player.MidiFile;
-import io.github.jwdeveoper.spigot.piano.core.midi_player.data.MidiFileDto;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-import java.util.List;
 
-public class MidiFiles
+@Data
+@AllArgsConstructor
+public class MidiFileDto
 {
-    public record Request(){}
-
-    public record Response(List<MidiFileDto> files){}
-
+    private String path;
+    private String name;
 }

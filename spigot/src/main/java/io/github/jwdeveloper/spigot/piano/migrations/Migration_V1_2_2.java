@@ -59,7 +59,7 @@ public class Migration_V1_2_2 implements ExtensionMigration {
         var pianosFile = FluentApi.getFluentApiSpigot().path() + FileUtility.separator() + "PianoData.json";
         if (FileUtility.pathExists(pianosFile)) {
             FluentLogger.LOGGER.info("Copying plugins/JW_Piano/PianoData.json file to plugins/JW_Piano/data");
-            var destination =FluentApi.getFluentApiSpigot().path()+ FileUtility.separator() + "data";
+            var destination = FluentApi.getFluentApiSpigot().path() + FileUtility.separator() + "data";
             FileUtility.ensurePath(destination);
             var output = destination + FileUtility.separator() + "PianoData.json";
 
@@ -95,30 +95,35 @@ public class Migration_V1_2_2 implements ExtensionMigration {
             if (!value.equals(oldLink)) {
                 var msg1 = new MessageBuilder().text("PianoPack Updated, and it seems you are used modified version of it").toString();
                 var msg2 = new MessageBuilder().text("Remember to update your custom resourcepack to be compatible with plugin").toString();
-                var builder = new MessageBuilder().text("Click to get current version of Pianopack").toTextComponent();
+                var info = message.component();
+                info.withText(b ->
+                        {
+                            b.text("Click to get current version of Pianopack");
+                        })
+                        .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, newLink));
 
-                message.component().withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, newLink));
+
+                var copyMsg = message.component();
+                copyMsg.withText(b ->
+                {
+                    b.text("Or here to copy link");
+                }).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, newLink));
 
 
-
-
-
-                var copyMsg = new MessageBuilder().info().text("Or here to copy link").toTextComponent();
-                copyMsg.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, newLink));
                 for (var player : Bukkit.getOnlinePlayers()) {
                     if (!player.isOp()) {
                         continue;
                     }
                     player.sendMessage(msg1);
                     player.sendMessage(msg2);
-                    player.spigot().sendMessage(builder);
-                    player.spigot().sendMessage(copyMsg);
+                    player.spigot().sendMessage(info.toComponent());
+                    player.spigot().sendMessage(copyMsg.toComponent());
                 }
 
                 FluentLogger.LOGGER.success(msg1);
                 FluentLogger.LOGGER.success(msg2);
-                FluentLogger.LOGGER.success(builder.getText(), newLink);
-                FluentLogger.LOGGER.success(copyMsg.getText(), newLink);
+                FluentLogger.LOGGER.success(info.toString(), newLink);
+                FluentLogger.LOGGER.success(copyMsg.toString(), newLink);
                 return;
             }
         }

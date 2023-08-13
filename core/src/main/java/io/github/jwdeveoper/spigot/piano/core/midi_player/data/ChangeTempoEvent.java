@@ -23,17 +23,7 @@
  *
  */
 
-package io.github.jwdeveoper.spigot.piano.core.mediator.files;
+package io.github.jwdeveoper.spigot.piano.core.midi_player.data;
 
-import io.github.jwdeveoper.spigot.piano.core.midi_player.MidiFile;
-import io.github.jwdeveoper.spigot.piano.core.midi_player.data.MidiFileDto;
-
-import java.util.List;
-
-public class MidiFiles
-{
-    public record Request(){}
-
-    public record Response(List<MidiFileDto> files){}
-
+public record ChangeTempoEvent(long tick, int tempo, int signature) {
 }

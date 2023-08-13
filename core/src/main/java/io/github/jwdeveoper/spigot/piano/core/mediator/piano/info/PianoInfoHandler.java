@@ -28,7 +28,7 @@ package io.github.jwdeveoper.spigot.piano.core.mediator.piano.info;
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
 import io.github.jwdeveloper.ff.core.mediator.api.MediatorHandler;
-import jw.piano.core.services.PianoService;
+import io.github.jwdeveoper.spigot.piano.core.services.PianoService;
 import org.bukkit.plugin.Plugin;
 
 @Injection
@@ -53,7 +53,7 @@ public class PianoInfoHandler implements MediatorHandler<PianoInfo.Request, Pian
             return null;
 
         final var piano = pianoOptional.get();
-        var pianoData = piano.getPianoObserver().getPianoData();
+        var pianoData = piano.getPianoData();
 
         var response = new PianoInfo.Response();
         response.setId(pianoData.getUuid().toString());
