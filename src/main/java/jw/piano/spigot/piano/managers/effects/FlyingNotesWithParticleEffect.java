@@ -25,9 +25,8 @@
 
 package jw.piano.spigot.piano.managers.effects;
 
-import jw.fluent.api.spigot.tasks.SimpleTaskTimer;
-import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.modules.tasks.FluentTasks;
+import io.github.jwdeveloper.ff.core.spigot.tasks.implementation.SimpleTaskTimer;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
 import jw.piano.api.data.PluginConsts;
 import jw.piano.api.data.PluginModels;
 import jw.piano.api.data.models.PianoData;
@@ -97,7 +96,7 @@ public class FlyingNotesWithParticleEffect implements EffectInvoker {
     @Override
     public void onCreate() {
         notes.clear();
-        taskTimer = FluentTasks.taskTimer(1, (iteration, task) ->
+        taskTimer = FluentApi.tasks().taskTimer(1, (iteration, task) ->
         {
             for (var note : notes) {
 

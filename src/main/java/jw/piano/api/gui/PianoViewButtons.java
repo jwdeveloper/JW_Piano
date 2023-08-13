@@ -25,10 +25,7 @@
 
 package jw.piano.api.gui;
 
-import jw.fluent.api.desing_patterns.observer.implementation.Observer;
-import jw.fluent.api.spigot.gui.fluent_ui.FluentButtonUIBuilder;
-import jw.fluent.api.spigot.gui.fluent_ui.observers.list.checkbox.CheckBox;
-import jw.fluent.api.spigot.gui.inventory_gui.InventoryUI;
+
 import jw.piano.api.data.models.PianoSkin;
 import jw.piano.api.data.sounds.PianoSound;
 import jw.piano.api.managers.effects.EffectInvoker;

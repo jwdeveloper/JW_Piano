@@ -25,10 +25,10 @@
 
 package jw.piano.core.mediator.piano.info;
 
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
+import io.github.jwdeveloper.ff.core.mediator.api.MediatorHandler;
 import jw.piano.core.services.PianoService;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.desing_patterns.mediator.api.MediatorHandler;
 import org.bukkit.plugin.Plugin;
 
 @Injection

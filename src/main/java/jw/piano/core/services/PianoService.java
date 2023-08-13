@@ -27,8 +27,9 @@ package jw.piano.core.services;
 
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
+import io.github.jwdeveloper.ff.extension.gameobject.api.GameObjectManager;
 import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
-import jw.fluent_plugin.implementation.modules.dependecy_injection.FluentInjection;
+import io.github.jwdeveloper.ff.plugin.implementation.extensions.dependecy_injection.FluentInjection;
 import jw.piano.api.data.config.PluginConfig;
 import jw.piano.api.data.models.PianoData;
 import jw.piano.api.piano.Piano;
@@ -44,18 +45,22 @@ public class PianoService {
     private final PluginConfig config;
     private final PianoDataRepository pianoDataService;
     private final FluentInjection injection;
+    private final GameObjectManager gameObjectManager;
 
     @Inject
-    public PianoService(PluginConfig config,PianoDataRepository pianoDataService)
+    public PianoService(PluginConfig config,
+                        PianoDataRepository pianoDataService,
+                        GameObjectManager gameObjectManager)
     {
         this.config = config;
         this.pianoDataService = pianoDataService;
+        this.gameObjectManager = gameObjectManager;
         injection = FluentApi.container();
     }
 
     public void initialize(PianoData pianoData) {
         var piano = new PianoImpl(pianoData, injection);
-        GameObjectManager.register(piano, pianoData.getLocation());
+        gameObjectManager.register(piano, pianoData.getLocation());
         pianos.put(pianoData.getUuid(), piano);
     }
 
@@ -71,7 +76,7 @@ public class PianoService {
             return Optional.empty();
         }
         var piano = new PianoImpl(pianoData, injection);
-        GameObjectManager.register(piano, pianoData.getLocation());
+        gameObjectManager.register(piano, pianoData.getLocation());
         pianos.put(pianoData.getUuid(), piano);
         return Optional.of(piano);
     }
@@ -89,7 +94,7 @@ public class PianoService {
 
         var piano = (PianoImpl)model.get();
         piano.destroy();
-        GameObjectManager.unregister(piano);
+        gameObjectManager.unregister(piano);
         pianos.remove(pianoID);
         return true;
     }

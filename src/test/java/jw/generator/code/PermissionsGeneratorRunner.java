@@ -24,20 +24,13 @@
 
 package jw.generator.code;
 
-import jw.fluent.api.files.implementation.FileUtility;
-import jw.fluent.api.spigot.documentation.api.models.Documentation;
-import jw.fluent.api.spigot.documentation.implementation.decorator.PermissionDocumentationDecorator;
-import jw.fluent.api.spigot.permissions.implementation.PermissionGenerator;
-import jw.fluent.api.spigot.documentation.implementation.renderer.PluginDocumentationRenderer;
-import jw.fluent.api.spigot.messages.message.MessageBuilder;
-import jw.fluent.api.spigot.permissions.api.PermissionDto;
-import jw.piano.spigot.PermissionsTemplate;
+import io.github.jwdeveloper.ff.core.files.FileUtility;
+import io.github.jwdeveloper.ff.tools.files.generators.permissions.PermissionGenerator;
+import permissions.PermissionsTemplate;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class PermissionsGeneratorRunner {
 

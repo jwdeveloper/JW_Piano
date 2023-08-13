@@ -24,27 +24,11 @@
 
 package jw.generator.resources;
 
-import com.google.gson.JsonParser;
-import jw.fluent.api.files.implementation.FileUtility;
+import io.github.jwdeveloper.ff.tools.files.generators.translator.LanguagesGenerator;
 import jw.fluent.api.translator.implementation.LanguagesGenerator;
-import jw.fluent.api.utilites.java.StringUtils;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.function.Consumer;
 
 public class TranslationsGenerator {
 

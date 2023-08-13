@@ -25,9 +25,9 @@
 package jw.generator.resources;
 
 import com.google.gson.JsonParser;
-import jw.fluent.api.files.implementation.FileUtility;
-import jw.fluent.api.spigot.messages.message.MessageBuilder;
-import jw.fluent.api.utilites.TemplateUtility;
+import io.github.jwdeveloper.ff.core.files.FileUtility;
+import io.github.jwdeveloper.ff.core.spigot.messages.message.MessageBuilder;
+import io.github.jwdeveloper.ff.tools.files.TemplateUtility;
 import jw.piano.api.data.PluginConsts;
 import org.bukkit.Material;
 import org.junit.Test;
@@ -75,7 +75,7 @@ public class OraxenGenerator {
 
         var outputPath = "D:\\Git\\JW_Piano\\src\\main\\resources\\oraxen";
         var outputName = "jw_piano_oraxen_config.yml";
-        FileUtility.saveToFile(outputPath, outputName, builder.build());
+        FileUtility.saveToFile(outputPath, outputName, builder.toString());
     }
 
 

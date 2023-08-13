@@ -28,6 +28,7 @@ package jw.piano.api.data.config;
 import io.github.jwdeveloper.ff.core.files.yaml.api.annotations.YamlProperty;
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
 import io.github.jwdeveloper.ff.plugin.api.config.ConfigSection;
+import jw.fluent.api.files.implementation.yaml_reader.api.annotations.YamlProperty;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -36,7 +37,8 @@ import java.util.List;
 
 @Data
 @Injection
-public class PluginConfig implements ConfigSection {
+
+public class PluginConfig {
 
     @YamlProperty(name = "piano")
     private PianoConfig pianoConfig = new PianoConfig();

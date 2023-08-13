@@ -24,26 +24,25 @@
 
 package jw.generator.resources;
 
-import jw.PianoPluginMainMock;
-import jw.fluent.api.files.implementation.FileUtility;
-import jw.fluent.api.spigot.documentation.api.models.Documentation;
-import jw.fluent.api.spigot.documentation.implementation.decorator.PermissionDocumentationDecorator;
-import jw.fluent.api.spigot.documentation.implementation.renderer.PluginDocumentationRenderer;
-import jw.fluent.api.spigot.messages.message.MessageBuilder;
-import jw.fluent.api.spigot.permissions.api.PermissionDto;
-import jw.fluent.api.utilites.FluentApiMock;
-import jw.fluent.api.utilites.TemplateUtility;
-import jw.fluent.plugin.implementation.FluentApi;
-import jw.piano.spigot.PermissionsTemplate;
+
+import io.github.jwdeveloper.ff.core.documentation.api.models.Documentation;
+import io.github.jwdeveloper.ff.core.documentation.implementation.renderer.PluginDocumentationRenderer;
+import io.github.jwdeveloper.ff.core.files.FileUtility;
+import io.github.jwdeveloper.ff.core.spigot.messages.message.MessageBuilder;
+import io.github.jwdeveloper.ff.core.spigot.permissions.api.PermissionDto;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
+import io.github.jwdeveloper.ff.plugin.implementation.extensions.decorator.PermissionDocumentationDecorator;
+import io.github.jwdeveloper.ff.tools.FluentApiMock;
+import io.github.jwdeveloper.ff.tools.TaskBase;
+import io.github.jwdeveloper.ff.tools.files.TemplateUtility;
+import permissions.PermissionsTemplate;
+import jw.piano.spigot.PianoExtension;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.HashMap;
 
-public class PluginYmlGenerator {
-
-
-
+public class PluginYmlGenerator extends TaskBase {
 
     @Test
     public void genrateTemp() throws IOException {
@@ -57,7 +56,7 @@ public class PluginYmlGenerator {
 
 
     private void generate(boolean isTemp) throws IOException {
-        FluentApiMock.getInstance(new PianoPluginMainMock());
+        FluentApiMock.getInstance(new PianoExtension());
         var template = """
                 name: JW_Piano
                 version: ${project.version}
@@ -81,7 +80,6 @@ public class PluginYmlGenerator {
         var permissionGenerate = new PermissionDocumentationDecorator(settings);
         var documentation = new Documentation();
         permissionGenerate.decorate(documentation);
-        var content = new PluginDocumentationRenderer().render(new MessageBuilder(), documentation);
-        return content;
+        return  new PluginDocumentationRenderer().render(new MessageBuilder(), documentation);
     }
 }

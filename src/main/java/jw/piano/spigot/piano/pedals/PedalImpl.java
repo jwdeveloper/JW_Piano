@@ -25,8 +25,8 @@
 
 package jw.piano.spigot.piano.pedals;
 
-import jw.fluent.api.spigot.gameobjects.implementation.ArmorStandModel;
-import jw.fluent.api.spigot.gameobjects.implementation.GameObject;
+import io.github.jwdeveloper.ff.extension.gameobject.implementation.ArmorStandModel;
+import io.github.jwdeveloper.ff.extension.gameobject.implementation.GameObject;
 import jw.piano.api.data.PluginConsts;
 import jw.piano.api.data.PluginModels;
 import jw.piano.api.data.events.PianoInteractEvent;

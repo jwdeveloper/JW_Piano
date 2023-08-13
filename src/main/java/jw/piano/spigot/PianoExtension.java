@@ -1,6 +1,7 @@
 package jw.piano.spigot;
 
-import io.github.jwdeveloper.ff.extension.websocket.FluentWebsocketAPI;
+import io.github.jwdeveloper.ff.color_picker.ColorPickerApi;
+import io.github.jwdeveloper.ff.extension.websocket.FluentWebsocketApi;
 import io.github.jwdeveloper.ff.plugin.api.FluentApiSpigotBuilder;
 import io.github.jwdeveloper.ff.plugin.api.extention.FluentApiExtension;
 import jw.piano.api.data.PluginConsts;
@@ -19,12 +20,14 @@ public class PianoExtension implements FluentApiExtension {
                 .useResourcePack(resourcepackOptions ->
                 {
                     resourcepackOptions.setDefaultUrl(PluginConsts.RESOURCEPACK_URL);
-                })
-                .useExtension(FluentWebsocketAPI.use());
+                });
+
 
 
         builder.permissions().setBasePermissionName(PluginPermissions.BASE);
         builder.useExtension(new ConfigLoaderExtension());
         builder.useExtension(new CommandsExtension());
+        builder.useExtension(FluentWebsocketApi.use());
+        builder.useExtension(ColorPickerApi.use());
     }
 }

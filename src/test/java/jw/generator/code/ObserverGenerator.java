@@ -24,8 +24,8 @@
 
 package jw.generator.code;
 
-import jw.fluent.api.files.implementation.FileUtility;
-import jw.fluent.api.desing_patterns.observer.generator.ObserverClassGenerator;
+import io.github.jwdeveloper.ff.core.files.FileUtility;
+import io.github.jwdeveloper.ff.tools.files.generators.observer.ObserverClassGenerator;
 import jw.piano.api.data.models.PianoData;
 import org.junit.Test;
 

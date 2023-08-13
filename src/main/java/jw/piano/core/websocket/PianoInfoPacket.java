@@ -24,6 +24,7 @@
  */
 
 package jw.piano.core.websocket;
+import io.github.jwdeveloper.ff.core.common.ActionResult;
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
 import io.github.jwdeveloper.ff.core.spigot.tasks.api.FluentTaskManager;
 import io.github.jwdeveloper.ff.extension.websocket.core.api.annotations.PacketProperty;

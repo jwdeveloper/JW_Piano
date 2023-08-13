@@ -27,7 +27,6 @@ package jw.piano.spigot.piano.midi;
 
 import io.github.jwdeveloper.ff.core.common.logger.FluentLogger;
 import io.github.jwdeveloper.ff.core.spigot.tasks.api.FluentTaskManager;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.piano.api.data.enums.MidiPlayingType;
 import jw.piano.api.data.models.midi.PianoMidiFile;
 import jw.piano.api.observers.MidiPlayerSettingsObserver;

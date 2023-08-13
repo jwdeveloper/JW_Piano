@@ -1,6 +1,6 @@
 name: JW_Piano
 version: ${project.version}
-main: jw.piano.spigot.PianoPluginMain
+main: jw.piano.spigot.PluginMain
 author: JW
 description: Basically It adds pianos and MIDI player to Minecraft
 api-version: 1.17

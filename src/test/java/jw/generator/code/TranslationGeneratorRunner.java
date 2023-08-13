@@ -24,7 +24,9 @@
 
 package jw.generator.code;
 
-import jw.fluent.api.files.implementation.FileUtility;
+
+import io.github.jwdeveloper.ff.core.files.FileUtility;
+import io.github.jwdeveloper.ff.tools.files.generators.translator.TranslationClassGenerator;
 import jw.fluent.api.translator.implementation.TranslationClassGenerator;
 import org.junit.Test;
 

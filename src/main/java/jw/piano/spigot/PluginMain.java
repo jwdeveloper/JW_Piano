@@ -23,43 +23,22 @@
  *
  */
 
-package jw.piano.spigot.colorpicker;
-
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.spigot.events.EventBase;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-
-@Injection(lazyLoad = false)
-public class ColorPickerListener extends EventBase
-{
-    private final ColorPicker colorPicker;
-
-    @Inject
-    public ColorPickerListener(ColorPicker colorPicker)
-    {
-        this.colorPicker = colorPicker;
-    }
+package jw.piano.spigot;
 
 
-    @EventHandler
-    public void onPlayerKick(PlayerKickEvent event)
-    {
-        colorPicker.unregister(event.getPlayer());
-    }
+import io.github.jwdeveloper.ff.plugin.FluentPlugin;
+import org.bukkit.plugin.java.JavaPlugin;
 
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event)
-    {
-        colorPicker.unregister(event.getPlayer());
-    }
+public final class PluginMain extends JavaPlugin {
 
-    @EventHandler
-    public void onChatEvent(AsyncPlayerChatEvent event)
-    {
-        event.setCancelled(colorPicker.handleColorSelection(event.getPlayer(), event.getMessage(),event));
+    //  /give @p minecraft:leather_horse_armor{display:{color:16711680},CustomModelData:108} 1
+    ///time set 23600
+
+
+    @Override
+    public void onEnable() {
+        FluentPlugin.initialize(this)
+                .withExtension(new PianoExtension())
+                .createOrDisablePlugin();
     }
 }

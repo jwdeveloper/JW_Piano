@@ -25,7 +25,7 @@
 
 package jw.piano.spigot.piano.managers.effects;
 
-import jw.fluent.plugin.implementation.FluentApi;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
 import jw.piano.api.managers.effects.EffectInvoker;
 import jw.piano.api.piano.keyboard.PianoKey;
 import org.bukkit.Color;
@@ -47,7 +47,7 @@ public class NoteNameEffect implements EffectInvoker {
             return;
         }
         pianoKey.nameVisible(true);
-        FluentApi.tasks().taskLater((iteration, task) ->
+        FluentApi.tasks().taskLater(() ->
         {
             pianoKey.nameVisible(false);
         }, 10);

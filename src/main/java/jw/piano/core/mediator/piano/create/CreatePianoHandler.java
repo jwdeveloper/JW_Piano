@@ -25,12 +25,12 @@
 
 package jw.piano.core.mediator.piano.create;
 
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
+import io.github.jwdeveloper.ff.core.mediator.api.MediatorHandler;
+import io.github.jwdeveloper.ff.core.translator.api.FluentTranslator;
 import jw.piano.api.data.PluginTranslations;
 import jw.piano.api.data.models.PianoData;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.desing_patterns.mediator.api.MediatorHandler;
 import jw.piano.core.services.ColorsService;
 import jw.piano.core.services.PianoService;
 import org.bukkit.util.Vector;

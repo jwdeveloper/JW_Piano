@@ -28,7 +28,6 @@ package jw.piano.core.services;
 
 import io.github.jwdeveloper.ff.core.common.logger.FluentLogger;
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
-import jw.piano.api.data.dto.ColorInfo;
 import jw.piano.core.repositories.ColorsRepository;
 import org.bukkit.Color;
 import java.util.List;

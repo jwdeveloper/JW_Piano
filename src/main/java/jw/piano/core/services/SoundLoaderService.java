@@ -25,6 +25,7 @@
 
 package jw.piano.core.services;
 
+import io.github.jwdeveloper.ff.core.common.logger.FluentLogger;
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
 import io.github.jwdeveloper.ff.plugin.api.config.FluentConfig;
@@ -65,7 +66,7 @@ public class SoundLoaderService {
         loadConfigSounds();
         for(var sound : sounds)
         {
-            FluentLogger.LOGGER.log(sound.getNamespace());
+            FluentLogger.LOGGER.info(sound.getNamespace());
         }
     }
 

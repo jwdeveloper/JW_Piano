@@ -25,14 +25,13 @@
 
 package jw.piano.spigot.piano.bench;
 
-import jw.fluent.api.spigot.events.SimpleEvent;
-import jw.fluent.api.spigot.gui.inventory_gui.InventoryUI;
-import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+
+import io.github.jwdeveloper.ff.core.common.logger.FluentLogger;
+import io.github.jwdeveloper.ff.core.spigot.events.implementation.SimpleEvent;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
 import jw.piano.api.data.dto.BenchMove;
 import jw.piano.api.data.enums.AxisMove;
 import jw.piano.api.data.events.BenchMovingEvent;
-import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.event.block.Action;
@@ -154,7 +153,7 @@ public class BenchMovingHandler {
     private boolean validateLocation(Location location) {
         var difference = origin.subtract(location.clone()).toVector();
         var maxOffset = origin.clone().add(MAX_OFFSET);
-        FluentLogger.LOGGER.log("Validacja");
+        FluentLogger.LOGGER.info("Validacja");
         if (location.getX() < -maxOffset.getX() ||
                 location.getX() > maxOffset.getX() ||
                 location.getY() < -maxOffset.getY() ||
@@ -162,7 +161,7 @@ public class BenchMovingHandler {
                 location.getZ() < -maxOffset.getZ() ||
                 location.getZ() > maxOffset.getZ()
         ) {
-            FluentLogger.LOGGER.log("nie dziala");
+            FluentLogger.LOGGER.info("nie dziala");
             return false;
         }
         return true;

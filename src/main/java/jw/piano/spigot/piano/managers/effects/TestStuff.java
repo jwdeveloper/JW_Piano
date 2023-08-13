@@ -25,16 +25,14 @@
 
 package jw.piano.spigot.piano.managers.effects;
 
-import jw.fluent.api.spigot.tasks.SimpleTaskTimer;
-import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import io.github.jwdeveloper.ff.core.spigot.tasks.implementation.SimpleTaskTimer;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
 import jw.piano.api.data.PluginModels;
 import jw.piano.api.managers.effects.EffectInvoker;
 import jw.piano.api.piano.keyboard.PianoKey;
 import lombok.Getter;
 import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.util.Transformation;

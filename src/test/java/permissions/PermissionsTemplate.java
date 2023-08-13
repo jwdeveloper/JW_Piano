@@ -23,7 +23,7 @@
  *
  */
 
-package jw.piano.spigot;
+package permissions;
 
 import io.github.jwdeveloper.ff.core.spigot.permissions.api.annotations.PermissionGroup;
 import io.github.jwdeveloper.ff.core.spigot.permissions.api.annotations.PermissionProperty;

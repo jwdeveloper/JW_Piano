@@ -25,9 +25,8 @@
 
 package jw.piano.spigot.piano.keyboard;
 
-import jw.fluent.api.spigot.gameobjects.implementation.GameObject;
-import jw.fluent.api.spigot.permissions.implementation.PermissionsUtility;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import io.github.jwdeveloper.ff.core.spigot.permissions.implementation.PermissionsUtility;
+import io.github.jwdeveloper.ff.extension.gameobject.implementation.GameObject;
 import jw.piano.api.data.PluginConsts;
 import jw.piano.api.data.PluginPermissions;
 import jw.piano.api.data.events.PianoInteractEvent;

@@ -30,7 +30,7 @@ import io.github.jwdeveloper.ff.core.common.java.StringUtils;
 import io.github.jwdeveloper.ff.core.common.logger.FluentLogger;
 import io.github.jwdeveloper.ff.core.documentation.api.DocumentationDecorator;
 import io.github.jwdeveloper.ff.core.documentation.api.models.Documentation;
-import jw.fluent_plugin.implementation.FluentApi;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
 import jw.piano.api.data.PluginConsts;
 import org.bukkit.plugin.Plugin;
 
@@ -42,7 +42,7 @@ public class PluginDocumentation extends DocumentationDecorator {
     private final Plugin plugin;
 
     public PluginDocumentation() {
-        this.plugin = FluentApi.plugin();
+        this.plugin = FluentApi.getFluentApiSpigot().plugin();
     }
 
     @Override

@@ -39,9 +39,6 @@ public class CommandsExtension implements FluentApiExtension {
     @Override
     public void onConfiguration(FluentApiSpigotBuilder builder) {
 
-
-        var colorPicker = new ColorPickerCommand();
-        builder.container().register(ColorPickerCommand.class, LifeTime.SINGLETON, (a) -> colorPicker);
         builder.defaultCommand()
                 .setName("piano")
                 .propertiesConfig(propertiesConfig ->
@@ -52,7 +49,6 @@ public class CommandsExtension implements FluentApiExtension {
                 })
                 .subCommandsConfig(subCommandConfig ->
                 {
-                    subCommandConfig.addSubCommand(ColorPickerCommand.getCommand());
                     subCommandConfig.addSubCommand("key",commandBuilder ->
                     {
                        commandBuilder.eventsConfig(eventConfig ->
@@ -69,7 +65,7 @@ public class CommandsExtension implements FluentApiExtension {
                     eventConfig.onPlayerExecute(event ->
                     {
                         var gui = FluentApi.playerContext().find(PianoListGUI.class, event.getPlayer());
-                        gui.open(event.getPlayer());
+                       // gui.open(event.getPlayer());
                     });
                 });
     }

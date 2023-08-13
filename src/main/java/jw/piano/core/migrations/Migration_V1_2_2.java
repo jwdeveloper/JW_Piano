@@ -29,7 +29,7 @@ import io.github.jwdeveloper.ff.core.common.logger.FluentLogger;
 import io.github.jwdeveloper.ff.core.files.FileUtility;
 import io.github.jwdeveloper.ff.core.spigot.messages.message.MessageBuilder;
 import io.github.jwdeveloper.ff.plugin.api.config.migrations.ConfigMigration;
-import jw.fluent_plugin.implementation.FluentApi;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
 import jw.piano.api.data.PluginConsts;
 import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.Bukkit;
@@ -55,10 +55,10 @@ public class Migration_V1_2_2 implements ConfigMigration {
 
 
     public void movePianoData() {
-        var pianosFile = FluentApi.path() + FileUtility.separator() + "PianoData.json";
+        var pianosFile = FluentApi.getFluentApiSpigot().path() + FileUtility.separator() + "PianoData.json";
         if (FileUtility.pathExists(pianosFile)) {
             FluentLogger.LOGGER.info("Copying plugins/JW_Piano/PianoData.json file to plugins/JW_Piano/data");
-            var destination = FluentApi.path() + FileUtility.separator() + "data";
+            var destination =FluentApi.getFluentApiSpigot().path()+ FileUtility.separator() + "data";
             FileUtility.ensurePath(destination);
             var output = destination + FileUtility.separator() + "PianoData.json";
 

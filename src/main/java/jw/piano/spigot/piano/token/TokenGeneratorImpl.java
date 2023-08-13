@@ -25,14 +25,13 @@
 
 package jw.piano.spigot.piano.token;
 
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.utilites.LinkMessageUtility;
-import jw.fluent.api.utilites.java.StringUtils;
-import jw.fluent.api.utilites.messages.Emoticons;
-import jw.fluent.plugin.implementation.modules.mediator.FluentMediator;
-import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
-import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
+import io.github.jwdeveloper.ff.core.common.Emoticons;
+import io.github.jwdeveloper.ff.core.common.java.StringUtils;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
+import io.github.jwdeveloper.ff.core.translator.api.FluentTranslator;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
+import io.github.jwdeveloper.ff.plugin.implementation.extensions.mediator.FluentMediator;
+import io.github.jwdeveloper.ff.plugin.implementation.extensions.resourcepack.LinkMessageUtility;
 import jw.piano.api.data.PluginConsts;
 import jw.piano.api.data.PluginTranslations;
 import jw.piano.api.data.models.PianoData;
@@ -59,20 +58,26 @@ public class TokenGeneratorImpl implements TokenGenerator {
 
     public String generateAndSend(Player player) {
         if (!pianoData.getDesktopClientAllowed()) {
-            FluentMessage.message().color(org.bukkit.ChatColor.AQUA).bold().inBrackets(lang.get(PluginTranslations.GENERAL.INFO)).space().
-                    reset().
-                    text(lang.get(PluginTranslations.GUI.PIANO.DESKTOP_CLIENT_ACTIVE.DISABLED)).send(player);
+            FluentApi.messages()
+                    .chat()
+                    .color(org.bukkit.ChatColor.AQUA).bold().inBrackets(lang.get(PluginTranslations.GENERAL.INFO))
+                    .space()
+                    .reset()
+                    .text(lang.get(PluginTranslations.GUI.PIANO.DESKTOP_CLIENT_ACTIVE.DISABLED)).send(player);
             return StringUtils.EMPTY;
         }
 
         var token = generate();
-        if(token.equals(StringUtils.EMPTY))
-        {
-            FluentMessage.message().error().text(PluginTranslations.GUI.PIANO.TOKEN.ERROR);
+        if (token.equals(StringUtils.EMPTY)) {
+            FluentApi.messages()
+                    .chat()
+                    .error()
+                    .text(PluginTranslations.GUI.PIANO.TOKEN.ERROR);
             return token;
         }
 
-        FluentMessage.message()
+        FluentApi.messages()
+                .chat()
                 .color(org.bukkit.ChatColor.AQUA)
                 .bold()
                 .inBrackets(lang.get(PluginTranslations.GENERAL.INFO))
@@ -81,7 +86,8 @@ public class TokenGeneratorImpl implements TokenGenerator {
                 .text(lang.get(PluginTranslations.GUI.PIANO.TOKEN.MESSAGE_1)).send(player);
 
 
-        final var desktopAppMessage = FluentMessage.message()
+        final var desktopAppMessage = FluentApi.messages()
+                .chat()
                 .text(ChatColor.AQUA)
                 .text(ChatColor.BOLD)
                 .text(Emoticons.arrowRight)
@@ -91,7 +97,8 @@ public class TokenGeneratorImpl implements TokenGenerator {
         desktopAppMessage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, PluginConsts.CLIENT_APP_URL));
 
 
-        final var tokenCopyMessage = FluentMessage.message()
+        final var tokenCopyMessage = FluentApi.messages()
+                .chat()
                 .text(ChatColor.AQUA)
                 .text(ChatColor.BOLD)
                 .text(Emoticons.arrowRight)
@@ -104,10 +111,10 @@ public class TokenGeneratorImpl implements TokenGenerator {
 
         player.sendMessage(" ");
         player.spigot().sendMessage(desktopAppMessage);
-       // player.spigot().sendMessage(tokenCopyMessage);
+        // player.spigot().sendMessage(tokenCopyMessage);
         player.sendMessage(" ");
 
-        LinkMessageUtility.send(player,token,"Desktop app access token");
+        LinkMessageUtility.send(player, token, "Desktop app access token");
         return token;
     }
 

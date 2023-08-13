@@ -25,10 +25,9 @@
 
 package jw.piano.spigot.piano.managers;
 
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
+import io.github.jwdeveloper.ff.core.injector.api.enums.LifeTime;
 import jw.piano.api.data.sounds.PianoSound;
 import jw.piano.api.managers.sounds.SoundsManager;
 import jw.piano.core.services.SoundLoaderService;

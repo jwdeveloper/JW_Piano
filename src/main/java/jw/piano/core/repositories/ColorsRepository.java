@@ -27,13 +27,13 @@ package jw.piano.core.repositories;
 
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
 import io.github.jwdeveloper.ff.core.repository.implementation.RepositoryBase;
-import jw.piano.api.data.dto.ColorInfo;
 
 @Injection
 public class ColorsRepository extends RepositoryBase<ColorInfo> {
 
+    //TODO
     public ColorsRepository() {
-        super(ColorsRepository.getDataPath(), ColorInfo.class, "colors");
+        super("TODO", ColorInfo.class, "colors");
     }
 
 }

@@ -25,9 +25,9 @@
 
 package jw.piano.spigot.piano.managers.effects;
 
-import jw.fluent.api.spigot.tasks.SimpleTaskTimer;
-import jw.fluent.plugin.implementation.modules.tasks.FluentTasks;
-import jw.piano.api.data.PluginConsts;
+
+import io.github.jwdeveloper.ff.core.spigot.tasks.implementation.SimpleTaskTimer;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
 import jw.piano.api.managers.effects.EffectInvoker;
 import jw.piano.api.piano.keyboard.PianoKey;
 import org.bukkit.Color;
@@ -50,7 +50,7 @@ public class WaterfallEffect implements EffectInvoker {
     private final float PARTICLE_SIZE = 0.15f;
     public WaterfallEffect() {
         particles = new ArrayList<>(100);
-        taskTimer = FluentTasks.taskTimer(1,this::onTask);
+        taskTimer = FluentApi.tasks().taskTimer(1,this::onTask);
     }
 
     @Override

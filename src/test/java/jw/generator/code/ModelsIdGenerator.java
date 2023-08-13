@@ -26,9 +26,9 @@
 package jw.generator.code;
 
 import com.google.gson.JsonParser;
-import jw.fluent.api.files.implementation.FileUtility;
-import jw.fluent.api.utilites.code_generator.builders.ClassCodeBuilder;
-import jw.fluent.api.utilites.java.StringUtils;
+import io.github.jwdeveloper.ff.core.common.java.StringUtils;
+import io.github.jwdeveloper.ff.core.files.FileUtility;
+import io.github.jwdeveloper.ff.tools.files.code.ClassCodeBuilder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.Test;

@@ -25,10 +25,11 @@
 
 package jw.piano.spigot.piano;
 
-import jw.fluent.api.spigot.gameobjects.implementation.ArmorStandModel;
-import jw.fluent.api.spigot.gameobjects.implementation.GameObject;
-import jw.fluent.api.spigot.tasks.SimpleTaskTimer;
-import jw.fluent.plugin.implementation.FluentApi;
+
+import io.github.jwdeveloper.ff.core.spigot.tasks.implementation.SimpleTaskTimer;
+import io.github.jwdeveloper.ff.extension.gameobject.implementation.ArmorStandModel;
+import io.github.jwdeveloper.ff.extension.gameobject.implementation.GameObject;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
 import jw.piano.api.data.PluginConsts;
 import jw.piano.api.data.PluginModels;
 import jw.piano.api.data.models.PianoData;

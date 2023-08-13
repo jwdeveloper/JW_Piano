@@ -28,6 +28,8 @@ package jw.piano.spigot;
 
 
 
+import io.github.jwdeveloper.ff.core.hitbox.HitBoxDisplay;
+import io.github.jwdeveloper.ff.core.hitbox.InteractiveHitBox;
 import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
 import jw.piano.api.data.PluginModels;
 import org.bukkit.Color;

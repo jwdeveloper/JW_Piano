@@ -25,11 +25,11 @@
 
 package jw.piano.core.mediator.piano.token_data;
 
-import jw.fluent.plugin.implementation.modules.websocket.api.FluentWebsocket;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.desing_patterns.mediator.api.MediatorHandler;
-import jw.fluent.api.files.implementation.json.JsonUtility;
+import io.github.jwdeveloper.ff.core.files.json.JsonUtility;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
+import io.github.jwdeveloper.ff.core.mediator.api.MediatorHandler;
+import io.github.jwdeveloper.ff.extension.websocket.api.FluentWebsocket;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Base64;

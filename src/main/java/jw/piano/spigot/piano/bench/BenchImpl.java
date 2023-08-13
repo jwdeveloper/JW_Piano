@@ -25,12 +25,12 @@
 
 package jw.piano.spigot.piano.bench;
 
-import jw.fluent.api.spigot.gameobjects.implementation.ArmorStandModel;
-import jw.fluent.api.spigot.gameobjects.implementation.GameObject;
-import jw.fluent.api.spigot.gui.armorstand_gui.implementation.gui.interactive.HitBoxDisplay;
-import jw.fluent.api.spigot.permissions.implementation.PermissionsUtility;
-import jw.fluent.api.utilites.math.InteractiveHitBox;
-import jw.fluent.plugin.implementation.FluentApi;
+import io.github.jwdeveloper.ff.core.hitbox.HitBoxDisplay;
+import io.github.jwdeveloper.ff.core.hitbox.InteractiveHitBox;
+import io.github.jwdeveloper.ff.core.spigot.permissions.implementation.PermissionsUtility;
+import io.github.jwdeveloper.ff.extension.gameobject.implementation.ArmorStandModel;
+import io.github.jwdeveloper.ff.extension.gameobject.implementation.GameObject;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
 import jw.piano.api.data.PluginConsts;
 import jw.piano.api.data.PluginModels;
 import jw.piano.api.data.PluginPermissions;
@@ -164,7 +164,7 @@ public class BenchImpl extends GameObject implements Bench {
             passengers.add(Passengers);
         }
         armorStand.teleport(location);
-        FluentApi.tasks().taskLater((a, b) ->
+        FluentApi.tasks().taskLater(() ->
         {
             for (var Passengers : passengers) {
                 armorStand.addPassenger(Passengers);

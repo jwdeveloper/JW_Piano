@@ -25,9 +25,9 @@
 
 package jw.generator.resources;
 
-import jw.fluent.api.files.implementation.FileUtility;
-import jw.fluent.api.spigot.messages.message.MessageBuilder;
-import jw.fluent.api.utilites.TemplateUtility;
+import io.github.jwdeveloper.ff.core.files.FileUtility;
+import io.github.jwdeveloper.ff.core.spigot.messages.message.MessageBuilder;
+import io.github.jwdeveloper.ff.tools.files.TemplateUtility;
 import org.junit.Test;
 
 import java.io.IOException;

@@ -25,11 +25,11 @@
 
 package jw.piano.spigot.piano.keyboard;
 
-import jw.fluent.api.spigot.gameobjects.implementation.ArmorStandModel;
-import jw.fluent.api.spigot.gameobjects.implementation.GameObject;
-import jw.fluent.api.utilites.java.StringUtils;
-import jw.fluent.api.utilites.math.InteractiveHitBox;
-import jw.fluent.plugin.implementation.modules.tasks.FluentTasks;
+import io.github.jwdeveloper.ff.core.common.java.StringUtils;
+import io.github.jwdeveloper.ff.core.hitbox.InteractiveHitBox;
+import io.github.jwdeveloper.ff.extension.gameobject.implementation.ArmorStandModel;
+import io.github.jwdeveloper.ff.extension.gameobject.implementation.GameObject;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
 import jw.piano.api.data.PluginConsts;
 import jw.piano.api.data.PluginModels;
 import jw.piano.api.data.events.PianoInteractEvent;
@@ -112,7 +112,7 @@ public class PianoKeyImpl extends GameObject implements PianoKey {
         {
             return true;
         }
-        FluentTasks.taskTimer(CLICK_TICKS, (iteration, task) ->
+        FluentApi.tasks().taskTimer(CLICK_TICKS, (iteration, task) ->
                 {
                     press();
                 }).stopAfterIterations(1)

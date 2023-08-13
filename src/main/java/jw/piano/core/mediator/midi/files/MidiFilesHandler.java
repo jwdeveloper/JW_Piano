@@ -29,7 +29,7 @@ import io.github.jwdeveloper.ff.core.files.FileUtility;
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
 import io.github.jwdeveloper.ff.core.mediator.api.MediatorHandler;
-import jw.fluent_plugin.implementation.FluentApi;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
 import jw.piano.api.data.midi.reader.MidiFile;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class MidiFilesHandler implements MediatorHandler<MidiFiles.Request, Midi
     @Inject
     public MidiFilesHandler()
     {
-        path = FluentApi.path()+ FileUtility.separator()+"midi";
+        path = FluentApi.getFluentApiSpigot().path()+ FileUtility.separator()+"midi";
     }
 
     @Override

@@ -25,27 +25,18 @@
 
 package jw.piano.spigot.gui.piano;
 
-import jw.fluent.api.desing_patterns.observer.implementation.ObserverBag;
-import jw.fluent.api.player_context.api.PlayerContext;
-import jw.fluent.api.spigot.gui.fluent_ui.observers.list.checkbox.CheckBox;
-import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
+import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
+import io.github.jwdeveloper.ff.core.observer.implementation.ObserverBag;
+import io.github.jwdeveloper.ff.core.translator.api.FluentTranslator;
+import io.github.jwdeveloper.ff.plugin.implementation.extensions.player_context.api.PlayerContext;
 import jw.piano.api.data.PluginPermissions;
 import jw.piano.api.data.PluginTranslations;
-import jw.piano.api.data.dto.ColorInfo;
 import jw.piano.api.data.models.PianoSkin;
 import jw.piano.api.data.sounds.PianoSound;
 import jw.piano.api.managers.effects.EffectInvoker;
 import jw.piano.api.observers.PianoDataObserver;
 import jw.piano.api.piano.Piano;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
-import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
-import jw.fluent.api.spigot.gui.inventory_gui.EventsListenerInventoryUI;
-import jw.fluent.api.spigot.gui.inventory_gui.button.ButtonUI;
-import jw.fluent.api.spigot.gui.inventory_gui.implementation.chest_ui.ChestUI;
-import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
-import jw.piano.spigot.colorpicker.ColorPicker;
-import jw.piano.spigot.gui.ColorPickerGui;
 import jw.piano.spigot.gui.bench.BenchViewGui;
 import jw.piano.spigot.gui.keyboard.KeyboardGui;
 import jw.piano.spigot.gui.midi.MidiPlayerGui;
@@ -53,9 +44,7 @@ import jw.piano.spigot.piano.managers.effects.EmptyEffect;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
-import java.util.List;
 
 @PlayerContext
 @Injection
