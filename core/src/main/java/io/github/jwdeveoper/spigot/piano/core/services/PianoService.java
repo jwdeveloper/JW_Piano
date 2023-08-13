@@ -96,8 +96,7 @@ public class PianoService {
             return false;
         }
 
-        var piano = (PianoImpl)model.get();
-        piano.destroy();
+        var piano = model.get();
         gameObjectManager.unregister(piano);
         pianos.remove(pianoID);
         return true;

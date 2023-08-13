@@ -39,8 +39,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public interface Piano extends Teleportable, Interactable, Visiable, GuiViewer, Resetable, Colorable {
-
-
     TokenGenerator getTokenGenerator();
     SoundsManager getSoundsManager();
     SkinManager getSkinManager();
