@@ -1,6 +1,6 @@
 package io.github.jwdeveloper.spigot.piano.api.data;
 
-import io.github.jwdeveloper.spigot.piano.api.PluginConsts;
+import io.github.jwdeveloper.spigot.piano.api.PianoPluginConsts;
 import lombok.Data;
 import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
@@ -55,7 +55,7 @@ public class PianoSkinData
             return itemStack.clone();
         }
 
-        itemStack =  new ItemStack(PluginConsts.MATERIAL,1);
+        itemStack =  new ItemStack(PianoPluginConsts.MATERIAL,1);
         var meta = itemStack.getItemMeta();
         meta.setCustomModelData(customModelId);
         itemStack.setItemMeta(meta);

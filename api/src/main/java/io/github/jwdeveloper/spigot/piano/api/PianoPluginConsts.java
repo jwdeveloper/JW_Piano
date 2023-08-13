@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 
-public class PluginConsts
+public class PianoPluginConsts
 {
     public final static String SPIGOT_URL = "https://www.spigotmc.org/resources/piano.103490/";
 
@@ -33,6 +33,6 @@ public class PluginConsts
 
     public static ItemStack ITEMSTACK()
     {
-        return new ItemStack(PluginConsts.MATERIAL,1);
+        return new ItemStack(PianoPluginConsts.MATERIAL,1);
     }
 }

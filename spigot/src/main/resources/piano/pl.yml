@@ -1,0 +1,157 @@
+general:
+  info: Informacje o pianinie
+gui:
+  base:
+    insert:
+      desc: Utwórz nowy fortepian
+    delete:
+      desc: Usuń pianino
+      error: Nie można usunąć pianina
+    active:
+      title: Aktywny
+  piano-list:
+    title: Lista fortepianów
+    resourcepack:
+      title: Pobierz pakiet zasobów
+      desc: Kliknij tutaj, aby pobrać aktualną wersję pakietu zasobów
+      click:
+        left: Pobierz pakiet zasobów do minecraft
+        right: Wyślij link do pakietu zasobów
+    client-app:
+      title: Pobierz aplikację kliencką
+      desc: Kliknij tutaj, aby pobrać aktualną wersję aplikacji przeglądarki
+      message: Kliknij tutaj, aby pobrać aplikację przeglądarki
+    click:
+      error: Nie można znaleźć pianina
+  piano:
+    volume:
+      title: Głośność
+    teleport:
+      title: teleport
+    effect:
+      title: Efekt
+    skin:
+      title: Skóra
+    keyboard:
+      title: Klawiatura fortepianowa
+      desc: Zmień kolory klawiszy fortepianu
+    rename:
+      desc: Ustaw niestandardową nazwę pianina
+      message-1: Wpisz nazwę nowego pianina na czacie
+      title: Ustaw nazwę
+    token:
+      title: Kliknij, aby skopiować token
+      message-2: Wartość zostanie skopiowana po kliknięciu
+      click-to-copy: Kliknij, aby skopiować token
+      error: Nie można wygenerować linku, nieznany błąd
+      message-1: Skopiuj i wklej token do aplikacji przeglądarki Piano
+      desc: Podłącz swoje prawdziwe pianino lub odtwarzaj pliki MIDI za pomocą aplikacji
+        przeglądarkowej. Musisz odświeżyć Token za każdym razem, gdy IP serwera w
+        konfiguracji zostanie zmienione
+    pedal-active:
+      title: Naciśnij pedał na kliknięcie „f”.
+    pianist-active:
+      title: Pianista
+    bench-active:
+      title: Ławka aktywna
+    desktop-client-active:
+      title: Dostęp do aplikacji przeglądarki
+      disabled: Aplikacja przeglądarki jest wyłączona dla tego pianina
+    detect-key-active:
+      title: Naciskanie klawiszy fortepianu
+    sounds:
+      title: Dźwięki
+    piano-options:
+      title: Opcje fortepianu
+    clear:
+      title: Odśwież
+      message-1: Może być pomocne, gdy serwer został nagle wyłączony
+      message-2: a stary model fortepianu nie został prawidłowo usunięty.
+      message-3: Spróbuj także użyć /reload, aby wyczyścić wszystkie pianina
+      message-clear: Fortepian został odświeżony
+    midi-player:
+      title: Odtwarzacz midi
+      desc: Odtwarzaj pliki MIDI na tym pianinie. Pliki powinny znajdować się w plugins/JW_Piano/midi
+    bench:
+      title: Ławka
+    color:
+      title: Kolor
+  midi-player:
+    title: Odtwarzacz MIDI
+    speed:
+      title: Prędkość
+    state:
+      title: Stan odtwarzacza MIDI
+      stop: Zatrzymany
+      play: Gra
+      click:
+        left: Zmień stan odtwarzacza MIDI
+    song:
+      click:
+        left: Wybierz MIDI
+        right: Usuń MIDI
+        shift: Ustaw utwór jako aktualny
+      title: Umieść utwór MIDI
+    next:
+      title: Następna piosenka
+    previous:
+      title: Poprzednia piosenka
+    mode:
+      title: Tryb
+      random:
+        title: Losowy
+        desc: Utwory będą odtwarzane w losowej kolejności
+      loop:
+        title: Pętla
+        desc: Bieżący utwór będzie odtwarzany w pętli w nieskończoność
+      in-order:
+        title: W celu
+        desc: Piosenki będą odtwarzane jedna po drugiej
+  bench:
+    title: Ustawienia ławki
+    reset:
+      title: Zresetuj pozycję
+      desc: Teleportuj ławkę do domyślnej lokalizacji
+    move:
+      title: Ruszaj się
+      axis:
+        x: prawo lewo
+        y: Góra dół
+        z: do przodu do tyłu
+      desc:
+        message-1: Domyślna lokalizacja może Ci nie pasować.
+        message-2: Ale może edytować, przewijając myszą
+      click:
+        shift: Edytuj pozycję
+  keyboard:
+    title: Ustawienia klawiatury
+    chat:
+      info: Wprowadź numer ścieżki MIDI, aby porozmawiać
+      error: Nieprawidłowa wartość, dozwolona jest tylko liczba
+    click:
+      left: Zmień kolor
+      shift: Zmień numer ścieżki MIDI
+    default-color:
+      title: Domyślny kolor prasy
+    midi-track:
+      title: Dodaj ścieżkę MIDI
+      desc:
+        line-1: Przeważnie MIDI ma 2 ścieżki
+        line-2: 1 -> dla prawej ręki
+        line-3: 2 -> dla lewej ręki
+        line-4: ale możesz dodać ich więcej
+      click:
+        left: Dodaj nową ścieżkę MIDI
+skins:
+  none: Żaden
+  grand-piano: fortepian
+  upright-piano: pianino
+  electric-piano: pianino elektryczne
+  grand-piano-closed: fortepian zamknięty
+piano:
+  create:
+    error-too-much: Nie można dodać więcej pianin na serwerze
+    error: Nie można dodać nowego fortepianu
+commands:
+  piano:
+    desc: otwiera GUI, w którym możesz tworzyć/edytować/usuwać pianina

@@ -29,7 +29,7 @@ import io.github.jwdeveloper.ff.core.common.logger.FluentLogger;
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
 import io.github.jwdeveloper.ff.plugin.implementation.config.options.ConfigOptions;
-import io.github.jwdeveloper.spigot.piano.api.PluginConsts;
+import io.github.jwdeveloper.spigot.piano.api.PianoPluginConsts;
 import io.github.jwdeveloper.spigot.piano.api.config.PianoPluginConfig;
 import io.github.jwdeveloper.spigot.piano.api.config.SoundConfig;
 import io.github.jwdeveloper.spigot.piano.api.data.PianoSoundData;
@@ -99,7 +99,7 @@ public class SoundLoaderService {
         var soundsPrefix = soundConfig.getNamespace();
         var withPedal = new HashMap<Integer, String>();
         var withoutPedal = new HashMap<Integer, String>();
-        for (int i = PluginConsts.MIDI_KEY_OFFSET; i < PluginConsts.MIDI_KEY_OFFSET + PluginConsts.NOTES_NUMBER; i++) {
+        for (int i = PianoPluginConsts.MIDI_KEY_OFFSET; i < PianoPluginConsts.MIDI_KEY_OFFSET + PianoPluginConsts.NOTES_NUMBER; i++) {
             withPedal.put(i, soundsPrefix + ":1c." + i);
             withoutPedal.put(i, soundsPrefix + ":1." + i);
         }
@@ -119,7 +119,7 @@ public class SoundLoaderService {
         var soundsPrefix = "minecraft";
         var withPedal = new HashMap<Integer, String>();
         var withoutPedal = new HashMap<Integer, String>();
-        for (int i = PluginConsts.MIDI_KEY_OFFSET; i < PluginConsts.MIDI_KEY_OFFSET + PluginConsts.NOTES_NUMBER; i++) {
+        for (int i = PianoPluginConsts.MIDI_KEY_OFFSET; i < PianoPluginConsts.MIDI_KEY_OFFSET + PianoPluginConsts.NOTES_NUMBER; i++) {
             withPedal.put(i, soundsPrefix + ":1c." + i);
             withoutPedal.put(i, soundsPrefix + ":1." + i);
         }
