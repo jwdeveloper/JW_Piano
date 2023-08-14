@@ -5,7 +5,7 @@
     <parent>
         <artifactId>JW_Piano</artifactId>
         <groupId>JW_Piano</groupId>
-        <version>1.2.3</version>
+        <version>2.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,7 +15,13 @@
         <dependency>
             <groupId>io.github.jwdeveoper.spigot.piano</groupId>
             <artifactId>jwpiano.core</artifactId>
-            <version>1.2.3</version>
+            <version>2.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.jwdeveloper.ff.extension.inventory_gui</groupId>
+            <artifactId>extension-inventory-gui</artifactId>
+            <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

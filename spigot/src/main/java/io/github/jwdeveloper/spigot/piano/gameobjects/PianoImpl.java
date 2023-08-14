@@ -28,14 +28,10 @@ package io.github.jwdeveloper.spigot.piano.gameobjects;
 import io.github.jwdeveloper.ff.core.common.logger.FluentLogger;
 import io.github.jwdeveloper.ff.core.hitbox.InteractiveHitBox;
 import io.github.jwdeveloper.ff.core.spigot.tasks.api.FluentTaskFactory;
-import io.github.jwdeveloper.ff.core.spigot.tasks.api.FluentTaskManager;
-import io.github.jwdeveloper.ff.core.translator.api.FluentTranslator;
 import io.github.jwdeveloper.ff.extension.gameobject.implementation.ArmorStandModel;
-import io.github.jwdeveloper.ff.extension.gameobject.implementation.GameObject;
+import io.github.jwdeveloper.ff.extension.gameobject.neww.impl.core.GameComponent;
 import io.github.jwdeveloper.ff.extension.translator.api.FluentTranslator;
-import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
-import io.github.jwdeveloper.ff.plugin.implementation.extensions.container.FluentInjection;
-import io.github.jwdeveloper.ff.plugin.implementation.extensions.dependecy_injection.FluentInjection;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApiSpigot;
 import io.github.jwdeveloper.ff.plugin.implementation.extensions.mediator.FluentMediator;
 import io.github.jwdeveloper.spigot.piano.api.PianoPluginConsts;
 import io.github.jwdeveloper.spigot.piano.api.config.PianoPluginConfig;
@@ -53,21 +49,6 @@ import io.github.jwdeveloper.spigot.piano.gameobjects.pedals.PedalGroupImpl;
 import io.github.jwdeveloper.spigot.piano.gameobjects.token.TokenGeneratorImpl;
 import io.github.jwdeveoper.spigot.piano.core.services.MidiLoaderService;
 import jw.piano.api.data.PluginConsts;
-import jw.piano.api.data.config.PluginConfig;
-import jw.piano.api.data.events.PianoInteractEvent;
-import jw.piano.api.data.models.PianoData;
-import jw.piano.api.observers.PianoDataObserver;
-import jw.piano.api.piano.MidiPlayer;
-import jw.piano.api.piano.Piano;
-import jw.piano.core.services.MidiLoaderService;
-import jw.piano.spigot.gui.PianoListGUI;
-import jw.piano.spigot.piano.bench.BenchImpl;
-import jw.piano.spigot.piano.keyboard.KeyboardImpl;
-import jw.piano.spigot.piano.managers.EffectManagerImpl;
-import jw.piano.spigot.piano.managers.SkinManagerImpl;
-import jw.piano.spigot.piano.managers.SoundsManagerImpl;
-import jw.piano.spigot.piano.pedals.PedalGroupImpl;
-import jw.piano.spigot.piano.token.TokenGeneratorImpl;
 import lombok.Getter;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -76,7 +57,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
 
-public class PianoImpl extends GameObject implements Piano {
+public class PianoImpl extends GameComponent implements Piano {
 
     @Getter
     private BenchImpl bench;
@@ -89,26 +70,30 @@ public class PianoImpl extends GameObject implements Piano {
     @Getter
     private PianoDataObserver pianoObserver;
     @Getter
-    private final EffectManagerImpl effectManager;
+    private EffectManagerImpl effectManager;
     @Getter
-    private final SkinManagerImpl skinManager;
+    private SkinManagerImpl skinManager;
     @Getter
-    private final SoundsManagerImpl soundsManager;
+    private SoundsManagerImpl soundsManager;
     @Getter
     private TokenGeneratorImpl tokenGenerator;
 
     private final PianoData pianoData;
-    private final PianoPluginConfig pluginConfig;
-    private final FluentTranslator translator;
-    private final FluentMediator mediator;
-    private final MidiLoaderService midiLoaderService;
-    private final FluentTaskFactory taskManager;
-
+    private PianoPluginConfig pluginConfig;
+    private FluentTranslator translator;
+    private FluentMediator mediator;
+    private MidiLoaderService midiLoaderService;
+    private FluentTaskFactory taskManager;
     private ArmorStandModel modelRenderer;
     private InteractiveHitBox pianoHitBox;
 
-    public PianoImpl(PianoData pianoData, FluentInjection container) {
+    public PianoImpl(PianoData pianoData) {
         this.pianoData = pianoData;
+    }
+
+    @Override
+    public void onInitialization(FluentApiSpigot api) {
+        var container = api.container();
         pluginConfig = container.findInjection(PianoPluginConfig.class);
         effectManager = container.findInjection(EffectManagerImpl.class);
         soundsManager = container.findInjection(SoundsManagerImpl.class);
@@ -117,11 +102,7 @@ public class PianoImpl extends GameObject implements Piano {
         mediator = container.findInjection(FluentMediator.class);
         taskManager = container.findInjection(FluentTaskFactory.class);
         midiLoaderService = container.findInjection(MidiLoaderService.class);
-    }
-    @Override
-    public void onCreate() {
-        location.setYaw(0);
-        location.setPitch(0);
+
 
 
         skinManager.setOnSkinSet(pianoSkin ->
@@ -138,28 +119,25 @@ public class PianoImpl extends GameObject implements Piano {
         modelRenderer.setOnCreated(armorStandModel ->
         {
             armorStandModel.setItemStack(skinManager.getCurrent().getItemStack());
-            armorStandModel.setId(PluginConsts.PIANO_NAMESPACE, pianoData.getUuid());
+            armorStandModel.setId(PianoPluginConsts.PIANO_NAMESPACE, pianoData.getUuid());
         });
-
-
 
 
         bench = new BenchImpl(this);
         keyboard = new KeyboardImpl(pianoData, effectManager, soundsManager);
         pedals = new PedalGroupImpl(pianoData);
 
-        addGameComponent(modelRenderer);
-        addGameComponent(bench);
-        addGameComponent(keyboard);
-        addGameComponent(pedals);
+
+        components().addComponent(modelRenderer);
+        components().addComponent(bench);
+        components().addComponent(keyboard);
+        components().addComponent(pedals);
         effectManager.create(pianoData);
-
-        midiPlayer = new MidiPlayerImpl(this,taskManager, midiLoaderService);
-
+        midiPlayer = new MidiPlayerImpl(this, taskManager, midiLoaderService);
     }
 
     @Override
-    public void onCreated() {
+    public void onEnable() {
         setColor(pianoData.getColor());
         showPianist(pianoData.getShowPianist());
         skinManager.setCurrent(pianoData.getSkinName());
@@ -167,6 +145,7 @@ public class PianoImpl extends GameObject implements Piano {
         soundsManager.setCurrent(pianoData.getSoundName());
         midiPlayer.enable();
     }
+
 
     @Override
     public void onDestroy() {
@@ -184,9 +163,14 @@ public class PianoImpl extends GameObject implements Piano {
     }
 
     @Override
+    public PianoData getPianoData() {
+        return null;
+    }
+
+    @Override
     public void setVisible(boolean isVisible) {
-        this.visible = isVisible;
-        modelRenderer.setVisible(isVisible);
+        gameobject().setVisible(isVisible);
+      //  modelRenderer.setVisible(isVisible);
     }
 
     @Override
@@ -196,13 +180,13 @@ public class PianoImpl extends GameObject implements Piano {
 
     public void showPianist(boolean isVisible)
     {
-       bench.getPianist().setVisible(isVisible);
+        bench.getPianist().setVisible(isVisible);
     }
 
     @Override
     public void teleportPlayer(Player player) {
-        var destination = location.clone();
-        destination.setDirection(location.getDirection().multiply(-1));
+        var destination = transform().toLocation();
+        destination.setDirection(destination.getDirection().multiply(-1));
         destination.setZ(destination.getZ() + 2);
         player.teleport(destination);
     }
@@ -210,15 +194,19 @@ public class PianoImpl extends GameObject implements Piano {
     @Override
     public void teleport(Location location) {
         FluentLogger.LOGGER.warning("Teleportation not supported yet :/");
+
+        transform().setWorld(location.getWorld());
+        transform().position(location.getX(),location.getY(),location.getZ());
     }
 
     @Override
-    public boolean isLocationAtPianoRange(Location location) {
-        if (location.getWorld() != getLocation().getWorld()) {
+    public boolean isLocationAtPianoRange(Location another) {
+        var location = transform().toLocation();
+        if (another.getWorld() !=location.getWorld()) {
             return false;
         }
         final var minDistance = pluginConfig.getPianoConfig().getPianoRange();
-        final var distance = location.distance(getLocation());
+        final var distance = another.distance(location);
         return distance <= minDistance;
     }
 
@@ -251,8 +239,7 @@ public class PianoImpl extends GameObject implements Piano {
         if (bench.triggerPlayerClick(event)) {
             return true;
         }
-        if (keyboard.triggerPlayerClick(event))
-        {
+        if (keyboard.triggerPlayerClick(event)) {
             return true;
         }
         if (pedals.triggerPlayerClick(event)) {
@@ -274,6 +261,7 @@ public class PianoImpl extends GameObject implements Piano {
 
     @Override
     public void reset() {
+        var location = transform().toLocation()
         location.getChunk().setForceLoaded(true);
         var entities = location.getWorld().getNearbyEntities(location, 4, 6, 4);
         var piano = pianoData.getUuid().toString();

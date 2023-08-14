@@ -25,8 +25,9 @@
 
 package io.github.jwdeveloper.spigot.piano.gameobjects.managers.effects;
 
-import jw.piano.api.managers.effects.EffectInvoker;
-import jw.piano.api.piano.keyboard.PianoKey;
+
+import io.github.jwdeveloper.spigot.piano.api.managers.effects.EffectInvoker;
+import io.github.jwdeveloper.spigot.piano.api.piano.keyboard.PianoKey;
 import org.bukkit.Color;
 import org.bukkit.Location;
 

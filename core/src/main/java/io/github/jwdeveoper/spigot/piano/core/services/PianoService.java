@@ -27,6 +27,7 @@ package io.github.jwdeveoper.spigot.piano.core.services;
 
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
+import io.github.jwdeveloper.ff.extension.gameobject.api.GameComponent;
 import io.github.jwdeveloper.ff.extension.gameobject.api.GameObjectManager;
 import io.github.jwdeveloper.ff.extension.translator.implementation.config.TranslatorConfig;
 import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
@@ -35,6 +36,7 @@ import io.github.jwdeveloper.ff.plugin.implementation.extensions.container.Fluen
 import io.github.jwdeveloper.spigot.piano.api.config.PianoPluginConfig;
 import io.github.jwdeveloper.spigot.piano.api.data.PianoData;
 import io.github.jwdeveloper.spigot.piano.api.piano.Piano;
+import io.github.jwdeveloper.spigot.piano.api.piano.PianoFactory;
 import io.github.jwdeveoper.spigot.piano.core.repositories.PianoDataRepository;
 import org.bukkit.Location;
 
@@ -48,23 +50,28 @@ public class PianoService {
     private final HashMap<UUID, Piano> pianos = new HashMap<>();
     private final ConfigOptions<PianoPluginConfig>  config;
     private final PianoDataRepository pianoDataService;
-    private final FluentInjection injection;
     private final GameObjectManager gameObjectManager;
+
+    private final PianoFactory pianoFactory;
 
     @Inject
     public PianoService(ConfigOptions<PianoPluginConfig> config,
                         PianoDataRepository pianoDataService,
-                        GameObjectManager gameObjectManager)
+                        GameObjectManager gameObjectManager,
+                        PianoFactory pianoFactory)
     {
         this.config = config;
         this.pianoDataService = pianoDataService;
         this.gameObjectManager = gameObjectManager;
-        injection = FluentApi.container();
+        this.pianoFactory = pianoFactory;
     }
 
     public void initialize(PianoData pianoData) {
-        var piano = new PianoImpl(pianoData, injection);
-        gameObjectManager.register(piano, pianoData.getLocation());
+        var piano = pianoFactory.create(pianoData);
+        if(piano instanceof GameComponent gc)
+        {
+            gameObjectManager.register(gc, pianoData.getLocation());
+        }
         pianos.put(pianoData.getUuid(), piano);
     }
 
@@ -79,8 +86,12 @@ public class PianoService {
         if (!pianoDataService.insert(pianoData)) {
             return Optional.empty();
         }
-        var piano = new PianoImpl(pianoData, injection);
-        gameObjectManager.register(piano, pianoData.getLocation());
+        var piano = pianoFactory.create(pianoData);
+        if(piano instanceof GameComponent gc)
+        {
+            gameObjectManager.register(gc, pianoData.getLocation());
+        }
+
         pianos.put(pianoData.getUuid(), piano);
         return Optional.of(piano);
     }
@@ -97,7 +108,10 @@ public class PianoService {
         }
 
         var piano = model.get();
-        gameObjectManager.unregister(piano);
+        if(piano instanceof GameComponent gc)
+        {
+            gameObjectManager.unregister(gc);
+        }
         pianos.remove(pianoID);
         return true;
     }
