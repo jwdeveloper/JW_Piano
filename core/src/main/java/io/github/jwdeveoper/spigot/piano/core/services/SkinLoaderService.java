@@ -30,7 +30,7 @@ import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
 import io.github.jwdeveloper.ff.extension.translator.api.FluentTranslator;
 import io.github.jwdeveloper.ff.plugin.implementation.config.options.ConfigOptions;
 import io.github.jwdeveloper.spigot.piano.api.PianoPluginModels;
-import io.github.jwdeveloper.spigot.piano.api.PianoPluginPluginTranslations;
+import io.github.jwdeveloper.spigot.piano.api.PianoPluginTranslations;
 import io.github.jwdeveloper.spigot.piano.api.config.PianoPluginConfig;
 import io.github.jwdeveloper.spigot.piano.api.config.SkinConfig;
 import io.github.jwdeveloper.spigot.piano.api.data.PianoSkinData;
@@ -90,16 +90,16 @@ public class SkinLoaderService {
     }
 
     public PianoSkinData grandPianoSkin() {
-        return new PianoSkinData(PianoPluginModels.GRAND_PIANO.id(), lang.get(PianoPluginPluginTranslations.SKINS.GRAND_PIANO));
+        return new PianoSkinData(PianoPluginModels.GRAND_PIANO.id(), lang.get(PianoPluginTranslations.SKINS.GRAND_PIANO));
     }
 
     private List<PianoSkinData> createDefaultSkins() {
         var result = new ArrayList<PianoSkinData>();
-        result.add(new PianoSkinData(0, lang.get(PianoPluginPluginTranslations.SKINS.NONE), new ItemStack(Material.AIR)));
-        result.add(new PianoSkinData(PianoPluginModels.UP_RIGHT_PIANO_CLOSE.id(), lang.get(PianoPluginPluginTranslations.SKINS.UPRIGHT_PIANO)));
+        result.add(new PianoSkinData(0, lang.get(PianoPluginTranslations.SKINS.NONE), new ItemStack(Material.AIR)));
+        result.add(new PianoSkinData(PianoPluginModels.UP_RIGHT_PIANO_CLOSE.id(), lang.get(PianoPluginTranslations.SKINS.UPRIGHT_PIANO)));
         result.add(grandPianoSkin());
-        result.add(new PianoSkinData(PianoPluginModels.ELECTRIC_PIANO.id(), lang.get(PianoPluginPluginTranslations.SKINS.ELECTRIC_PIANO)));
-        result.add(new PianoSkinData(PianoPluginModels.GRAND_PIANO_CLOSE.id(), lang.get(PianoPluginPluginTranslations.SKINS.GRAND_PIANO_CLOSED)));
+        result.add(new PianoSkinData(PianoPluginModels.ELECTRIC_PIANO.id(), lang.get(PianoPluginTranslations.SKINS.ELECTRIC_PIANO)));
+        result.add(new PianoSkinData(PianoPluginModels.GRAND_PIANO_CLOSE.id(), lang.get(PianoPluginTranslations.SKINS.GRAND_PIANO_CLOSED)));
         return result;
     }
 

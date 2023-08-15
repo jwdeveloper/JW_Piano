@@ -1,160 +1,195 @@
 package io.github.jwdeveloper.spigot.piano.gui.piano;
 
+import io.github.jwdeveloper.ff.core.observer.implementation.Observer;
+import io.github.jwdeveloper.ff.extension.gui.OLD.observers.list.checkbox.CheckBox;
 import io.github.jwdeveloper.ff.extension.gui.api.InventoryApi;
 import io.github.jwdeveloper.ff.extension.gui.api.InventoryDecorator;
 import io.github.jwdeveloper.ff.extension.gui.api.buttons.ButtonBuilder;
+import io.github.jwdeveloper.ff.extension.gui.prefab.widgets.implementation.list.ContentListWidget;
+import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
+import io.github.jwdeveloper.spigot.piano.api.PianoPluginConsts;
+import io.github.jwdeveloper.spigot.piano.api.PianoPluginModels;
+import io.github.jwdeveloper.spigot.piano.api.PianoPluginPermissions;
+import io.github.jwdeveloper.spigot.piano.api.PianoPluginTranslations;
+import io.github.jwdeveloper.spigot.piano.api.data.PianoSkinData;
+import io.github.jwdeveloper.spigot.piano.api.data.PianoSoundData;
+import io.github.jwdeveloper.spigot.piano.api.managers.effects.EffectInvoker;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class PianoViewUIButtons
-{
+
+public class PianoViewUIButtons {
+
+    private final PianoViewUI pianoViewUI;
     private final InventoryDecorator decorator;
-    private final  InventoryApi inventoryApi;
+    private final InventoryApi api;
 
-
-    public PianoViewUIButtons(InventoryDecorator decorator,
-                                   InventoryApi inventoryApi) {
+    public PianoViewUIButtons(PianoViewUI pianoViewUI,
+                              InventoryDecorator decorator,
+                              InventoryApi inventoryApi) {
         this.decorator = decorator;
-        this.inventoryApi = inventoryApi;
+        this.api = inventoryApi;
+        this.pianoViewUI = pianoViewUI;
     }
 
-    @Override
+
+    /*
     public ButtonBuilder backButton(InventoryUI pianoUI) {
-        return fluentUi.buttonFactory()
+        return pianoViewUI.button()
                 .back(pianoUI, null);
-    }
+    }*/
 
-    @Override
+
     public ButtonBuilder keyboardButton() {
 
-        return decorator
-                .buttonBuilder()
-                .setDescription(buttonStyleBuilder ->
+        return pianoViewUI.button()
+                .withStyleRenderer(style ->
                 {
-                    buttonStyleBuilder.setTitle(lang.get(PluginTranslations.GUI.PIANO.KEYBOARD.TITLE));
-                    buttonStyleBuilder.addDescriptionLine(lang.get(PluginTranslations.GUI.PIANO.KEYBOARD.DESC));
+                    style.withTitle(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.KEYBOARD.TITLE));
+                    style.withDescription(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.KEYBOARD.DESC));
                 })
-                .setMaterial(PluginConsts.MATERIAL, PluginModels.PIANO_KEY.id(), Color.WHITE)
-                .setPermissions(PluginPermissions.GUI.MIDI_PLAYER.BASE)
-                .setLocation(2, 6);
+                .withMaterial(PianoPluginConsts.MATERIAL, Color.WHITE, PianoPluginModels.PIANO_KEY.id())
+                .withPosition(2, 6)
+                .withPermissions(PianoPluginPermissions.GUI.MIDI_PLAYER.BASE);
     }
 
-    @Override
+
     public ButtonBuilder midiPlayerButton() {
-        return fluentUi
-                .buttonBuilder()
-                .setDescription(buttonStyleBuilder ->
+        return pianoViewUI.button()
+                .withStyleRenderer(buttonStyleBuilder ->
                 {
-                    buttonStyleBuilder.setTitle(lang.get(PluginTranslations.GUI.PIANO.MIDI_PLAYER.TITLE));
-                    buttonStyleBuilder.addDescriptionLine(lang.get(PluginTranslations.GUI.PIANO.MIDI_PLAYER.DESC));
+                    buttonStyleBuilder.withTitle(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.MIDI_PLAYER.TITLE));
+                    buttonStyleBuilder.withDescription(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.MIDI_PLAYER.DESC));
                 })
-                .setMaterial(Material.JUKEBOX)
-                .setPermissions(PluginPermissions.GUI.MIDI_PLAYER.BASE)
-                .setLocation(1, 2);
+                .withMaterial(Material.JUKEBOX)
+                .withPosition(1, 2)
+                .withPermissions(PianoPluginPermissions.GUI.MIDI_PLAYER.BASE);
     }
 
-    @Override
+
     public ButtonBuilder pianoClearButton() {
-        return fluentUi
-                .buttonBuilder()
-                .setDescription(buttonStyleBuilder ->
+        return pianoViewUI.button()
+                .withStyleRenderer(buttonStyleBuilder ->
                 {
-                    buttonStyleBuilder.setTitle(lang.get(PluginTranslations.GUI.PIANO.CLEAR.TITLE));
-                    buttonStyleBuilder.addDescriptionLine(lang.get(PluginTranslations.GUI.PIANO.CLEAR.MESSAGE_1));
-                    buttonStyleBuilder.addDescriptionLine(lang.get(PluginTranslations.GUI.PIANO.CLEAR.MESSAGE_2));
-                    buttonStyleBuilder.addDescriptionLine(lang.get(PluginTranslations.GUI.PIANO.CLEAR.MESSAGE_3));
+                    buttonStyleBuilder.withTitle(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.CLEAR.TITLE));
+                    buttonStyleBuilder.withUseCache();
+                    buttonStyleBuilder.withDescriptionLine(e ->
+                            e.builder()
+                                    .textNewLine(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.CLEAR.MESSAGE_1))
+                                    .textNewLine(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.CLEAR.MESSAGE_2))
+                                    .textNewLine(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.CLEAR.MESSAGE_3))
+                                    .toString());
                 })
-                .setMaterial(Material.TOTEM_OF_UNDYING)
-                .setPermissions(PluginPermissions.GUI.PIANO.CLEAR)
-                .setLocation(0, 8);
+                .withMaterial(Material.TOTEM_OF_UNDYING)
+                .withPermissions(PianoPluginPermissions.GUI.PIANO.CLEAR)
+                .withPosition(0, 8);
     }
 
 
-    @Override
     public ButtonBuilder benchButton() {
-        return fluentUi
-                .buttonBuilder()
-                .setDescription(buttonDescriptionInfoBuilder ->
+        return pianoViewUI.button()
+                .withStyleRenderer(buttonDescriptionInfoBuilder ->
                 {
-                    buttonDescriptionInfoBuilder.setTitle(lang.get(PluginTranslations.GUI.PIANO.BENCH.TITLE));
-                    buttonDescriptionInfoBuilder.setTitle(lang.get(PluginTranslations.GUI.PIANO.BENCH.TITLE));
+                    buttonDescriptionInfoBuilder.withTitle(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.BENCH.TITLE));
                 })
-                .setMaterial(PluginConsts.MATERIAL, PluginModels.BENCH.id())
-                .setPermissions(PluginPermissions.GUI.BENCH.BASE)
-                .setLocation(2, 4);
+                .withMaterial(PianoPluginConsts.MATERIAL, PianoPluginModels.BENCH.id())
+                .withPermissions(PianoPluginPermissions.GUI.BENCH.BASE)
+                .withPosition(2, 4);
     }
 
-    @Override
-    public ButtonBuilder renameButton() {
-        return fluentUi
-                .buttonBuilder()
-                .setDescription(buttonStyleBuilder ->
+
+    public ButtonBuilder renameButton(Consumer<AsyncPlayerChatEvent> onChat)
+    {
+
+        var openMessage = FluentApi.messages().chat()
+                .color(org.bukkit.ChatColor.AQUA)
+                .bold()
+                .inBrackets(pianoViewUI.translate(PianoPluginTranslations.GENERAL.INFO))
+                .space()
+                .reset()
+                .text(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.RENAME.MESSAGE_1))
+                .toString();
+
+
+        var button = pianoViewUI.button();
+        api.buttons().inputChat(button,options ->
+        {
+            options.onChatInput(onChat);
+            options.setOpenMessage(openMessage);
+        });
+
+
+        return pianoViewUI.button()
+                .withStyleRenderer(buttonStyleBuilder ->
                 {
-                    buttonStyleBuilder.setTitle(lang.get(PluginTranslations.GUI.PIANO.RENAME.TITLE));
-                    buttonStyleBuilder.addDescriptionLine(lang.get(PluginTranslations.GUI.PIANO.RENAME.DESC));
+                    buttonStyleBuilder.withTitle(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.RENAME.TITLE));
+                    buttonStyleBuilder.withDescription(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.RENAME.DESC));
                 })
-                .setMaterial(Material.NAME_TAG)
-                .setPermissions(PluginPermissions.GUI.PIANO.RENAME)
-                .setLocation(0, 2);
+                .withMaterial(Material.NAME_TAG)
+                .withPermissions(PianoPluginPermissions.GUI.PIANO.RENAME)
+                .withPosition(0, 2);
     }
 
-    @Override
+
     public ButtonBuilder teleportButton() {
-        return fluentUi
-                .buttonBuilder()
-                .setDescription(buttonStyleBuilder ->
+        return pianoViewUI.button()
+                .withStyleRenderer(buttonStyleBuilder ->
                 {
-                    buttonStyleBuilder.setTitle(lang.get(PluginTranslations.GUI.PIANO.TELEPORT.TITLE));
+                    buttonStyleBuilder.withTitle(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.TELEPORT.TITLE));
                 })
-                .setMaterial(Material.ENDER_PEARL)
-                .setPermissions(PluginPermissions.GUI.PIANO.TELEPORT)
-                .setLocation(2, 2);
+                .withMaterial(Material.ENDER_PEARL)
+                .withPermissions(PianoPluginPermissions.GUI.PIANO.TELEPORT)
+                .withPosition(2, 2);
     }
 
-    @Override
+
     public ButtonBuilder tokenButton() {
-        return fluentUi
-                .buttonBuilder()
-                .setDescription(buttonStyleBuilder ->
+        return pianoViewUI.button()
+                .withStyleRenderer(buttonStyleBuilder ->
                 {
-                    buttonStyleBuilder.setTitle(lang.get(PluginTranslations.GUI.PIANO.TOKEN.TITLE));
-                    buttonStyleBuilder.addDescriptionLine(lang.get(PluginTranslations.GUI.PIANO.TOKEN.DESC));
+                    buttonStyleBuilder.withTitle(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.TOKEN.TITLE));
+                    buttonStyleBuilder.withDescription(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.TOKEN.DESC));
                 })
-                .setMaterial(Material.DIAMOND)
-                .setHighlighted()
-                .setPermissions(PluginPermissions.GUI.PIANO.GENERATE_TOKEN)
-                .setLocation(1, 4);
-    }
-
-    @Override
-    public ButtonBuilder pianoVolumeButton(Supplier<Observer<Integer>> observerSupplier) {
-        return fluentUi.buttonFactory()
-                .observeBarInt(observerSupplier, options ->
-                {
-                    options.setYield(5);
-                    options.setMaximum(100);
-                    options.setMinimum(0);
-                })
-                .setMaterial(Material.BELL)
-                .setPermissions(PluginPermissions.GUI.PIANO.VOLUME)
-                .setDescription(options ->
-                {
-                    options.setTitle(lang.get(PluginTranslations.GUI.PIANO.VOLUME.TITLE));
-                })
-                .setLocation(1, 6);
+                .withMaterial(Material.DIAMOND)
+                .withHighlighted()
+                .withPermissions(PianoPluginPermissions.GUI.PIANO.GENERATE_TOKEN)
+                .withPosition(1, 4);
     }
 
 
-    @Override
+    public ButtonBuilder pianoVolumeButton(Supplier<Observer<Integer>> observer) {
+        var button = pianoViewUI.button().
+                withMaterial(Material.BELL)
+                .withPermissions(PianoPluginPermissions.GUI.PIANO.VOLUME)
+                .withStyleRenderer(options ->
+                {
+                    options.withTitle(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.VOLUME.TITLE));
+                })
+                .withPosition(1, 6);
+
+        api.buttons().progressBar(button, options ->
+        {
+            options.setYield(5);
+            options.setMaximum(100);
+            options.setMinimum(0);
+            options.setDataSource(observer);
+        });
+
+        return button;
+    }
+
+
     public ButtonBuilder pianoParticleEffectSelectButton(
             Supplier<Observer<String>> observerSupplier,
             Supplier<List<EffectInvoker>> effectSupplier,
             Observer<EffectInvoker> effectIndexSupplier) {
 
-        return fluentUi.buttonFactory()
+        return pianoViewUI.button()
                 .observeList(() -> effectIndexSupplier,
                         effectSupplier,
                         options ->
@@ -165,56 +200,58 @@ public class PianoViewUIButtons
                                 final var value = event.data().getName();
                                 final var observer = observerSupplier.get();
                                 observer.set(value);
-                                event.buttonUI().setMaterial(event.data().getIcon());
+                                event.buttonUI().withMaterial(event.data().getIcon());
                             });
                         }
                 )
-                .setMaterial(Material.FIREWORK_ROCKET)
-                .setPermissions(PluginPermissions.GUI.PIANO.EFFECT)
-                .setDescription(options ->
+                .withMaterial(Material.FIREWORK_ROCKET)
+                .withPermissions(PianoPluginPermissions.GUI.PIANO.EFFECT)
+                .withStyleRenderer(options ->
                 {
-                    options.setTitle(lang.get(PluginTranslations.GUI.PIANO.EFFECT.TITLE));
+                    options.withTitle(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.EFFECT.TITLE));
                 })
-                .setLocation(3, 2);
+                .withPosition(3, 2);
     }
 
 
-    public ButtonBuilder pianoSkinSelectButton(Supplier<Observer<String>> observerSupplier,
-                                               Supplier<List<PianoSkin>> skinsSupplier,
-                                               Observer<PianoSkin> skinObserver) {
-        return fluentUi.buttonFactory()
-                .observeList(() -> skinObserver, skinsSupplier, options ->
+    public ContentListWidget<PianoSkinData> pianoSkinSelectButton(Supplier<Observer<String>> observerSupplier,
+                                                                  Supplier<PianoSkinData> selectedObserver,
+                                                                  Supplier<List<PianoSkinData>> skinsSupplier)
+    {
+        var button = pianoViewUI.button()
+                .withStyleRenderer(config ->
                 {
-                    options.setOnNameMapping(PianoSkin::getName);
-                    options.setOnSelectionChanged(event ->
-                    {
-                        final var value = event.data().getName();
-                        final var observer = observerSupplier.get();
-                        observer.set(value);
-                        if (value.equals("none")) {
-                            event.buttonUI().setMaterial(Material.NOTE_BLOCK);
-                            return;
-                        }
-                        event.buttonUI().setCustomMaterial(PluginConsts.MATERIAL, event.data().getCustomModelId());
-                    });
+                    config.withTitle(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.SKIN.TITLE));
+                   // config.withShiftClickInfo(pianoViewUI.translate(FluentTranslations.COLOR_PICKER.CHANGE_COLOR));
                 })
-                .setDescription(config ->
-                {
-                    config.setTitle(lang.get(PluginTranslations.GUI.PIANO.SKIN.TITLE));
-                    config.setOnShiftClick(lang.get(FluentTranslations.COLOR_PICKER.CHANGE_COLOR));
-                })
-                .setPermissions(PluginPermissions.GUI.PIANO.SKIN)
-                .setLocation(3, 4);
+                .withPermissions(PianoPluginPermissions.GUI.PIANO.SKIN)
+                .withPosition(3, 4);
+
+        return  api.buttons().<PianoSkinData>contentListWidget(button,contentListOptions ->
+        {
+            contentListOptions.setContentSource(skinsSupplier);
+            contentListOptions.setSelectedItemObserver(selectedObserver);
+            contentListOptions.setOnSelectionChanged(event ->
+            {
+                final var value = event.getSelectedItem();
+                final var observer = observerSupplier.get();
+                observer.set(value.getName());
+                if (value.equals("none")) {
+                    event.getButton().setMaterial(Material.NOTE_BLOCK);
+                    return;
+                }
+                event.getButton().setCustomMaterial(PianoPluginConsts.MATERIAL, value.getCustomModelId());
+            });
+        });
     }
 
 
-    @Override
-    public FluentButtonUIBuilder pianoSoundsSelectButton(
+    public ButtonBuilder pianoSoundsSelectButton(
             Supplier<Observer<String>> observerSupplier,
-            Supplier<List<PianoSound>> effectSupplier,
-            Observer<PianoSound> effectIndexSupplier) {
+            Supplier<List<PianoSoundData>> effectSupplier,
+            Observer<PianoSoundData> effectIndexSupplier) {
 
-        return fluentUi.buttonFactory()
+        return pianoViewUI.button()
                 .observeList(() -> effectIndexSupplier,
                         effectSupplier,
                         options ->
@@ -228,28 +265,24 @@ public class PianoViewUIButtons
                             });
                         }
                 )
-                .setMaterial(Material.MUSIC_DISC_WARD)
-                .setPermissions(PluginPermissions.GUI.PIANO.SOUND)
-                .setDescription(options ->
+                .withMaterial(Material.MUSIC_DISC_WARD)
+                .withPermissions(PianoPluginPermissions.GUI.PIANO.SOUND)
+                .withStyleRenderer(options ->
                 {
-                    options.setTitle(lang.get(PluginTranslations.GUI.PIANO.SOUNDS.TITLE));
+                    options.withTitle(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.SOUNDS.TITLE));
                 })
-                .setLocation(3, 6);
+                .withPosition(3, 6);
     }
 
-    @Override
-    public FluentButtonUIBuilder pianoOptionsButton(InventoryUI inventoryUI, Supplier<List<CheckBox>> values) {
-        return fluentUi.buttonFactory()
-                .observeCheckBoxList(inventoryUI, values, checkBoxListNotifierOptions ->
-                {
 
-                })
-                .setPermissions(PluginPermissions.GUI.PIANO.SETTINGS.BASE)
-                .setMaterial(Material.REPEATER)
-                .setLocation(0, 1)
-                .setDescription(descriptionInfoBuilder ->
+    public ButtonBuilder pianoOptionsButton(Supplier<List<CheckBox>> values) {
+        return pianoViewUI.button()
+                .withPermissions(PianoPluginPermissions.GUI.PIANO.SETTINGS.BASE)
+                .withMaterial(Material.REPEATER)
+                .withPosition(0, 1)
+                .withStyleRenderer(descriptionInfoBuilder ->
                 {
-                    descriptionInfoBuilder.setTitle(lang.get(PluginTranslations.GUI.PIANO.PIANO_OPTIONS.TITLE));
+                    descriptionInfoBuilder.withTitle(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.PIANO_OPTIONS.TITLE));
                 });
     }
 }

@@ -1,6 +1,6 @@
 package io.github.jwdeveloper.spigot.piano.api;
 
-public class PianoPluginPluginTranslations
+public class PianoPluginTranslations
 {
     public static class GENERAL
     {

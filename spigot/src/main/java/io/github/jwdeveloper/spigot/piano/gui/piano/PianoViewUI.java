@@ -1,14 +1,19 @@
 package io.github.jwdeveloper.spigot.piano.gui.piano;
 
+import io.github.jwdeveloper.ff.color_picker.api.ColorInfo;
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
 import io.github.jwdeveloper.ff.core.observer.implementation.ObserverBag;
+import io.github.jwdeveloper.ff.extension.gui.OLD.events.ButtonClickEvent;
 import io.github.jwdeveloper.ff.extension.gui.OLD.observers.list.checkbox.CheckBox;
 import io.github.jwdeveloper.ff.extension.gui.api.InventoryApi;
 import io.github.jwdeveloper.ff.extension.gui.api.InventoryDecorator;
 import io.github.jwdeveloper.ff.extension.gui.implementation.buttons.ButtonUI;
 import io.github.jwdeveloper.ff.extension.gui.prefab.components.implementation.common.BorderComponent;
+import io.github.jwdeveloper.ff.extension.gui.prefab.components.implementation.common.title.TitleComponent;
 import io.github.jwdeveloper.ff.extension.gui.prefab.simple.SimpleGUI;
 import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
+import io.github.jwdeveloper.spigot.piano.api.PianoPluginPermissions;
+import io.github.jwdeveloper.spigot.piano.api.PianoPluginTranslations;
 import io.github.jwdeveloper.spigot.piano.api.data.PianoSkinData;
 import io.github.jwdeveloper.spigot.piano.api.data.PianoSoundData;
 import io.github.jwdeveloper.spigot.piano.api.managers.effects.EffectInvoker;
@@ -18,6 +23,7 @@ import io.github.jwdeveloper.spigot.piano.gameobjects.managers.effects.EmptyEffe
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +33,9 @@ import java.util.List;
 public class PianoViewUI extends SimpleGUI {
 
     private final ColorPickerGui colorPickerGui;
-    private final PianoViewButtonsFactory pianoViewButtons;
     private final BenchViewGui benchViewGui;
     private final MidiPlayerGui midiPlayerGui;
     private final KeyboardGui keyboardGui;
-    private final ObserverBag<PianoSkinData> skinObserver;
     private final ObserverBag<EffectInvoker> effectObserver;
     private final ObserverBag<PianoSoundData> soundObserver;
     @Getter
@@ -39,16 +43,17 @@ public class PianoViewUI extends SimpleGUI {
     private PianoDataObserver pianoDataObserver;
     private Piano piano;
 
+    private TitleComponent titleComponent;
+
 
     public PianoViewUI(BenchViewGui benchViewGui,
                        MidiPlayerGui midiPlayerGui,
                        KeyboardGui keyboardGui,
-                       PianoViewButtonsFactory buttons,
+                       buttonsFactoryFactory buttons,
                        ColorPickerGui colorPickerGui) {
         this.midiPlayerGui = midiPlayerGui;
         this.benchViewGui = benchViewGui;
-        this.pianoViewButtons = buttons;
-        skinObserver = new ObserverBag<>(PianoSkinData.defaultSkin());
+        this.buttonsFactory = buttons;
         effectObserver = new ObserverBag<>(new EmptyEffect());
         soundObserver = new ObserverBag<>(new PianoSoundData());
         checkBoxes = new ArrayList<>();
@@ -56,36 +61,11 @@ public class PianoViewUI extends SimpleGUI {
         this.keyboardGui = keyboardGui;
     }
 
-    public void open(Player player, Piano piano) {
-        pianoDataObserver = piano.getPianoObserver();
-        this.piano = piano;
 
-        checkBoxes.clear();
-        checkBoxes.add(new CheckBox(
-                lang.get(PluginTranslations.GUI.PIANO.PEDAL_ACTIVE.TITLE),
-                pianoDataObserver.getPedalsSettings().getPedalInteraction(),
-                PluginPermissions.GUI.PIANO.SETTINGS.PEDAL_PRESSING_ACTIVE));
-
-        checkBoxes.add(new CheckBox(
-                lang.get(PluginTranslations.GUI.PIANO.DESKTOP_CLIENT_ACTIVE.TITLE),
-                pianoDataObserver.getDesktopClientAllowed(),
-                PluginPermissions.GUI.PIANO.SETTINGS.DESKTOP_APP_ACTIVE));
-
-        checkBoxes.add(new CheckBox(
-                lang.get(PluginTranslations.GUI.PIANO.DETECT_KEY_ACTIVE.TITLE),
-                pianoDataObserver.getInteractiveKeyboard(),
-                PluginPermissions.GUI.PIANO.SETTINGS.KEYBOARD_PRESSING_ACTIVE));
-
-        checkBoxes.add(new CheckBox(
-                lang.get(PluginTranslations.GUI.PIANO.PIANIST_ACTIVE.TITLE),
-                pianoDataObserver.getShowPianist(),
-                PluginPermissions.GUI.PIANO.SETTINGS.PIANIST_ACTIVE));
-        setTitlePrimary(pianoDataObserver.getPianoData().getName());
-        open(player);
-    }
 
     @Override
     public void onInit(InventoryDecorator decorator, InventoryApi inventoryApi) {
+
 
 
         onOpen(e->
@@ -95,6 +75,8 @@ public class PianoViewUI extends SimpleGUI {
             soundObserver.set(piano.getSoundsManager().getCurrent());
         });
 
+        titleComponent =addComponent(inventoryApi.components().title());
+        titleComponent.setTitleModel("piano", ()-> pianoDataObserver.getPianoData().getName());
         addComponent(new BorderComponent()).setBorderMaterial(Material.LIGHT_BLUE_STAINED_GLASS_PANE);
 
         /*
@@ -104,106 +86,114 @@ public class PianoViewUI extends SimpleGUI {
         colorPickerGui.setParent(this);
          */
 
+        var buttonsFactory = new PianoViewUIButtons(this,decorator,inventoryApi);
 
-        pianoViewButtons.keyboardButton()
-                .setOnLeftClick((p,b)->
+        buttonsFactory.keyboardButton()
+                .withOnLeftClick((p,b)->
                 {
                     keyboardGui.open(p, piano.getPianoObserver().getPianoData().getKeyboardSettings());
                 })
                 .build(this);
 
-        pianoViewButtons.teleportButton()
-                .setOnLeftClick(this::onTeleport)
-                .build(this);
+        buttonsFactory.teleportButton()
+                .withOnLeftClick(this::onTeleport);
 
-        pianoViewButtons.tokenButton()
-                .setOnLeftClick(this::onTokenGeneration)
-                .build(this);
 
-        pianoViewButtons.renameButton()
-                .setOnLeftClick(this::onRename)
-                .build(this);
+        buttonsFactory.tokenButton()
+                .withOnLeftClick(this::onTokenGeneration);
 
-        pianoViewButtons.pianoClearButton()
-                .setOnLeftClick(this::onPianoClear)
-                .build(this);
 
-        pianoViewButtons.benchButton()
-                .setOnLeftClick((player, button) ->
+        buttonsFactory.renameButton(this::onRename);
+
+        buttonsFactory.pianoClearButton()
+                .withOnLeftClick(this::onPianoClear);
+
+        buttonsFactory.benchButton()
+                .withOnLeftClick((player, button) ->
                 {
                     benchViewGui.open(player, piano);
                 }).build(this);
 
-        pianoViewButtons.midiPlayerButton()
-                .setOnLeftClick((player, button) ->
+        buttonsFactory.midiPlayerButton()
+                .withOnLeftClick((player, button) ->
                 {
                     midiPlayerGui.open(player, piano);
                 }).build(this);
 
 
-        pianoViewButtons
-                .pianoVolumeButton(() -> pianoDataObserver.getVolume())
-                .build(this);
+        buttonsFactory.pianoVolumeButton(() -> pianoDataObserver.getVolume());
 
-        pianoViewButtons.pianoOptionsButton(this, this::getCheckBoxes)
-                .build(this);
+        buttonsFactory.pianoOptionsButton(this::getCheckBoxes);
 
-        pianoViewButtons.pianoSkinSelectButton(
+        var skinsList = buttonsFactory.pianoSkinSelectButton(
                         () -> pianoDataObserver.getSkinName(),
-                        () -> piano.getSkinManager().getItems(),
-                        skinObserver.getObserver())
+                        () -> piano.getSkinManager().getItems());
+              //  .setOnShiftClick(this::onSkinColor);
 
-                .setOnShiftClick(this::onSkinColor)
-                .build(this);
+        skinsList.
 
-        pianoViewButtons.pianoParticleEffectSelectButton(
+        buttonsFactory.pianoParticleEffectSelectButton(
                         () -> pianoDataObserver.getEffectName(),
                         () -> piano.getEffectManager().getItems(),
-                        effectObserver.getObserver())
-                .build(this);
+                        effectObserver.getObserver());
 
-        pianoViewButtons.pianoSoundsSelectButton(
+        buttonsFactory.pianoSoundsSelectButton(
                         () -> pianoDataObserver.getSoundName(),
                         () -> piano.getSoundsManager().getItems(),
-                        soundObserver.getObserver())
-                .build(this);
+                        soundObserver.getObserver());
 
 
-        pianoViewButtons.backButton(this).build(this);
+       // buttonsFactory.backButton(this).build(this);
     }
 
 
-    private void onRename(Player player, ButtonUI buttonUI) {
-        this.close();
-        FluentApi.messages().chat()
-                .color(org.bukkit.ChatColor.AQUA)
-                .bold()
-                .inBrackets(lang.get(PluginTranslations.GENERAL.INFO))
-                .space()
-                .reset()
-                .text(lang.get(PluginTranslations.GUI.PIANO.RENAME.MESSAGE_1)).send(player);
-        EventsListenerInventoryUI.registerTextInput(player, s ->
-        {
-            pianoDataObserver.getPianoData().setName(s);
-            setTitlePrimary(s);
-            this.open(player);
-        });
+    public void open(Player player, Piano piano) {
+        pianoDataObserver = piano.getPianoObserver();
+        this.piano = piano;
+
+        checkBoxes.clear();
+        checkBoxes.add(new CheckBox(
+                translate(PianoPluginTranslations.GUI.PIANO.PEDAL_ACTIVE.TITLE),
+                pianoDataObserver.getPedalsSettings().getPedalInteraction(),
+                PianoPluginPermissions.GUI.PIANO.SETTINGS.PEDAL_PRESSING_ACTIVE));
+
+        checkBoxes.add(new CheckBox(
+                translate(PianoPluginTranslations.GUI.PIANO.DESKTOP_CLIENT_ACTIVE.TITLE),
+                pianoDataObserver.getDesktopClientAllowed(),
+                PianoPluginPermissions.GUI.PIANO.SETTINGS.DESKTOP_APP_ACTIVE));
+
+        checkBoxes.add(new CheckBox(
+                translate(PianoPluginTranslations.GUI.PIANO.DETECT_KEY_ACTIVE.TITLE),
+                pianoDataObserver.getInteractiveKeyboard(),
+                PianoPluginPermissions.GUI.PIANO.SETTINGS.KEYBOARD_PRESSING_ACTIVE));
+
+        checkBoxes.add(new CheckBox(
+                translate(PianoPluginTranslations.GUI.PIANO.PIANIST_ACTIVE.TITLE),
+                pianoDataObserver.getShowPianist(),
+                PianoPluginPermissions.GUI.PIANO.SETTINGS.PIANIST_ACTIVE));
+        open(player);
     }
 
-    private void onTeleport(Player player, ButtonUI buttonUI) {
-        piano.teleportPlayer(player);
+
+    private void onRename(AsyncPlayerChatEvent event) {
+
+        pianoDataObserver.getPianoData().setName(event.getMessage());
+
     }
 
-    private void onPianoClear(Player player, ButtonUI buttonUI) {
+    private void onTeleport(ButtonClickEvent event) {
+        piano.teleportPlayer(event.getPlayer());
+    }
+
+    private void onPianoClear(ButtonClickEvent event) {
         piano.reset();
         FluentApi.messages()
                 .chat()
-                .info()
-                .text(lang.get(PluginTranslations.GUI.PIANO.CLEAR.MESSAGE_CLEAR))
-                .send(player);
+                .text(translate(PianoPluginTranslations.GUI.PIANO.CLEAR.MESSAGE_CLEAR))
+                .send(event.getPlayer());
     }
 
-    private void onSkinColor(Player player,ButtonUI buttonUI)
+    private void onSkinColor(ButtonClickEvent event)
     {
         var skin = piano.getSkinManager().getCurrent();
         if(skin.getItemStack().getType() == Material.AIR)
@@ -220,8 +210,8 @@ public class PianoViewUI extends SimpleGUI {
         colorPickerGui.open(player);
     }
 
-    private void onTokenGeneration(Player player, ButtonUI buttonUI) {
-        piano.getTokenGenerator().generateAndSend(player);
+    private void onTokenGeneration(ButtonClickEvent event) {
+        piano.getTokenGenerator().generateAndSend(event.getPlayer());
         close();
     }
 

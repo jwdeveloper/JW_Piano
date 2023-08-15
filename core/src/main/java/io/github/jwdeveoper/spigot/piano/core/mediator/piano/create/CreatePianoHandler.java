@@ -29,7 +29,7 @@ import io.github.jwdeveloper.ff.core.injector.api.annotations.Inject;
 import io.github.jwdeveloper.ff.core.injector.api.annotations.Injection;
 import io.github.jwdeveloper.ff.core.mediator.api.MediatorHandler;
 import io.github.jwdeveloper.ff.extension.translator.api.FluentTranslator;
-import io.github.jwdeveloper.spigot.piano.api.PianoPluginPluginTranslations;
+import io.github.jwdeveloper.spigot.piano.api.PianoPluginTranslations;
 import io.github.jwdeveloper.spigot.piano.api.data.PianoData;
 import io.github.jwdeveoper.spigot.piano.core.services.ColorsService;
 import io.github.jwdeveoper.spigot.piano.core.services.PianoService;
@@ -51,7 +51,7 @@ public class CreatePianoHandler implements MediatorHandler<CreatePiano.Request, 
     public CreatePiano.Response handle(CreatePiano.Request request) {
 
         if (!pianoService.canCreate()) {
-            return new CreatePiano.Response(false, translator.get(PianoPluginPluginTranslations.PIANO.CREATE.ERROR_TOO_MUCH));
+            return new CreatePiano.Response(false, translator.get(PianoPluginTranslations.PIANO.CREATE.ERROR_TOO_MUCH));
         }
 
         final var player = request.player();
@@ -67,7 +67,7 @@ public class CreatePianoHandler implements MediatorHandler<CreatePiano.Request, 
         final var result = pianoService.create(pianoData);
         if (result.isEmpty()) {
 
-            return new CreatePiano.Response(false, translator.get(PianoPluginPluginTranslations.PIANO.CREATE.ERROR));
+            return new CreatePiano.Response(false, translator.get(PianoPluginTranslations.PIANO.CREATE.ERROR));
         }
 
         return new CreatePiano.Response(true, "");

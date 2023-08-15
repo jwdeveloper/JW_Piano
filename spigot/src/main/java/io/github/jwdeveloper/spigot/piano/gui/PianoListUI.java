@@ -9,7 +9,7 @@ import io.github.jwdeveloper.ff.extension.resourcepack.api.ResourcepackOptions;
 import io.github.jwdeveloper.ff.plugin.implementation.FluentApi;
 import io.github.jwdeveloper.ff.plugin.implementation.extensions.mediator.FluentMediator;
 import io.github.jwdeveloper.spigot.piano.api.PianoPluginConsts;
-import io.github.jwdeveloper.spigot.piano.api.PianoPluginPluginTranslations;
+import io.github.jwdeveloper.spigot.piano.api.PianoPluginTranslations;
 import io.github.jwdeveloper.spigot.piano.api.piano.Piano;
 import io.github.jwdeveoper.spigot.piano.core.mediator.piano.create.CreatePiano;
 import io.github.jwdeveoper.spigot.piano.core.services.PianoService;
@@ -58,21 +58,21 @@ public class PianoListUI extends SimpleDataGridGUI<Piano> {
 
     @Override
     public void onInit(InventoryDecorator decorator, InventoryApi inventoryApi) {
-        title(translate(PianoPluginPluginTranslations.GUI.PIANO_LIST.TITLE));
+        title(translate(PianoPluginTranslations.GUI.PIANO_LIST.TITLE));
         // hideEditButton();
         // getButtonInsert().setPermissions(PluginPermissions.GUI.PIANO_LIST.CREATE);
         //  getButtonDelete().setPermissions(PluginPermissions.GUI.PIANO_LIST.REMOVE);
 
 
-        button(translate(PianoPluginPluginTranslations.GUI.PIANO_LIST.RESOURCEPACK.TITLE))
+        button(translate(PianoPluginTranslations.GUI.PIANO_LIST.RESOURCEPACK.TITLE))
                 .withMaterial(Material.CAMPFIRE)
                 .withHighlighted()
                 .withPosition(0, 2)
                 .withStyleRenderer(options ->
                 {
-                    options.withDescription(translate(PianoPluginPluginTranslations.GUI.PIANO_LIST.RESOURCEPACK.DESC));
-                    options.withLeftClickInfo(translate(PianoPluginPluginTranslations.GUI.PIANO_LIST.RESOURCEPACK.CLICK.LEFT));
-                    options.withRightClickInfo(translate(PianoPluginPluginTranslations.GUI.PIANO_LIST.RESOURCEPACK.CLICK.RIGHT));
+                    options.withDescription(translate(PianoPluginTranslations.GUI.PIANO_LIST.RESOURCEPACK.DESC));
+                    options.withLeftClickInfo(translate(PianoPluginTranslations.GUI.PIANO_LIST.RESOURCEPACK.CLICK.LEFT));
+                    options.withRightClickInfo(translate(PianoPluginTranslations.GUI.PIANO_LIST.RESOURCEPACK.CLICK.RIGHT));
                 })
                 .withOnLeftClick(event ->
                 {
@@ -86,13 +86,13 @@ public class PianoListUI extends SimpleDataGridGUI<Piano> {
                 });
 
 
-        button(translate(PianoPluginPluginTranslations.GUI.PIANO_LIST.RESOURCEPACK.TITLE))
+        button(translate(PianoPluginTranslations.GUI.PIANO_LIST.RESOURCEPACK.TITLE))
                 .withMaterial(Material.SOUL_CAMPFIRE)
                 .withHighlighted()
                 .withPosition(0, 3)
                 .withStyleRenderer(options ->
                 {
-                    options.withDescription(translate(PianoPluginPluginTranslations.GUI.PIANO_LIST.CLIENT_APP.DESC));
+                    options.withDescription(translate(PianoPluginTranslations.GUI.PIANO_LIST.CLIENT_APP.DESC));
                 })
                 .withOnLeftClick(event ->
                 {
@@ -100,7 +100,7 @@ public class PianoListUI extends SimpleDataGridGUI<Piano> {
                             .component()
                             .withText(e ->
                             {
-                                e.text(ChatColor.AQUA + "" + ChatColor.BOLD + "[" + translate(PianoPluginPluginTranslations.GUI.PIANO_LIST.CLIENT_APP.MESSAGE) + "]");
+                                e.text(ChatColor.AQUA + "" + ChatColor.BOLD + "[" + translate(PianoPluginTranslations.GUI.PIANO_LIST.CLIENT_APP.MESSAGE) + "]");
                             }).withClickEvent(ClickEvent.Action.OPEN_URL, PianoPluginConsts.CLIENT_APP_URL)
                             .send(event.getPlayer());
                     close();
@@ -122,7 +122,7 @@ public class PianoListUI extends SimpleDataGridGUI<Piano> {
             var piano = button.<Piano>getDataContext();
             var result = pianoService.delete(piano.getPianoData().getUuid());
             if (!result) {
-                errorTitle(translate(PianoPluginPluginTranslations.GUI.BASE.DELETE.ERROR));
+                errorTitle(translate(PianoPluginTranslations.GUI.BASE.DELETE.ERROR));
             }
         });
 
@@ -130,7 +130,7 @@ public class PianoListUI extends SimpleDataGridGUI<Piano> {
         {
             var pianoData = event.getButton().<Piano>getDataContext();
             if (pianoData == null) {
-                errorTitle(translate(PianoPluginPluginTranslations.GUI.PIANO_LIST.CLICK.ERROR));
+                errorTitle(translate(PianoPluginTranslations.GUI.PIANO_LIST.CLICK.ERROR));
                 refresh();
                 return;
             }
