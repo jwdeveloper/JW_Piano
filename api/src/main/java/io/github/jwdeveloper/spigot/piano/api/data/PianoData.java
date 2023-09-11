@@ -1,7 +1,7 @@
 package io.github.jwdeveloper.spigot.piano.api.data;
 
 import io.github.jwdeveloper.ff.extension.files.api.DataModel;
-import io.github.jwdeveloper.ff.tools.files.generators.observer.ObserverField;
+
 import io.github.jwdeveloper.spigot.piano.api.data.keyboard.KeyboardData;
 import io.github.jwdeveloper.spigot.piano.api.data.midi.MidiPlayerData;
 import lombok.Data;
@@ -22,15 +22,15 @@ public class PianoData extends DataModel
     private String soundName = "default";
     private Color color = Color.WHITE;
 
-    @ObserverField
+   // @ObserverField
     private KeyboardData keyboard = new KeyboardData();
 
-    @ObserverField
+   // @ObserverField
     private PedalsData pedals = new PedalsData();
 
-    @ObserverField
+ //   @ObserverField
     private BenchData bench = new BenchData();
 
-    @ObserverField
+  //  @ObserverField
     private MidiPlayerData midiPlayer = new MidiPlayerData();
 }

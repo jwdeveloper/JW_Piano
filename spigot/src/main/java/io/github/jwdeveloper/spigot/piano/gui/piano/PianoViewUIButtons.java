@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 
 public class PianoViewUIButtons {
 
-    private final PianoViewUI pianoViewUI;
+   /* private final PianoViewUI pianoViewUI;
     private final InventoryDecorator decorator;
     private final InventoryApi api;
 
@@ -38,11 +38,11 @@ public class PianoViewUIButtons {
     }
 
 
-    /*
+
     public ButtonBuilder backButton(InventoryUI pianoUI) {
         return pianoViewUI.button()
                 .back(pianoUI, null);
-    }*/
+    }
 
 
     public ButtonBuilder keyboardButton() {
@@ -211,6 +211,7 @@ public class PianoViewUIButtons {
                     options.withTitle(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.EFFECT.TITLE));
                 })
                 .withPosition(3, 2);
+        return null;
     }
 
 
@@ -284,5 +285,5 @@ public class PianoViewUIButtons {
                 {
                     descriptionInfoBuilder.withTitle(pianoViewUI.translate(PianoPluginTranslations.GUI.PIANO.PIANO_OPTIONS.TITLE));
                 });
-    }
+    }*/
 }

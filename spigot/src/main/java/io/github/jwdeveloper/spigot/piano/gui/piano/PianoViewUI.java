@@ -31,8 +31,12 @@ import java.util.List;
 
 @Injection
 public class PianoViewUI extends SimpleGUI {
+    @Override
+    public void onInit(InventoryDecorator decorator, InventoryApi inventoryApi) {
 
-    private final ColorPickerGui colorPickerGui;
+    }
+
+   /* private final ColorPickerGui colorPickerGui;
     private final BenchViewGui benchViewGui;
     private final MidiPlayerGui midiPlayerGui;
     private final KeyboardGui keyboardGui;
@@ -79,12 +83,12 @@ public class PianoViewUI extends SimpleGUI {
         titleComponent.setTitleModel("piano", ()-> pianoDataObserver.getPianoData().getName());
         addComponent(new BorderComponent()).setBorderMaterial(Material.LIGHT_BLUE_STAINED_GLASS_PANE);
 
-        /*
+
         benchViewGui.setParent(this);
         midiPlayerGui.setParent(this);
         keyboardGui.setParent(this);
         colorPickerGui.setParent(this);
-         */
+
 
         var buttonsFactory = new PianoViewUIButtons(this,decorator,inventoryApi);
 
@@ -109,23 +113,23 @@ public class PianoViewUI extends SimpleGUI {
                 .withOnLeftClick(this::onPianoClear);
 
         buttonsFactory.benchButton()
-                .withOnLeftClick((player, button) ->
+                .withOnLeftClick((player) ->
                 {
-                    benchViewGui.open(player, piano);
-                }).build(this);
+                    //benchViewGui.open(player, piano);
+                });
 
         buttonsFactory.midiPlayerButton()
-                .withOnLeftClick((player, button) ->
+                .withOnLeftClick((player) ->
                 {
-                    midiPlayerGui.open(player, piano);
-                }).build(this);
+                 //   midiPlayerGui.open(player, piano);
+                });
 
 
         buttonsFactory.pianoVolumeButton(() -> pianoDataObserver.getVolume());
 
         buttonsFactory.pianoOptionsButton(this::getCheckBoxes);
 
-        var skinsList = buttonsFactory.pianoSkinSelectButton(
+      var skinsList = buttonsFactory.pianoSkinSelectButton(
                         () -> pianoDataObserver.getSkinName(),
                         () -> piano.getSkinManager().getItems());
               //  .setOnShiftClick(this::onSkinColor);
@@ -148,7 +152,7 @@ public class PianoViewUI extends SimpleGUI {
 
 
     public void open(Player player, Piano piano) {
-        pianoDataObserver = piano.getPianoObserver();
+       // pianoDataObserver = piano.getPianoObserver();
         this.piano = piano;
 
         checkBoxes.clear();
@@ -214,7 +218,7 @@ public class PianoViewUI extends SimpleGUI {
         piano.getTokenGenerator().generateAndSend(event.getPlayer());
         close();
     }
-
+*/
 
 
 }

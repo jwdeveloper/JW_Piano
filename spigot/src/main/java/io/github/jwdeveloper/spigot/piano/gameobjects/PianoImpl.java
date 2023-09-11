@@ -261,7 +261,7 @@ public class PianoImpl extends GameComponent implements Piano {
 
     @Override
     public void reset() {
-        var location = transform().toLocation()
+        var location = transform().toLocation();
         location.getChunk().setForceLoaded(true);
         var entities = location.getWorld().getNearbyEntities(location, 4, 6, 4);
         var piano = pianoData.getUuid().toString();
